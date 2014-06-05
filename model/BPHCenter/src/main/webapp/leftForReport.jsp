@@ -241,7 +241,7 @@ function searchByMonth(){
 	$("#dpEDay").data("kendoDatePicker").value("");
 	$("#dpSDate").data("kendoDatePicker").value("");
 	$("#dpEDate").data("kendoDatePicker").value(""); 
-	m_Query_pkg.periodType = 1;
+	m_Query_pkg.periodType = 3;
 }
 function searchByDay(){
 	var datepicker1 = $("#dpSDay").data("kendoDatePicker");
@@ -256,7 +256,7 @@ function searchByDay(){
 	$("#dpEDay").data("kendoDatePicker").value("");
 	$("#dpSDate").data("kendoDatePicker").value("");
 	$("#dpEDate").data("kendoDatePicker").value(""); 
-	m_Query_pkg.periodType = 3;
+	m_Query_pkg.periodType = 1;
 }
 function onDpDate(){
 	var dates = $("#dpSDate").data("kendoDatePicker").value();
@@ -288,7 +288,7 @@ function onDpDate(){
 				}
 				m_Query_pkg.startDate =  years + "-" + months + "-" + "01";
 				m_Query_pkg.endDate = yeare + "-" + monthe + "-" + "01";
-				m_Query_pkg.periodType = 1;
+				m_Query_pkg.periodType = 3;
 			}
 		}else if(yeare < years){
 			$("body").popjs({"title":"提示","content":"按月查询，起始年份不能大于截止年份"}); 
@@ -301,7 +301,7 @@ function onDpDate(){
 				return;
 			}else{ 
 				alarmPeriodXLabel = [];
-				for(var m = months; m<monthe+1; m++){
+				for(var m = months; m<13; m++){
 					alarmPeriodXLabel.push(m);
 				} 
 				for(var n = 1; n<monthe+1; n++){
@@ -315,7 +315,7 @@ function onDpDate(){
 				}
 				m_Query_pkg.startDate =  years + "-" + months + "-" + "01";
 				m_Query_pkg.endDate = yeare + "-" + monthe + "-" + "01";
-				m_Query_pkg.periodType = 1;
+				m_Query_pkg.periodType = 3;
 			}
 		}
 	}
@@ -391,7 +391,7 @@ function onDpDay(){
 				}
 				m_Query_pkg.startDate = years + "-" + months + "-" + days;
 				m_Query_pkg.endDate = yeare + "-" + monthe + "-" + daye;
-				m_Query_pkg.periodType = 3;
+				m_Query_pkg.periodType = 1;
 			}
 		}
 	}

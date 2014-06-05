@@ -188,10 +188,10 @@
   	
   	<select id="loadCasePeriodReport"  parameterType="java.util.Map"  resultMap="casePeriodAGGRMap">
   		select 
-  			<if test ="periodType==1">
+  			<if test ="periodType==3">
   				cmonth as period,
   			</if>
-  			<if test ="periodType==2">
+  			<if test ="periodType==4">
   				ymd as period,
   			</if>
   			count(*)	as period_count
@@ -213,10 +213,10 @@
 					#{item}
 				</foreach>
 		group by 
-			<if test ="periodType==1">
+			<if test ="periodType==3">
   				cmonth 
   			</if>
-  			<if test ="periodType==2">
+  			<if test ="periodType==4">
   				ymd
   			</if>
   	</select>

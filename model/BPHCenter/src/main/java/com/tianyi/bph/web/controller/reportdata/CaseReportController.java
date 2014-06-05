@@ -80,6 +80,12 @@ public class CaseReportController {
 					queryCondition.getPeriodType());
 			// 警情类型 父级节点
 			List<String> caseTypes = queryCondition.getCaseType();
+			// 警情级别 二级节点
+			List<Integer> levels = queryCondition.getCaseLevels();
+			// 时间区间 时间节点
+			List<Integer> hours = queryCondition.getCaseTimaSpan();
+			map.put("levels", levels);
+			map.put("hours", hours);
 			 
 			// 当期
 			CaseReportResult<CaseTypeAGGR> cResult = new CaseReportResult<CaseTypeAGGR>();
@@ -127,14 +133,15 @@ public class CaseReportController {
 	private List<CaseTypeAGGR> getSelectCaseTypeList(List<CaseTypeAGGR> ls,
 			List<String> caseTypes) {
 		// TODO Auto-generated method stub
+		List<CaseTypeAGGR> list = new ArrayList<CaseTypeAGGR>();
 		for(String code :caseTypes){
 			for(CaseTypeAGGR cta:ls){
 				if(cta.getTypeCode().equals(code)){
-					ls.remove(cta);
+					list.add(cta);
 				}
 			}
 		} 
-		return ls;
+		return list;
 	}
 
 	@RequestMapping(value = "/loadCasePeriodReport.do")

@@ -2,18 +2,50 @@
 <script type="text/javascript">
 
 var ReportManage ={
-	initAlarmTypeData:function(data,title,XLabel){ 
-		for(var i = 0;i<data.length;i++){//删除格式错误的几个数据
-				data[i].data.shift();
-				data[i].data.splice(8,2);
-		}
+	getOtherAmount:function(data,typeCode,amount){
+			for(var i = 0;i< data.data.length;i++){
+				if(data.data[i].typeLevel !=1&&data.data[i].parentTypeCode == typeCode)
+					amount = amount-data.data[i].amount;
+			}
+			return amount;
+		},
+		getTotalAmount:function(data){
+			
+			var totalAmount=0;
+			var firstLevel=[];
+			var secondLevel=[];
+			//分别取出一级、二级警情
+			for(var i=0;i<data.data.length;i++){
+				if(data.data[i].typeLevel==1){
+					firstLevel.push(data.data[i]);
+				}else if(data.data[i].typeLevel==2){
+					secondLevel.push(data.data[i]);
+				}
+			}
+			for(var m=0;m<firstLevel.length;m++){
+				var fCode=firstLevel[m].typeCode;
+				for(var n=0;n<secondLevel.length;n++){
+					var sCode=secondLevel[n].typeParentCode;
+					if(fCode==sCode){
+						secondLevel.splice(n,1);//删掉在大类下的小类，剩下的就是无大类的小类
+						n--;
+					}
+				}
+			}
+			for(var i = 0;i< data.data.length;i++){
+				if(data.data[i].typeLevel==1){
+					totalAmount+=data.data[i].amount;//所有大类数量
+				}
+			}
+			for(var j=0;j<secondLevel.length;j++){
+				totalAmount+=secondLevel[j].amount;//加上无大类的小类数量
+			}
+			return totalAmount;
+		},
+	initAlarmTypeData:function(data,title,XLabel){  
 		//遍历数组，构建对象
 		var dataSource = [];
-		var l = data[2].data.length;
 		var d = data[2].data.length;
-		if(l>10){
-			d = 10;
-		} 
 		//遍历同比数据
 		var tb={};
 		tb.name="同比";
@@ -34,7 +66,12 @@ var ReportManage ={
 			if(data[1].data.length==0){
 				hb.data.push(0);
 			}else{
-				hb.data.push(data[1].data[m].amount);
+				if(data[1].data[m].amount!=undefined){
+					hb.data.push(data[1].data[m].amount);
+				}
+				else{
+					hb.data.push(0);
+				}
 			}
 		}
 		dataSource.push(hb);
@@ -92,7 +129,7 @@ var ReportManage ={
 		var secondLevel=[];
 		var noPColumns=[];
 		//分别取出一级、二级警情
-		for(var i=0;i<l;i++){
+		for(var i=0;i<d;i++){
 			if(data[0].data[i].typeLevel==1){
 				firstLevel.push(data[0].data[i]);
 			}else if(data[0].data[i].typeLevel==2){
@@ -122,9 +159,9 @@ var ReportManage ={
 		firstColumns.push({title:"合计",field:"totals",columns:[{title:"-",field:"total"}]});//表头最后一列“合计”
 		//dataSource
 		var gridData=[];
+		//同比
 		var Tb={};
-		tb.field=[];
-		for(var j=0;j<l;j++){
+		for(var j=0;j<d;j++){
 			if(data[0].data[j].typeLevel==2){
 				Tb[data[0].data[j].typeCode] = data[0].data[j].amount;
 			}else{
@@ -132,15 +169,38 @@ var ReportManage ={
 			}
 		}
 		Tb["nothing"]=data[0].beginYmd+"-"+data[0].endYmd;
-		Tb["total"]=ReportManage.getTotalAmount(data[0],secondLevel);
+		Tb["total"]=ReportManage.getTotalAmount(data[0]);
 		gridData.push(Tb);
+		//环比
+		/* var Hb={};
+		for(var j=0;j<d;j++){
+			if(data[1].data[j].typeLevel==2){
+				Hb[data[1].data[j].typeCode] = data[1].data[j].amount;
+			}else{
+				Hb["sOther"+data[1].data[j].typeCode]=ReportManage.getOtherAmount(data[1],data[1].data[j].typeCode,data[1].data[j].amount);
+			}
+		}
+		Hb["nothing"]=data[1].beginYmd+"-"+data[1].endYmd;
+		Hb["total"]=ReportManage.getTotalAmount(data[1]);
+		gridData.push(Hb); */
+		//无
+		var no={};
+		for(var j=0;j<d;j++){
+			if(data[2].data[j].typeLevel==2){
+				no[data[2].data[j].typeCode] = data[2].data[j].amount;
+			}else{
+				no["sOther"+data[2].data[j].typeCode]=ReportManage.getOtherAmount(data[2],data[2].data[j].typeCode,data[2].data[j].amount);
+			}
+		}
+		no["nothing"]=data[2].beginYmd+"-"+data[2].endYmd;
+		no["total"]=ReportManage.getTotalAmount(data[2]);
+		gridData.push(no);
 		$("#grid").empty();
 		$("#grid").kendoGrid({
             dataSource:gridData, 
             columns:firstColumns, 
             height: 550,
-            scrollable: true,
-            sortable: true,
+            scrollable: true, 
             resizable: true,
             reorderable: true,
             filterable: false,
@@ -153,11 +213,7 @@ var ReportManage ={
 	initAlarmCircleData:function(data,title,XLabel){
 		//遍历数组，构建对象
 		var dataSource = [];
-		var l = data[2].data.length;
 		var d = data[2].data.length;
-		if(l>10){
-			d = 10;
-		} 
 		//遍历同比数据
 		var tb={};
 		tb.name="同比";
@@ -230,35 +286,69 @@ var ReportManage ={
             });
 		//表头
 		var gridColumns=[];
-		//XLabel时间
-		for(var i=0;i<XLabel.length;i++){
-			gridColumns[i]={field:XLabel[i]};
-		}
-		gridColumns.unshift({field:"日期"});
+		gridColumns=[{title:"title",field:"title"},{title:"begin",field:"begin"},{title:"end",field:"end"}];
 		//dataSource
+		//同比
         var gridData=[];
-        var g_obj={};
+        var tbDate={};
+        var date1=[];
+        var tbAmount={};
+        date1=[data[0].beginYmd,data[0].endYmd];
+        date1.unshift("日期");
         for(var m=0;m<gridColumns.length;m++){
-        	g_obj[gridColumns[m].field]=2;//
+        	tbDate[gridColumns[m].field]=date1[m];
          }
-        gridData.push(g_obj);
+        gridData.push(tbDate);
+        for(var n=0;n<gridColumns.length;n++){
+        	if(n==0){
+        		tbAmount[gridColumns[0].field]="警情数量(件)";
+        	}else{
+        		tbAmount[gridColumns[n].field]=data[0].data[n-1].amount;
+        	}
+         }
+        gridData.push(tbAmount);
+        //环比
+        /* var hbDate={};
+        var date2=[];
+        var hbAmount={};
+        date2=[data[1].beginYmd,data[1].endYmd];
+        date2.unshift("日期");
+        for(var m=0;m<gridColumns.length;m++){
+        	hbDate[gridColumns[m].field]=date2[m];
+         }
+        gridData.push(hbDate);
+        for(var n=0;n<gridColumns.length;n++){
+        	if(n==0){
+        		hbAmount[gridColumns[0].field]="警情数量(件)";
+        	}else{
+        		hbAmount[gridColumns[n].field]=data[0].data[n-1].amount;
+        	}
+         }
+        gridData.push(hbAmount); */
+        //无
+        var nDate={};
+        var date3=[];
+        var nAmount={};
+        date3=[data[2].beginYmd,data[2].endYmd];
+        date3.unshift("日期");
+        for(var m=0;m<gridColumns.length;m++){
+        	nDate[gridColumns[m].field]=date3[m];
+         }
+        gridData.push(nDate);
+        for(var n=0;n<gridColumns.length;n++){
+        	if(n==0){
+        		nAmount[gridColumns[0].field]="警情数量(件)";
+        	}else{
+        		nAmount[gridColumns[n].field]=data[0].data[n-1].amount;
+        	}
+         }
+        gridData.push(nAmount);
 		$("#grid").empty();
 		$("#grid").kendoGrid({
-            dataSource:gridData,
-            	/* [
-                  { 一: "23", 二:"30",三:"34",四:"12",五:"11"},
-                       ], */
-            columns:gridColumns,
-            	/* [
-                     {field:"一"},
-                     {field:"二"},
-                     {field:"三"},
-                     {field:"四"},
-                     {field:"五"}
-                     ], */
+            dataSource:gridData, 
+            columns:gridColumns, 
             height: 550,
-            scrollable: true,
-            sortable: true,
+            scrollable: true, 
             resizable: true,
             reorderable: true,
             filterable: false,
@@ -340,6 +430,9 @@ var ReportManage ={
                     }); 
 	},
 	initAlarmOrganData:function(data,title,XLabel,alarmTypeName){
+	
+		$("#lbl_reportTime").text(m_Query_pkg.startDate +"____"+m_Query_pkg.endDate);
+	
 		var seriesArray=[]; 
 		var rows=data[0].data;  
 		var types={};
@@ -397,7 +490,7 @@ var ReportManage ={
                     visible: true,
                     template: "#= series.name #: #= value #"
                 }
-            });
+            }); 
         //添加表格
         var gridColumns = gridManage.GetGridColumns(data[0]);
         var gridDataSource = gridManage.GetGridDataSource(data,XLabel,gridColumns);
@@ -591,6 +684,27 @@ var FunctionManage ={
 	}
 };
 </script>
-<div id="jqtj"></div>   
+<style>
+	.charts{
+		width:3000px;
+		background-image: url(../Skin/Default/images/bg.png);
+  		background-position-x: initial;
+  		background-position-y: initial;
+  		background-size: initial;
+  		background-repeat-x: initial;
+  		background-repeat-y: initial;
+  		background-attachment: initial;
+  		background-origin: initial;
+  		background-clip: initial;
+  		background-color: initial;
+  		font-family: Arial, "微软雅黑", "宋体";
+	}
+</style>
+<div style="overflow:auto;width:1000px;height:530px;">
+<div id="jqtj" class="charts"></div>   
+<label id="lbl_reportTime"></label>
+</div>  
 <br><br>
-<div id="grid"></div>
+<div style="overflow:auto;width:1000px;height:430px;">
+<div id="grid" style="width:800px;"></div> 
+</div>  
