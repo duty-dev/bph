@@ -20,8 +20,7 @@
 			content = '操作成功！';
 		}
 		
-		var str='<div id="fullbg"></div>'+
-				'<div class="pop" id="pop">'+
+		var str='<div class="pop" id="pop">'+
 					'<div class="pop-main">'+
 						'<div class="pop-title">'+
 							'<p>'+title+'</p><em></em>'+
@@ -41,12 +40,24 @@
 		
 		function showpop(){
 			showBg();
-			var ow = $("#pop").width()/2;
-			var oh = $("#pop").height()/2;
-			var tv = $(window).width()/2-ow;
-			var lv = $(window).height()/2-oh;
-			$("#pop").css({"display":"block","position":"absolute","top":lv,"left":tv});
-			$("#popOk").bind("click",function(){
+			var winW=$(window).width();
+			var winH=$(window).height();
+			var sclL=$(window).scrollLeft();
+			var sclT=$(window).scrollTop();
+			var layerW=$("#pop").width();
+			var layerH=$("#pop").height();
+			var left=sclL+(winW-layerW)/2;
+			var top=sclT+(winH-layerH)/2;
+			
+			$("#pop").css({"display":"block","position":"absolute","top":top,"left":left});
+			$("#popOk").focus().keydown(function(event) {  
+		        if (event.keyCode == 32) {  
+		        	closePop(); 
+		        }
+		        if(typeof(callback)=="function"){
+					callback();
+				}
+		    }).click(function(){
 				if(typeof(callback)=="function"){
 					callback();
 				}
@@ -55,30 +66,26 @@
 		}
 		//显示灰色JS遮罩层
 		function showBg(){
-			var bH = $(window).height();
-			var bW = $(window).width();
-			$("#fullbg").css({width:bW,height:bH,display:"block"});
 			$(window).scroll(function(){resetBg();});
 			$(window).resize(function(){resetBg();});
 		}
 		
 		function resetBg(){
-			var fullbg=$("#fullbg").css("display");
-			if(fullbg=="block"){
-				var bH2=$(window).height();
-				var bW2=$(window).width();
-				var ow = $("#pop").width()/2;
-				var oh = $("#pop").height()/2;
-				var tv = bW2/2-ow;
-				var lv = bH2/2-oh;
-				$("#fullbg").css({width:bW2,height:bH2});
-				$("#pop").css({top:lv,left:tv});
+			if($("#pop").length != 0){
+				var winW=$(window).width();
+				var winH=$(window).height();
+				var sclL=$(window).scrollLeft();
+				var sclT=$(window).scrollTop();
+				var layerW=$("#pop").width();
+				var layerH=$("#pop").height();
+				var left=sclL+(winW-layerW)/2;
+				var top=sclT+(winH-layerH)/2;
+				$("#pop").css({"top":top,"left":left});
 			}
 		}
 	}
 })(jQuery);
 
 function closePop(){
-	$("#fullbg").remove();
 	$("#pop").remove();
 }

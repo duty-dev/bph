@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tianyi.bph.dao.system.LogMapper" >
+  <resultMap id="BaseResultMap" type="com.tianyi.bph.domain.system.Log" >
+    <id column="LOG_ID" property="logId" jdbcType="INTEGER" />
+    <id column="LOG_TYPE_ID" property="logTypeId" jdbcType="INTEGER" />
+    <result column="LOGIN_USER_ID" property="loginUserId" jdbcType="VARCHAR" />
+    <result column="LOGIN_USER_NAME" property="loginUserName" jdbcType="VARCHAR" />
+    <result column="LOGIN_IP" property="loginIp" jdbcType="VARCHAR" />
+    <result column="LOGIN_MAC" property="loginMac" jdbcType="VARCHAR" />
+    <result column="OPERATE_DATE" property="operateDate" jdbcType="TIMESTAMP" />
+    <result column="LOG_CONTEXT" property="logContext" jdbcType="VARCHAR" />
+    <result column="LOG_TYPE_NAME" property="logTypeName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    LOG_ID, LOG_TYPE_ID, LOGIN_USER_ID, LOGIN_USER_NAME, LOGIN_IP, LOGIN_MAC, OPERATE_DATE, 
+    LOG_CONTEXT
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.tianyi.bph.domain.system.LogExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_logs
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.tianyi.bph.domain.system.LogKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_logs
+    where LOG_ID = #{logId,jdbcType=INTEGER}
+      and LOG_TYPE_ID = #{logTypeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.tianyi.bph.domain.system.LogKey" >
+    delete from t_logs
+    where LOG_ID = #{logId,jdbcType=INTEGER}
+      and LOG_TYPE_ID = #{logTypeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.tianyi.bph.domain.system.Log" >
+    insert into t_logs (LOG_ID, LOG_TYPE_ID, LOGIN_USER_ID, 
+      LOGIN_USER_NAME, LOGIN_IP, LOGIN_MAC, 
+      OPERATE_DATE, LOG_CONTEXT)
+    values (#{logId,jdbcType=INTEGER}, #{logTypeId,jdbcType=INTEGER}, #{loginUserId,jdbcType=VARCHAR}, 
+      #{loginUserName,jdbcType=VARCHAR}, #{loginIp,jdbcType=VARCHAR}, #{loginMac,jdbcType=VARCHAR}, 
+      #{operateDate,jdbcType=TIMESTAMP}, #{logContext,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tianyi.bph.domain.system.Log" >
+    insert into t_logs
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="logId != null" >
+        LOG_ID,
+      </if>
+      <if test="logTypeId != null" >
+        LOG_TYPE_ID,
+      </if>
+      <if test="loginUserId != null" >
+        LOGIN_USER_ID,
+      </if>
+      <if test="loginUserName != null" >
+        LOGIN_USER_NAME,
+      </if>
+      <if test="loginIp != null" >
+        LOGIN_IP,
+      </if>
+      <if test="loginMac != null" >
+        LOGIN_MAC,
+      </if>
+      <if test="operateDate != null" >
+        OPERATE_DATE,
+      </if>
+      <if test="logContext != null" >
+        LOG_CONTEXT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="logId != null" >
+        #{logId,jdbcType=INTEGER},
+      </if>
+      <if test="logTypeId != null" >
+        #{logTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="loginUserId != null" >
+        #{loginUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="loginUserName != null" >
+        #{loginUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="loginIp != null" >
+        #{loginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="loginMac != null" >
+        #{loginMac,jdbcType=VARCHAR},
+      </if>
+      <if test="operateDate != null" >
+        #{operateDate,jdbcType=DATE},
+      </if>
+      <if test="logContext != null" >
+        #{logContext,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tianyi.bph.domain.system.Log" >
+    update t_logs
+    <set >
+      <if test="loginUserId != null" >
+        LOGIN_USER_ID = #{loginUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="loginUserName != null" >
+        LOGIN_USER_NAME = #{loginUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="loginIp != null" >
+        LOGIN_IP = #{loginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="loginMac != null" >
+        LOGIN_MAC = #{loginMac,jdbcType=VARCHAR},
+      </if>
+      <if test="operateDate != null" >
+        OPERATE_DATE = #{operateDate,jdbcType=DATE},
+      </if>
+      <if test="logContext != null" >
+        LOG_CONTEXT = #{logContext,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where LOG_ID = #{logId,jdbcType=INTEGER}
+      and LOG_TYPE_ID = #{logTypeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tianyi.bph.domain.system.Log" >
+    update t_logs
+    set LOGIN_USER_ID = #{loginUserId,jdbcType=VARCHAR},
+      LOGIN_USER_NAME = #{loginUserName,jdbcType=VARCHAR},
+      LOGIN_IP = #{loginIp,jdbcType=VARCHAR},
+      LOGIN_MAC = #{loginMac,jdbcType=VARCHAR},
+      OPERATE_DATE = #{operateDate,jdbcType=DATE},
+      LOG_CONTEXT = #{logContext,jdbcType=VARCHAR}
+    where LOG_ID = #{logId,jdbcType=INTEGER}
+      and LOG_TYPE_ID = #{logTypeId,jdbcType=INTEGER}
+  </update>
+  
+  
+  <!-- 条件、分页 -->
+ 	<sql id="find">
+		select l.*,lt.LOG_TYPE_NAME as logTypeName
+		from t_logs l left join t_log_type lt on l.LOG_TYPE_ID=lt.LOG_TYPE_ID where 1=1
+		and LOGIN_USER_ID=#{userId,jdbcType=DECIMAL}
+		<if test="logTypeId != null and logTypeId != ''">
+			and l.LOG_TYPE_ID=#{logTypeId,jdbcType=DECIMAL}
+		</if>
+		order by l.OPERATE_DATE desc
+	</sql>
+  
+  <select id="findCount"  resultType="Integer">
+		select count(distinct LOG_ID) from (
+			<include refid="find" />
+		) count_
+	</select>
+	
+	<select id="findByPage" parameterType="com.tianyi.bph.query.system.LogQuery"  resultMap="BaseResultMap" >
+		 select * from (
+			<include refid="find" />
+			) r  limit #{pageStart},#{pageSize}
+	</select>
+</mapper>

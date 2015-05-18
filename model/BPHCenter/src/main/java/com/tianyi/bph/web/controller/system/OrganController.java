@@ -1,13 +1,19 @@
 package com.tianyi.bph.web.controller.system;
 
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+
+import net.sf.ehcache.CacheManager;
+import net.sf.json.JSONArray;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +26,8 @@ import com.tianyi.bph.common.PageReturn;
 import com.tianyi.bph.common.Pager;
 import com.tianyi.bph.common.ReturnResult;
 import com.tianyi.bph.common.SystemConfig;
+import com.tianyi.bph.common.ehcache.CacheUtils;
+import com.tianyi.bph.domain.system.GBOrgan;
 import com.tianyi.bph.domain.system.Organ;
 import com.tianyi.bph.domain.system.User;
 import com.tianyi.bph.query.system.OrganQuery;
@@ -39,6 +47,13 @@ public class OrganController extends BaseLogController{
 	@Autowired private OrganService organService;
 	@Autowired UserOtherOrganService userOtherService;
 	@Autowired LogService logService;
+	private CacheManager manager;
+
+	@Autowired
+	public void setManager(@Qualifier("ehCacheManager") CacheManager manager) {
+		this.manager = manager;
+	}
+	
 	/**
 	 *  web 机构列表展示
 	 * @param name
@@ -58,7 +73,7 @@ public class OrganController extends BaseLogController{
 			HttpServletRequest request
 			){
 		ModelAndView  mv=new ModelAndView("/base/organ/organList.jsp");
-		User user=(User) request.getAttribute("User");
+		/*User user=(User) request.getAttribute("User");
 		OrganQuery organQuery=new OrganQuery();
 		if(!StringUtils.isEmpty(name)){organQuery.setName(name);}
 		organQuery.setPageNo(pageNo);
@@ -66,7 +81,7 @@ public class OrganController extends BaseLogController{
 		organQuery.setPath(user.getOrganPath());
 		Pager<Organ> organList=organService.getPageList(organQuery);
 		
-		mv.addObject("pager", organList);
+		mv.addObject("pager", organList);*/
 		mv.addObject("num",SystemConfig.SYSTEM_MANAGER);//系统管理模块100
 		return mv;
 	}
@@ -136,6 +151,7 @@ public class OrganController extends BaseLogController{
 			@RequestParam(value="pageNo",required=false,defaultValue="1")Integer pageNo,
 			HttpServletRequest request){
 		try{
+			
 			User user=(User) request.getAttribute("User");
 			OrganQuery organQuery=new OrganQuery();
 			if(!StringUtils.isEmpty(searchName)){organQuery.setName(searchName);}
@@ -161,7 +177,74 @@ public class OrganController extends BaseLogController{
 		}
 	}
 	
+	@RequestMapping("/searchOrganListByName.do")
+	@ResponseBody
+	public ReturnResult searchOrganListByName(HttpServletRequest request) {
+		try {
+			String searchOrganName=(String) request.getAttribute("searchOrganName");
+			String organId=(String) request.getAttribute("organId");
+			User user=(User) request.getAttribute("User");
+			OrganQuery query=new OrganQuery();
+			if(!StringUtils.isEmpty(organId)){
+				query.setId(Integer.parseInt(organId));
+			}
+			query.setName(searchOrganName);
+			Organ organ = (Organ) CacheUtils.getObjectValue(manager, CacheUtils.ORGAN_DATASOURCE, user.getUserId()+"");
+			return ReturnResult.SUCCESS(organ);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ReturnResult.FAILUER(e.getMessage());
+		}
+	}
 	
+
+	/*private void process(final List<Organ> list, String name) {
+		Iterator<Organ> it = list.listIterator();
+		while (it.hasNext()) {
+			Organ organ = it.next();
+			if (organ.getItems() != null) {
+				process(organ.getItems(), name);
+			}
+			if (!organ.getName().contains(name)
+					&& (organ.getItems() == null || organ.getItems().size() == 0)) {
+				it.remove();
+			}
+		}
+	}*/
+	
+	/**
+	 * 分级展示机构树
+	 * @param organId
+	 * @param hybrid_id
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/lazyOrganList.do", produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String lazyOrganList(
+			@RequestParam(value = "id", required = false) Integer hybrid_id,
+			HttpServletRequest request) {
+		List<Organ> list = null;
+		try {
+			User user=(User) request.getAttribute("User");
+			String expandeds=(String) request.getAttribute("expandeds");
+			String organId=(String) request.getAttribute("organId");
+			OrganQuery query=new OrganQuery();
+			query.setId(user.getOrgId());
+			query.setParentId(hybrid_id);
+			query.setExpandeds(expandeds);
+			if(!StringUtils.isEmpty(organId)){
+				query.setCurrentOrganId(Integer.parseInt(organId));
+			}else{
+				query.setCurrentOrganId(user.getOrgId());
+			}
+			list=organService.getOrganListByParentId(query);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		String s =  JSONArray.fromObject(list).toString();
+		return s;
+	}
 	
 	/**
 	 * 跨机构树选择
@@ -259,10 +342,15 @@ public class OrganController extends BaseLogController{
 			if(organ==null){
 				return ReturnResult.MESSAGE(MessageCode.STATUS_FAIL,MessageCode.ADD_ORGAN_FAIL_BYCODENAME);
 			}
-			/**
-			 * 日志入库
-			 */
 			addLog(request, "添加机构成功",2);
+			
+			User user=(User) request.getAttribute("User");
+			OrganQuery query=new OrganQuery();
+			query.setPath(user.getOrganPath());
+			query.setId(user.getOrgId());
+			CacheUtils.invalidateValue(manager, CacheUtils.ORGAN_DATASOURCE, user.getUserId()+"");
+			CacheUtils.updateValue(manager, CacheUtils.ORGAN_DATASOURCE,
+					user.getUserId()+"", organService.getOrganTree(query, SystemConfig.DATABASE));
 		}catch(Exception e){
 			logger.debug(e.getMessage());
 			return ReturnResult.FAILUER(MessageCode.ADD_ORGAN_FAIL);
@@ -327,10 +415,16 @@ public class OrganController extends BaseLogController{
 			if(organ==null){
 				return ReturnResult.MESSAGE(MessageCode.STATUS_FAIL,"修改失败，机构名已存在");
 			}
-			/**
-			 * 日志入库
-			 */
 			addLog(request, "修改机构成功",2);
+			
+			User user=(User) request.getAttribute("User");
+			OrganQuery query=new OrganQuery();
+			query.setId(user.getOrgId());
+			query.setPath(user.getOrganPath());
+			CacheUtils.invalidateValue(manager, CacheUtils.ORGAN_DATASOURCE, user.getUserId()+"");
+			CacheUtils.updateValue(manager, CacheUtils.ORGAN_DATASOURCE,
+					user.getUserId()+"", organService.getOrganTree(query, SystemConfig.DATABASE));
+			
 		}catch(Exception e){
 			logger.debug(e.getMessage());
 			return ReturnResult.MESSAGE(MessageCode.STATUS_FAIL,MessageCode.UPDATE_ORGAN_FAIL);
@@ -354,10 +448,15 @@ public class OrganController extends BaseLogController{
 			if(i==0){
 				return ReturnResult.MESSAGE(MessageCode.STATUS_HASCHILD,MessageCode.DELETE_ORGAN_FAIL);
 			}
-			/**
-			 * 日志入库
-			 */
 			addLog(request, "删除机构成功",2);
+			
+			User user=(User) request.getAttribute("User");
+			OrganQuery query=new OrganQuery();
+			query.setPath(user.getOrganPath());
+			query.setId(user.getOrgId());
+			CacheUtils.invalidateValue(manager, CacheUtils.ORGAN_DATASOURCE, user.getUserId()+"");
+			CacheUtils.updateValue(manager, CacheUtils.ORGAN_DATASOURCE,
+					user.getUserId()+"", organService.getOrganTree(query, SystemConfig.DATABASE));
 		}catch(Exception e){
 			logger.debug(e.getMessage());
 			return ReturnResult.MESSAGE(MessageCode.STATUS_FAIL,MessageCode.DELETE_ORGAN_FAIL);

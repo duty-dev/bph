@@ -16,7 +16,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <body>
 	<div id="vertical">
-			<div id="horizontal" style="height: 100%; width: 100%;">
+			<div id="horizontal">
 				<div id="left-pane">
 					<div class="pane-content">
 						<!-- 左开始 -->
@@ -25,12 +25,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								novalidate="novalidate">
 								<h4>角色信息</h4>
 								<ul>
-									<li class="ty-input"><label for="aRoleName">角色名称:</label>
+									<li class="ty-input"><span class="ty-input-warn">*</span><label for="aRoleName">角色名称:</label>
 									<input type="text" class="k-textbox" name="addRoleName" id="addRoleName" style="width:60%" /><em class="ty-input-end"></em>
-									<li class="ty-input"><label for="aRoleNote">角色描述:</label> 
+									<li class="ty-input"><span class="ty-input-warn">*</span><label for="aRoleNote">角色描述:</label> 
 									<textarea rows="3" cols="20" class="ty-textarea" id="addRoleNote" style="width:55%;"></textarea></li>
 									<li class="ty-input actions">
-										<button type="button" data-role="button" data-sprite-css-class="k-icon k-i-tick" data-click='save'>提交</button></li>
+										<button type="button" class="ty-button ty-button-te" onclick="save(this);" data-click='save'>提交</button></li>
 								</ul>
 							</form>
 						</div>
@@ -43,7 +43,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<!-- 右开始 -->
 						<!-- 跨机构授权开始 -->
 						<div class="box-col" id="addRoleBox">
-							<h4>功能选择</h4>
+							<h4>角色权限</h4>
 							<div id="addRoleTreeview"></div>
 						</div>
 					</div>
@@ -53,8 +53,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <style scoped>
 #vertical {
-	height: 450px;
-	width: 640px;
 	margin: 0 auto;
 }
 
@@ -75,7 +73,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 label {
 	display: inline-block;
 	padding-right: 3px;
-	width: 80px;
+	width: 70px;
 }
 
 span.k-tooltip {
@@ -83,8 +81,7 @@ span.k-tooltip {
 }
 
 .demo-section {
-	height:420px;
-	width: 300px;
+	width: 290px;
 }
 
 .actions {
@@ -96,6 +93,7 @@ span.k-tooltip {
 <script>
 		var amodulesId="";
                 $(document).ready(function() {
+                $("#addRoleName").focus();
    				 $.ajax({
    						url:"<%=basePath%>role/getModuleTree.do",
    						type:"post",
@@ -127,8 +125,8 @@ span.k-tooltip {
 
                     $("#horizontal").kendoSplitter({
                         panes: [
-                            { collapsible: true, size: "320px" },
-                            { collapsible: true, size: "320px" }
+                            { collapsible: true },
+                            { collapsible: true }
                         ]
                     });
                     
@@ -150,21 +148,25 @@ span.k-tooltip {
                 });
                 
                function save(e) {
-            	   if($("#addRoleName").val()==""){
+            	   if($.trim($("#addRoleName").val())==""){
                    		$("body").popjs({"title":"提示","content":"角色名称不能为空"});
             		    return false;
                    }
-            	   if($("#addRoleNote").val()==""){
+            	   if($.trim($("#addRoleNote").val())==""){
                    		$("body").popjs({"title":"提示","content":"角色备注不能为空"});
             		    return false;
                    }
+            	   if(amodulesId==""){
+            			$("body").popjs({"title":"提示","content":"请选择功能权限"});
+            		    return false;
+            	   }
             	   addRole(); 
                 } 
                 
                 /* 添加角色 */
        	   	 function addRole(){
-       	   		var roleName=$("#addRoleName").val();
-       	   		var roleNote=$("#addRoleNote").val();
+       	   		var roleName=$.trim($("#addRoleName").val());
+       	   		var roleNote=$.trim($("#addRoleNote").val());
        	   		$.ajax({
        	   			url:"<%=basePath%>role/insertRole.do",
        	   			type:"post",

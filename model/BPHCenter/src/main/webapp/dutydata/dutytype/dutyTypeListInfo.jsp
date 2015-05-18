@@ -34,8 +34,7 @@ var DutyTyepManage = {
 		                            }
 		                        }
 							});
-						 
-					 	
+	$("#dutyTypeTreeList").html("");			 				 	
     $("#dutyTypeTreeList").kendoTreeList({
 						 dataSource: ds,
 						 

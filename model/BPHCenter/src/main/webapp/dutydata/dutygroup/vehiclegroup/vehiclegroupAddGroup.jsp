@@ -188,7 +188,7 @@ var m_vehicleGroup_Org = {
 </script>
   </head>
   
-  <body>
+  <body class="ty-body">
 		<!-- <div id="vertical" style="overflow-x:hidden;"> -->
 		<div id="winPG" style="width:560px;height:320px;" title="车辆分组管理">
 			<div style="float:left;width:250px;margin-top:10px;">

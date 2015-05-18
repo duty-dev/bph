@@ -302,10 +302,10 @@
 			AND O.NAME LIKE CONCAT('%',#{name,jdbcType=VARCHAR},'%')
 		</if>
 		<if test="organLevel == 1">
-			and O.PATH=#{path,jdbcType=VARCHAR}
+			and O.PARENT_ID=#{id,jdbcType=DECIMAL}
 		</if>
 		<if test="organLevel == 2">
-			and O.PATH LIKE CONCAT('%',#{path,jdbcType=VARCHAR},'%')
+			and O.PATH LIKE CONCAT('%',#{path,jdbcType=VARCHAR},'%') and O.ORGAN_ID !=#{id,jdbcType=DECIMAL}
 		</if>
 		<if test="organLevel==null and path != null">
 			and O.PATH LIKE CONCAT('%',#{path,jdbcType=VARCHAR},'%')
@@ -329,6 +329,18 @@
 		</if>
 	</select>
 	
+	<select id="getOrgByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" />, <include refid="Parent_Column_List" />, 
+		OT.TYPE_NAME as OTTYPE_NAME, OT.SORT_NO as OTSORT_NO
+    	from T_ORGAN O left join T_ORGAN P on O.PARENT_ID=P.ORGAN_ID 
+    	left join T_ORGAN_TYPE OT on O.ORGAN_TYPE_ID = OT.ORGAN_TYPE_ID 
+		where 1=1 
+		<if test="name != null and name != ''">
+			AND O.NAME LIKE CONCAT('%',#{name,jdbcType=VARCHAR},'%')
+		</if>
+	</select>
+	
+	
 	<select id="findCount"  resultType="Integer">
 		select count(distinct ORGAN_ID) from (
 			<include refid="find" />
@@ -340,7 +352,10 @@
 	
 	<!-- 获取全部机构信息-->
 	<select id="findOrganByQuery" parameterType="com.tianyi.bph.query.system.OrganQuery" resultMap="BaseResultMap">
-		SELECT  <include refid="Base_Column_List" />,O.NAME as text from t_organ O where 1=1
+		SELECT  O.NAME,O.SHORT_NAME,O.ORGAN_ID,O.PARENT_ID,O.ORGAN_TYPE_ID,O.PATH,O.CODE,O.SHORT_NAME as text from t_organ O where 1=1
+		<if test="path !=null">
+			and O.PATH like  CONCAT(#{path,jdbcType=VARCHAR},'%')
+		</if>
 	</select>
 	<!-- and path like CONCAT('%',#{path,jdbcType=VARCHAR},'%') -->
 	
@@ -390,4 +405,37 @@
     where ORGAN_ID = #{id,jdbcType=DECIMAL}
   </update>
   
+  <select id="getOrganListByParentId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	SELECT  <include refid="Base_Column_List" />,
+  	(  	
+  	select count(ORGAN_ID) from t_organ where  PARENT_ID  = O.ORGAN_ID
+  	) > 0 as
+		hasChild,O.SHORT_NAME as text from t_organ O		 
+  	where 1=1 
+  	<choose>
+	  	<when test="parentId ==null">
+	  		and O.Organ_ID = #{organId,jdbcType=DECIMAL}
+	  	</when>
+	  	<otherwise>
+	  		and O.PARENT_ID =#{parentId,jdbcType=DECIMAL}
+  		</otherwise>
+  	</choose>
+  </select>
+  
+  <!--  <select id="getOrganListParentIdIsNull" resultMap="BaseResultMap">
+  	SELECT  <include refid="Base_Column_List" />,
+  	(  	
+  	select count(ORGAN_ID) from t_organ where 1=1 and PARENT_ID  = O.ORGAN_ID
+  	) > 0 as
+		hasChild,O.NAME as text from t_organ O		 
+  	where  O.Organ_ID = #{organId,jdbcType=DECIMAL}
+  	<choose>
+	  	<when test="parentId ==null">
+	  		and O.Organ_ID = #{organId,jdbcType=DECIMAL}
+	  	</when>
+	  	<otherwise>
+	  		and O.PARENT_ID =#{parentId,jdbcType=DECIMAL}
+  		</otherwise>
+  	</choose>
+  </select> -->
 </mapper>

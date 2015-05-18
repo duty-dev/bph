@@ -10,7 +10,7 @@
 		<result column="parent_id" property="parentId" jdbcType="INTEGER" />
 		<result column="type" property="type" jdbcType="INTEGER" />
 		<result column="std_id" property="stdId" jdbcType="VARCHAR" />
-		<result column="expanded" property="expanded" jdbcType="BIT" />
+		<result column="hasChild" property="hasChild" jdbcType="BIT" />
 	</resultMap>
 	<sql id="Example_Where_Clause">
 		<where>
@@ -26,7 +26,8 @@
 									and ${criterion.condition} #{criterion.value}
 								</when>
 								<when test="criterion.betweenValue">
-									and ${criterion.condition} #{criterion.value} and
+									and ${criterion.condition} #{criterion.value}
+									and
 									#{criterion.secondValue}
 								</when>
 								<when test="criterion.listValue">
@@ -58,7 +59,8 @@
 									and ${criterion.condition} #{criterion.value}
 								</when>
 								<when test="criterion.betweenValue">
-									and ${criterion.condition} #{criterion.value} and
+									and ${criterion.condition} #{criterion.value}
+									and
 									#{criterion.secondValue}
 								</when>
 								<when test="criterion.listValue">
@@ -101,16 +103,20 @@
 		where id = #{id,jdbcType=INTEGER}
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-		delete from t_gb_organ
+		delete from
+		t_gb_organ
 		where id = #{id,jdbcType=INTEGER}
 	</delete>
 	<insert id="insert" parameterType="com.tianyi.bph.domain.system.GBOrgan">
-		insert into t_gb_organ (id, name, path,
+		insert into t_gb_organ (id,
+		name, path,
 		gb_platform_id, parent_id, type,
 		std_id)
-		values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+		values
+		(#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
 		#{path,jdbcType=VARCHAR},
-		#{gbPlatformId,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER},
+		#{gbPlatformId,jdbcType=INTEGER},
+		#{parentId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER},
 		#{stdId,jdbcType=VARCHAR})
 	</insert>
 	<insert id="insertSelective" parameterType="com.tianyi.bph.domain.system.GBOrgan">
@@ -194,12 +200,18 @@
 	<update id="updateByExample" parameterType="map">
 		update t_gb_organ
 		set id = #{record.id,jdbcType=INTEGER},
-		name = #{record.name,jdbcType=VARCHAR},
-		path = #{record.path,jdbcType=VARCHAR},
-		gb_platform_id = #{record.gbPlatformId,jdbcType=INTEGER},
-		parent_id = #{record.parentId,jdbcType=INTEGER},
-		type = #{record.type,jdbcType=INTEGER},
-		std_id = #{record.stdId,jdbcType=VARCHAR}
+		name =
+		#{record.name,jdbcType=VARCHAR},
+		path =
+		#{record.path,jdbcType=VARCHAR},
+		gb_platform_id =
+		#{record.gbPlatformId,jdbcType=INTEGER},
+		parent_id =
+		#{record.parentId,jdbcType=INTEGER},
+		type =
+		#{record.type,jdbcType=INTEGER},
+		std_id =
+		#{record.stdId,jdbcType=VARCHAR}
 		<if test="_parameter != null">
 			<include refid="Update_By_Example_Where_Clause" />
 		</if>
@@ -233,10 +245,35 @@
 		set name = #{name,jdbcType=VARCHAR},
 		path = #{path,jdbcType=VARCHAR},
 		gb_platform_id = #{gbPlatformId,jdbcType=INTEGER},
-		parent_id = #{parentId,jdbcType=INTEGER},
+		parent_id =
+		#{parentId,jdbcType=INTEGER},
 		type = #{type,jdbcType=INTEGER},
-		std_id = #{stdId,jdbcType=VARCHAR}
+		std_id =
+		#{stdId,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
+
+
+
+	<select id="selectByGBOrganId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		,(select count(id) from t_gb_organ where parent_id=t.id) >0 as
+		hasChild
+		from t_gb_organ t where
+		<choose>
+			<when test="gbId != null">
+				t.parent_id = #{gbId,jdbcType=INTEGER}
+			</when>
+			<otherwise>
+				t.parent_id is null
+			</otherwise>
+		</choose>
+	</select>
+	<sql id="Base_Column_List1">
+		t.id, t.name, t.path, t.gb_platform_id, t.parent_id,
+		t.type, t.std_id
+	</sql>
 
 </mapper>

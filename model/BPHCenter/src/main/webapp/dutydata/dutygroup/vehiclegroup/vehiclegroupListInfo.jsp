@@ -320,8 +320,10 @@ var VehicleGroupManage = {
 };
 
 </script>
-<div id="dtVehicleGroup" style="width:330px;float:left"></div>   
+<div class="span5">
+<div id="dtVehicleGroup" ></div>   
 <div id="page"></div>
-<div id="dtGroupMember" style="width:300px;float:left"></div> 
+</div>
+<div id="dtGroupMember" class="span5"></div> 
 <div id="dialog"></div> 
 

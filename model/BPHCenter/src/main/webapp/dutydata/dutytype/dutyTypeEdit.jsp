@@ -247,7 +247,7 @@ var DutyTypeEditManage= {
 };
 </script>
 </head>
-<body>
+<body class="ty-body">
 	<div id="vertical" style="overflow-x:hidden;">
 		<div id="horizontal" style="height: 300px; width: 590px;">
 			<div class="pane-content">
@@ -275,27 +275,26 @@ var DutyTypeEditManage= {
 						</li>
 						<li class="ty-input">
 							<label class="ty-input-label" for="cmbProperty">类型属性:</label>
+						
+							<select id="cmbProperty"   style="float:left;width:400px;height:30px;"  datmultiple="multiple" a-options="editable:false"></select>
 						</li>
-						<li class="ty-input">
-							<select id="cmbProperty"   style="width:400px;height:30px;"  datmultiple="multiple" a-options="editable:false"></select>
-						</li>
-						<li class="ty-input">
+						<li class="ty-input fit">
 							<label class="ty-input-label" for="cmbTaskType">关联任务:</label><input id="cmbTaskType" data-options="editable:false"  />
 						</li>
-						<li class="ty-input">
+						<li class="ty-input fit">
 							<label class="ty-input-label">统计显示:</label>
-							<label><input id="radioDisplayType1" name="displayType"  type="radio" value="0" ></input>人数 </label>
-						    <label><input id="radioDisplayType2" name="displayType"  type="radio" value="1"	></input>名称 </label>
+							<label class="ty-input-label"><input id="radioDisplayType1" name="displayType"  type="radio" value="0" ></input>人数 </label>
+						    <label class="ty-input-label"><input id="radioDisplayType2" name="displayType"  type="radio" value="1"	></input>名称 </label>
 						</li>
-						<li class="ty-input">
+						<li class="ty-input fit">
 							<label class="ty-input-label">着装方式:</label>
-							<label><input id="radioAttireType1" name="attireType"  type="radio" value="0" ></input>制服</label> 
-							<label><input id="radioAttireType2" name="attireType"  type="radio" value="1" ></input>便衣</label>
+							<label class="ty-input-label"><input id="radioAttireType1" name="attireType"  type="radio" value="0" ></input>制服</label> 
+							<label class="ty-input-label"><input id="radioAttireType2" name="attireType"  type="radio" value="1" ></input>便衣</label>
 						</li>
-						<li class="ty-input">
+						<li class="ty-input fit">
 							<label class="ty-input-label">着装方式:</label>
-							<label><input id="radioArmamentType1" name="armamentType"  type="radio" value="0" ></input>非武装</label> 
-							<label><input id="radioArmamentType2" name="armamentType"  type="radio" value="1" ></input>武装</label>
+							<label class="ty-input-label"><input id="radioArmamentType1" name="armamentType"  type="radio" value="0" ></input>非武装</label> 
+							<label class="ty-input-label"><input id="radioArmamentType2" name="armamentType"  type="radio" value="1" ></input>武装</label>
 						</li> 
 					</ul>
 					<p style="float:left;width:100%;margin-top:10px;">

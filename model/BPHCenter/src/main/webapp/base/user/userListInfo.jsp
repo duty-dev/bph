@@ -19,6 +19,7 @@
                				searchType:searchType,
                				organPath:organPath,
                				expandeds:expandeds,
+               				selectName:$("#selectName").val(),
                				sessionId:$.trim($("#token").val()),
                				pageNo:pageNo,
             				pageSize:10
@@ -35,6 +36,7 @@
                	                        },
                	                     height: 792,
                                      sortable: true,
+                                     resizable: true,
                                      selectable: "multiple",
                	                        columns: [{
                	                        	field: "userId",
@@ -67,7 +69,12 @@
                                          loadTree(userId);
                                      }
                	                    });
-               						
+               						//添加双击事件
+               						var myGrid = $("#grid").data("kendoGrid");
+               						myGrid.element.on("dblclick","tbody>tr","dblclick",function(e){
+               							var id = $(this).find("td").first().text();
+               							editUser(id);
+               						});
                						$("#grid .k-grid-content").mCustomScrollbar( {scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
                						var pg = pagination(pageNo,total,'loadData',10);
                	                	$("#page").html(pg);
@@ -78,10 +85,16 @@
                 }
                 loadData(1);
                 function search(){
+                	var flag = checkForms($("#userName").get(0));
+                	if(!flag)return;
                 	loadData(1);
         		}
                 //删除用户
                 function deleteUser(userId){
+                	if(userId==1){
+              		  $("body").popjs({"title":"提示","content":"初始系统管理员不能删除！"});
+              		   return false;
+              		   } 
                 	//var statu = confirm("确定要删除该用户?");
                 	$("body").tyWindow({"content":"确定要删除该用户?","center":true,"ok":true,"okCallback":function(){
                 		$.ajax({
@@ -112,8 +125,8 @@ function addUser(){
 	var sessionId = $.trim($("#token").val());
 	$("#dialog").tyWindow({
 		width: "660px",
-		height: "660px",
-	    title: "帐号管理",
+		height: "630px",
+	    title: "新增帐号",
 	    position: {
 	        top: "100px"
 	      },
@@ -129,7 +142,7 @@ function editUser(userId){
 	var sessionId = $.trim($("#token").val());
 	$("#dialog").tyWindow({
 		width: "660px",
-		height: "660px",
+		height: "630px",
 	    title: "帐号管理",
 	    position: {
 	        top: "100px"
@@ -185,6 +198,7 @@ function onClose(e) {
           				});
 					}
 		  		}); --%>
+		  		selectClass();//追加样式
 			}
 		});
 }

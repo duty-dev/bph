@@ -48,7 +48,7 @@
 
 						<div class="row-fluid">
 							<!----信息显示区---->
-							<div class="span8 box">
+							<div class="span12 box">
 								<!----表格---->
 								<%@ include file="policegroupListInfo.jsp"%>
 							</div>

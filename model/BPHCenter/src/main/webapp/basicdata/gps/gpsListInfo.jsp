@@ -45,7 +45,8 @@ var GpsManage = {
 						"gps_Query" : JSON.stringify(bph_gps_query),
 						"expandeds"		:expandeds,
 						"organId":$("#organId").val(),
-						"organPath":$("#organPath").val()
+						"organPath":$("#organPath").val(),
+						"selectName":$("#selectName").val()
 					},
 					dataType : "json",
 					success : function(req) {
@@ -54,6 +55,7 @@ var GpsManage = {
 								var udata = req.data;
                						var total = req.totalRows;
                						$("#gridListTotal").html(total+"台");
+               						$("#gpsgrid").empty();
 								$("#gpsgrid").kendoGrid({
 							dataSource : {
 								data : udata

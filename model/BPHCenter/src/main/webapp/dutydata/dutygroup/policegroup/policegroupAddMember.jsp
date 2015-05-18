@@ -196,7 +196,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</script>
   </head>
   
-  <body>
+  <body class="ty-body">
 	<!-- <div id="vertical" style="overflow-x:hidden;"> -->
 		<div id="winPG" style="width:660px;height:320px;" title="警员分组成员管理">
 			<div style="width:650px;margin-top:10px;">

@@ -304,9 +304,11 @@ var GpsgroupManage = {
 	}
 };
 
-</script> 
-<div id="dtGpsGroup" style="width:330px;float:left"></div>    
-<div id="page"></div> 
-<div id="dtGroupMember" style="width:300px;float:left"></div> 
+</script>
+<div class="span5">
+<div id="dtGpsGroup"></div>    
+<div id="page"></div>
+</div> 
+<div id="dtGroupMember" class="span5"></div> 
 <div id="dialog"></div> 
 

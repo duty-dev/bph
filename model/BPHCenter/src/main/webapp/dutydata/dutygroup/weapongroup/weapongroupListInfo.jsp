@@ -305,8 +305,10 @@ var WeapongroupManage = {
 };
 
 </script>
-<div id="dtWeaponGroup" style="width:330px"></div>   
+<div class="span5">
+<div id="dtWeaponGroup"></div>   
 <div id="page"></div>
-<div id="dtGroupMember" style="width:300px"></div>  
+</div>
+<div id="dtGroupMember" class="span5"></div>  
 <div id="dialog"></div> 
 

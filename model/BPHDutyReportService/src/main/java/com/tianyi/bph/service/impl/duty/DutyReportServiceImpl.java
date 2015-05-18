@@ -45,7 +45,6 @@ public class DutyReportServiceImpl implements DutyReportService{
 		map.put("ymd", criteria.getYmd());
 		map.put("beginTime", criteria.getBeginTime());
 		map.put("endTime", criteria.getEndTime());
-		
 		if(criteria.getTaskPropertyIds().size()>0){
 			map.put("taskPropertyIds", criteria.getTaskPropertyIds());
 		}

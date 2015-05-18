@@ -13,10 +13,13 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import net.sf.ehcache.CacheManager;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,10 +33,12 @@ import com.tianyi.bph.common.MessageCode;
 import com.tianyi.bph.common.PageReturn;
 import com.tianyi.bph.common.ReturnResult;
 import com.tianyi.bph.common.SystemConfig; 
+import com.tianyi.bph.common.ehcache.CacheUtils;
 import com.tianyi.bph.domain.system.Organ;
 import com.tianyi.bph.domain.system.Role;
 import com.tianyi.bph.domain.system.User;
 import com.tianyi.bph.query.basicdata.PoliceJJVM;
+import com.tianyi.bph.query.system.OrganQuery;
 import com.tianyi.bph.query.system.RoleQuery;
 import com.tianyi.bph.query.system.UserQuery;
 import com.tianyi.bph.rest.CommonUtils;
@@ -67,6 +72,12 @@ public class UserController extends BaseLogController {
     @Autowired RoleService roleService;
     @Autowired ModuleService moduleService;
     @Autowired UserOtherOrganService userOtherService;
+    private CacheManager manager;
+
+	@Autowired
+	public void setManager(@Qualifier("ehCacheManager") CacheManager manager) {
+		this.manager = manager;
+	}
    	
 	/**
 	 * web用户登录
@@ -96,6 +107,11 @@ public class UserController extends BaseLogController {
 			//CacheUtils.updateValue(manager, CacheUtils.USER_BASE_DATA, request.getSession().getId(), session);
 			//添加日志记录
 			//logService.insert(CommonUtils.getRemoteIp(request),user.getUserId()+"",user.getUserName(),"用户登录系统成功",1);
+			
+			OrganQuery query =new OrganQuery();
+			query.setId(user.getOrgId());
+			query.setPath(user.getOrganPath());
+			CacheUtils.updateValue(manager, CacheUtils.ORGAN_DATASOURCE, user.getUserId()+"", organService.getOrganTree(query, SystemConfig.DATABASE));
 			
 			getModule(user,request);
 			map.put("msg","登录成功");
@@ -178,7 +194,7 @@ public class UserController extends BaseLogController {
 
 		logService.insert(CommonUtils.getRemoteIp(request),user.getUserId()+"",
 				user.getUserName(),"退出系统成功",1);
-		
+		CacheUtils.invalidateValue(manager, CacheUtils.ORGAN_DATASOURCE, user.getUserId()+"");
 		session.invalidate();
 		//CacheUtils.invalidateValue(manager, CacheUtils.USER_BASE_DATA, sessionId);
 		return mv;

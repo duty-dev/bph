@@ -14,7 +14,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <%@ include file="../../emulateIE.jsp" %>
 </head>
 
-<body class="nopd">
+<body class="ty-body">
 <div id="vertical">
 			<div id="horizontal" style="height: 450px; width: 590px;">
 				<div id="left-pane">
@@ -28,29 +28,29 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<li><label for="loginName">所属机构:</label> 
 										<input type="hidden" value="${organ.id}" id="orgId" name="orgId" />
 										<input type="hidden" id="policeId" name="policeId"/>
+										<input type="hidden" id="policeName" name="policeName"/>
+										<input type="hidden" id="rePoliceId" name="rePoliceId"/>
 										${organ.name}</li>
-									<li class="ty-input"><label for="loginName">帐号:</label>
-										<input type="text" class="k-textbox" name="loginName" id="loginName" style="width:75%;"/><em class="ty-input-end"></em></li>
-									<li class="ty-input"><label for="addUserName">姓名:</label> 
-<<<<<<< .mine
-										<input type="text" class="k-textbox" name="addUserName" id="addUserName" style="width:55%;" /><em class="ty-input-end"></em>
-=======
-										<input type="text" class="k-textbox" name="addUserName" id="addUserName" style="width:55%;"/><em class="ty-input-end"></em>
->>>>>>> .r2103
-										<button type="button" class="k-button" style="margin-left:10px;" onclick="loadPolice();">选择</button></li>
-									<li class="ty-input"><label for="password">密码:</label> 
-										<input type="text" class="k-textbox" name="password" id="password" style="width:75%;"/><em class="ty-input-end"></em></li>
-									<li class="ty-input"><label for="userOtherOrgans">跨机构授权:</label>
-										<input type="text" class="k-textbox" name="userOtherOrgans" id="userOtherOrgans" style="width:36%;" /><em class="ty-input-end"></em>
-										<button type="button" data-role="button" style="margin-left:10px;" onclick="loadOrganTree();">选择</button></li>
-									<li class="ty-input accept"><div style="width:100%"><div style="float:left;width:15%;"><label for="otherOgans">角色:</label></div><div id="selectRoles" style="float:left;width:85%;"> 
+									<li class="ty-input"><span class="ty-input-warn">*</span><label for="loginName">帐号:</label>
+										<input type="text" class="k-textbox" name="loginName" id="loginName" style="width:73%;"/><em class="ty-input-end"></em>
+										</li>
+									<li class="ty-input"><span class="ty-input-warn">*</span><label for="userName">姓名:</label> 
+										<input type="text" class="k-textbox" name="userName" id="userName" style="width:55%;" readonly/><em class="ty-input-end"></em>
+										<button type="button" class="k-button" style="margin-left:10px;" onclick="loadPolice();">选择</button>
+										</li>
+									<li class="ty-input"><span class="ty-input-warn">*</span><label for="password">密码:</label> 
+										 <input type="password" class="k-textbox" name="password" id="password" style="width:73%;"/><em class="ty-input-end"></em>
+										 </li>
+									<!-- <li class="ty-input"><label for="userOtherOrgans">跨机构授权:</label>
+										<input type="text" class="k-textbox" name="userOtherOrgans" id="userOtherOrgans" style="width:36%;" readonly/><em class="ty-input-end"></em>
+										<button type="button" data-role="button" style="margin-left:10px;" onclick="loadOrganTree();">选择</button></li>-->
+									<li class="ty-input accept ty-full"><span class="ty-input-warn">*</span> <div style="width:100%"><div style="float:left;"><label for="otherOgans">角色:</label></div><div id="selectRoles" style="float:left;width:78%;">
 									<c:forEach var="item" items="${roleList}">
-											<input type="checkbox" id="rolesId" name="rolesId"
-												value="${item.id}" onclick="refreshRole();"/>${item.name}
+											<p class='ty-input-p'><input type="checkbox" id="rolesId" name="rolesId"
+												value="${item.id}" onclick="refreshRole();"/>${item.name}</p>
                         			</c:forEach></div></div></li>
 									<li class="ty-input actions">
-										<button type="button" data-role="button"
-											data-sprite-css-class="k-icon k-i-tick" data-click='save'>提交</button>
+										<button type="button" class="ty-button ty-button-te" onclick="save(this);" data-click='save'>提交</button>
 									</li>
 								</ul>
 							</form>
@@ -58,6 +58,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 						<script type="text/javascript">
                 $(function () {
+                	$("#loginName").focus();
                     var container = $("#employeeForm");
                     kendo.init(container);
                     container.kendoValidator({
@@ -75,17 +76,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 });
 
                 function save(e) {
-<<<<<<< .mine
-                    //var validator = $("#employeeForm").data("kendoValidator");
-                   // if (validator.validate()) {
-                	   if($("#addUserName").val()==""){
-                		  $("body").popjs({"title":"提示","content":"登录名不能为空！"});
-=======
                 	   if($.trim($("#loginName").val())==""){
                 		  $("body").popjs({"title":"提示","content":"帐号不能为空！"});
->>>>>>> .r2103
                 		   return false;
                 		   } 
+                	   if($.trim($("#userName").val())==""){
+                 		  $("body").popjs({"title":"提示","content":"姓名不能为空！"});
+                 		   return false;
+                 		   } 
                 	   if($.trim($("#password").val())==""){
                 		   $("body").popjs({"title":"提示","content":"密码不能为空！"});
                 		   return false;
@@ -105,6 +103,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 }
                 
                 function userSave(){
+                	var policeName = $.trim($("#policeName").val());
+                	var userName = $.trim($("#userName").val());
+                	var policeId = $.trim($("#policeId").val());
+                	var rePoliceId = $.trim($("#rePoliceId").val()); 
+                		if(policeName != userName && policeId == rePoliceId){                   		               	    	
+                	    	$("#policeId").val(null);
+                	    }
             		var r = document.getElementsByName("rolesId");
             		var rolesId = "";
             		   for (i= 0 ;i < r.length; i++){
@@ -122,7 +127,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               			dataType:"json",
               			data:{
               				orgId:$("#orgId").val(),
-              				userName:$("#addUserName").val(),
+              				userName:$("#userName").val(),
               				loginName:$("#loginName").val(),
               				password:$("#password").val(),
               				policeId:$("#policeId").val(),
@@ -144,6 +149,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               	}
                 
                 function refreshRole(){
+                	$("#zhegaiceng").css("display", "");
                 	var r = document.getElementsByName("rolesId");
             		var rolesId = "";
             		   for (i= 0 ;i < r.length; i++){
@@ -208,6 +214,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 
               //点击每行单元格在右边显示功能信息
                 function loadOrganTree(){
+                	$("#zhegaiceng").css("display", "none");
                 	var zNodes;
        			 var json_data;
        			 var currentText;
@@ -271,6 +278,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	        }  
                 
                 function loadPolice(){
+                	$("#zhegaiceng").css("display", "none"); 
+                	
 					$("#treeview").remove();
 					$("#addRoleTreeview").remove();
 					$("#policeview").remove();
@@ -279,14 +288,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					$("#policeTitle").remove();
     				$("#policeBox").append("<h4 id='policeTitle'>警员绑定</h4><div id='policeview'>"
     						+"<c:forEach var='item' items='${policeList}'>"
-    						+"<input name='policeName' id='policeName' type='radio' value='${item.id}' onclick='selectPolice(\"${item.id}\",\"${item.name}\")'/>${item.name}</br>"
+    						+"<input name='policeName' id='policeName' type='radio' value='${item.id}' onclick='selectPolice(\"${item.id}\",\"${item.name}\")'/>${item.name}<br/>"
     						+"</c:forEach>"
     						+"</div>");
                 }
                 
                 function selectPolice(id,name){
-                	$("#addUserName").val(name);
+                	$("#userName").val(name);
+                	$("#policeName").val(name);
                 	$("#policeId").val(id);
+                	$("#rePoliceId").val(id);
                 }
 
             </script>
@@ -319,7 +330,7 @@ span.k-tooltip {
 }
 
 .demo-section {
-	width: 290px;
+	width: 280px;
 }
 
 .actions {
@@ -413,10 +424,11 @@ span.k-tooltip {
                 	
                     $("#horizontal").kendoSplitter({
                         panes: [
-                            { collapsible: true, size: "320px" },
-                            { collapsible: true, size: "320px" }
+                            { collapsible: true },
+                            { collapsible: true }
                         ]
                     });
+                    
                 });
             </script>
 

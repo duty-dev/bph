@@ -53,6 +53,7 @@ public interface OrganService {
 	 * @return
 	 */
 	public Organ getOrganTree(OrganQuery query,String database);
+	//public Organ getOrganTree(Integer organId,String name,String database);
 	/**
 	 * 获取跨机构功能树
 	 * @param query
@@ -67,4 +68,6 @@ public interface OrganService {
 	
 	List<Organ> getOrgansByName(OrganQuery organQuery);
 
+	//List<Organ> getOrganListByParentId(Integer organId,Integer parentId);
+	List<Organ> getOrganListByParentId(OrganQuery organQuery);
 }

@@ -1,4 +1,22 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
+<%-- <%
+Cookie cname=new Cookie("c_name","55555");//设置cookie的键键c_name
+cname.setMaxAge(0);//设置cookie的有效期.
+//response.setCharacterEncoding("utf-8");
+response.addCookie(cname);//设置cookie,将cookie存放到respones里面
+%>
+<%
+//读取cookie
+Cookie cookie[]=request.getCookies();
+if(cookie!=null){
+	for(int i=0;i<cookie.length;i++){
+		  Cookie c=cookie[i];	
+		  //out.println(c.getName());
+		  String name=c.getName();
+		  out.println(name);
+	}
+} 
+%> --%>
 <div id="navigationLeft">
         <div class="line1-mid box">
           <div class="t1-start"></div>
@@ -13,6 +31,7 @@
             	<input id="searchOrganName" value="${requestScope.searchOrganName}" placeholder="等待输入..." class="k-textbox ty-left-search"/>
             </div>
             <button class="ty-left-search-btn" onClick="queryOrgan()">搜索</button><br><br>
+            <input type="hidden" value="${requestScope.selectName}" style="width:80px;height:50px;" id="selectName">
             </div>
           </div>
         </div>
@@ -37,50 +56,45 @@
 			 var barElement;//当前对象
 			 var parentId;
 			 var k=0;
+			 $(function() {
+					 if($("#searchOrganName").val()==""){
+						 loadOrganTreeList();
+					 }else{
+						 queryOrgan();
+					 }
+				});
 			 
-			 $(document).ready(function () {
-				 $.ajax({
-						url:"<%=basePath%>web/organx/tree.do",
-						type:"post",
-						data:{
-							searchName:$("#searchOrganName").val(),
-							sessionId:$("#token").val(),
-							expandeds:$("#expandeds").val(),
-							random:Math.random()
+			 function loadOrganTreeList(){
+				 var data = new kendo.data.HierarchicalDataSource({
+				        transport: {
+							read: {
+								url: "<%=basePath%>web/organx/lazyOrganList.do",
+								type : "post",
+								data : {
+									searchName:$("#searchOrganName").val(),
+									sessionId:$("#token").val(),
+									random : Math.random()
+								},
+								dataType: "json"
+							}
 						},
-						dataType:"json",
-						success:function(rsp){
-							json_data =JSON.stringify(rsp.data);
-							
-							 treeview=$("#treeview").kendoTreeView({
-								select: onSelect,//点击触发事件
-							    dataSource: [eval('(' + json_data + ')')]
-							}).data("kendoTreeView");
-	        		  		<%-- $.ajax({
-	        		  			url:"<%=basePath%>web/organx/addOrganTreeElement.do",
-	    						type:"post",
-	    						data:{
-	    							sessionId:$("#token").val(),
-	    							expandeds:$("#expandeds").val(),
-	    							random:Math.random()
-	    						},
-	    						dataType:"json",
-	    						success:function(rsp){
-	    							$(rsp.data).each(function(){
-	    								treeview.append(eval('(' + JSON.stringify(this) + ')'), selectedNode);
-	                   				});
-	    						}
-	        		  		}); --%>
-	        		  		test();
-	        		  		selectClass();
+						schema: {
+				 			model: {
+								hasChildren:"hasChild",
+				           	}
 						}
 					});
-			 });
-			
-			 function  selectClass(){
-				 treeView = $("#treeview").data("kendoTreeView")
-				 var firstItem = treeview.element.find(".k-item:first");
-				 
+					 
+				 	$("#treeview").remove();
+					$("#box").append("<div id='treeview'></div>");
+					$("#treeview").kendoTreeView({
+						select: onSelect,//点击触发事件
+						dataSource: data
+					});
+					 //test();
+			 }
+			/*  function  selectClass(){
+				 treeView = $("#treeview").data("kendoTreeView");
 				 var barDataItem;
 				 selectNode=$("#organId").val();
 				 if(selectNode !=""){
@@ -88,9 +102,9 @@
 				 }else{
 					 barDataItem =treeView.dataSource.get(parentId);//暂时用1
 				 }
-				 barElement = treeview.findByUid(barDataItem.uid);
+				 barElement = treeView.findByUid(barDataItem.uid);
 				 $(barElement).find("div .k-in").first().addClass("k-state-selected");
-			 }
+			 } */
 			function test(){
 				 var expandedNodes = [],treeView = $("#treeview").data("kendoTreeView");
 		            getExpanded(treeView.dataSource.view(),expandedNodes);
@@ -113,47 +127,72 @@
 			
 			 //查询通过name模糊查询
 		        function queryOrgan(){
-		        	$.ajax({
-						url:"<%=basePath%>web/organx/tree.do",
-						type:"post",
-						data:{
-							searchName:$("#searchOrganName").val(),
-							expandeds:expandeds,
-							sessionId:$("#token").val(),
-							random:Math.random()
-						},
-						dataType:"json",
-						success:function(rsp){
-							json_data =JSON.stringify(rsp.data);
-							
-							$("#treeview").remove();
-							$("#box").append("<div id='treeview'></div>");
-							treeview=$("#treeview").kendoTreeView({
-								select: onSelect,
-							    dataSource: [eval('(' + json_data + ')')]
-							}).data("kendoTreeView");
-							
-							 /* var selectedNode = treeview.select();
-
-		                        if (selectedNode.length == 0) {
-		                            selectedNode = null;
-		                        } */
-		        		  		<%-- $.ajax({
-		        		  			url:"<%=basePath%>web/organx/addOrganTreeElement.do",
-		    						type:"post",
-		    						data:{
-		    							name:$("#searchOrganName").val(),
-		    							random:Math.random()
-		    						},
-		    						dataType:"json",
-		    						success:function(rsp){
-		    							$(rsp.data).each(function(){
-		    								treeview.append(eval('(' + JSON.stringify(this) + ')'), selectedNode);
-		                   				});
-		    						}
-		        		  		}); --%>
-						}
-		        	});
+				 if($("#searchOrganName").val()==""){
+					 loadOrganTreeList();
+					 test();
+				 }else{
+					 $.ajax({
+							url:"<%=basePath%>web/organx/searchOrganListByName.do",
+							type:"post",
+							data:{
+								searchName:$("#searchOrganName").val(),
+								expandeds:expandeds,
+								sessionId:$("#token").val(),
+								random:Math.random()
+							},
+							dataType:"json",
+							success:function(rsp){
+								//json_data =JSON.stringify(rsp.data);
+								json_data =rsp.data;
+								searchOrgAction();
+							}
+			        	});
+				 	}
+		        }
+			 
+		        function searchOrgAction() {
+		        	var name = $.trim($('#searchOrganName').val());
+		        	var a = findOrgs(name);
+		        	$("#treeview").remove();
+					$("#box").append("<div id='treeview'></div>");
+					
+					treeview=$("#treeview").kendoTreeView({
+						select: onSelect,
+					    dataSource: a
+					}).data("kendoTreeView");
+		        }
+		        function findOrgs(name) {
+		        	var a = [];
+		        	if (json_data != null) {
+		        		$(json_data).each(function(index, value) {
+		        			var o = findOrgTree(value, name);
+		        			if (o != null) {
+		        				a.push(o);
+		        			}
+		        		});
+		        	}
+		        	return a;
+		        }
+		        function findOrgTree(org, name) {
+		        	var ls = [];
+		        	if (org.items != null) {
+		        		$(org.items).each(function(index, value) {
+		        			var o = findOrgTree(value, name);
+		        			if (o != null) {
+		        				ls.push(o);
+		        			}
+		        		});
+		        	}
+		        	org.items = ls;
+		        	if (name =="" || org.name.indexOf(name) >= 0 || ls.length > 0) {
+		        		org.expanded=true;
+		        		if($("#selectName").val() != "" && $("#selectName").val()==org.name){
+		        			org.selected=true;
+		        		}
+		        		return org;
+		        	} else {
+		        		return null;
+		        	}
 		        }
 			 //单击触发事件
 		 	 function onSelect(e) {
@@ -168,7 +207,8 @@
  	    		$("#organPath").val(data.path);
  	    		test();
  	    		$("#expandeds").val(expandeds);
- 	    		loadData(1);
+ 	    		$("#selectName").val(data.name);
+ 	    		loadData(1); 
 			 }
 		 // function that gathers IDs of checked nodes
 	        function checkedNodeIds(nodes, checkedNodes) {

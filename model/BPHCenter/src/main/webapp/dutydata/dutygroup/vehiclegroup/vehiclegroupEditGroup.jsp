@@ -208,7 +208,7 @@ var VehicleGroupManage = {
 </script>
   </head>
   
-  <body>
+  <body class="ty-body">
 		<div id="winPG" style="width:560px;height:320px;" title="车辆分组管理">
 			<div style="float:left;width:250px;margin-top:10px;">
 				<!-- 左开始 -->

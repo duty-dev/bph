@@ -3,6 +3,7 @@ package com.tianyi.bph.service.impl.system;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.googlecode.ehcache.annotations.Cacheable;
 import com.tianyi.bph.common.Constants;
 import com.tianyi.bph.common.MessageCode;
 import com.tianyi.bph.common.Pager;
@@ -18,9 +21,12 @@ import com.tianyi.bph.common.ReturnResult;
 import com.tianyi.bph.common.annotation.MQDataInterceptor;
 import com.tianyi.bph.dao.system.OrganDAO;
 import com.tianyi.bph.dao.system.UserOtherOrganDAO;
+import com.tianyi.bph.domain.system.GBOrgan;
 import com.tianyi.bph.domain.system.Organ;
 import com.tianyi.bph.exception.RestException;
+import com.tianyi.bph.query.system.GBOrganExample;
 import com.tianyi.bph.query.system.OrganQuery;
+import com.tianyi.bph.service.impl.system.GBPlatFormServiceImpl.Tree;
 import com.tianyi.bph.service.system.OrganService;
 
 
@@ -30,7 +36,9 @@ public class OrganServiceImpl implements OrganService{
 	private static final Logger log=LoggerFactory.getLogger(OrganServiceImpl.class);
 	public  static  Map<String,List<String>> parentMap=new HashMap<String,List<String>>();
 	public 	static Map<String,List<String>> expandedMap=new HashMap<String,List<String>>();
+	public 	static Map<String,List<Organ>> nameOrganMap=new HashMap<String,List<Organ>>();
 	private static final String cacheName="ORGAN_BASE_DATA";
+	private static int i=0;
 	
 	@Autowired OrganDAO organDao;
 	@Autowired UserOtherOrganDAO userOtherOrganDao;
@@ -175,19 +183,19 @@ public class OrganServiceImpl implements OrganService{
 	 * @param database
 	 * @return
 	 */
-	public Organ getOrganTree(OrganQuery query,String database){
+	/*public Organ getOrganTree(OrganQuery query,String database){
 		Organ organ=null;
 		List<Organ> organList=null;
 		List<String> expandedList=null;
 		//List<String> orgPList=new ArrayList<String>();//存储当前机构的上级机构
-		/*List<Organ> parentList = organDao.findOrganById(query);//通过id获取上级机构集合
+		List<Organ> parentList = organDao.findOrganById(query);//通过id获取上级机构集合
 		for (Organ organV : parentList) {
 			orgPList.add(organV.getId()+"");
-		}*/
+		}
 		
-		/**
+		*//**
 		 * 存储展开节点的节点集合
-		 */
+		 *//*
 		if(!StringUtils.isEmpty(query.getExpandeds())){
 			String[] strList=query.getExpandeds().split(",");
 			expandedList=Arrays.asList(strList);
@@ -196,7 +204,7 @@ public class OrganServiceImpl implements OrganService{
 			expandedMap.clear();
 		}
 		
-			/*//根据用户获取跨机构ids
+			//根据用户获取跨机构ids
 			List<String> jumpList=userOtherOrganDao.getOrganIdByUserId(query.getUserId());
 			for (String string : orgPList) {
 				if(jumpList.contains(string)){//跨越机构中有当前机构的上级机构，则直接跳过。用当前机构去遍历树
@@ -207,7 +215,7 @@ public class OrganServiceImpl implements OrganService{
 				}else{
 					parentMap.clear();
 				}
-			}*/
+			}
 			if(organ == null){//跨机构中没有上级机构，则用当前机构作为根节点
 			  organ=organDao.selectByPrimaryKey(query.getId());//这里确立的是根节点;
 		    }
@@ -222,7 +230,7 @@ public class OrganServiceImpl implements OrganService{
 				if(list.size() ==0){
 					return null;
 				}
-				/*for (Organ organVV : list) {
+				for (Organ organVV : list) {
 					nameList.add(organVV.getId()+"");
 				}
 				boolean flag=false;
@@ -234,7 +242,7 @@ public class OrganServiceImpl implements OrganService{
 				}
 				if(!flag){
 					return null;
-				}*/
+				}
 				organList=new ArrayList<Organ>();
 				for(Organ o:list){//遍历通过name查询出来的list。然后添加到organlist中，遍历去重
 					query.setId(o.getId());
@@ -253,7 +261,66 @@ public class OrganServiceImpl implements OrganService{
 			initializeOrgan(organ, organList);
 		return organ;
 	}
-	
+	*/
+	public Organ getOrganTree(OrganQuery query,String database){
+		List<Organ> list=organDao.findOrganByQuery(query);
+		if (list != null && !list.isEmpty()) {
+			return new Tree(list).buildTree(query.getId());
+		}
+		return null;
+	}
+	class Tree {
+		private Iterator<Organ> it;
+		final private List<Organ> nodes;
+
+		public Tree(List<Organ> nodes) {
+			this.nodes = nodes;
+		}
+
+		//@Cacheable(cacheName = cacheName)
+		public Organ buildTree(Integer parentId) {
+			
+			Organ parent = null;
+			it = nodes.iterator();
+			while (it.hasNext()) {
+				Organ node = it.next();
+				if (node.getId() == parentId) {
+					parent = node;
+					parent.setExpanded(true);
+					it.remove();
+					build(node);
+				}
+			}
+			return parent;
+		}
+
+		private void build(Organ node) {
+			List<Organ> children = getChildren(node);
+			if (children != null && !children.isEmpty()) {
+				for (Organ child : children) {
+					build(child);
+				}
+			}
+		}
+
+		private List<Organ> getChildren(Organ node) {
+			Integer id = node.getId();
+			it = nodes.iterator();
+			boolean exp = false;
+			while (it.hasNext()) {
+				Organ child = it.next();
+				if (id.equals(child.getParentId())) {
+					if (child.isChecked()) {
+						exp = true;
+					}
+					node.addChild(child);
+					it.remove();
+				}
+			}
+			node.setExpanded(exp);
+			return node.getItems();
+		}
+	}
 	/**
 	 * 获取跨机构树
 	 * @param query
@@ -318,6 +385,34 @@ public class OrganServiceImpl implements OrganService{
 	public List<Organ> getOrgansByName(OrganQuery organQuery) {
 		// TODO Auto-generated method stub
 		return organDao.getOrgansByName(organQuery);
+	}
+	@Override
+	public List<Organ> getOrganListByParentId(OrganQuery query) {
+		// TODO Auto-generated method stub
+		List<String> expandedList=null;
+		if(!StringUtils.isEmpty(query.getExpandeds())){//获取展开集合
+			String[] strList=query.getExpandeds().split(",");
+			expandedList=Arrays.asList(strList);
+			expandedMap.put("expandedList", expandedList);
+		}else{
+			expandedMap.clear();
+		}
+		List<Organ> organList=organDao.getOrganListByParentId(query.getId(),query.getParentId());
+		for (Organ organ : organList) {
+			/*if(organ.getId()==query.getId()){
+				organ.setExpanded(true);
+			}*/
+			if(expandedMap.get("expandedList") != null && 
+					expandedMap.get("expandedList").contains(organ.getId()+"")){
+				organ.setExpanded(true);
+			}
+			if(query.getCurrentOrganId() != null &&!StringUtils.isEmpty(query.getCurrentOrganId()+"")){
+				if(organ.getId()==query.getCurrentOrganId()){
+					organ.setSelected(true);
+				}
+			}
+		}
+		return organList;
 	}
 
 }

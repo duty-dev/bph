@@ -14,10 +14,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <%@ include file="../../emulateIE.jsp" %>
 </head>
 
-<body>
+<body class="ty-body">
 	<div id="vertical">
-			<div id="horizontal" style="height: 105%; width: 100%;">
-				<div id="left-pane" style="height: 102%; width: 100%;">
+			<div id="horizontal" style="height:310px;">
+				<div id="left-pane">
 					<div class="pane-content">
 						<!-- 左开始 -->
 						<div class="demo-section k-header">
@@ -26,16 +26,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<h4>机构信息</h4>
 								<ul>
 									<input id="id" value="${organ.id}" type="hidden"/>
-									<li><label for="eOrganName">机构名称:</label> <input
+									<li><span class="ty-input-warn ml150">*</span><label for="eOrganName">机构名称:</label> <input
 										type="text" class="k-textbox" name="editOrganName"
 										id="editOrganName"  value="${organ.name}"/>
-									<li><label for="eOrganCode">机构编码:</label> <input
+									</li>
+									<li><span class="ty-input-warn ml150">*</span><label for="eOrganCode">机构编码:</label> <input
 										type="text" class="k-textbox" name="editOrganCode"
-										id="editOrganCode"  value="${organ.code}"/></li>
-									<li><label for="eShortName">机构简称:</label> <input
+										id="editOrganCode"  value="${organ.code}"/>
+									</li>
+									<li><span class="ty-input-warn ml150">*</span><label for="eShortName">机构简称:</label> <input
 										type="text" class="k-textbox" name="editShortName"
-										id="editShortName"  value="${organ.shortName}"/></li>
-									<li class="options"><label for="aOrganType">机构类型:</label>
+										id="editShortName"  value="${organ.shortName}"/>
+									</li>
+									<li class="options"><span class="ty-input-warn ml150">*</span><label for="aOrganType">机构类型:</label>
 										<input id="typeCode" value="${organ.orgTypeCode}" type="hidden"/>
 										<select  id="editOrganType" name="editOrganType">
 								    		<option value="1">市局</option>
@@ -43,18 +46,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								    		<option value="3">市局直属</option>
 								    		<option value="4">分局机关</option>
 								    		<option value="5">派出所</option>
-	                					</select></li>
-									<li><label for="eParentName">上级机构:</label> 
+	                					</select>
+	                				</li>
+									<li><span class="ty-input-warn ml150"></span><label for="eParentName">上级机构:</label> 
 										<input type="hidden" id="editParentId" value="${organ.parentId}"/>
 										<input
 										type="text" class="k-textbox" name="editParentName"
 										id="editParentName" value="${organ.parentName}" disabled="disabled"/></li>
-									<li><label for="eOrganNote">机构备注:</label> 
+									<li><span class="ty-input-warn ml150" style="margin-top:18px;">*</span><label for="eOrganNote">机构备注:</label> 
 										<textarea class="ty-edit-txtarea" id="editOrganNote" name="editOrganNote">${organ.note}</textarea>
 										</li>
 									<li class="actions">
-										<button type="button" data-role="button"
-											data-sprite-css-class="k-icon k-i-tick" data-click='edit'>修改</button></li>
+										<button type="button" class="ty-button ty-button-te" onclick="edit(this);" data-click='edit'>修改</button></li>
 								</ul>
 							</form>
 						</div>
@@ -66,14 +69,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <style scoped>
 #vertical {
-	height: 450px;
-	width: 640px;
+
 	margin: 0 auto;
 }
 
 .pane-content {
-	height: 450px;
-	width:580px;
+	height: 340px;
+	width:560px;
 	padding: 0 10px;
 }
 
@@ -90,7 +92,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 label {
 	display: inline-block;
 	padding-right: 3px;
-	margin-left:160px;
 	width: 80px;
 }
 
@@ -99,14 +100,15 @@ span.k-tooltip {
 }
 
 .demo-section {
-	width: 600px;
-	height:420px;
+	width: 560px;
+	height:340px;
 }
 
 .actions {
-	padding-left: 276px;
+	padding-left: 256px;
 	padding-top: 10px;
 }
+.ml150{margin-left:150px;}
 </style>
 
 <script>
@@ -118,13 +120,6 @@ span.k-tooltip {
                                 .bind("click", function() {
                                     $("body").tyWindow.open();
                                 });
-                    
-                    $("#horizontal").kendoSplitter({
-                        panes: [
-                            { collapsible: true, size: "320px" },
-                            { collapsible: true, size: "320px" }
-                        ]
-                    });
                     
                     var container = $("#employeeForm");
                     kendo.init(container);
@@ -142,39 +137,48 @@ span.k-tooltip {
                 });
                 
                 function edit(e) {
-                	if($("#editOrganName").val()==""){
+                	if($.trim($("#editOrganName").val())==""){
                     	$("body").popjs({"title":"提示","content":"机构名不能为空！"});
              		    return false;
                     }
-                    if($("#editShortName").val()==""){
+                    if($.trim($("#editShortName").val())==""){
                     	$("body").popjs({"title":"提示","content":"机构简称不能为空！"});
              		    return false;
                     }
-                    if($("#editOrganType").val()==""){
+                    if($.trim($("#editOrganType").val())==""){
                     	$("body").popjs({"title":"提示","content":"请选择机构类型！"});
              		    return false;
                     }
+                    if($.trim($("#editOrganNote").val())==""){
+                    	$("body").popjs({"title":"提示","content":"请填写机构备注！"});
+             		    return false;
+                    }
+                    if($.trim($("#editOrganCode").val())==""){
+                    	$("body").popjs({"title":"提示","content":"机构编码不能为空！"});
+             		    return false;
+                    }
+                    if(isNaN($.trim($("#editOrganCode").val()))){
+           		        $("body").popjs({"title":"提示","content":"机构编码只能为数字！"});
+           		        return false;
+             		 }
+                    
                     editOrgan();
                 }
                 
                 function editOrgan(){
-                	if($("#id").val()=="1"){
-                		alert("默认机构不能修改");
-                		return false;
-                	}
              		 $.ajax({
              			url:"<%=basePath%>web/organx/modifyOrgan.do",
              			type:"post",
              			dataType:"json",
              			data:{
              				organId:$("#id").val(),
-             				code:$("#editOrganCode").val(),
-             				name:$("#editOrganName").val(),
-             				shortName:$("#editShortName").val(),
+             				code:$.trim($("#editOrganCode").val()),
+             				name:$.trim($("#editOrganName").val()),
+             				shortName:$.trim($("#editShortName").val()),
              				parentId:$("#editParentId").val(),
-             				orgTypeCode:$("#editOrganType").val(),
+             				orgTypeCode:$.trim($("#editOrganType").val()),
              				sessionId:$("#token").val(),
-             				note:$("#editOrganNote").val()
+             				note:$.trim($("#editOrganNote").val())
              			},
            	  		 success:function(msg){
            	  			if(msg.code==200){

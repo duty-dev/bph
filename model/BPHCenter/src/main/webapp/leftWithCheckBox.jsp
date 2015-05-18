@@ -32,27 +32,33 @@
 		<script> 
 			 
 			 $(document).ready(function () {
-				 $.ajax({
-						url:"<%=basePath%>web/organx/jumpTree.do",
-						type:"post",
-						data:{
-							organId:$("#organId").val(),
-							userId:$("#loginUserId").val(),
-							sessionId:$("#token").val(),
-							random:Math.random()
-						}, 
-						dataType:"json",
-						success:function(rsp){
-							var json_data =JSON.stringify(rsp.data);
-							
-							$("#treeview").kendoTreeView({
-							 	checkboxes: {
-							        checkChildren: false//允许复选框多选
-							    },
-						    	check: organOnCheck,//check复选框 
-							    dataSource: [eval('(' + json_data + ')')]
-							}).data("kendoTreeView"); 
+				 
+				 var data = new kendo.data.HierarchicalDataSource({
+				        transport: {
+							read: {
+								url: "<%=basePath%>web/organx/lazyOrganList.do",
+								type : "post",
+								data : {
+									searchName:"",
+									sessionId:$("#token").val(),
+									random : Math.random()
+								},
+								dataType: "json"
+							}
+						},
+						schema: {
+				 			model: {
+								hasChildren:"hasChild",
+				           	}
 						}
+					});
+					 
+					$("#treeview").kendoTreeView({
+						checkboxes: {
+					        checkChildren: false//允许复选框多选
+					    },
+				    	check: organOnCheck,//check复选框 
+						dataSource: data
 					});
 			 });
 			 

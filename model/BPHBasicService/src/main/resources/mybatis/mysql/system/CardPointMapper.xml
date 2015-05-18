@@ -49,8 +49,6 @@
       <if test="angle != null">				ANGLE 					= #{angle,jdbcType=VARCHAR},			</if>
       <if test="telephone != null">			TELEPHONE 				= #{telephone,jdbcType=VARCHAR},		</if>
       <if test="intercomGroupId != null">	INTERCOM_GROUP_ID 		= #{intercomGroupId,jdbcType=DECIMAL},	</if>
-      <if test="latitude != null">			LATITUDE 				= #{latitude,jdbcType=VARCHAR},			</if>
-      <if test="longitude != null">			LONGITUDE 				= #{longitude,jdbcType=VARCHAR},		</if>
       <if test="altitude != null">			ALTITUDE 				= #{altitude,jdbcType=VARCHAR},			</if>
       <if test="assignment != null">		ASSIGNMENT 				= #{assignment,jdbcType=VARCHAR},		</if>
       <if test="policeNote != null">		POLICE_NOTE 			= #{policeNote,jdbcType=VARCHAR},		</if>
@@ -62,7 +60,7 @@
     where CARD_POINT_ID = #{cardPointId, jdbcType=DECIMAL}
   </update>
   
-  <update id="updateByPrimaryKey" parameterType="com.tianyi.bph.domain.system.CardPoint">
+  <update id="updateByPrimaryKey" parameterType="com.tianyi.bph.domain.system.TCardPoint">
     update <include refid="TABLE_NAME" />
     set 
     	NAME 					= #{name,jdbcType=VARCHAR},	
@@ -75,6 +73,7 @@
     	INTERCOM_GROUP_ID 		= #{intercomGroupId,jdbcType=DECIMAL},
     	CREATE_TIME 			= #{createTime,jdbcType=TIMESTAMP},	
     	LATITUDE 				= #{latitude,jdbcType=VARCHAR},	
+    	TELEPHONE				=#{telephone,jdbcType=VARCHAR},
     	LONGITUDE 				= #{longitude,jdbcType=VARCHAR},
     	ISSTATION				= #{isstation,jdbcType=DECIMAL},
     	ARMS_POLICE_COUNT 		= #{armsPoliceCount,jdbcType=DECIMAL},

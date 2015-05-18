@@ -14,8 +14,8 @@
 		<!-- <jdbcConnection driverClass="org.gjt.mm.mysql.Driver" connectionURL="jdbc:mysql://localhost:3308/bph" 
 			userId="root" password="123456" /> -->
 		<jdbcConnection driverClass="org.gjt.mm.mysql.Driver"
-			connectionURL="jdbc:mysql://25.30.9.20:3306/bph" userId="root"
-			password="root" />
+			connectionURL="jdbc:mysql://25.30.9.182:3306/bph" userId="root"
+			password="123456" />
 		<!-- 指定生成的类型为java类型，避免数据库中number等类型字段 -->
 		<javaTypeResolver>
 			<property name="forceBigDecimals" value="false" />
@@ -39,17 +39,14 @@
 			targetPackage="com.tianyi.bph.dao.system" targetProject="src\main\java">
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
-		<!-- <table tableName="b_bayonet_info" domainObjectName="BayonetInfo" enableSelectByExample="true" 
-			enableDeleteByExample="false" enableCountByExample="false" enableUpdateByExample="true" 
-			/> -->
 
-		<table tableName="b_group_manager" domainObjectName="GroupManager"
+		<table tableName="t_logs" domainObjectName="Log"
 			enableSelectByExample="true" enableDeleteByExample="false"
-			enableCountByExample="false" enableUpdateByExample="true" />
+			enableCountByExample="false" enableUpdateByExample="false" />
 
-		<table tableName="r_group_other" domainObjectName="GroupOther"
+		<table tableName="t_log_type" domainObjectName="LogType"
 			enableSelectByExample="true" enableDeleteByExample="false"
-			enableCountByExample="false" enableUpdateByExample="true" />
+			enableCountByExample="false" enableUpdateByExample="false" />
 
 	</context>
 </generatorConfiguration>  

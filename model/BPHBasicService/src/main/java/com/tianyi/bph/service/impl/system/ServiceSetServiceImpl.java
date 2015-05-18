@@ -1,5 +1,6 @@
 package com.tianyi.bph.service.impl.system;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,16 +89,19 @@ public class ServiceSetServiceImpl implements ServiceSetService{
 		MqConfig mqconf=null;
 		FtpConfig ftpconf=null;
 		GpsConfig gpsconf=null;
+		List<MqConfig> mqconfList=null;
 		if(serviceList !=null && serviceList.size()>0){
+			mqconfList =new ArrayList<MqConfig>();
 			for (ServiceSet service : serviceList) {
 				if(service.getServiceType().intValue()==1){//mq
 					mqconf=new MqConfig();
-					mqconf.setMqIp(service.getServiceIp());
-					mqconf.setMqPort(service.getServicePort()+"");
-					mqconf.setMqAccount(service.getServiceAccount());
-					mqconf.setMqPwd(service.getServicePwd());
-					mqconf.setMqExchangeName(service.getExchangeName());
-					user.setMqconf(mqconf);
+					mqconf.setMesseageSvrIP(service.getServiceIp());
+					mqconf.setMesseagePort(service.getServicePort()+"");
+					mqconf.setMesseageUser(service.getServiceAccount());
+					mqconf.setMesseagePassword(service.getServicePwd());
+					mqconf.setExchange(service.getExchangeName());
+					mqconf.setExchangeType("");
+					mqconfList.add(mqconf);
 				}else if(service.getServiceType().intValue()==2){//ftp
 					ftpconf=new FtpConfig();
 					ftpconf.setFtpIp(service.getServiceIp());
@@ -114,6 +118,7 @@ public class ServiceSetServiceImpl implements ServiceSetService{
 					 user.setGpsconf(gpsconf);
 				}
 			}
+			user.setMesseageServer(mqconfList);
 		}
 		return user;
 	}

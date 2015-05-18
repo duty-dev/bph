@@ -7,29 +7,29 @@
 
 <script id="policeSource-template" type="text/x-kendo-template">
     <span> #: item.name #</span>
-	<span style="float:right"> 　#: item.orgName #</span>
-	<span style="float:right"> (#: item.number #)</span>
+	<span> (#: item.number #)</span>
+	<span> 　#: item.orgName #</span>
 	#item.itemTypeId=2#
 </script>
 
 <script id="vehicleSource-template" type="text/x-kendo-template">
     <span> #: item.number #</span>
-	<span style="float:right"> 　#: item.orgName #</span>
-	<span style="float:right"> (#: item.typeName#  #:item.brand#)</span>
+	<span> (#: item.typeName#  #:item.brand#)</span>
+	<span> 　#: item.orgName #</span>
 	#item.itemTypeId=1#
 </script>
 
 <script id="weaponSource-template" type="text/x-kendo-template">
     <span> #: item.typeName #</span>
-	<span style="float:right"> 　#: item.orgName #</span>
-	<span style="float:right"> (#: item.number# )</span>
+	<span> (#: item.number# )</span>
+	<span> 　#: item.orgName #</span>
 	#item.itemTypeId=3#
 </script>
 
 <script id="gpsSource-template" type="text/x-kendo-template">
     <span> #: item.typeName #</span>
-	<span style="float:right"> 　#: item.orgName #</span>
-	<span style="float:right"> (#: item.gpsName#   #: item.number#)</span>
+	<span> (#: item.gpsName#   #: item.number#)</span>
+	<span> 　#: item.orgName #</span>
 	#item.itemTypeId=4#
 </script>
 

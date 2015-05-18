@@ -17,7 +17,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <body>
 <div id="vertical">
 		<div id="top-pane">
-			<div id="horizontal" style="height: 450px; width: 590px;">
+			<div id="horizontal" style="height:452px;">
 				<div id="left-pane">
 					<div class="pane-content">
 						<!-- 左开始 -->
@@ -29,28 +29,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<ul>
 									<li><label for="loginName">所属机构:</label> 
 										<input type="hidden" value="${organ.id}" id="orgId" name="orgId" />
+										<input type="hidden" id="policeId" name="policeId"/>
+										<input type="hidden" id="policeName" name="policeName"/>
+										<input type="hidden" id="rePoliceId" name="rePoliceId"/>
 										${organ.name}
 									</li>
-									<li class="ty-input">
-										<label for="loginName">帐号:</label> <input type="text" class="k-textbox" value="${user.loginName}" id="loginName" name="loginName" readonly style="width:75%;"/><em class="ty-input-end"></em>
+									<li class="ty-input"><span class="ty-input-warn">*</span>
+										<label for="loginName">帐号:</label> <input type="text" class="k-textbox" value="${user.loginName}" id="loginName" name="loginName" readonly style="width:46%;"/><em class="ty-input-end"></em>
+											<button type="button" class="k-button" style="margin-left:8px;" onclick="resetPassword();">重置密码</button>
 									</li>
-									<li class="ty-input"><label for="addUserName">姓名:</label> <input type="text" class="k-textbox" value="${user.userName}" id="userName" name="userName" style="width:55%;" /><em class="ty-input-end"></em>
+									<li class="ty-input"><span class="ty-input-warn">*</span><label for="userName">姓名:</label> <input type="text" class="k-textbox" value="${user.userName}" id="userName" name="userName" style="width:51%;" readonly/><em class="ty-input-end"></em>
 										<button type="button" class="k-button" style="margin-left:10px;" onclick="loadPolice();">选择</button>
 									</li>
-									<li class="ty-input"><label for="userOtherOrgans">跨机构授权:</label> 
-										<input type="text" class="k-textbox" name="userOtherOrgans" value="${user.userOtherOrgans}" id="userOtherOrgans" style="width:36%;" /><em class="ty-input-end"></em>
+									<!--  <li class="ty-input"><label for="userOtherOrgans">跨机构授权:</label> 
+										<input type="text" class="k-textbox" name="userOtherOrgans" value="${user.userOtherOrgans}" id="userOtherOrgans" style="width:36%;" readonly/><em class="ty-input-end"></em>
 										<button type="button" data-role="button" style="margin-left:10px;" onclick="loadOrganTree();">选择</button>
-									</li>
-									<li class="ty-input accept"><div style="width:100%"><div style="float:left;width:15%;"><label for="otherOgans">角色:</label></div><div id="selectRoles" style="float:left;width:85%;"> 
-									<c:forEach
+									</li>-->
+									<li class="ty-input accept ty-full"><span class="ty-input-warn">*</span><div style="width:100%"><div style="float:left;"><label for="otherOgans">角色:</label></div><div id="selectRoles" style="float:left;width:78%;"> 
+									<c:forEach 
 											var="item" items="${roleList}">
-											<input type="checkbox" id="rolesId" name="rolesId" onclick="refreshRole();"
-											value="${item.id}" ${item.isCheck}/>${item.name}
+											<p class='ty-input-p'><input type="checkbox" id="rolesId"  name="rolesId" onclick="refreshRole();"
+											value="${item.id}" ${item.isCheck}/>${item.name}</p>
                         			</c:forEach>
                         			</div></div></li>
 									<li class="ty-input actions">
-										<button type="button" data-role="button"
-											data-sprite-css-class="k-icon k-i-tick" data-click='save'>提交</button>
+										<button type="button" class="ty-button ty-button-te" onclick="save(this);" data-click='save'>提交</button>
 									</li>
 								</ul>
 							</form>
@@ -75,6 +78,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 });
 
                 function save(e) {
+                	if($.trim($("#userName").val())==""){
+               		  $("body").popjs({"title":"提示","content":"姓名不能为空！"});
+               		   return false;
+               		   }
                 	var flag = false;
              	   $("#selectRoles input[type='checkbox']").each(function(i){
              		   if($(this).prop("checked")){
@@ -89,6 +96,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 }
                 
                 function userSave(){
+                	var policeName = $.trim($("#policeName").val());
+                	var userName = $.trim($("#userName").val());
+                	var policeId = $.trim($("#policeId").val());
+                	var rePoliceId = $.trim($("#rePoliceId").val()); 
+                		if(policeName != userName && policeId == rePoliceId){                   		               	    	
+                	    	$("#policeId").val(null);
+                	    }
             		var r = document.getElementsByName("rolesId");
             		var rolesId = "";
             		   for (i= 0 ;i < r.length; i++){
@@ -128,6 +142,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               	}
                 
                 function refreshRole(){
+                	$("#zhegaiceng").css("display", "");
                 	var r = document.getElementsByName("rolesId");
             		var rolesId = "";
             		   for (i= 0 ;i < r.length; i++){
@@ -192,6 +207,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 
               //点击每行单元格在右边显示功能信息
                 function loadOrganTree(){
+                	$("#zhegaiceng").css("display", "none");
                 	var zNodes;
        			 var json_data;
        			 var currentText;
@@ -255,6 +271,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	        }
                 
                 function loadPolice(){
+                	$("#zhegaiceng").css("display", "none");
 					$("#treeview").remove();
 					$("#addRoleTreeview").remove();
 					$("#policeview").remove();
@@ -270,9 +287,37 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 
                 function selectPolice(id,name){
                 	$("#userName").val(name);
+                	$("#policeName").val(name);
                 	$("#policeId").val(id);
+                	$("#rePoliceId").val(id);
                 }
-
+				
+                /**
+                * 重置账号密码
+                **/
+             function resetPassword(){
+                	var userId = $("#userId").val();
+                	if(userId == null || userId == ""){
+                		return;
+                	}
+                	$("body").tyWindow({
+                		"content": "确定要重置'" +$("#loginName").val()+ "'的密码？",
+                		"center": true,
+                		"ok": true,
+                		"okCallback": function(){
+                			$.ajax({
+                        		url: "<%= path%>/admin/resetPassword.do",
+                        		data: {userId:  userId,
+                   	  				random: Math.random()},
+                        		type: "post",
+                        		dataType: "json",
+                        		success: function(msg){
+                        			$("body").popjs({"title": "提示", "content": msg.description});
+                        		}
+                        	});
+                		},"no":true
+                	});
+                }
             </script>
 
 						<style scoped>
@@ -303,7 +348,7 @@ span.k-tooltip {
 }
 
 .demo-section {
-	width: 290px;
+	width: 275px;
 }
 
 .actions {
@@ -397,8 +442,8 @@ span.k-tooltip {
                 	
                     $("#horizontal").kendoSplitter({
                         panes: [
-                            { collapsible: true, size: "320px" },
-                            { collapsible: true, size: "320px" }
+                            { collapsible: true },
+                            { collapsible: true }
                         ]
                     });
                 });
@@ -406,8 +451,6 @@ span.k-tooltip {
 
 	<style scoped>
 #vertical {
-	height: 480px;
-	width: 640px;
 	margin: 0 auto;
 }
 

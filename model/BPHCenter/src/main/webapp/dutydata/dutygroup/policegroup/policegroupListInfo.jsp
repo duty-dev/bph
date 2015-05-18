@@ -309,8 +309,10 @@ var PolicegroupManage = {
 };
 
 </script>
-<div id="dtPoliceGroup" style="width:330px;float:left"></div>   
+<div class="span5">
+<div id="dtPoliceGroup"></div>
 <div id="page"></div>
-<div id="dtGroupMember" style="width:320px;float:left"></div> 
+</div>
+<div id="dtGroupMember" class="span5"></div>
 <div id="dialog"></div> 
 
