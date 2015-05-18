@@ -154,7 +154,7 @@ img { border:0px;}
  
 .dateBoxMain{ width:100%; height:auto; overflow:hidden;}
 .dateBoxMainTItle{ width:100%; height:39px; overflow:hidden; background:url(../images/dateMainTitleBg.png) repeat-x;}
-.dateBoxMainTItleTxt{ width:10%; overflow:hidden; height:39px; line-height:39px; color:#FFF; float:left; }
+.dateBoxMainTItleTxt{ width:10%; overflow:hidden; height:39px; line-height:39px; color:#81C9F0; float:left; }
 .dateBoxMainTItleTxtDIv{ width:100%; height:auto; overflow:hidden; text-align:center;}
 .dateBoxMainTItleTxtDIv img{ margin-top:6px;}
 .dateBoxMainTItleBox{ width:80%; height:39px; overflow:hidden; float:left; }

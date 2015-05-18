@@ -236,6 +236,12 @@
 		SET U.PASSWORD = #{password,jdbcType=VARCHAR} 
 		WHERE U.USER_ID = #{userId, jdbcType=DECIMAL}
 	</update>
+	<!-- 更新密码 (2015-5-6)-->
+	<update id="updatePassword">
+		UPDATE T_USERS U 
+		SET U.PASSWORD = #{password,jdbcType=VARCHAR} 
+		WHERE U.USER_ID = #{userId, jdbcType=DECIMAL}
+	</update>
 	
 	<!-- 通过用户名查询  -->
 	<select id="getUserByName" parameterType="string" resultMap="BaseResultMap">
@@ -256,7 +262,7 @@
 	    	left join T_MODULE M on UAM.MODULE_ID = M.MODULE_ID
 	    	left join T_USER_ROLE UR on U.USER_ID = UR.USER_ID 
 	    	left join T_ROLE R on UR.ROLE_ID = R.ROLE_ID
-		where 1=1 
+		where 1=1 AND U.USER_ID != 1
 		<if test="organPath != null">
 			AND O.PATH  LIKE CONCAT ('%',#{organPath,jdbcType=VARCHAR},'%' )
 		</if>
@@ -306,4 +312,17 @@
     </set>
     where USER_ID = #{userId,jdbcType=DECIMAL}
   </update>
+  
+  <!-- 通过警员ID查询  -->
+	<select id="getListForPoliceId" parameterType="Integer" resultMap="BaseResultMap">
+	    SELECT  <include refid="Base_Column_List"/>
+	    FROM T_USERS U 
+	    where U.POLICE_USER_ID = #{policeUserId,jdbcType=DECIMAL}
+	</select>
+	<!-- 通过警员ID与用户ID判断数据是否存在  -->
+	<select id="getListForPoliceIdAndUserId" parameterType="com.tianyi.bph.query.system.UserQuery" resultType="Integer">
+		select count(*) from T_USERS U 
+		where U.USER_ID != #{userId,jdbcType=DECIMAL}
+		and U.POLICE_USER_ID = #{policeUserId,jdbcType=DECIMAL}
+	</select>
 </mapper>

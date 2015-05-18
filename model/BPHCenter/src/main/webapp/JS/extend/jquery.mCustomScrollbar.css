@@ -381,7 +381,7 @@ yx-axis
 	}
 
 	.mCSB_scrollTools .mCSB_buttonUp{
-		background-position: 0 0;
+		background-position: -48px 0;
 		/* 
 		sprites locations 
 		light: 0 0, -16px 0, -32px 0, -48px 0, 0 -72px, -16px -72px, -32px -72px
@@ -390,7 +390,7 @@ yx-axis
 	}
 
 	.mCSB_scrollTools .mCSB_buttonDown{
-		background-position: 0 -20px;
+		background-position: -48px -20px;
 		/* 
 		sprites locations
 		light: 0 -20px, -16px -20px, -32px -20px, -48px -20px, 0 -92px, -16px -92px, -32px -92px
@@ -399,7 +399,7 @@ yx-axis
 	}
 
 	.mCSB_scrollTools .mCSB_buttonLeft{
-		background-position: 0 -40px;
+		background-position: -60px -40px;
 		/* 
 		sprites locations 
 		light: 0 -40px, -20px -40px, -40px -40px, -60px -40px, 0 -112px, -20px -112px, -40px -112px
@@ -408,7 +408,7 @@ yx-axis
 	}
 
 	.mCSB_scrollTools .mCSB_buttonRight{
-		background-position: 0 -56px;
+		background-position: -60px -56px;
 		/* 
 		sprites locations 
 		light: 0 -56px, -20px -56px, -40px -56px, -60px -56px, 0 -128px, -20px -128px, -40px -128px

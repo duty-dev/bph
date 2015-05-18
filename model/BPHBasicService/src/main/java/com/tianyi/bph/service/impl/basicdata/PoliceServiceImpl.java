@@ -44,19 +44,21 @@ import com.tianyi.bph.service.basicdata.PoliceService;
 @Service
 public class PoliceServiceImpl implements PoliceService {
 
-	@Autowired PoliceMapper policeMapper;
+	@Autowired
+	PoliceMapper policeMapper;
 
-	@Autowired ExportMapper exportMapper;
-	
+	@Autowired
+	ExportMapper exportMapper;
 
-	@Autowired OrganDAO organMapper;
+	@Autowired
+	OrganDAO organMapper;
 
 	/**
 	 * (non-Javadoc)
 	 * 
 	 * @see com.tianyi.drs.basedata.service.PoliceService#
 	 */
-	
+
 	@MQDataInterceptor(type = Constants.MQ_TYPE_POLICE, operate = Constants.MQ_OPERATE_DELETE)
 	public int deleteByPrimaryKey(Integer id) {
 		// TODO Auto-generated method stub
@@ -69,12 +71,12 @@ public class PoliceServiceImpl implements PoliceService {
 	 * 
 	 * @see com.tianyi.drs.basedata.service.PoliceService#
 	 */
-	
+
 	@MQDataInterceptor(type = Constants.MQ_TYPE_POLICE, operate = Constants.MQ_OPERATE_ADD)
 	public Police insert(Police record) {
 		// TODO Auto-generated method stub
 
-		policeMapper.insert(record); 
+		policeMapper.insert(record);
 		return record;
 	}
 
@@ -113,7 +115,7 @@ public class PoliceServiceImpl implements PoliceService {
 	 * 
 	 * @see com.tianyi.drs.basedata.service.PoliceService#
 	 */
-	
+
 	@MQDataInterceptor(type = Constants.MQ_TYPE_POLICE, operate = Constants.MQ_OPERATE_UPDATE)
 	public Police updateByPrimaryKey(Police record) {
 		// TODO Auto-generated method stub
@@ -355,22 +357,23 @@ public class PoliceServiceImpl implements PoliceService {
 	 * 
 	 * @see com.tianyi.drs.basedata.service.PoliceService#loadListByOrgId(Map)
 	 */
-	public List<PoliceJJVM> getPoliceInfo(Integer orgId,Integer isSubOrg) {
+	public List<PoliceJJVM> getPoliceInfo(Integer orgId, Integer isSubOrg) {
 		// TODO Auto-generated method stub
 		Organ org = new Organ();
 		String orgPath = "";
 
-		Map<String, Object> map =  new HashMap<String, Object>();
-		if(isSubOrg==Constants.SEARCH_TYPE_CHILD){
+		Map<String, Object> map = new HashMap<String, Object>();
+		if (isSubOrg == Constants.SEARCH_TYPE_CHILD) {
 			org = organMapper.selectByPrimaryKey(orgId);
 			orgPath = org.getPath();
 			map.put("orgPath", orgPath);
 		}
-		map.put("orgId",orgId);
+		map.put("orgId", orgId);
 		return policeMapper.getPoliceInfo(map);
 	}
 
-	public List<PoliceExtItem> getPoliceDutyInfo(Integer orgId, Integer ymd, Integer isSubOrg) {
+	public List<PoliceExtItem> getPoliceDutyInfo(Integer orgId, Integer ymd,
+			Integer isSubOrg) {
 
 		Map<Integer, ItemInfo<?>> cache = new HashMap<Integer, ItemInfo<?>>();// dutyItemId局部缓存，避免大量低效率的循环。
 		Map<Integer, Object> cache2 = new HashMap<Integer, Object>();// ItemId
@@ -379,21 +382,21 @@ public class PoliceServiceImpl implements PoliceService {
 		// 局部缓存，避免大量低效率的循环。Object无意义，都为null
 
 		List<PoliceInfo> ps = new ArrayList<PoliceInfo>();
-		Organ org = new Organ(); 
+		Organ org = new Organ();
 		String orgPath = "";
 		Map<String, Object> map = new HashMap<String, Object>();
-		if(isSubOrg==Constants.SEARCH_TYPE_CHILD){ 
+		if (isSubOrg == Constants.SEARCH_TYPE_CHILD) {
 			org = organMapper.selectByPrimaryKey(orgId);
 			orgPath = org.getPath();
 			map.put("orgPath", orgPath);
 		}
-		 
+
 		map.put("orgId", orgId);
 		if (ymd == null || ymd == 0) {
 			Date now = new Date();
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 			String date = dateFormat.format(now);
-			ymd = Integer.parseInt(date); 
+			ymd = Integer.parseInt(date);
 		}
 		map.put("ymd", ymd);
 
@@ -410,25 +413,27 @@ public class PoliceServiceImpl implements PoliceService {
 
 			} else {
 				if (cache.containsKey(r.getParentId())) {
-					PoliceInfo pp = (PoliceInfo) cache.get(r.getParentId());
+					if (cache.get(r.getParentId()).getItemTypeId() == 2) {
+						PoliceInfo pp = (PoliceInfo) cache.get(r.getParentId());
 
-					switch (r.getItemTypeId()) {
-					case 3:// weapon
-						if (pp.getWeaponItems() == null) {
-							pp.setWeaponItems(new ArrayList<WeaponInfo>());
+						switch (r.getItemTypeId()) {
+						case 3:// weapon
+							if (pp.getWeaponItems() == null) {
+								pp.setWeaponItems(new ArrayList<WeaponInfo>());
+							}
+							WeaponInfo w = createWeaponInfo(r);
+							pp.getWeaponItems().add(w);
+							cache.put(r.getDutyItemId(), w);
+							break;
+						case 4: // gps
+							if (pp.getGpsItems() == null) {
+								pp.setGpsItems(new ArrayList<GpsInfo>());
+							}
+							GpsInfo g = createGpsInfo(r);
+							pp.getGpsItems().add(g);
+							cache.put(r.getDutyItemId(), g);
+							break;
 						}
-						WeaponInfo w = createWeaponInfo(r);
-						pp.getWeaponItems().add(w);
-						cache.put(r.getDutyItemId(), w);
-						break;
-					case 4: // gps
-						if (pp.getGpsItems() == null) {
-							pp.setGpsItems(new ArrayList<GpsInfo>());
-						}
-						GpsInfo g = createGpsInfo(r);
-						pp.getGpsItems().add(g);
-						cache.put(r.getDutyItemId(), g);
-						break;
 					}
 				}
 			}
@@ -548,8 +553,8 @@ public class PoliceServiceImpl implements PoliceService {
 		p.setGpsId(result.getPoliceGpsId());
 		p.setGpsName(result.getPoliceGpsName());
 		p.setId(result.getPoliceId());
-		p.setJjcount(result.getJjcount());
 		p.setIdcardno(result.getPoliceIdcardno());
+		p.setJjcount(result.getJjcount());
 		p.setIntercomGroup(result.getPoliceIntercomGroup());
 		p.setIntercomPerson(result.getPoliceIntercomPerson());
 		p.setMobile(result.getPoliceMobile());
@@ -599,7 +604,5 @@ public class PoliceServiceImpl implements PoliceService {
 		// TODO Auto-generated method stub
 		return policeMapper.findByintercomPersonAndId(map);
 	}
-
-
 
 }

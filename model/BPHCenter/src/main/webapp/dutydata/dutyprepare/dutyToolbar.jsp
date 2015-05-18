@@ -57,11 +57,13 @@ $(document).ready(function() {
 			<div class="ty-total-decorate"><span id="gridListTotal"></span><i></i></div>
 		</div>
 	</div> 
-	<div class="fr set-hei48"> 
+	<div class="fr set-hei48">
+		<div class="temp">
+		<button id="btnlockNode" class="k-button ty-back-btn"  onclick="DutyPrepareManage.returnBackToCalendar()">返回</button>
+		</div> 
 		<div class="ty-screen-mode" id="tyScreenMode">
 			<i class="ty-screen-mode-btn1" title="标准模式"></i><i class="ty-screen-mode-btn2" title="模块全屏"></i><i class="ty-screen-mode-btn3" title="内容全屏"></i>
 			<div class="ty-screen-mode-icon"></div>
-            <span id="btnlockNode" class="k-button"  onclick="DutyPrepareManage.returnBackToCalendar()">返回报备月程</span>  
 			<span class="ty-screen-mode-txt"></span>
 		</div>
 	</div>

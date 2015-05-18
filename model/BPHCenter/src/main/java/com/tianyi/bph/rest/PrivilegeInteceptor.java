@@ -13,12 +13,17 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
+
+
+import net.sf.json.JSONArray;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.tianyi.bph.CookieUtil;
 import com.tianyi.bph.common.JsonUtils;
 import com.tianyi.bph.common.ReturnResult;
 import com.tianyi.bph.common.utils.DateUtils;
@@ -57,6 +62,7 @@ public class PrivilegeInteceptor implements HandlerInterceptor {
         	String organPath=request.getParameter("organPath");
         	String expandeds=request.getParameter("expandeds");
         	String searchOrganName=request.getParameter("searchName");
+        	String selectName=request.getParameter("selectName");
         	/*if(!StringUtils.isEmpty(sessionId)){//客户端
         		//session=UserCache.getSession(sessionId);
         		session=(HttpSession) CacheUtils.getObjectValue(manager,CacheUtils.USER_BASE_DATA,sessionId);
@@ -84,18 +90,17 @@ public class PrivilegeInteceptor implements HandlerInterceptor {
     		if(!StringUtils.isEmpty(expandeds)){
     			session.setAttribute("expandeds", expandeds);
     		}
-    		String organName=(String) session.getAttribute("searchOrganName");
-    		if(organName == null || StringUtils.isEmpty(organName)){
-    			//if(StringUtils.isEmpty(searchOrganName)){
+    		if(searchOrganName !=null){
     			session.setAttribute("searchOrganName", searchOrganName);
-    			//}
-    		}else if(searchOrganName != null && StringUtils.isEmpty(searchOrganName)){
-    			session.setAttribute("searchOrganName", searchOrganName);
+    		}
+    		if(!StringUtils.isEmpty(selectName)){
+    			session.setAttribute("selectName", selectName);
     		}
         	request.setAttribute("organPath", session.getAttribute("organPath"));
 			request.setAttribute("organId", session.getAttribute("organId"));
 			request.setAttribute("expandeds", session.getAttribute("expandeds"));
 			request.setAttribute("searchOrganName", session.getAttribute("searchOrganName"));
+			request.setAttribute("selectName", session.getAttribute("selectName"));
 			request.setAttribute("User",user);
         	return true;
         }

@@ -27,8 +27,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <link href="<%=basePath %>resources/css/dataviz/kendo.material.mobile.min.css" media='all' rel='stylesheet' type='text/css' />	
 <link href="<%=basePath %>resources/css/dataviz/kendo.rtl.min.css" media='all' rel='stylesheet' type='text/css' />
 <link href="<%=basePath %>JS/extend/jquery.mCustomScrollbar.css" rel='stylesheet' type='text/css' />	
-<link href="<%=basePath %>resources/css/dataviz/fullcalendar.print.css" media='all' rel='stylesheet' type='text/css' />	
-<link href="<%=basePath %>resources/css/dataviz/fullcalendar.css" media='all' rel='stylesheet' type='text/css' /> 
 <script src="<%=basePath %>resources/js/jquery.min.js" type='text/javascript'></script>
 <script src="<%=basePath %>resources/js/kendo.all.min.js" type='text/javascript'></script>
 <script src="<%=basePath %>JS/json2.js" type='text/javascript'></script>
@@ -36,9 +34,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script src="<%=basePath %>JS/extend/jquery.mCustomScrollbar.concat.min.js" type='text/javascript'></script>
 <script src="<%=basePath %>JS/extend/pop.js" type='text/javascript'></script>
 <script src="<%=basePath %>JS/extend/ty-window.js" type='text/javascript'></script>
+<script src="<%=basePath %>JS/extend/checkException.js" type='text/javascript'></script>
 <script src="<%=basePath %>JS/user/pager.js" type='text/javascript'></script>
-<script src="<%=basePath %>JS/user/dutyutil.js" type='text/javascript'></script>
-
 <!--[if lte IE 9]>
 <script src="<%=basePath %>JS/extend/html5shiv.js" type='text/javascript'></script>
 <script src="<%=basePath %>JS/extend/respond.js" type='text/javascript'></script>

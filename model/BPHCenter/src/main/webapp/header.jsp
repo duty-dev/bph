@@ -160,14 +160,16 @@ function show_hide(type){
 				"<a href='<%=path %>/role/gotoRoleList.action'>角色管理</a></li>");
 			}
 		}
-	}else if(type=='500'){
+	}<%-- else if(type=='500'){
 		num=500;
 		$("#subMenu_5 li").remove();
 		$("#subMenu_5").append("<li>"+
 		"<a href='<%=path %>/serviceSet/gotoServiceSetList.action'>配置管理</a></li>");
 		$("#subMenu_5").append("<li>"+
 		"<a href='<%=path %>/log/gotoLogList.action'>日志管理</a></li>");
-	}else if(type=='300'){
+		$("#subMenu_5").append("<li>"+
+			"<a href='<%=path %>/map/initMap.action'>地图信息</a></li>");
+	} --%>else if(type=='300'){
 		num=300;
 		$("#subMenu_5 li").remove();		
 		 for (var i = 0; i < funList.length; i++) {
@@ -233,7 +235,7 @@ function gotoUpdatePassword(){
           <div>
             <div class="lv1"></div>
             <ul class="nav pull-left" id="navMenu"><!----一级菜单---->
-            	<li><a href='javaScript:void(0)' onclick="show_hide(500)">配置管理</a></li>
+            	<!-- <li><a href='javaScript:void(0)' onclick="show_hide(500)">配置管理</a></li> -->
             </ul><!----一级菜单结束---->
             <ul class='nav pull-right'><!----用户信息---->
               <li><div class="box">${sessionScope.SESSIN_USERNAME }</div></li>

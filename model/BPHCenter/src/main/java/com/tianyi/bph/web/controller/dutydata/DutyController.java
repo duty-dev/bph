@@ -230,7 +230,7 @@ public class DutyController {
 									targetvm = dutyTaskService.getTaskTargetInfo(map);
 									tg = new TaskTargetVM();
 									if (targetvm != null) {
-										tg.setIsSelected(1);
+										tg.setIsSelected(0);
 										tg.setCount(targetvm.getCount());
 										tg.setStayTime(targetvm.getStayTime());
 									} else {
@@ -251,7 +251,7 @@ public class DutyController {
 								targetvm = dutyTaskService.getTaskTargetInfo(map);
 								tg = new TaskTargetVM();
 								if (targetvm != null) {
-									tg.setIsSelected(1);
+									tg.setIsSelected(0);
 									tg.setCount(targetvm.getCount());
 									tg.setStayTime(targetvm.getStayTime());
 								} else {

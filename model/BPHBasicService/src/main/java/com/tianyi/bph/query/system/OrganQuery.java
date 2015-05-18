@@ -3,8 +3,16 @@ package com.tianyi.bph.query.system;
 import com.tianyi.bph.query.BaseQuery;
 
 public class OrganQuery extends BaseQuery{
-	
+
 	private Long userId;
+	public Integer getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
+	}
+	private Integer parentId;
 	public Long getUserId() {
 		return userId;
 	}
@@ -18,6 +26,14 @@ public class OrganQuery extends BaseQuery{
 	}
 	public void setSource(String source) {
 		this.source = source;
+	}
+	private Integer currentOrganId;
+	public Integer getCurrentOrganId() {
+		return currentOrganId;
+	}
+
+	public void setCurrentOrganId(Integer currentOrganId) {
+		this.currentOrganId = currentOrganId;
 	}
 	private String name;
 	private String code;

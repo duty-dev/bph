@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tianyi.bph.dao.system.LogTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.tianyi.bph.domain.system.LogType" >
+    <id column="LOG_TYPE_ID" property="logTypeId" jdbcType="INTEGER" />
+    <result column="LOG_TYPE_NAME" property="logTypeName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    LOG_TYPE_ID, LOG_TYPE_NAME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.tianyi.bph.domain.system.LogTypeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_log_type
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_log_type
+    where LOG_TYPE_ID = #{logTypeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_log_type
+    where LOG_TYPE_ID = #{logTypeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.tianyi.bph.domain.system.LogType" >
+    insert into t_log_type (LOG_TYPE_ID, LOG_TYPE_NAME)
+    values (#{logTypeId,jdbcType=INTEGER}, #{logTypeName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tianyi.bph.domain.system.LogType" >
+    insert into t_log_type
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="logTypeId != null" >
+        LOG_TYPE_ID,
+      </if>
+      <if test="logTypeName != null" >
+        LOG_TYPE_NAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="logTypeId != null" >
+        #{logTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="logTypeName != null" >
+        #{logTypeName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tianyi.bph.domain.system.LogType" >
+    update t_log_type
+    <set >
+      <if test="logTypeName != null" >
+        LOG_TYPE_NAME = #{logTypeName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where LOG_TYPE_ID = #{logTypeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tianyi.bph.domain.system.LogType" >
+    update t_log_type
+    set LOG_TYPE_NAME = #{logTypeName,jdbcType=VARCHAR}
+    where LOG_TYPE_ID = #{logTypeId,jdbcType=INTEGER}
+  </update>
+</mapper>

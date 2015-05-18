@@ -289,7 +289,6 @@ public class VehicleServiceImpl implements VehicleService {
 				vs.add(v);// 添加到list
 
 			} else {
-
 				if (cache.containsKey(r.getParentId())) {
 					if (cache.get(r.getParentId()).getItemTypeId() == 1) {
 						VehicleInfo pp = (VehicleInfo) cache.get(r
@@ -315,7 +314,6 @@ public class VehicleServiceImpl implements VehicleService {
 						}
 					}
 				}
-
 			}
 		}
 

@@ -7,7 +7,7 @@
             </div>
             <script>	
                 	function loadData(pageNo) {
-                	var	roleName = $("#roleName").val();
+                	var	roleName = $.trim($("#roleName").val());
                 	$.ajax({
                			url:"<%=basePath%>role/getRoleList.do",
                			type:"post",
@@ -15,6 +15,8 @@
                			data:{
                				name:roleName,
                				sessionId:$("#token").val(),
+               				pageNo:pageNo,
+            				pageSize:10
                			},
                			success:function(msg){
                				if(msg.code==200){
@@ -26,7 +28,7 @@
                	                        dataSource: {
                	                            data:udata,
                	                        },
-               	                     height: 550,
+               	                     height: 510,
                                      sortable: true,
                                      selectable: "multiple",
                	                        columns: [{
@@ -35,8 +37,8 @@
                	                            hidden:true
                	                        }, {
                							field: "操作",
-               							template: "<button id='#: id#' class='ty-edit-btn' title='修改' onclick='editAction(#: id#)'>修改</button> "
-               							+"<button id='#: id#' class='ty-delete-btn' title='删除' onclick='delteAction(#: id #)'>删除</button> "
+               							template: "<button type='button' id='#:id#' class='ty-edit-btn' title='修改' onclick='editRole1(#:id #)'>修改</button> "
+               							+"<button type='button' id='#: id#' class='ty-delete-btn' title='删除' onclick='delteAction(#: id #)'>删除</button> "
                							}, {
                	                            field: "name",
                	                            title: "角色名称"
@@ -52,6 +54,11 @@
                                          loadTree(roleId);//根据角色id 加载右边的功能权限
                                      }
                	                    });
+               						var myGrid = $("#grid").data("kendoGrid");
+               						myGrid.element.on("dblclick","tbody>tr","dblclick",function(e){
+               							var id = $(this).find("td").first().text();
+               							editRole1(id);
+               						});
 
                						$("#grid .k-grid-content").mCustomScrollbar( {scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
                						var pg = pagination(pageNo,total,'loadData',10);
@@ -63,6 +70,8 @@
                 }
                 loadData(1);
                 function search(){
+                	var flag = checkForms($("#roleName").get(0));
+                	if(!flag)return;
                 	loadData(1);
         		}
                 
@@ -83,7 +92,7 @@
                 }
                 
                 function onClose(e){
-                	loadData();
+                	loadData(1);
                 }
                 function delteAction(roleId){
                 	var sessionId=$("#token").val();
@@ -101,7 +110,7 @@
            					if(msg.code==200){
            						//alert(msg.description);
            						$("body").popjs({"title":"提示","content":msg.description});
-           						loadData();
+           						loadData(1);
            					}else{
            						//alert(msg.description);
            						$("body").popjs({"title":"提示","content":msg.description});
@@ -111,7 +120,7 @@
                     }});
                 }
                 //单击修改按钮弹出对话框
-                function editAction(roleId){
+                function editRole1(id){
                 	var sessionId = $("#token").val();
                 	$("#dialog").tyWindow({
                 		width: "680px",
@@ -120,37 +129,10 @@
                 	    position: {
                 	        top: "100px"
                 	      },
-                		 content: "<%=basePath%>role/gotoRoleDetail.do?roleId="+roleId+"&sessionId="+sessionId,
+                		 content: "<%=basePath%>role/gotoRoleDetail.do?roleId="+id+"&sessionId="+sessionId,
                 		iframe : true,
                 		closeCallback: onClose
                 		});
-                	//$("#dialog").data("kendoWindow").open();
-                	<%-- $("#editRoleName").val(name);
-                	$("#editRoleNote").val(note);
-                	$("#eRoleId").val(roleId);
-                	 $.ajax({
- 						url:"<%=basePath%>role/getModuleTree.do",
- 						type:"post",
- 						data:{
- 							roleId:roleId,
- 							random:Math.random()
- 						},
- 						dataType:"json",
- 						success:function(rsp){
- 							var editRoleData =JSON.stringify(rsp.data);
- 							$("#editRoleTreeview").remove();
-							$("#editRoleBox").append("<div id='editRoleTreeview'></div>");
-							
- 							$("#editRoleTreeview").kendoTreeView({
- 								//select: onSelect,//点击触发事件
- 							    checkboxes: {
- 							        checkChildren: true//允许复选框多选
- 							    },
- 							    check: editOnCheck,//check复选框
- 							    dataSource: [eval('(' + editRoleData + ')')]
- 							}).data("kendoTreeView");
- 						}
- 					}); --%>
 				}
                 //点击每行单元格在右边显示功能信息
                 function loadTree(roleId){

@@ -54,6 +54,7 @@
 							}).data("kendoTreeView");
 						}
 					});
+				 $("#pow .box .box-content").mCustomScrollbar({scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
 			 });
 			  // show checked node IDs on datasource change
 		        function onCheck(e) {

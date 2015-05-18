@@ -17,6 +17,7 @@ import net.sf.ehcache.Element;
 public class CacheUtils {
 	public  static final String USER_BASE_DATA="USER_BASE_DATA";
 	public  static final String ROLE_BASE_DATA="ROLE_BASE_DATA";
+	public 	static final String ORGAN_DATASOURCE="ORGAN_DATASOURCE";
 	
 	public static Ehcache getCache(CacheManager cacheManager, String cacheName) {
 		if (cacheManager == null || StringUtils.isBlank(cacheName)) {

@@ -1846,7 +1846,7 @@ header .navbar {
 
 
 body {
-  padding:15px; margin:0; background:url(../images/bg.png); color:#81c9f0; font-family:Arial, "微软雅黑", "宋体"; font-size:13px; }
+  margin:0; background:url(../images/bg.png); color:#81c9f0; font-family:Arial, "微软雅黑", "宋体"; font-size:13px; }
   @media (max-width: 768px) {
     body {
       padding-left: 0;
@@ -3594,10 +3594,7 @@ input[type="color"],
   input[type="tel"]:focus,
   input[type="color"]:focus,
   .uneditable-input:focus {
-    border-color: #aaaaaa;
-    -webkit-box-shadow: 0 0 8px #dce1e5;
-    -moz-box-shadow: 0 0 8px #dce1e5;
-    box-shadow: 0 0 8px #dce1e5; }
+    border-color: #aaaaaa; }
 
 .dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
   background-image: none;

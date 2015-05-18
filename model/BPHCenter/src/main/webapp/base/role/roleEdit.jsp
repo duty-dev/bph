@@ -16,28 +16,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <body>
 	<div id="vertical">
-			<div id="horizontal" style="height: 100%; width: 100%;">
+			<div id="horizontal">
 				<div id="left-pane">
 					<div class="pane-content">
 						<!-- 左开始 -->
 						<div class="demo-section k-header">
-							<form id="employeeForm" data-role="validator"
-								novalidate="novalidate">
 								<h4>角色信息</h4>
 								<ul>
 									<input id="eRoleId" type="hidden" value="${role.id}"/>
-									<li><label for="eRoleName">角色名称:</label> <input
-										type="text" class="k-textbox" name="editRoleName"
-										id="editRoleName"  value="${role.name}" 
-										style="width:55%"/>
-									<li><label for="eRoleNote">角色描述:</label> 
-										<textarea rows="3" cols="20" id="editRoleNote" style="width:55%;">${role.note}</textarea>
+									<li class="ty-input"><span class="ty-input-warn">*</span><label for="eRoleName">角色名称:</label> 
+										<input type="text" class="k-textbox" name="editRoleName" id="editRoleName" value="${role.name}" style="width:65%;"/><em class="ty-input-end"></em>
+										
 									</li>
-									<li class="actions">
-										<button type="button" data-role="button"
-											data-sprite-css-class="k-icon k-i-tick" data-click='edit'>提交</button></li>
+									<li class="ty-input"><span class="ty-input-warn" style="margin-top:22px;">*</span><label for="eRoleNote">角色描述:</label> 
+										<textarea class="ty-edit-txtarea" id="editRoleNote" style="margin-top:10px;">${role.note}</textarea>
+									</li>
+									<li class="ty-input actions">
+										<button type="button" class="ty-button ty-button-te" onclick="edit(this);" data-click='edit'>提交</button></li>
 								</ul>
-							</form>
 						</div>
 						<!-- 左结束-->
 					</div>
@@ -48,7 +44,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<!-- 右开始 -->
 						<!-- 跨机构授权开始 -->
 						<div class="box-col" id="editRoleBox">
-							<h4>功能选择</h4>
+							<h4>角色权限</h4>
 							<div id="editRoleTreeview"></div>
 						</div>
 					</div>
@@ -58,8 +54,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <style scoped>
 #vertical {
-	height: 450px;
-	width: 640px;
 	margin: 0 auto;
 }
 
@@ -80,7 +74,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 label {
 	display: inline-block;
 	padding-right: 3px;
-	width: 80px;
+	width: 60px;
 }
 
 span.k-tooltip {
@@ -88,8 +82,7 @@ span.k-tooltip {
 }
 
 .demo-section {
-	height:420px;
-	width: 300px;
+	width: 290px;
 }
 
 .actions {
@@ -110,12 +103,12 @@ span.k-tooltip {
             
             $("#horizontal").kendoSplitter({
                 panes: [
-                    { collapsible: true, size: "320px" },
-                    { collapsible: true, size: "320px" }
+                    { collapsible: true },
+                    { collapsible: true }
                 ]
             });
             
-            var container = $("#employeeForm");
+            /* var container = $("#employeeForm");
             kendo.init(container);
             container.kendoValidator({
                 rules: {
@@ -128,7 +121,7 @@ span.k-tooltip {
                         return true;
                     }
                 }
-            });
+            }); */
             
             $.ajax({
 					url:"<%=basePath%>role/getModuleTree.do",
@@ -155,11 +148,11 @@ span.k-tooltip {
         });
         
         function edit(e) {
-        	if($("#addRoleName").val()==""){
+        	if($.trim($("#editRoleName").val())==""){
            		$("body").popjs({"title":"提示","content":"角色名称不能为空"});
     		    return false;
            }
-    	   if($("#addRoleNote").val()==""){
+    	   if($.trim($("#editRoleNote").val())==""){
            		$("body").popjs({"title":"提示","content":"角色备注不能为空"});
     		    return false;
            }
@@ -169,8 +162,8 @@ span.k-tooltip {
         /* 修改角色 */
    	 function editRole(){
    	 	var roleId=$("#eRoleId").val();
-   		var roleName=$("#editRoleName").val();
-   		var roleNote=$("#editRoleNote").val();
+   		var roleName=$.trim($("#editRoleName").val());
+   		var roleNote=$.trim($("#editRoleNote").val());
    		$.ajax({
    			url:"<%=basePath%>role/updateRole.do",
    			type:"post",

@@ -6,7 +6,7 @@
             <script>	
                 	function loadData(pageNo) {
                 	var	organId = $("#organId").val();
-                	var	organName = $("#organName").val();
+                	var	organName = $.trim($("#organName").val());
                 	var organPath=$("#organPath").val();
                 	var organLevel=$("#organLevel").val();
                 	$.ajax({
@@ -20,6 +20,7 @@
                				organLevel:organLevel,
                				sessionId:$("#token").val(),
                				expandeds:expandeds,
+               				selectName:$("#selectName").val(),
                				pageNo:pageNo,
             				pageSize:10
                			},
@@ -35,6 +36,7 @@
                	                        },
                	                     height: 792,
                                      sortable: true,
+									 resizable: true,
                                      selectable: "multiple",
                	                        columns: [{
                	                            field: "id",
@@ -42,8 +44,8 @@
                	                         	hidden:true
                	                        },{
                  							field: "操作",
-                 							template: "<button id='#: id#' class='ty-edit-btn' title='修改' onclick=\"editAction('#: id#')\">修改</button> "
-                 							+"<button id='#: id#' class='ty-delete-btn' title='删除' onclick=\"delteAction('#: id#')\">删除</button> "
+                 							template: "<button type='button' id='#: id#' class='ty-edit-btn' title='修改' onclick='editOrgan1(#: id #)'>修改</button> "
+                 							+"<button type='button' id='#: id#' class='ty-delete-btn' title='删除' onclick=\"delteAction('#: id #')\">删除</button> "
                  						}, {
                	                            field: "name",
                	                            title: "机构名称"
@@ -56,8 +58,16 @@
                	                        }, {
                	                            field: "shortName",
                	                            title: "机构简称"
+               	                        }, {
+               	                            field: "note",
+               	                            title: "机构备注"
                	                        }]
                	                    });
+               						var myGrid = $("#grid").data("kendoGrid");
+               						myGrid.element.on("dblclick","tbody>tr","dblclick",function(e){
+               							var id = $(this).find("td").first().text();
+               							editOrgan1(id);
+               						});
                						
                						$("#grid .k-grid-content").mCustomScrollbar( {scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
                						var pg = pagination(pageNo,total,'loadData',10);
@@ -69,6 +79,8 @@
                 }
                 loadData(1);
                 function search(){
+                	var flag = checkForms($("#organName").get(0));
+                	if(!flag)return;
                 	loadData(1);
         		}
                 
@@ -89,9 +101,16 @@
                 	//$("#dialog").data("kendoWindow").open();
                 }
                 function onClose(e){
-                	loadData();
-                /* 刷新左边的树 */
-                 $("#treeview").remove();
+                	loadData(1);
+                	/* 刷新左边的树 */
+	               	 if($("#searchOrganName").val()==""){
+						 loadOrganTreeList();
+					 }else{
+						 queryOrgan();
+					 }
+                	
+                
+                <%--  $("#treeview").remove();
 				 $("#box").append("<div id='treeview'></div>");
                	  $.ajax({
 						url:"<%=basePath%>web/organx/tree.do",
@@ -109,65 +128,47 @@
 								select: onSelect,//点击触发事件
 							    dataSource: [eval('(' + json_data + ')')]
 							}).data("kendoTreeView");
-	                        var selectedNode = treeview.select();
-
-	                        if (selectedNode.length == 0) {
-	                            selectedNode = null;
-	                        }
-	        		  		<%-- $.ajax({
-	        		  			url:"<%=basePath%>web/organx/addOrganTreeElement.do",
-	    						type:"post",
-	    						data:{
-	    							random:Math.random()
-	    						},
-	    						dataType:"json",
-	    						success:function(rsp){
-	    							$(rsp.data).each(function(){
-	    								treeview.append(eval('(' + JSON.stringify(this) + ')'), selectedNode);
-	                   				});
-	    						}
-	        		  		}); --%>
+	        		  		selectClass();
 						}
-					});
-                }
+					});--%>
+                } 
                 
-                function editAction(e){
+                function editOrgan1(id){
                 	var sessionId = $("#token").val();
                 	$("#dialog").tyWindow({
-                		width: "680px",
-                		height: "490px",
+                		width: "670px",
+                		height: "522px",
                 	    title: "机构修改",
                 	    position: {
                 	        top: "100px"
                 	      },
-                		 content: "<%=basePath%>web/organx/queryOrganDetail.do?organId="+e+"&sessionId="+sessionId,
+                		 content: "<%=basePath%>web/organx/queryOrganDetail.do?organId="+id+"&sessionId="+sessionId,
                 		iframe : true,
                 		closeCallback: onClose
                 		});
-                	//$("#dialog").data("kendoWindow").open();
                 }
                 /* 删除机构信息 */
                 function delteAction(e){
                 	var sessionId = $("#token").val();
                     $("body").tyWindow({"content":"确定要删除该机构?","center":true,"ok":true,"no":true,"okCallback":function(){
-           			$.ajax({
-           				url:"<%=basePath %>web/organx/deleteOrgan.do",
-           				type:"post",
-           				dataType:"json",
-           				data:{
-           					sessionId:sessionId,
-           					organId:e
-           				},
-           				success:function(msg){
-           					 if(msg.code==200){
-           						 alert(msg.description);
-           						 loadData();
-           						 onClose();
-           					}else{
-           						alert(msg.description);
-           					}
-           				}
-           			});
+	           			$.ajax({ 
+	           				url:"<%=basePath %>web/organx/deleteOrgan.do",
+	           				type:"post",
+	           				dataType:"json",
+	           				data:{
+	           					sessionId:sessionId,
+	           					organId:e
+	           				},
+	           				success:function(msg){
+	           					 if(msg.code==200){
+	           						$("body").popjs({"title":"提示","content":msg.description});
+	           						 //loadData(1);
+	           						 onClose();
+	           					}else{
+	           						$("body").popjs({"title":"提示","content":msg.description});
+	           					}
+	           				}
+	           			});
                     }});
                 }
                 

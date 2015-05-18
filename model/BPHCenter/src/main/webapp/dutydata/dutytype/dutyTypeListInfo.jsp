@@ -34,8 +34,7 @@ var DutyTyepManage = {
 		                            }
 		                        }
 							});
-						 
-					 	
+	$("#dutyTypeTreeList").html("");			 				 	
     $("#dutyTypeTreeList").kendoTreeList({
 						 dataSource: ds,
 						 
@@ -241,8 +240,8 @@ var DutyTyepManage = {
 		var tr=dutyTypeTreeList.select();
 		var row= dutyTypeTreeList.dataItem(tr); 
 		if(row!=null){
-		if(row.isUsed=="锁定"){
-			$("body").popjs({"title":"提示","content":"该勤务类型状态已是锁定状态！"});
+		if(row.isUsed=="停用"){
+			$("body").popjs({"title":"提示","content":"该勤务类型状态已是停用状态！"});
 			return;
 		} else{ 
 			if(!row.isLeaf){

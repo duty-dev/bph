@@ -20,9 +20,9 @@
 		<result column="organ_name" property="organName" jdbcType="VARCHAR" />
 		<result column="organ_path" property="organPath" jdbcType="VARCHAR" />
 	</resultMap>
-	
-	
-		<resultMap id="BaseResultMap1" type="com.tianyi.bph.domain.system.Area">
+
+
+	<resultMap id="BaseResultMap1" type="com.tianyi.bph.domain.system.Area">
 		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="area_name" property="areaName" jdbcType="VARCHAR" />
 		<result column="area_type" property="areaType" jdbcType="INTEGER" />
@@ -41,7 +41,8 @@
 		<result column="organ_name" property="organName" jdbcType="VARCHAR" />
 		<result column="organ_path" property="organPath" jdbcType="VARCHAR" />
 
-		<collection property="relationUserKeys" ofType="INTEGER" column="area_id">
+		<collection property="relationUserKeys" ofType="INTEGER"
+			column="area_id">
 			<result column="user_id" />
 		</collection>
 		<!-- 关联警员信息 <collection property="relationUserKeys" ofType="AreaRelationUserKey" 
@@ -51,9 +52,9 @@
 			<id column="g_id" property="id"/> <result column="g_name" property="name"/> 
 			<result column="g_position" property="position"/> </association> -->
 	</resultMap>
-	
-	
-	
+
+
+
 	<sql id="Example_Where_Clause">
 		<where>
 			<foreach collection="oredCriteria" item="criteria" separator="or">
@@ -438,7 +439,10 @@
 		</if>
 	</select>
 
-
-
+	<select id="checkAreaName" resultType="java.lang.Integer"
+		parameterType="java.lang.String">
+		select count(*) from t_area t where
+		t.area_name=#{areaName,jdbcType=VARCHAR} and t.area_type=#{areaType,jdbcType=INTEGER} and t.flag=1 
+	</select>
 
 </mapper>

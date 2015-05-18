@@ -49,7 +49,7 @@ $(document).ready(function() {
                    <span id="btnaddChildNode" class="k-button"  onclick="DutyTyepManage.editDutyType()">编辑</span> 
                    <span id="btndeleteNode" class="k-button"  onclick="DutyTyepManage.deleteDutyType()">删除</span> 
                    <span id="btnunLockNode" class="k-button"  onclick="DutyTyepManage.unLockNode()">启用</span> 
-                   <span id="btnlockNode" class="k-button"  onclick="DutyTyepManage.lockNode()">锁定</span>    
+                   <span id="btnlockNode" class="k-button"  onclick="DutyTyepManage.lockNode()">停用</span>    
 		<div class="temp">
 			<div class="ty-total-decorate"><span id="gridListTotal"></span><i></i></div>
 			

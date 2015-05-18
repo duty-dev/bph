@@ -33,21 +33,23 @@
 		<param-name>spring.profiles.active</param-name>
 		<param-value>development</param-value>
 	</context-param>
-
+	
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 		<listener> <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class> </listener>
 	    <listener> <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class> </listener>
 	</listener>
-
+	
 	<!--为了得到系统路径 -->	
 	<servlet>
 		<servlet-name>dispatcher</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<!-- <servlet-class>com.tianyi.bph.MainServlet</servlet-class> -->
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>classpath*:spring/dispatcher-servlet.xml</param-value>
+			<param-value>classpath:spring/dispatcher-servlet.xml</param-value>
 		</init-param>
+		<load-on-startup>1</load-on-startup>
 	</servlet>
 	
 	<servlet-mapping>
@@ -85,6 +87,7 @@
         <filter-name>sitemesh</filter-name>
         <url-pattern>*.action</url-pattern>
    </filter-mapping>
+   
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>

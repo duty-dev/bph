@@ -1560,8 +1560,8 @@ var DutyItemManage={
 				rs =  row.name;
 				break;
 			case 101:
-				var bts =row.beginTime2.getHours() + ":" +row.beginTime2.getMinutes();
-				var ets=row.endTime2.getHours() + ":" +row.endTime2.getMinutes();
+				var bts =row.beginTime2.getHours() + ":" +(row.beginTime2.getMinutes()>9?row.beginTime2.getMinutes():"0"+row.beginTime2.getMinutes());
+				var ets=row.endTime2.getHours() + ":" +(row.endTime2.getMinutes()>9?row.endTime2.getMinutes():"0"+row.endTime2.getMinutes());
 				rs =  row.name +"  [" + bts +"到" + (row.isOverDay?"第二天":"") + ets +"] ";
 				
 				break;
@@ -1890,7 +1890,8 @@ var DutyItemManage={
 					var winUserNode= $("#userNodeWindow").data("kendoWindow");
 					winUserNode.open();
 				} else {
-					$.messager.alert('提示', "只能在班次，车辆下面自定义节点!", "warning");
+				$("body").popjs({"title":"提示","content":"只能在班次，车辆下面自定义节点!"}); 
+					//$.messager.alert('提示', "只能在班次，车辆下面自定义节点!", "warning");
 				}
 			}
 		},
@@ -2176,7 +2177,7 @@ var DutyItemManage={
 			
 			if(uid==undefined){
 				re=tv.select();
-				if(re ==null){
+				if(re ==null||re.length==0){
 					$("body").popjs({"title":"提示","content":"请选择要删除节点"}); 
 					return;
 				}

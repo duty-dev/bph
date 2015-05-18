@@ -31,14 +31,14 @@ public class LogServiceImpl implements LogService {
 	@Override
 	public void insert(String loginIp,String userId,String userName,String msg,Integer type) {
 		// TODO Auto-generated method stub
-		Log log=new Log();
+		/*Log log=new Log();
 		log.setLoginIp(loginIp);
 		log.setLoginUserId(userId);
 		log.setLoginUserName(userName);
 		log.setOperateDate(new Date());
 		log.setLogContext(msg);
 		log.setLogTypeId(type);
-		logDao.insert(log);
+		logDao.insert(log);*/
 	}
 
 }

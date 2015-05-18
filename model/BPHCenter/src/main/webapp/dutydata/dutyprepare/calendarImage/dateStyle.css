@@ -22,7 +22,7 @@ img { border:0px;}
  .clddtywindow{width:654px; height:450px; padding: 10px;}
  .tbdutydetailsfordays{height:30px;float:right;background-color: #F7F3F3;}
  
-.dateBox{ width:150%; height:100%; background-color:#e4e4e4; float:left; overflow:hidden; }
+.dateBox{ width:150%; height:100%; background-color:#233741; float:left; overflow:hidden; }
 .dateBoxMain2{ width:100%;height:100%; padding-top:92px;background:red;box-sizing:border-box}
 .dateBoxMainTop{height:92px; width:100%;position:absolute; top:0px;}
 .dateBoxMainFoot{height:100%; width:100%;background:green}
@@ -33,23 +33,23 @@ img { border:0px;}
 .dateBoxMenuOn{ width:118px; height:37px; margin-top:1px; background:url(../calendarImage/dateMenuMouseOver.png);line-height:36px; border:1px solid #bab9ba; border-bottom:none; cursor:pointer;}
  
 .dateBoxMain{ width:100%; height:auto; overflow:hidden;}
-.dateBoxMainTItle{ width:100%; height:39px; overflow:hidden; background:url(../calendarImage/dateMainTitleBg.png) repeat-x;}
-.dateBoxMainTItleTxt{ width:10%; overflow:hidden; height:39px; line-height:39px; color:#FFF; float:left; }
+.dateBoxMainTItle{ width:100%; height:39px; overflow:hidden; background-color:#233741;}
+.dateBoxMainTItleTxt{ width:10%; overflow:hidden; height:39px;padding-left:15px; line-height:39px; color:#81C9F0; float:left; }
 .dateBoxMainTItleTxtDIv{ width:100%; height:auto; overflow:hidden; text-align:center;}
 .dateBoxMainTItleTxtDIv img{ margin-top:6px;}
-.dateBoxMainTItleBox{ width:80%; height:39px; overflow:hidden; float:left; }
+.dateBoxMainTItleBox{ width:78%; height:39px; overflow:hidden; float:left; }
 .dateBoxMainTItleBoxMain{ width:225px; height:39px; overflow:hidden;margin:0 auto; text-align:center; color:#FFF;}
 .dateBoxMainTItleBoxMain li{line-height:39px; float:left;}
-.dateBoxMainTItleBoxMain img{ vertical-align:middle; margin-top:12px; cursor:pointer;}
+.dateBoxMainTItleBoxMain img{ vertical-align:middle; cursor:pointer;}
 .dateBoxMainTItleBoxMainTxt{ margin-left:30px; line-height:42px;}
 .dateBoxMainTItleBoxMainTxt2{  line-height:42px; margin-right:30px;}
 .dateBoxMainTItleBoxMainTxt samp{ float:left;}
-.dateBoxMainTItleBoxMain_samp{ clear:both; width:52px; height:25px; line-height:29px; color:#fff; overflow:hidden; background-position:center; margin-top:7px; float:left; }
+.dateBoxMainTItleBoxMain_samp{ clear:both; width:52px; height:25px; line-height:29px; color:#81C9F0; overflow:hidden; background-position:center; margin-top:7px; float:left; }
  
 .dateBoxMainDate{ width:100%; height:100%; overflow:hidden;}
 .dateBoxMainDate table{ width:100%; height:100%; border:none;border-collapse:collapse;}
-.dateBoxMainDate th{ width:10%; background-color:#8ba7c9; color:#FFF;}
-.dateBoxMainDate td{overflow: hidden; width:10%;  color:#43505b; border:1px solid #fff; border-left:none; border-top:none; height:25%; position:relative}
+.dateBoxMainDate th{ width:10%; background-color:#F6F6F6; color:#686868;}
+.dateBoxMainDate td{overflow: hidden; width:10%;  color:#81c9f0; border:1px solid #fff; border-left:none; border-top:none; height:25%; position:relative}
 .dateBoxMainDateTD{ width:100%; height:80%; overflow:hidden;position:relative;}
 .dateBoxMainDateTDLib{ cursor:pointer;width:33px; height:27px; overflow:hidden; background:url(dateLib.png) no-repeat; text-align:center; color:#FFF; line-height:27px;}
 .dateBoxMainDateTDLibOff{ width:33px; height:27px; overflow:hidden; background:url(dateLibOff.png) no-repeat; text-align:center; color:#FFF; line-height:27px;}

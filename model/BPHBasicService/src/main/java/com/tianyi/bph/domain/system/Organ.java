@@ -1,6 +1,7 @@
 package com.tianyi.bph.domain.system;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 public class Organ implements Serializable{
@@ -21,7 +22,44 @@ public class Organ implements Serializable{
     
     private boolean expanded;
     
-    private boolean checked;
+    private Integer childCount;
+    
+    private boolean selected;
+    
+   
+    public boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
+
+	public void addChild(Organ node) {
+		if (this.items == null) {
+			this.items = new ArrayList<Organ>();
+		}
+		this.items.add(node);
+	}
+
+	public Integer getChildCount() {
+		return childCount;
+	}
+
+	public void setChildCount(Integer childCount) {
+		this.childCount = childCount;
+	}
+
+	private boolean hasChild;
+    public boolean isHasChild() {
+		return hasChild;
+	}
+
+	public void setHasChild(boolean hasChild) {
+		this.hasChild = hasChild;
+	}
+
+	private boolean checked;
     
     public boolean isChecked() {
 		return checked;

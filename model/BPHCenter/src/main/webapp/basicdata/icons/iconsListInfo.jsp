@@ -38,7 +38,8 @@ var IconManage ={
 						"icons_Query" : JSON.stringify(bph_Icon_query),
 						"expandeds"		:expandeds,
 						"organId":$("#organId").val(),
-						"organPath":$("#organPath").val()
+						"organPath":$("#organPath").val(),
+						"selectName":$("#selectName").val()
 					},
 				dataType : "json",
 				success : function(req) {
@@ -48,6 +49,7 @@ var IconManage ={
                						var total = req.totalRows;
                						
                						$("#gridListTotal").html(total+"张");
+               						$("#iconsgrid").empty();
 							$("#iconsgrid").kendoGrid({
 								dataSource : {
 									data : udata 

@@ -179,6 +179,7 @@ public class ExtDbResult {
 	 * 对应GPS名称
 	 */
     private String policeGpsName;
+    
     private Integer jjcount;
     
     /***************************************************************************************

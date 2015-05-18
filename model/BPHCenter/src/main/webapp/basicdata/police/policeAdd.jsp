@@ -340,7 +340,7 @@ var policeAddManage= {
 			}
 		},
 		isExistNumber:function(){
-			var pnumber = $.trim($("#policecode").val()); 
+			var pNumber = $.trim($("#policecode").val()); 
 			
 			if(pNumber.length>0){
 			$.ajax({

@@ -4,39 +4,46 @@ public class MqConfig {
 	/**
 	 * mq 服务配置
 	 */
-	private String mqIp;
-	private String mqPort;
-	private String mqAccount;
-	private String mqPwd;
-	private String mqExchangeName;
-	public String getMqIp() {
-		return mqIp;
+	  private String exchange; //交换机名称
+	  private String exchangeType; //交换机类型
+	  private String messeageSvrIP; //消息服务IP
+	  private String messeagePort; //消息服务端口
+	  private String messeageUser; //消息服务用户
+	  private String messeagePassword;//消息服务密码
+	public String getExchange() {
+		return exchange;
 	}
-	public void setMqIp(String mqIp) {
-		this.mqIp = mqIp;
+	public void setExchange(String exchange) {
+		this.exchange = exchange;
 	}
-	public String getMqPort() {
-		return mqPort;
+	public String getExchangeType() {
+		return exchangeType;
 	}
-	public void setMqPort(String mqPort) {
-		this.mqPort = mqPort;
+	public void setExchangeType(String exchangeType) {
+		this.exchangeType = exchangeType;
 	}
-	public String getMqAccount() {
-		return mqAccount;
+	public String getMesseageSvrIP() {
+		return messeageSvrIP;
 	}
-	public void setMqAccount(String mqAccount) {
-		this.mqAccount = mqAccount;
+	public void setMesseageSvrIP(String messeageSvrIP) {
+		this.messeageSvrIP = messeageSvrIP;
 	}
-	public String getMqPwd() {
-		return mqPwd;
+	public String getMesseagePort() {
+		return messeagePort;
 	}
-	public void setMqPwd(String mqPwd) {
-		this.mqPwd = mqPwd;
+	public void setMesseagePort(String messeagePort) {
+		this.messeagePort = messeagePort;
 	}
-	public String getMqExchangeName() {
-		return mqExchangeName;
+	public String getMesseageUser() {
+		return messeageUser;
 	}
-	public void setMqExchangeName(String mqExchangeName) {
-		this.mqExchangeName = mqExchangeName;
+	public void setMesseageUser(String messeageUser) {
+		this.messeageUser = messeageUser;
+	}
+	public String getMesseagePassword() {
+		return messeagePassword;
+	}
+	public void setMesseagePassword(String messeagePassword) {
+		this.messeagePassword = messeagePassword;
 	}
 }

@@ -144,6 +144,11 @@ var VehicleGroupManage = {
 	},
 	editGroup:function(){
 		var organId = $("#organId").val();
+		var organId = $("#organId").val();
+		if(m_vehiclegroup_Id ==undefined){
+			$("body").popjs({"title":"提示","content":"请选择要操作的分组数据"}); 
+			return;
+		}
 		if(m_vehiclegroup_Id!=undefined){
 		$("#dialog").tyWindow({
 			width : "680px",
@@ -203,6 +208,7 @@ var VehicleGroupManage = {
 						var dataSo = new kendo.data.DataSource({
 							data : pdata
 						});
+						$("#dtGroupMember").empty();
 						$("#dtGroupMember").kendoGrid({
 							dataSource : dataSo,
 							columns : [ {
@@ -258,6 +264,10 @@ var VehicleGroupManage = {
 		var row = kGrid.dataItem(kGrid.select());
 		var kgroupGrid = $("#dtVehicleGroup").data("kendoGrid");
 		var grouprow = kgroupGrid.dataItem(kgroupGrid.select());
+		if(grouprow == null){
+			$("body").popjs({"title":"提示","content":"请选择要操作的分组数据"}); 
+			return;		
+		}
 		var groupId = grouprow.id;
 		if (row != null) {
 		$("body").tyWindow({"content":"确定要删除该成员?","center":true,"ok":true,"no":true,"okCallback":function(){ 
@@ -312,7 +322,7 @@ var VehicleGroupManage = {
 			}
 	},
 	onCloseMember:function(e){
-		VehicleGroupManage.loadMemberData(VehicleGroupManage.pageNo);  
+		VehicleGroupManage.loadMemberData(m_vehiclegroup_Id);  
 	},
 	onCloseGorup:function(e){
 		VehicleGroupManage.loadGroupData(VehicleGroupManage.pageNo);  
@@ -320,8 +330,10 @@ var VehicleGroupManage = {
 };
 
 </script>
-<div id="dtVehicleGroup" style="width:330px;float:left"></div>   
+<div class="span5">
+<div id="dtVehicleGroup" ></div>   
 <div id="page"></div>
-<div id="dtGroupMember" style="width:300px;float:left"></div> 
+</div>
+<div id="dtGroupMember" class="span5"></div> 
 <div id="dialog"></div> 
 

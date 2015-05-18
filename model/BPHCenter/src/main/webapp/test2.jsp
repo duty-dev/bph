@@ -1,213 +1,212 @@
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%
-	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://"
-			+ request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<!DOCTYPE html>
 <html>
 <head>
-<base href="<%=basePath%>">
-
-<title>My JSP 'test2.jsp' starting page</title>
-
-<meta http-equiv="pragma" content="no-cache">
-<meta http-equiv="cache-control" content="no-cache">
-<meta http-equiv="expires" content="0">
-<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-<meta http-equiv="description" content="This is my page">
-<!--
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	-->
-<link href="<%=path%>/JS/ztree/zTreeStyle/zTreeStyle.css"
-	rel="stylesheet" type="text/css" />
-<script type="text/javascript"
-	src="<%=path%>/JS/ztree/jquery-1.4.4.min.js"></script>
-<script type="text/javascript"
-	src="<%=path%>/JS/ztree/jquery.ztree.core-3.5.js"></script>
-<script type="text/javascript"
-	src="<%=path%>/JS/ztree/jquery.ztree.all-3.5.min.js"></script>
-<script type="text/javascript"
-	src="<%=path%>/JS/ztree/jquery.ztree.all-3.5.js"></script>
-<script type="text/javascript"
-	src="<%=path%>/JS/ztree/jquery.ztree.all-3.5.min.js"></script>
-<script type="text/javascript"
-	src="<%=path%>/JS/ztree/jquery.ztree.core-3.5.min.js"></script>
-<script type="text/javascript"
-	src="<%=path%>/JS/ztree/jquery.ztree.excheck-3.5.js"></script>
-<script type="text/javascript"
-	src="<%=path%>/JS/ztree/jquery.ztree.excheck-3.5.min.js"></script>
-<script type="text/javascript"
-	src="<%=path%>/JS/ztree/jquery.ztree.exedit-3.5.js"></script>
-<script type="text/javascript"
-	src="<%=path%>/JS/ztree/jquery.ztree.exedit-3.5.min.js"></script>
-
-<SCRIPT type="text/javascript">
-	var setting = {
-		view : {
-			dblClickExpand : false
-		},
-		data : {
-			simpleData : {
-				enable : true
-			}
-		},
-		callback : {
-			beforeClick : beforeClick,
-			onClick : onClick
-		}
-	};
-
-	//json数据源，也可以从后台读取json字符串，并转换成json对象，如下所示 
-	//var strNodes = '${jsonList}'; 
-	//var zNodes = eval("("+strNodes+")"); //将json字符串转换成json对象数组，strNode一定要加"（）"，不然转不成功 
-	var zNodes = [ {
-		id : 1,
-		pId : 0,
-		name : "北京"
-	}, {
-		id : 2,
-		pId : 0,
-		name : "天津"
-	}, {
-		id : 3,
-		pId : 0,
-		name : "上海"
-	}, {
-		id : 6,
-		pId : 0,
-		name : "重庆"
-	}, {
-		id : 4,
-		pId : 0,
-		name : "河北省",
-		open : true
-	}, {
-		id : 41,
-		pId : 4,
-		name : "石家庄"
-	}, {
-		id : 42,
-		pId : 4,
-		name : "保定"
-	}, {
-		id : 43,
-		pId : 4,
-		name : "邯郸"
-	}, {
-		id : 44,
-		pId : 4,
-		name : "承德"
-	}, {
-		id : 5,
-		pId : 0,
-		name : "广东省",
-		open : true
-	}, {
-		id : 51,
-		pId : 5,
-		name : "广州"
-	}, {
-		id : 52,
-		pId : 5,
-		name : "深圳"
-	}, {
-		id : 53,
-		pId : 5,
-		name : "东莞"
-	}, {
-		id : 54,
-		pId : 5,
-		name : "佛山"
-	}, {
-		id : 6,
-		pId : 0,
-		name : "福建省",
-		open : true
-	}, {
-		id : 61,
-		pId : 6,
-		name : "福州"
-	}, {
-		id : 62,
-		pId : 6,
-		name : "厦门"
-	}, {
-		id : 63,
-		pId : 6,
-		name : "泉州"
-	}, {
-		id : 64,
-		pId : 6,
-		name : "三明"
-	} ];
-
-	function beforeClick(treeId, treeNode) {
-		var check = (treeNode && !treeNode.isParent);
-		if (!check)
-			alert("只能选择城市...");
-		return check;
-	}
-
-	function onClick(e, treeId, treeNode) {
-		var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
-		nodes = zTree.getSelectedNodes(), 
-		v = "";
-		nodes.sort(function compare(a, b) {
-			return a.id - b.id;
-		});
-		for (var i = 0, l = nodes.length; i < l; i++) {
-			v += nodes[i].name + ",";
-		}
-		if (v.length > 0)
-			v = v.substring(0, v.length - 1);
-		var cityObj = $("#citySel");
-		cityObj.attr("value", v);
-	}
-
-	function showMenu() {
-		var cityObj = $("#citySel");
-		var cityOffset = $("#citySel").offset();
-		$("#menuContent").css({
-			left : cityOffset.left + "px",
-			top : cityOffset.top + cityObj.outerHeight() + "px"
-		}).slideDown("fast");
-
-		$("body").bind("mousedown", onBodyDown);
-	}
-	function hideMenu() {
-		$("#menuContent").fadeOut("fast");
-		$("body").unbind("mousedown", onBodyDown);
-	}
-	function onBodyDown(event) {
-		if (!(event.target.id == "menuBtn" || event.target.id == "menuContent" || $(
-				event.target).parents("#menuContent").length > 0)) {
-			hideMenu();
-		}
-	}
-
-	$(document).ready(function() {
-		$.fn.zTree.init($("#treeDemo"), setting, zNodes);
-	});
-//-->
-</SCRIPT>
+<title>扁平化指挥系统</title>
+<%@ include file="emulateIE.jsp" %>	
 </head>
 
 <body>
-	<div class="zTreeDemoBackground left">
-		<ul class="list">
-			<li class="title"><span class="highlight_red">选择城市时，按下
-					Ctrl 或 Cmd 键可以进行多选</span></li>
-			<li class="title">城市：<input id="citySel" type="text" readonly
-				value="" style="width:120px;" /> <a id="menuBtn" href="#"
-				onclick="showMenu(); return false;">选择</a></li>
-		</ul>
+	<div id="vertical">
+			<div id="horizontal" style="height: 100%; width: 100%;">
+				<div id="left-pane">
+					<div class="pane-content">
+						<!-- 左开始 -->
+						<div class="demo-section k-header">
+							<form id="employeeForm" data-role="validator"
+								novalidate="novalidate">
+								<h4>服务信息</h4>
+								<ul>
+									<li class="ty-input"><label for="aServiceName">服务名称:</label>
+									<input type="text" class="k-textbox" name="addServiceName" id="addServiceName" style="width:60%" /><em class="ty-input-end"></em>
+									<li class="ty-input"><label for="aServiceIp">服务IP:</label> 
+									<input type="text" class="k-textbox" name="addServiceIp" id="addServiceIp" style="width:60%" /><em class="ty-input-end"></em>
+									<li class="ty-input"><label for="aServiceType">服务类型:</label> 
+										<select id="addServiceType" name="addServiceType" width=200px>
+											<option value="">---请选择服务类型---</option>
+											<option value="1">mq</option>
+											<option value="2">ftp</option>
+											<option value="3">gps</option>
+										</select>
+									<li class="ty-input"><label for="aServicePort">服务端口:</label> 
+									<input type="text" class="k-textbox" name="addServicePort" id="addServicePort" style="width:60%" /><em class="ty-input-end"></em>
+									<li class="ty-input"><label for="aServiceAccount">用户名:</label> 
+									<input type="text" class="k-textbox" name="addServiceAccount" id="addServiceAccount" style="width:60%" /><em class="ty-input-end"></em>
+									<li class="ty-input"><label for="aServicePwd">用户密码:</label> 
+									<input type="password" class="k-textbox" name="addServicePwd" id="addServicePwd" style="width:60%" /><em class="ty-input-end"></em>
+									<li class="ty-input"><label for="aServiceVersion">服务版本:</label> 
+									<input type="text" class="k-textbox" name="addServiceVersion" id="addServiceVersion" style="width:60%" /><em class="ty-input-end"></em>
+									<li class="ty-input"><label for="aServiceExchange">交换机名:</label> 
+									<input type="text" class="k-textbox" name="addServiceExchange" id="addServiceExchange" style="width:60%" /><em class="ty-input-end"></em>
+									<li class="ty-input actions">
+										<button type="button" data-role="button" onclick="saveService()">提交</button></li>
+								</ul>
+							</form>
+						</div>
+						<!-- 左结束-->
+					</div>
+				</div>
+			</div>
 	</div>
-	<div id="menuContent" class="menuContent"
-		style="display:none; position: absolute;">
-		<ul id="treeDemo" class="ztree" style="margin-top:0; width:160px;"></ul>
-	</div>
-</body>
-</html>
+
+<style scoped>
+#vertical {
+	height: 450px;
+	width: 640px;
+	margin: 0 auto;
+}
+
+.pane-content {
+	padding: 0 10px;
+}
+
+#employeeForm ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+#employeeForm li {
+	margin-top: 10px;
+}
+
+label {
+	display: inline-block;
+	padding-right: 3px;
+	width: 80px;
+}
+
+span.k-tooltip {
+	margin-left: 6px;
+}
+
+.demo-section {
+	height:420px;
+	width: 300px;
+}
+
+.actions {
+	padding-left: 106px;
+	padding-top: 10px;
+}
+</style>
+
+<script>
+            	 /*   if($("#addServiceName").val().trim()==""){
+                   		$("body").popjs({"title":"提示","content":"请输入服务名称"});
+            		    return false;
+                   }
+            	   if($("#addServiceIp").val().trim()==""){
+                  		$("body").popjs({"title":"提示","content":"请输入服务IP"});
+           		     return false;
+                   }
+            	   if($("#addServiceType").val().trim()==""){
+                 		$("body").popjs({"title":"提示","content":"请选择服务类型"});
+          		     return false;
+                   }
+            	   if($("#addServicePort").val().trim()==""){
+                		$("body").popjs({"title":"提示","content":"服务端口不能为空"});
+         		    	return false;
+                   }
+            	   if($("#addServiceAccount").val().trim()==""){
+               		$("body").popjs({"title":"提示","content":"请输入用户名});
+        		    return false;
+                   }
+            	   if($("#addServicePwd").val().trim()==""){
+                  		$("body").popjs({"title":"提示","content":"请输入用户密码"});
+           		    return false;
+                   }
+            	   if($("#addServiceVersion").val().trim()==""){
+                  		$("body").popjs({"title":"提示","content":"请输入服务版本"});
+           		    	return false;
+                   }
+                   if($("#addServiceExchange").val().trim()==""){
+                 		$("body").popjs({"title":"提示","content":"请输入交换机名称"});
+          		    	return false;
+                   } */
+            	   //addService(); 
+               function saveService(){
+            	   if($.trim($("#addServiceName").val())==""){
+                  		$("body").popjs({"title":"提示","content":"请输入服务名称"});
+           		    return false;
+                  }
+           	   if($.trim$("#addServiceIp").val())==""){
+                 		$("body").popjs({"title":"提示","content":"请输入服务IP"});
+          		     return false;
+                  }
+           	   if($.trim$("#addServiceType").val())==""){
+                		$("body").popjs({"title":"提示","content":"请选择服务类型"});
+         		     return false;
+                  }
+           	   if($.trim$("#addServicePort").val())==""){
+               		$("body").popjs({"title":"提示","content":"服务端口不能为空"});
+        		    	return false;
+                  }
+           	   if($.trim$("#addServiceAccount").val())==""){
+              		$("body").popjs({"title":"提示","content":"请输入用户名"});
+       		    	return false;
+                  }
+           	   if($.trim$("#addServicePwd").val())==""){
+                 		$("body").popjs({"title":"提示","content":"请输入用户密码"});
+          		    return false;
+                  }
+           	   if($.trim$("#addServiceVersion").val())==""){
+                 		$("body").popjs({"title":"提示","content":"请输入服务版本"});
+          		    	return false;
+                  }
+                  if($.trim$("#addServiceExchange").val())==""){
+                		$("body").popjs({"title":"提示","content":"请输入交换机名称"});
+         		    	return false;
+                  } 
+                  addService();
+               } 
+                /* 添加服务 */
+       	   	 function addService(){
+       	   		var serviceName=$.trim($("#addServiceName").val());
+       	   		var addServiceIp=$.trim($("#addServiceIp").val().trim());
+       	   		var addServiceType=$.trim($("#addServiceType").val().trim());
+       	   		var addServicePort=$.trim($("#addServicePort").val().trim());
+       	   		var addServiceAccount=$.trim($("#addServiceAccount").val().trim());
+       	   		var addServicePwd=$.trim($("#addServicePwd").val().trim());
+       	   		var addServiceVersion=$.trim($("#addServiceVersion").val().trim());
+       	   		var addServiceExchange=$.trim($("#addServiceExchange").val().trim());
+       	   		$.ajax({
+       	   			url:"<%=basePath%>serviceSet/insert.do",
+       	   			type:"post",
+       	   			dataType:"json",
+       	   			data:{
+       	   				serviceName:serviceName,
+       	   				serviceIp:addServiceIp,
+       	   				serviceType:addServiceType,
+       	   				servicePort:addServicePort,
+       	   				serviceAccount:addServiceAccount,
+       	   				servicePwd:addServicePwd,
+       	   				serviceVersion:addServiceVersion,
+       	   				exchangeName:addServiceExchange,
+       	   				sessionId:$("#token").val()
+       	   			},
+       	   			success:function(msg){
+       	   				if(msg.code==200){
+       	   					$("body").popjs({"title":"提示","content":msg.description});
+       	   					/* $("body").popjs({"title":"提示","content":msg.description,"callback":function(){
+       	   						window.parent.window.parent.onClose();
+       	   						window.parent.$("#dialog").tyWindow.close();
+       	   					}}); */
+       	   				}else{
+       	   					$("body").popjs({"title":"提示","content":msg.description});
+       	   				}
+       	   			}
+       	   		});
+       	   	 }
+            </script>
+        </body>
+        </html>   
+

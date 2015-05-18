@@ -25,13 +25,17 @@ import com.tianyi.bph.common.Md5Encrypt;
 import com.tianyi.bph.common.MessageCode;
 import com.tianyi.bph.common.Pager;
 import com.tianyi.bph.common.ReturnResult;
+import com.tianyi.bph.common.SystemConfig;
+import com.tianyi.bph.common.ehcache.CacheUtils;
 import com.tianyi.bph.domain.system.User;
+import com.tianyi.bph.query.system.OrganQuery;
 import com.tianyi.bph.query.system.UserQuery;
 import com.tianyi.bph.rest.CommonUtils;
 import com.tianyi.bph.rest.PrivilegeCache;
 import com.tianyi.bph.rest.PrivilegeCache.PrivilegeUser;
 import com.tianyi.bph.service.ServiceSetService;
 import com.tianyi.bph.service.system.LogService;
+import com.tianyi.bph.service.system.OrganService;
 import com.tianyi.bph.service.system.UserAddModuleService;
 import com.tianyi.bph.service.system.UserRoleService;
 import com.tianyi.bph.service.system.UserService;
@@ -54,6 +58,8 @@ public class UserAction {
 	@Autowired UserAddModuleService userAddModuleService;
 	
 	@Autowired ServiceSetService serviceConfService;
+	
+	@Autowired OrganService organService;
 	
 	@Autowired LogService logService;
 	
@@ -89,16 +95,20 @@ public class UserAction {
 			/**
 			 * 服务配置信息
 			 */
-			user=serviceConfService.getServcieList(user);
+			//user=serviceConfService.getServcieList(user);
 			
 			/**
 			 * session 缓存管理
 			 */
 			HttpSession session = request.getSession();
 			session.setAttribute("User", user);
-			//CacheUtils.updateValue(manager, CacheUtils.USER_BASE_DATA, session.getId(), session);
-			//CacheUtils.invalidateValue(manager, CacheUtils.USER_BASE_DATA, session);
-			//user.setSessionId(request.getSession().getId());
+			
+			OrganQuery query=new OrganQuery();
+			query.setId(user.getOrgId());
+			query.setPath(user.getOrganPath());
+			CacheUtils.updateValue(manager, CacheUtils.ORGAN_DATASOURCE, user.getUserId()+"",
+					organService.getOrganTree(query, SystemConfig.DATABASE));
+			
 			/**
 			 * 添加日志记录
 			 */
@@ -123,14 +133,11 @@ public class UserAction {
 			HttpServletRequest request) {
 		HttpSession session=(HttpSession) request.getSession();
 		
-		/**
-		 * 添加日志记录
-		 */
 		User user=(User) session.getAttribute("User");
 		logService.insert(CommonUtils.getRemoteIp(request),user.getUserId()+"",
 				user.getUserName(),"退出系统成功",1);
 		session.invalidate();
-		//CacheUtils.invalidateValue(manager, CacheUtils.USER_BASE_DATA, session.getId());
+		CacheUtils.invalidateValue(manager, CacheUtils.ORGAN_DATASOURCE, user.getUserId()+"");
 		return ReturnResult.SUCCESS("成功退出！");
 	}
 

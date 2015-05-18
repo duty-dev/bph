@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tianyi.bph.dao.system.ServiceSetMapper" >
+  <resultMap id="BaseResultMap" type="com.tianyi.bph.domain.system.ServiceSet" >
+    <id column="SERVICE_ID" property="serviceId" jdbcType="INTEGER" />
+    <result column="SERVICE_NAME" property="serviceName" jdbcType="VARCHAR" />
+    <result column="SERVICE_TYPE" property="serviceType" jdbcType="INTEGER" />
+    <result column="SERVICE_IP" property="serviceIp" jdbcType="VARCHAR" />
+    <result column="SERVICE_PORT" property="servicePort" jdbcType="INTEGER" />
+    <result column="SERVICE_ACCOUNT" property="serviceAccount" jdbcType="VARCHAR" />
+    <result column="SERVICE_PWD" property="servicePwd" jdbcType="VARCHAR" />
+    <result column="SERVICE_VERSION" property="serviceVersion" jdbcType="VARCHAR" />
+    <result column="EXCHANGE_NAME" property="exchangeName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    SERVICE_ID, SERVICE_NAME, SERVICE_TYPE, SERVICE_IP, SERVICE_PORT, SERVICE_ACCOUNT, 
+    SERVICE_PWD, SERVICE_VERSION, EXCHANGE_NAME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.tianyi.bph.domain.system.ServiceSetExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from b_service_set
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from b_service_set
+    where SERVICE_ID = #{serviceId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from b_service_set
+    where SERVICE_ID = #{serviceId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.tianyi.bph.domain.system.ServiceSetExample" >
+    delete from b_service_set
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.tianyi.bph.domain.system.ServiceSet" >
+    insert into b_service_set (SERVICE_ID, SERVICE_NAME, SERVICE_TYPE, 
+      SERVICE_IP, SERVICE_PORT, SERVICE_ACCOUNT, 
+      SERVICE_PWD, SERVICE_VERSION, EXCHANGE_NAME
+      )
+    values (#{serviceId,jdbcType=DECIMAL}, #{serviceName,jdbcType=VARCHAR}, #{serviceType,jdbcType=INTEGER}, 
+      #{serviceIp,jdbcType=VARCHAR}, #{servicePort,jdbcType=INTEGER}, #{serviceAccount,jdbcType=VARCHAR}, 
+      #{servicePwd,jdbcType=VARCHAR}, #{serviceVersion,jdbcType=VARCHAR}, #{exchangeName,jdbcType=VARCHAR}
+      )
+      <!--此处serviceId对应  ServiceSet类中的serviceId-->
+      <selectKey resultType="int" keyProperty="serviceId">
+		select LAST_INSERT_ID() as ID
+	  </selectKey>
+  </insert>
+  <insert id="insertSelective" parameterType="com.tianyi.bph.domain.system.ServiceSet" >
+    insert into b_service_set
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="serviceId != null" >
+        SERVICE_ID,
+      </if>
+      <if test="serviceName != null" >
+        SERVICE_NAME,
+      </if>
+      <if test="serviceType != null" >
+        SERVICE_TYPE,
+      </if>
+      <if test="serviceIp != null" >
+        SERVICE_IP,
+      </if>
+      <if test="servicePort != null" >
+        SERVICE_PORT,
+      </if>
+      <if test="serviceAccount != null" >
+        SERVICE_ACCOUNT,
+      </if>
+      <if test="servicePwd != null" >
+        SERVICE_PWD,
+      </if>
+      <if test="serviceVersion != null" >
+        SERVICE_VERSION,
+      </if>
+      <if test="exchangeName != null" >
+        EXCHANGE_NAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="serviceId != null" >
+        #{serviceId,jdbcType=INTEGER},
+      </if>
+      <if test="serviceName != null" >
+        #{serviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceType != null" >
+        #{serviceType,jdbcType=INTEGER},
+      </if>
+      <if test="serviceIp != null" >
+        #{serviceIp,jdbcType=VARCHAR},
+      </if>
+      <if test="servicePort != null" >
+        #{servicePort,jdbcType=INTEGER},
+      </if>
+      <if test="serviceAccount != null" >
+        #{serviceAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="servicePwd != null" >
+        #{servicePwd,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceVersion != null" >
+        #{serviceVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="exchangeName != null" >
+        #{exchangeName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.tianyi.bph.domain.system.ServiceSetExample" resultType="java.lang.Integer" >
+    select count(*) from b_service_set
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update b_service_set
+    <set >
+      <if test="record.serviceId != null" >
+        SERVICE_ID = #{record.serviceId,jdbcType=INTEGER},
+      </if>
+      <if test="record.serviceName != null" >
+        SERVICE_NAME = #{record.serviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serviceType != null" >
+        SERVICE_TYPE = #{record.serviceType,jdbcType=INTEGER},
+      </if>
+      <if test="record.serviceIp != null" >
+        SERVICE_IP = #{record.serviceIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.servicePort != null" >
+        SERVICE_PORT = #{record.servicePort,jdbcType=INTEGER},
+      </if>
+      <if test="record.serviceAccount != null" >
+        SERVICE_ACCOUNT = #{record.serviceAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.servicePwd != null" >
+        SERVICE_PWD = #{record.servicePwd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serviceVersion != null" >
+        SERVICE_VERSION = #{record.serviceVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.exchangeName != null" >
+        EXCHANGE_NAME = #{record.exchangeName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update b_service_set
+    set SERVICE_ID = #{record.serviceId,jdbcType=INTEGER},
+      SERVICE_NAME = #{record.serviceName,jdbcType=VARCHAR},
+      SERVICE_TYPE = #{record.serviceType,jdbcType=INTEGER},
+      SERVICE_IP = #{record.serviceIp,jdbcType=VARCHAR},
+      SERVICE_PORT = #{record.servicePort,jdbcType=INTEGER},
+      SERVICE_ACCOUNT = #{record.serviceAccount,jdbcType=VARCHAR},
+      SERVICE_PWD = #{record.servicePwd,jdbcType=VARCHAR},
+      SERVICE_VERSION = #{record.serviceVersion,jdbcType=VARCHAR},
+      EXCHANGE_NAME = #{record.exchangeName,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tianyi.bph.domain.system.ServiceSet" >
+    update b_service_set
+    <set >
+      <if test="serviceName != null" >
+        SERVICE_NAME = #{serviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceType != null" >
+        SERVICE_TYPE = #{serviceType,jdbcType=INTEGER},
+      </if>
+      <if test="serviceIp != null" >
+        SERVICE_IP = #{serviceIp,jdbcType=VARCHAR},
+      </if>
+      <if test="servicePort != null" >
+        SERVICE_PORT = #{servicePort,jdbcType=INTEGER},
+      </if>
+      <if test="serviceAccount != null" >
+        SERVICE_ACCOUNT = #{serviceAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="servicePwd != null" >
+        SERVICE_PWD = #{servicePwd,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceVersion != null" >
+        SERVICE_VERSION = #{serviceVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="exchangeName != null" >
+        EXCHANGE_NAME = #{exchangeName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where SERVICE_ID = #{serviceId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tianyi.bph.domain.system.ServiceSet" >
+    update b_service_set
+    set SERVICE_NAME = #{serviceName,jdbcType=VARCHAR},
+      SERVICE_TYPE = #{serviceType,jdbcType=INTEGER},
+      SERVICE_IP = #{serviceIp,jdbcType=VARCHAR},
+      SERVICE_PORT = #{servicePort,jdbcType=INTEGER},
+      SERVICE_ACCOUNT = #{serviceAccount,jdbcType=VARCHAR},
+      SERVICE_PWD = #{servicePwd,jdbcType=VARCHAR},
+      SERVICE_VERSION = #{serviceVersion,jdbcType=VARCHAR},
+      EXCHANGE_NAME = #{exchangeName,jdbcType=VARCHAR}
+    where SERVICE_ID = #{serviceId,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 条件、分页 -->
+ 	<sql id="find">
+		select <include refid="Base_Column_List" />
+		from b_service_set where 1=1
+		<if test="serviceName != null and serviceName != ''">
+			AND SERVICE_NAME LIKE CONCAT('%',#{serviceName,jdbcType=VARCHAR},'%')
+		</if>
+	</sql>
+	
+	<select id="findByPage" parameterType="com.tianyi.bph.query.system.ServiceSetQuery"  resultMap="BaseResultMap" >
+		 select * from (
+			<include refid="find" />
+			) r  limit #{pageStart},#{pageSize}
+	</select>
+	
+	<select id="findCount"  resultType="Integer">
+		select count(distinct SERVICE_ID) from (
+			<include refid="find" />
+		) count_
+	</select>
+	
+	<select id="selectByQuery" parameterType="com.tianyi.bph.query.system.ServiceSetQuery" resultType="java.lang.Integer">
+		select count(*) from b_service_set where 1=1
+		<if test="serviceType != null">
+			and SERVICE_TYPE=#{serviceType,jdbcType=DECIMAL}
+		</if>
+	</select>
+	
+	<select id="getServcieList" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" />
+		from b_service_set
+	</select>
+  
+</mapper>

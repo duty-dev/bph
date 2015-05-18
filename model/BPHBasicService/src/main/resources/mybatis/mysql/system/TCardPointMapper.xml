@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tianyi.bph.dao.system.TCardPointMapper">
+	<resultMap id="BaseResultMap" type="com.tianyi.bph.domain.system.TCardPoint">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="community_group_num" property="communityGroupNum"
+			jdbcType="VARCHAR" />
+		<result column="layers_id" property="layersId" jdbcType="INTEGER" />
+		<result column="people_police_count" property="peoplePoliceCount"
+			jdbcType="INTEGER" />
+		<result column="traffic_police_count" property="trafficPoliceCount"
+			jdbcType="INTEGER" />
+		<result column="arms_police_count" property="armsPoliceCount"
+			jdbcType="INTEGER" />
+		<result column="assignment" property="assignment" jdbcType="VARCHAR" />
+		<result column="card_type" property="cardType" jdbcType="INTEGER" />
+		<result column="longitude" property="longitude" jdbcType="DOUBLE" />
+		<result column="latitude" property="latitude" jdbcType="DOUBLE" />
+		<result column="icon_id" property="iconId" jdbcType="INTEGER" />
+		<result column="mark" property="mark" jdbcType="BIT" />
+		<result column="organ_id" property="organId" jdbcType="INTEGER" />
+		<result column="equip" property="equip" jdbcType="VARCHAR" />
+		<result column="tel" property="tel" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		id, name, community_group_num, layers_id,
+		people_police_count,
+		traffic_police_count,
+		arms_police_count,
+		assignment, card_type, longitude, latitude, icon_id,
+		mark,
+		organ_id,
+		equip,tel,create_time
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.tianyi.bph.query.system.TCardPointExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from t_card_point
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+		<if test="end !=0">
+			limit #{begin},#{end}
+		</if>
+	</select>
+	
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from t_card_point
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		t_card_point
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.tianyi.bph.domain.system.TCardPoint">
+		insert into t_card_point (id,
+		name, community_group_num,
+		layers_id,
+		people_police_count,
+		traffic_police_count,
+		arms_police_count,
+		assignment, card_type,
+		longitude, latitude, icon_id,
+		mark, organ_id,
+		equip,tel,create_time)
+		values
+		(#{id,jdbcType=INTEGER},
+		#{name,jdbcType=VARCHAR},
+		#{communityGroupNum,jdbcType=VARCHAR},
+		#{layersId,jdbcType=INTEGER},
+		#{peoplePoliceCount,jdbcType=INTEGER},
+		#{trafficPoliceCount,jdbcType=INTEGER},
+		#{armsPoliceCount,jdbcType=INTEGER}, #{assignment,jdbcType=VARCHAR},
+		#{cardType,jdbcType=INTEGER},
+		#{longitude,jdbcType=DOUBLE},
+		#{latitude,jdbcType=DOUBLE}, #{iconId,jdbcType=INTEGER},
+		#{mark,jdbcType=BIT}, #{organId,jdbcType=INTEGER},
+		#{equip,jdbcType=VARCHAR},
+		#{tel,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP}
+		)
+		<selectKey resultType="int" keyProperty="id">
+			select
+			LAST_INSERT_ID() as id
+		</selectKey>
+	</insert>
+	<insert id="insertSelective" parameterType="com.tianyi.bph.domain.system.TCardPoint">
+		insert into t_card_point
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="communityGroupNum != null">
+				community_group_num,
+			</if>
+			<if test="layersId != null">
+				layers_id,
+			</if>
+			<if test="peoplePoliceCount != null">
+				people_police_count,
+			</if>
+			<if test="trafficPoliceCount != null">
+				traffic_police_count,
+			</if>
+			<if test="armsPoliceCount != null">
+				arms_police_count,
+			</if>
+			<if test="assignment != null">
+				assignment,
+			</if>
+			<if test="cardType != null">
+				card_type,
+			</if>
+			<if test="longitude != null">
+				longitude,
+			</if>
+			<if test="latitude != null">
+				latitude,
+			</if>
+			<if test="iconId != null">
+				icon_id,
+			</if>
+			<if test="mark != null">
+				mark,
+			</if>
+			<if test="organId != null">
+				organ_id,
+			</if>
+			<if test="equip != null">
+				equip,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="communityGroupNum != null">
+				#{communityGroupNum,jdbcType=VARCHAR},
+			</if>
+			<if test="layersId != null">
+				#{layersId,jdbcType=INTEGER},
+			</if>
+			<if test="peoplePoliceCount != null">
+				#{peoplePoliceCount,jdbcType=INTEGER},
+			</if>
+			<if test="trafficPoliceCount != null">
+				#{trafficPoliceCount,jdbcType=INTEGER},
+			</if>
+			<if test="armsPoliceCount != null">
+				#{armsPoliceCount,jdbcType=INTEGER},
+			</if>
+			<if test="assignment != null">
+				#{assignment,jdbcType=VARCHAR},
+			</if>
+			<if test="cardType != null">
+				#{cardType,jdbcType=INTEGER},
+			</if>
+			<if test="longitude != null">
+				#{longitude,jdbcType=DOUBLE},
+			</if>
+			<if test="latitude != null">
+				#{latitude,jdbcType=DOUBLE},
+			</if>
+			<if test="iconId != null">
+				#{iconId,jdbcType=INTEGER},
+			</if>
+			<if test="mark != null">
+				#{mark,jdbcType=BIT},
+			</if>
+			<if test="organId != null">
+				#{organId,jdbcType=INTEGER},
+			</if>
+			<if test="equip != null">
+				#{equip,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample" parameterType="com.tianyi.bph.query.system.TCardPointExample"
+		resultType="java.lang.Integer">
+		select count(*) from t_card_point
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update t_card_point
+		<set>
+			<if test="record.id != null">
+				id = #{record.id,jdbcType=INTEGER},
+			</if>
+			<if test="record.name != null">
+				name = #{record.name,jdbcType=VARCHAR},
+			</if>
+			<if test="record.communityGroupNum != null">
+				community_group_num =
+				#{record.communityGroupNum,jdbcType=VARCHAR},
+			</if>
+			<if test="record.layersId != null">
+				layers_id = #{record.layersId,jdbcType=INTEGER},
+			</if>
+			<if test="record.peoplePoliceCount != null">
+				people_police_count =
+				#{record.peoplePoliceCount,jdbcType=INTEGER},
+			</if>
+			<if test="record.trafficPoliceCount != null">
+				traffic_police_count =
+				#{record.trafficPoliceCount,jdbcType=INTEGER},
+			</if>
+			<if test="record.armsPoliceCount != null">
+				arms_police_count =
+				#{record.armsPoliceCount,jdbcType=INTEGER},
+			</if>
+			<if test="record.assignment != null">
+				assignment = #{record.assignment,jdbcType=VARCHAR},
+			</if>
+			<if test="record.cardType != null">
+				card_type = #{record.cardType,jdbcType=INTEGER},
+			</if>
+			<if test="record.longitude != null">
+				longitude = #{record.longitude,jdbcType=DOUBLE},
+			</if>
+			<if test="record.latitude != null">
+				latitude = #{record.latitude,jdbcType=DOUBLE},
+			</if>
+			<if test="record.iconId != null">
+				icon_id = #{record.iconId,jdbcType=INTEGER},
+			</if>
+			<if test="record.mark != null">
+				mark = #{record.mark,jdbcType=BIT},
+			</if>
+			<if test="record.organId != null">
+				organ_id = #{record.organId,jdbcType=INTEGER},
+			</if>
+			<if test="record.equip != null">
+				equip = #{record.equip,jdbcType=VARCHAR},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update t_card_point
+		set id = #{record.id,jdbcType=INTEGER},
+		name =
+		#{record.name,jdbcType=VARCHAR},
+		community_group_num =
+		#{record.communityGroupNum,jdbcType=VARCHAR},
+		layers_id =
+		#{record.layersId,jdbcType=INTEGER},
+		people_police_count =
+		#{record.peoplePoliceCount,jdbcType=INTEGER},
+		traffic_police_count =
+		#{record.trafficPoliceCount,jdbcType=INTEGER},
+		arms_police_count =
+		#{record.armsPoliceCount,jdbcType=INTEGER},
+		assignment =
+		#{record.assignment,jdbcType=VARCHAR},
+		card_type =
+		#{record.cardType,jdbcType=INTEGER},
+		longitude =
+		#{record.longitude,jdbcType=DOUBLE},
+		latitude =
+		#{record.latitude,jdbcType=DOUBLE},
+		icon_id =
+		#{record.iconId,jdbcType=INTEGER},
+		mark = #{record.mark,jdbcType=BIT},
+		organ_id = #{record.organId,jdbcType=INTEGER},
+		equip =
+		#{record.equip,jdbcType=VARCHAR}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.tianyi.bph.domain.system.TCardPoint">
+		update t_card_point
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="communityGroupNum != null">
+				community_group_num =
+				#{communityGroupNum,jdbcType=VARCHAR},
+			</if>
+			<if test="layersId != null">
+				layers_id = #{layersId,jdbcType=INTEGER},
+			</if>
+			<if test="peoplePoliceCount != null">
+				people_police_count =
+				#{peoplePoliceCount,jdbcType=INTEGER},
+			</if>
+			<if test="trafficPoliceCount != null">
+				traffic_police_count =
+				#{trafficPoliceCount,jdbcType=INTEGER},
+			</if>
+			<if test="armsPoliceCount != null">
+				arms_police_count =
+				#{armsPoliceCount,jdbcType=INTEGER},
+			</if>
+			<if test="assignment != null">
+				assignment = #{assignment,jdbcType=VARCHAR},
+			</if>
+			<if test="cardType != null">
+				card_type = #{cardType,jdbcType=INTEGER},
+			</if>
+			<if test="longitude != null">
+				longitude = #{longitude,jdbcType=DOUBLE},
+			</if>
+			<if test="latitude != null">
+				latitude = #{latitude,jdbcType=DOUBLE},
+			</if>
+			<if test="iconId != null">
+				icon_id = #{iconId,jdbcType=INTEGER},
+			</if>
+			<if test="mark != null">
+				mark = #{mark,jdbcType=BIT},
+			</if>
+			<if test="organId != null">
+				organ_id = #{organId,jdbcType=INTEGER},
+			</if>
+			<if test="equip != null">
+				equip = #{equip,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.tianyi.bph.domain.system.TCardPoint">
+		update
+		t_card_point
+		set name = #{name,jdbcType=VARCHAR},
+		community_group_num =
+		#{communityGroupNum,jdbcType=VARCHAR},
+		layers_id =
+		#{layersId,jdbcType=INTEGER},
+		people_police_count =
+		#{peoplePoliceCount,jdbcType=INTEGER},
+		traffic_police_count =
+		#{trafficPoliceCount,jdbcType=INTEGER},
+		arms_police_count =
+		#{armsPoliceCount,jdbcType=INTEGER},
+		assignment =
+		#{assignment,jdbcType=VARCHAR},
+		card_type =
+		#{cardType,jdbcType=INTEGER},
+		icon_id =
+		#{iconId,jdbcType=INTEGER},
+		mark = #{mark,jdbcType=BIT},
+		organ_id =
+		#{organId,jdbcType=INTEGER},
+		equip = #{equip,jdbcType=VARCHAR},
+		tel=#{tel,jdbcType=VARCHAR}
+		where id
+		= #{id,jdbcType=INTEGER}
+	</update>
+
+
+
+	<!-- 添加卡点关联天网设备 -->
+	<insert id="addCardPointCamera" parameterType="com.tianyi.bph.domain.system.CardPointCamera">
+		insert into
+		r_card_point_camera (CARD_POINT_ID, CAMERA_ID)
+		values (#{cardPointId,
+		jdbcType=DECIMAL},#{cameraId, jdbcType=DECIMAL})
+	</insert>
+	<delete id="deleteCardPointCamera" parameterType="java.lang.Integer">
+		delete from
+		r_card_point_camera where CARD_POINT_ID = #{cardPointId,
+		jdbcType=DECIMAL}
+	</delete>
+
+	<select id="getCardPointCamera" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select CAMERA_ID from r_card_point_camera
+		where
+		CARD_POINT_ID= #{cardPointId, jdbcType=DECIMAL}
+	</select>
+
+	<!-- 添加卡点关联警员 -->
+	<insert id="addCardPointUser" parameterType="com.tianyi.bph.domain.system.CardPointUser">
+		insert into
+		r_card_point_user (CARD_POINT_ID, POLICE_USER_ID)
+		values
+		(#{cardPointId,
+		jdbcType=DECIMAL},#{policeId, jdbcType=DECIMAL})
+	</insert>
+	<delete id="deleteCardPointUser" parameterType="java.lang.Integer">
+		delete from
+		r_card_point_user where CARD_POINT_ID = #{cardPointId,
+		jdbcType=DECIMAL}
+	</delete>
+
+	<select id="getCardPointUser" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select POLICE_USER_ID from r_card_point_user
+		where
+		CARD_POINT_ID= #{cardPointId, jdbcType=DECIMAL}
+	</select>
+	<select id="countCardPointByCircleLayerId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+	select count(*) from t_card_point where layers_id=#{layerId,jdbcType=DECIMAL}
+	</select>
+
+</mapper>

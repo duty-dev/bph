@@ -44,7 +44,6 @@
     <result column="police_type_id" property="policeTypeId" jdbcType="INTEGER" />
     <result column="police_jjcount" property="jjcount" jdbcType="VARCHAR" />
     
-    
     <result column="weapon_id" property="weaponId" jdbcType="INTEGER" />
     <result column="weapon_number" property="weaponNumber" jdbcType="VARCHAR" />
     <result column="weapon_org_id" property="weaponOrgId" jdbcType="INTEGER" />

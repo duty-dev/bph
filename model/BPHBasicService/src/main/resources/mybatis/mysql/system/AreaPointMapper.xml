@@ -223,4 +223,11 @@
 		#{y,jdbcType=DOUBLE}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
+	
+	<select id="checkAreaPointName" resultType="java.lang.Integer"
+		parameterType="java.lang.String">
+	select count(*) from t_area_point t where
+	t.name=#{pointName,jdbcType=VARCHAR} and
+	t.area_id=#{areaId,jdbcType=INTEGER}
+	</select>
 </mapper>

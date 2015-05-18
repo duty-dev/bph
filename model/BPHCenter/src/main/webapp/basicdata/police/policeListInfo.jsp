@@ -36,7 +36,8 @@ var PoliceManage = {
 						"police_Query" : JSON.stringify(bph_police_query),
 						"expandeds"		:expandeds,
 						"organId":$("#organId").val(),
-						"organPath":$("#organPath").val()
+						"organPath":$("#organPath").val(),
+						"selectName":$("#selectName").val()
 					},
 					dataType : "json",
 					success : function(req) {
@@ -45,6 +46,7 @@ var PoliceManage = {
 								var udata = req.data;
                						var total = req.totalRows;
                						$("#gridListTotal").html(total+"人");
+               						$("#policegrid").empty();
 								$("#policegrid")
 										.kendoGrid(
 												{

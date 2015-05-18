@@ -35,7 +35,8 @@ var VehicleManage = {
 						"vehicle_Query" : JSON.stringify(bph_vehicle_query),
 						"expandeds"		:expandeds,
 						"organId":$("#organId").val(),
-						"organPath":$("#organPath").val()
+						"organPath":$("#organPath").val(),
+						"selectName":$("#selectName").val()
 					},
 					dataType : "json",
 					success : function(req) {
@@ -44,6 +45,7 @@ var VehicleManage = {
 									var udata = req.data;
                						var total = req.totalRows;
                						$("#gridListTotal").html(total+"台");
+               						$("#vehiclegrid").empty();
 									$("#vehiclegrid").kendoGrid({
 							dataSource : {
 								data : udata 

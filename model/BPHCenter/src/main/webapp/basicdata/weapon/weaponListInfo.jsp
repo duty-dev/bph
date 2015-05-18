@@ -36,7 +36,8 @@ var WeaponManage= {
 						"weapon_Query" : JSON.stringify(bph_weapon_query),
 						"expandeds"		:expandeds,
 						"organId":$("#organId").val(),
-						"organPath":$("#organPath").val()
+						"organPath":$("#organPath").val(),
+						"selectName":$("#selectName").val()
 					},
 					dataType : "json",
 					success : function(req) {
@@ -45,6 +46,7 @@ var WeaponManage= {
 									var udata = req.data;
                						var total = req.totalRows;
                						$("#gridListTotal").html(total+"个");
+               						$("#weapongrid").empty();
 									$("#weapongrid").kendoGrid({
 							dataSource : {
 								data : udata 

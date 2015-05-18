@@ -2,6 +2,8 @@ package com.tianyi.bph.dao.system;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.tianyi.bph.dao.MyBatisRepository;
 import com.tianyi.bph.domain.system.Organ;
 import com.tianyi.bph.query.system.OrganQuery;
@@ -42,6 +44,8 @@ public interface OrganDAO {
     
     List<Organ> getOrgansByName(OrganQuery organQuery);
     
+    List<Organ> getOrgByName(String name);
+    
     //分页总条数
     int findCount(OrganQuery organQuery);
     
@@ -70,4 +74,8 @@ public interface OrganDAO {
     List<String> getIdsById(Integer id);
     
     List<String> getStringByPath(String path);
+    
+    List<Organ> getOrganListByParentId(@Param(value="organId")Integer organId,@Param(value="parentId")Integer parentId);
+    
+    List<Organ> getOrganListParentIdIsNull(Integer organId);
 }

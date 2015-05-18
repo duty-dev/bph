@@ -1,4 +1,4 @@
-\@charset "utf-8";
+\\@charset "utf-8";
 /* ============全局设置============== */
 input{font-family:Arial, "微软雅黑", "宋体";}
 .fl{float:left;}
@@ -6,6 +6,12 @@ input{font-family:Arial, "微软雅黑", "宋体";}
 .ml-7{margin-left:-7px;margin-left:-2px\9\0;}
 .ml10{margin-left:10px;}
 .ml30{margin-left:30px;}
+.ml68{margin-left:68px !important;}
+.mr5{margin-right:5px;}
+.mt8{margin-top:8px;}
+.mt0{margin-top:0px !important;}
+.mt4{margin-top:4px !important;}
+.fit{width:100%;}
 
 .set-hei48{height:48px;}
 
@@ -25,28 +31,26 @@ input{font-family:Arial, "微软雅黑", "宋体";}
 
 /* ============弹出层样式============== */
 #fullbg{background-color: #000;display: none;z-index: 90;position: absolute;left: 0px;top: 0px;filter: Alpha(Opacity = 80);-moz-opacity: 0.8;opacity: 0.8;}
-.pop{width:530px;height:318px;z-index:100;}
-<<<<<<< .mine
-.pop .pop-main{width:530px;height:318px;background:url(../images/pop-1.png) no-repeat;}
-=======
-.pop .pop-main{width:530px;height:318px;background:url(../images/pop-1.png) no-repeat scroll 0 0;}
->>>>>>> .r2103
-.pop .pop-main .pop-title{float:left;width:auto;height:34px;margin:27px 0px 0px 242px;}
-.pop .pop-main .pop-title p{float:left;width:100%;height:24px;line-height:24px;font-size:22px;color:#81c9f0;margin:0;}
-.pop .pop-main .pop-title em{float:left;width:100%;height:2px;background:url(../images/pop-2.png) repeat-x;margin-top:6px;}
-.pop .pop-main .pop-txt{float:left;width:260px;height:116px;line-height:26px;font-size:20px;color:#81c9f0;display:table-cell;margin-left:240px;margin-top:55px;}
-.pop .pop-main .pop-btn{float:left;width:470px;height:52px;padding-top:18px;margin-left:29px;text-align:center;display:table-cell;}
-.pop .pop-main .pop-btn .pop-ok{width:215px;height:34px;background-color:#b7202a;border:0;color:#FFF;font-size:18px;text-align:center;vertical-align:middle;cursor:pointer;}
+.pop{width:400px;height:240px;z-index:100;position:relative;font-size:16px;}
+.pop .pop-main{width:100%;height:100%;background:url(../images/pop-1.png) no-repeat scroll 0 0;}
+.pop .pop-main .pop-title{float:left;width:auto;height:2.215em;margin:5% 0px 0px 45%;}
+.pop .pop-main .pop-title p{float:left;width:100%;height:1.5em;line-height:1.5em;color:#81c9f0;margin:0;}
+.pop .pop-main .pop-title em{float:left;width:100%;height:2px;background:url(images/pop-2.png) repeat-x;margin-top:0.375em;}
+.pop .pop-main .pop-txt{float:left;width:50%;height:7.25em;line-height:1.625em;color:#81c9f0;display:table-cell;margin-left:45%;margin-top:3%;overflow-x:hidden;overflow-y:auto;}
+.pop .pop-main .pop-btn{float:left;width:100%;height:3.25em;padding-top:1.0em;text-align:center;display:table-cell;}
+.pop .pop-main .pop-btn .pop-ok{width:10em;height:2.125em;background-color:#b7202a;border:0;color:#FFF;text-align:center;vertical-align:middle;cursor:pointer;font-family:Arial, "微软雅黑", "宋体";}
 .pop .pop-main .pop-btn .pop-ok:hover{ box-shadow:#8A1920 1px 1px 1px;}
 
 .ty-tcc{width:auto;height:auto;margin:0 auto;z-index:100;}
-.ty-tcc-table{float:left;width:100%;height:auto;border:0;border-collapse:collapse;border-spacing:0;table-layout:fixed;}
+.ty-tccbg{position:absolute;background-color:#000;filter: Alpha(Opacity = 40);-moz-opacity: 0.4;opacity: 0.4;z-index:50;}
+.ty-tcc-table{float:left;width:100%;height:auto;border:0;border-collapse:collapse;border-spacing:0;table-layout:fixed;position:relative;z-index:110;}
 .ty-tcc-table tr{width:100%;}
 .ty-tcc-table td{padding:0;}
 .ty-tcc-bg1{float:left;width:30px;height:3px;background:url(../images/icon.png) no-repeat -303px -91px;margin-bottom:8px;display:block;}
 .ty-tcc-bg2{float:left;width:100%;min-width:300px;height:3px;background-color:#81C9F0;margin-bottom:8px;display:block;}
 .ty-tcc-bg3{float:left;width:30px;height:3px;background:url(../images/icon.png) no-repeat -345px -91px;margin-bottom:8px;display:block;}
-.ty-tcc-close{width:68px;height:18px;background:url(../images/icon.png) no-repeat right -88px;position:absolute;top:2px;left:-92px;display:block;cursor:pointer;}
+.ty-tcc-close{width:68px;height:18px;background:url(../images/icon.png) no-repeat right -88px;position:absolute;top:-8px;left:-92px;display:block;cursor:pointer;}
+.ty-tcc-close:hover{background-position:right -224px;}
 .ty-tcc-bg4{float:left;width:16px;height:16px;background:url(../images/icon.png) no-repeat -184px -137px;display:block;margin-left:14px;}
 .ty-tcc-top{float:left;width:100%;min-width:252px;;height:15px;background-color:#132934;border-top:1px solid #243843;}
 .ty-tcc-bg5{float:left;width:16px;height:16px;background:url(../images/icon.png) no-repeat -220px -137px;display:block;margin-right:14px;}
@@ -74,8 +78,9 @@ input{font-family:Arial, "微软雅黑", "宋体";}
 .ty-tcc-info{float:left;width:100%;height:auto;margin:20px 0px;color:#81c9f0;font-size:16px;}
 .ty-tcc-info-icon{float:left;width:110px;height:100%;}
 .ty-tcc-icon{float:left;width:80px;height:75px;background:url(../images/icon.png) no-repeat right -141px;margin:0px 15px;}
-.ty-tcc-frame{width:100%;height:100%;margin:0 auto;border:0;overflow:hidden;background-color:#132934;}
+.ty-tcc-frame{width:100%;height:100%;margin:0 auto;border:0;overflow:hidden;background-color:#132833;}
 .nopd{padding:0;}
+.opa9{filter: Alpha(Opacity = 90);-moz-opacity: 0.9;opacity: 0.9;}
 
 /* ============帐号权限页面样式============== */
 .ty-btn-search{width:125px;height:80px;background:url("../images/buttons.png") no-repeat -17px -854px;border:0;margin:-50px 0px 0px 20px;}
@@ -100,18 +105,32 @@ input{font-family:Arial, "微软雅黑", "宋体";}
 .ty-screen-mode-btn1{top:13px;left:20px;}
 .ty-screen-mode-btn2{top:13px;left:56px;}
 .ty-screen-mode-btn3{top:13px;left:92px;}
-.ty-input{float:left;width:auto;height:auto;list-style-type: none;}
+.ty-input{float:left;list-style-type: none;margin-top:8px;}
 .ty-input-end{float:left;width:10px;height:26px;background:url("../images/icon.png") no-repeat -188px 0;position:absolute;}
-.ty-input:hover .ty-input-end{background-position:-398px 0px;}
+.ty-input input.k-textbox:focus+em{background-position:-398px 0px;}
 .ty-textarea{background-color:#040607;border:1px solid #597684;resize:none;}
 .ty-total-decorate{width:200px;height:38px;position:absolute;top:-54px;right:200px;overflow:hidden;}
 .ty-total-decorate span{float:left;font-size:32px;color:#97c6dc;padding-right:5px;}
 .ty-total-decorate i{float:left;width:80px;height:28px;background:url("../images/icon.png") no-repeat 0px -77px;display:block;margin-top:8px;}
 .ty-input-label{float:left;line-height:26px;padding:0px 5px;}
-<<<<<<< .mine
-=======
 
 .ty-left-search{background-image: none !important;border:1px solid #6D7B84 !important;border-radius:0px !important;background-color:#1A2930 !important;}
 .ty-left-search-btn{width:26px;height:26px;background:url("../images/icon.png") right 0px #1A2830;border:0;text-indent: -300px;margin-left:4px;}
 .ty-edit-txtarea{width:188px;height:50px;background-color:#0B1215;border:1px solid #2D3D46;resize:none;}
->>>>>>> .r2103
+.ty-input-warn{float:left;width:15px;height:26px;line-height:26px;font-size:16px;text-align:center;color:#FF0000;display:table-cell;vertical-align:middle;}
+.ty-txt-red{color:#FF0000;padding-right:6px;}
+.ty-input-p{float:left;margin:0;padding-right:4px;}
+.ty-full{width:100%;}
+.ty-input-row{float:left;width:100%;margin-top:10px;text-align:center;padding-top:8px;border-top:1px solid #2F4D5D;}
+.ty-button{width:6.875em;height:32px;line-height:24px;background-color:#B7202A;color:#FFF;font-size:14px;border:0;border-radius:2px;}
+.ty-body{background-image:none !important;background-color:#132934;}
+.ty-file{position:absolute; width:10px; filter:alpha(opacity=0);-moz-opacity:0;opacity:0; top:0px;cursor:cursor;}
+.ty-upfile{width:58px;height:24px;border:1px solid #3F667A;background-color:#21404D;border-radius:2px;color:#81C9F0;font-size:14px;cursor:pointer;margin-left:4px;}
+.ty-button-te{width:60px !important;height:26px;}
+
+.ty-tree-line{width:21px;height:16px;border-right:1px solid #416578;position:absolute;top:-10px;left:-16px;}
+.ty-tree-temp{width:16px;height:26px;background:url(../images/icon.png) no-repeat 0px -236px;position:absolute;top:-13px;left:-19px;}
+.ty-tree-node{width:23px;height:26px;background:url(../images/icon.png) no-repeat -63px -236px;position:absolute;top:-2px;left:-14px;}
+.ty-tree-top{background:none !important;}
+.ty-tree-last{width:23px;height:26px;background:url(../images/icon.png) no-repeat -17px -236px;position:absolute;top:-4px;left:-14px;z-index:-1;}
+.ty-back-btn{position:absolute;top:0px;left:-80px;}

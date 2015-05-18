@@ -3,7 +3,6 @@
 <div id="template">
 	<div class="fl set-hei48">
 		查询范围选择： <select id="organLevel" required="required" name="addOrganLevel" placeholder="请选择查询范围">
-			<option value="">请选择机构级别</option>
 			<option value="1">本级机构</option>
 			<option value="2">本级机构与下级机构</option>
 		</select>
@@ -31,6 +30,11 @@
 <script>
 $(document).ready(function() {    
 	$("#organLevel").kendoComboBox().prev().find(".k-input").attr("readonly",true);
+	$("#organName").keydown(function(event) {  
+        if (event.keyCode == 13) {  
+        	search(); 
+        }  
+    });
 	//屏幕模式
 	$("#tyScreenMode i").each(function(i){
 		$(this).click(function(){
@@ -39,32 +43,32 @@ $(document).ready(function() {
 			var icon = $("#tyScreenMode .ty-screen-mode-icon");
 			var txt = $("#tyScreenMode .ty-screen-mode-txt");
 			if(lump == 1){
-				icon.animate({"left":"6px"},1000);
+				icon.animate({"left":"6px"},300);
 				txt.css("background-position","-17px -731px");
 				$("#tyScreenMode").mouseover(function(){
 					txt.css("background-position","-17px -731px");
 				}).mouseout(function(){
 					txt.css("background-position","-147px -757px");
 				});
-				
+				window.external.ChangeScreenModel("标准模式");
 			}else if(lump == 2){
-				icon.animate({"left":"43px"},1000);
+				icon.animate({"left":"43px"},300);
 				txt.css("background-position","-17px -767px");
 				$("#tyScreenMode").mouseover(function(){
 					txt.css("background-position","-17px -767px");
 				}).mouseout(function(){
 					txt.css("background-position","-147px -793px");
 				});
-				
+				window.external.ChangeScreenModel("模块全屏");
 			}else if(lump == 3){
-				icon.animate({"left":"78px"},1000);
+				icon.animate({"left":"78px"},300);
 				txt.css("background-position","-18px -803px");
 				$("#tyScreenMode").mouseover(function(){
 					txt.css("background-position","-18px -803px");
 				}).mouseout(function(){
 					txt.css("background-position","-147px -828px");
 				});
-				
+				window.external.ChangeScreenModel("内容全屏");
 			}
 		});
 	});

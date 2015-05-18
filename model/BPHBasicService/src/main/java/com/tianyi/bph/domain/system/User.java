@@ -24,18 +24,17 @@ public class User {
 	public void setSessionId(String sessionId) {
 		this.sessionId = sessionId;
 	}
+	private List<MqConfig> messeageServer;
 
-	private MqConfig mqconf;
-	
+	public List<MqConfig> getMesseageServer() {
+		return messeageServer;
+	}
+
+	public void setMesseageServer(List<MqConfig> messeageServer) {
+		this.messeageServer = messeageServer;
+	}
 	private FtpConfig ftpconf;
 	
-	public MqConfig getMqconf() {
-		return mqconf;
-	}
-
-	public void setMqconf(MqConfig mqconf) {
-		this.mqconf = mqconf;
-	}
 
 	public FtpConfig getFtpconf() {
 		return ftpconf;

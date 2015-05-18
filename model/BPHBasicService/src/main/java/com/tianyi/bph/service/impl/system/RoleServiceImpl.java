@@ -76,15 +76,19 @@ public class RoleServiceImpl implements RoleService{
 		List<String> dutyArray=moduleDao.findModuleSecondLevel(Integer.parseInt(SystemConfig.DUTY_MANAGER));
 		//接处警
 		List<String> policeArray=moduleDao.findModuleSecondLevel(Integer.parseInt(SystemConfig.POLICE_MANAGER));
+		//报备分组
+		List<String> reportArray=moduleDao.findModuleSecondLevel(Integer.parseInt(SystemConfig.REPORT_GROUP));
 		int c=0;
 		int b=0;
 		int p=0;
 		int d=0;
+		int r=0;
 		
 		int con=0;
 		int base=0;
 		int police=0;
 		int duty=0;
+		int report=0;
 		for (String string : moduleList) {
 			if(!string.equals("1")){
 				if(string.equals(SystemConfig.SYSTEM_MANAGER)){
@@ -95,6 +99,8 @@ public class RoleServiceImpl implements RoleService{
 					duty=1;
 				}else if(string.equals(SystemConfig.POLICE_MANAGER)){
 					p=1;
+				}else if(string.equals(SystemConfig.REPORT_GROUP)){
+					r=1;
 				}
 				
 				if(!string.equals(SystemConfig.SYSTEM_MANAGER) && conductArray.contains(string)){
@@ -118,12 +124,18 @@ public class RoleServiceImpl implements RoleService{
 							d=1;
 						}
 					}
-				}
-				else if(!string.equals(SystemConfig.POLICE_MANAGER) && policeArray.contains(string)){
+				}else if(!string.equals(SystemConfig.POLICE_MANAGER) && policeArray.contains(string)){
 					if(police == 0){
 						if(p == 0){
 							list.add(SystemConfig.POLICE_MANAGER);
 							p=1;
+						}
+					}
+				}else if(!string.equals(SystemConfig.REPORT_GROUP) && reportArray.contains(string)){
+					if(report == 0){
+						if(r == 0){
+							list.add(SystemConfig.REPORT_GROUP);
+							r=1;
 						}
 					}
 				}

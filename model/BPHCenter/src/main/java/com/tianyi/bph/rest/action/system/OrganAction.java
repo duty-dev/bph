@@ -5,10 +5,13 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import net.sf.ehcache.CacheManager;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +28,7 @@ import com.tianyi.bph.web.cache.UserCache;
 import com.tianyi.bph.common.MessageCode;
 import com.tianyi.bph.common.ReturnResult;
 import com.tianyi.bph.common.SystemConfig;
+import com.tianyi.bph.common.ehcache.CacheUtils;
 
 @Controller
 @RequestMapping("/organ")
@@ -35,6 +39,12 @@ public class OrganAction {
 	@Autowired OrganService organService;
 	@Autowired OrganTypeService organTypeService;
 	@Autowired OrgPcCgyService orgPcCgyService;
+	private CacheManager manager;
+
+	@Autowired
+	public void setManager(@Qualifier("ehCacheManager") CacheManager manager) {
+		this.manager = manager;
+	}
 
 	/**
 	 * 添加机构
@@ -72,24 +82,11 @@ public class OrganAction {
 	@ResponseBody
 	public ReturnResult getOrganTree(
 			@RequestParam(value="organId",required=false)String organId,
-			@RequestParam(value="sessionId",required=true)String sessionId,
 			HttpServletRequest request){
 		try{
-			OrganQuery organQuery=new OrganQuery();
 			User user=(User) request.getAttribute("User");
 			
-			if(!StringUtils.isEmpty(organId)){
-				organQuery.setId(Integer.parseInt(organId));
-			}else{
-				organQuery.setId(user.getOrgId());
-			}
-			organQuery.setUserId(user.getUserId());
-			organQuery.setPath(user.getOrganPath());
-			organQuery.setPageNo(1);
-			organQuery.setPageSize(10);
-			
-			Organ o=organService.getOrganTree(organQuery,SystemConfig.DATABASE);
-			
+			Organ o=(Organ) CacheUtils.getObjectValue(manager, CacheUtils.ORGAN_DATASOURCE, user.getUserId()+"");
 			return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,"获取成功",o);
 		}catch(Exception e){
 			log.debug(e.getMessage());

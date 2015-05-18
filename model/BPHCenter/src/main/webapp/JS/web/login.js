@@ -1,3 +1,10 @@
+$(function(){
+	$("#password").keydown(function(event) {  
+        if (event.keyCode == 13) {  
+        	submitBtn($("#subBtn").get(0),1); 
+        }  
+    });
+});
 //登录及特效
 function submitBtn(obj,f){
 	var u = $("#username").val();
