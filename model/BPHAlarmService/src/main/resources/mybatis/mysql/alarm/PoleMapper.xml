@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tianyi.bph.dao.alarm.PoleMapper" >
+  <resultMap id="BaseResultMap" type="com.tianyi.bph.domain.alarm.Pole" >
+    <id column="objectid" property="objectid" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="gtq" property="gtq" jdbcType="VARCHAR" />
+    <result column="gtbm" property="gtbm" jdbcType="VARCHAR" />
+    <result column="pcsmc" property="pcsmc" jdbcType="VARCHAR" />
+    <result column="pcsdm" property="pcsdm" jdbcType="VARCHAR" />
+    <result column="lbdm" property="lbdm" jdbcType="VARCHAR" />
+    <result column="gtlb" property="gtlb" jdbcType="VARCHAR" />
+    <result column="jdmc" property="jdmc" jdbcType="VARCHAR" />
+    <result column="mph" property="mph" jdbcType="VARCHAR" />
+    <result column="jzsp" property="jzsp" jdbcType="VARCHAR" />
+    <result column="zby" property="zby" jdbcType="DOUBLE" />
+    <result column="zbx" property="zbx" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    objectid, name, gtq, gtbm, pcsmc, pcsdm, lbdm, gtlb, jdmc, mph, jzsp, zby, zbx
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.tianyi.bph.domain.alarm.Pole" >
+    select
+    <include refid="Base_Column_List" />
+    from t_pole
+    where 1=1
+    <if test="gtbm != null" >
+        AND gtbm = #{gtbm,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_pole
+    where objectid = #{objectid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_pole
+    where objectid = #{objectid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.tianyi.bph.domain.alarm.Pole" >
+    insert into t_pole (objectid, name, gtq, 
+      gtbm, pcsmc, pcsdm, 
+      lbdm, gtlb, jdmc, mph, 
+      jzsp, zby, zbx)
+    values (#{objectid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{gtq,jdbcType=VARCHAR}, 
+      #{gtbm,jdbcType=VARCHAR}, #{pcsmc,jdbcType=VARCHAR}, #{pcsdm,jdbcType=VARCHAR}, 
+      #{lbdm,jdbcType=VARCHAR}, #{gtlb,jdbcType=VARCHAR}, #{jdmc,jdbcType=VARCHAR}, #{mph,jdbcType=VARCHAR}, 
+      #{jzsp,jdbcType=VARCHAR}, #{zby,jdbcType=DOUBLE}, #{zbx,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tianyi.bph.domain.alarm.Pole" >
+    insert into t_pole
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="objectid != null" >
+        objectid,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="gtq != null" >
+        gtq,
+      </if>
+      <if test="gtbm != null" >
+        gtbm,
+      </if>
+      <if test="pcsmc != null" >
+        pcsmc,
+      </if>
+      <if test="pcsdm != null" >
+        pcsdm,
+      </if>
+      <if test="lbdm != null" >
+        lbdm,
+      </if>
+      <if test="gtlb != null" >
+        gtlb,
+      </if>
+      <if test="jdmc != null" >
+        jdmc,
+      </if>
+      <if test="mph != null" >
+        mph,
+      </if>
+      <if test="jzsp != null" >
+        jzsp,
+      </if>
+      <if test="zby != null" >
+        zby,
+      </if>
+      <if test="zbx != null" >
+        zbx,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="objectid != null" >
+        #{objectid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="gtq != null" >
+        #{gtq,jdbcType=VARCHAR},
+      </if>
+      <if test="gtbm != null" >
+        #{gtbm,jdbcType=VARCHAR},
+      </if>
+      <if test="pcsmc != null" >
+        #{pcsmc,jdbcType=VARCHAR},
+      </if>
+      <if test="pcsdm != null" >
+        #{pcsdm,jdbcType=VARCHAR},
+      </if>
+      <if test="lbdm != null" >
+        #{lbdm,jdbcType=VARCHAR},
+      </if>
+      <if test="gtlb != null" >
+        #{gtlb,jdbcType=VARCHAR},
+      </if>
+      <if test="jdmc != null" >
+        #{jdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="mph != null" >
+        #{mph,jdbcType=VARCHAR},
+      </if>
+      <if test="jzsp != null" >
+        #{jzsp,jdbcType=VARCHAR},
+      </if>
+      <if test="zby != null" >
+        #{zby,jdbcType=DOUBLE},
+      </if>
+      <if test="zbx != null" >
+        #{zbx,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_pole
+    <set >
+      <if test="record.objectid != null" >
+        objectid = #{record.objectid,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gtq != null" >
+        gtq = #{record.gtq,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gtbm != null" >
+        gtbm = #{record.gtbm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pcsmc != null" >
+        pcsmc = #{record.pcsmc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pcsdm != null" >
+        pcsdm = #{record.pcsdm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lbdm != null" >
+        lbdm = #{record.lbdm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gtlb != null" >
+        gtlb = #{record.gtlb,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jdmc != null" >
+        jdmc = #{record.jdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mph != null" >
+        mph = #{record.mph,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jzsp != null" >
+        jzsp = #{record.jzsp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zby != null" >
+        zby = #{record.zby,jdbcType=DOUBLE},
+      </if>
+      <if test="record.zbx != null" >
+        zbx = #{record.zbx,jdbcType=DOUBLE}
+      </if>
+    </set>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_pole
+    set objectid = #{record.objectid,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      gtq = #{record.gtq,jdbcType=VARCHAR},
+      gtbm = #{record.gtbm,jdbcType=VARCHAR},
+      pcsmc = #{record.pcsmc,jdbcType=VARCHAR},
+      pcsdm = #{record.pcsdm,jdbcType=VARCHAR},
+      lbdm = #{record.lbdm,jdbcType=VARCHAR},
+      gtlb = #{record.gtlb,jdbcType=VARCHAR},
+      jdmc = #{record.jdmc,jdbcType=VARCHAR},
+      mph = #{record.mph,jdbcType=VARCHAR},
+      jzsp = #{record.jzsp,jdbcType=VARCHAR},
+      zby = #{record.zby,jdbcType=DOUBLE},
+      zbx = #{record.zbx,jdbcType=DOUBLE}
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tianyi.bph.domain.alarm.Pole" >
+    update t_pole
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="gtq != null" >
+        gtq = #{gtq,jdbcType=VARCHAR},
+      </if>
+      <if test="gtbm != null" >
+        gtbm = #{gtbm,jdbcType=VARCHAR},
+      </if>
+      <if test="pcsmc != null" >
+        pcsmc = #{pcsmc,jdbcType=VARCHAR},
+      </if>
+      <if test="pcsdm != null" >
+        pcsdm = #{pcsdm,jdbcType=VARCHAR},
+      </if>
+      <if test="lbdm != null" >
+        lbdm = #{lbdm,jdbcType=VARCHAR},
+      </if>
+      <if test="gtlb != null" >
+        gtlb = #{gtlb,jdbcType=VARCHAR},
+      </if>
+      <if test="jdmc != null" >
+        jdmc = #{jdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="mph != null" >
+        mph = #{mph,jdbcType=VARCHAR},
+      </if>
+      <if test="jzsp != null" >
+        jzsp = #{jzsp,jdbcType=VARCHAR},
+      </if>
+      <if test="zby != null" >
+        zby = #{zby,jdbcType=DOUBLE},
+      </if>
+      <if test="zbx != null" >
+        zbx = #{zbx,jdbcType=DOUBLE}
+      </if>
+    </set>
+    where objectid = #{objectid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tianyi.bph.domain.alarm.Pole" >
+    update t_pole
+    set name = #{name,jdbcType=VARCHAR},
+      gtq = #{gtq,jdbcType=VARCHAR},
+      gtbm = #{gtbm,jdbcType=VARCHAR},
+      pcsmc = #{pcsmc,jdbcType=VARCHAR},
+      pcsdm = #{pcsdm,jdbcType=VARCHAR},
+      lbdm = #{lbdm,jdbcType=VARCHAR},
+      gtlb = #{gtlb,jdbcType=VARCHAR},
+      jdmc = #{jdmc,jdbcType=VARCHAR},
+      mph = #{mph,jdbcType=VARCHAR},
+      jzsp = #{jzsp,jdbcType=VARCHAR},
+      zby = #{zby,jdbcType=DOUBLE},
+      zbx = #{zbx,jdbcType=DOUBLE}
+    where objectid = #{objectid,jdbcType=INTEGER}
+  </update>
+  <select id="selectByBm" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_pole
+    where gtbm = #{gtbm,jdbcType=VARCHAR}
+  </select>
+</mapper>

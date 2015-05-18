@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tianyi.bph.dao.alarm.AlarmTypeMapper">
+  <resultMap id="BaseResultMap" type="com.tianyi.bph.domain.alarm.AlarmType">
+    <id column="TYPE_CODE" jdbcType="VARCHAR" property="typeCode" />
+    <id column="TYPE_NAME" jdbcType="VARCHAR" property="typeName" />
+    <id column="PARENT_TYPE_CODE" jdbcType="VARCHAR" property="parentTypeCode" />
+    <id column="NOTE" jdbcType="VARCHAR" property="note" />
+    <id column="CONTRAST" jdbcType="VARCHAR" property="constrast" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    TYPE_CODE, TYPE_NAME, PARENT_TYPE_CODE, NOTE, CONTRAST
+  </sql>
+  
+  <select id="getAlarmTypeList" resultMap="BaseResultMap" parameterType="com.tianyi.bph.domain.alarm.AlarmType">
+		select
+		<include refid="Base_Column_List" />
+		from b_alarm_type
+		where 1=1 
+		<if test="parentTypeCode != null">
+			AND PARENT_TYPE_CODE = #{parentTypeCode,jdbcType=VARCHAR}
+		</if>
+		and parent_type_code ='caseType110' or  parent_type_code in (select type_code from b_alarm_type where parent_type_code ='caseType110')
+	</select>
+
+</mapper>

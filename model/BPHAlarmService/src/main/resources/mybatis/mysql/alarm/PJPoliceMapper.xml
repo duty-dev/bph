@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tianyi.bph.dao.alarm.PJPoliceMapper" >
+  <resultMap id="BaseResultMap" type="com.tianyi.bph.domain.alarm.PJPolice" >
+    <id column="JJDBH" property="jjdbh" jdbcType="VARCHAR" />
+    <id column="PJ_POLICE_ID" property="pjPoliceId" jdbcType="DECIMAL" />
+    <result column="REPORT_TYPE" property="reportType" jdbcType="INTEGER" />
+    <result column="PJ_VEHICLE_ID" property="pjVehicleId" jdbcType="DECIMAL" />
+    <result column="START_TIME" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="END_TIME" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="ARRIVE_TIME" property="arriveTime" jdbcType="TIMESTAMP" />
+    <result column="LEAVE_TIME" property="leaveTime" jdbcType="TIMESTAMP" />
+    <result column="PJ_USER_ID" property="pjUserId" jdbcType="INTEGER" />
+    <result column="PJ_TIME" property="pjTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    JJDBH, PJ_POLICE_ID, REPORT_TYPE, PJ_VEHICLE_ID, START_TIME, END_TIME, ARRIVE_TIME, 
+    LEAVE_TIME, PJ_USER_ID, PJ_TIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.tianyi.bph.domain.alarm.PJPolice" >
+    select
+    <include refid="Base_Column_List" />
+    from b_pj_police
+    where 1=1
+    <if test="jjdbh != null" >
+        AND JJDBH = #{jjdbh,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.tianyi.bph.domain.alarm.PJPoliceKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from b_pj_police
+    where JJDBH = #{jjdbh,jdbcType=VARCHAR}
+      and PJ_POLICE_ID = #{pjPoliceId,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.tianyi.bph.domain.alarm.PJPolice" >
+    delete from b_pj_police
+    where JJDBH = #{jjdbh,jdbcType=VARCHAR}
+      and PJ_POLICE_ID = #{pjPoliceId,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.tianyi.bph.domain.alarm.PJPolice" >
+    insert into b_pj_police (JJDBH, PJ_POLICE_ID, REPORT_TYPE, 
+      PJ_VEHICLE_ID, START_TIME, END_TIME, 
+      ARRIVE_TIME, LEAVE_TIME, PJ_USER_ID, 
+      PJ_TIME)
+    values (#{jjdbh,jdbcType=VARCHAR}, #{pjPoliceId,jdbcType=DECIMAL}, #{reportType,jdbcType=INTEGER}, 
+      #{pjVehicleId,jdbcType=DECIMAL}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{arriveTime,jdbcType=TIMESTAMP}, #{leaveTime,jdbcType=TIMESTAMP}, #{pjUserId,jdbcType=INTEGER}, 
+      #{pjTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tianyi.bph.domain.alarm.PJPolice" >
+    insert into b_pj_police
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="jjdbh != null" >
+        JJDBH,
+      </if>
+      <if test="pjPoliceId != null" >
+        PJ_POLICE_ID,
+      </if>
+      <if test="reportType != null" >
+        REPORT_TYPE,
+      </if>
+      <if test="pjVehicleId != null" >
+        PJ_VEHICLE_ID,
+      </if>
+      <if test="startTime != null" >
+        START_TIME,
+      </if>
+      <if test="endTime != null" >
+        END_TIME,
+      </if>
+      <if test="arriveTime != null" >
+        ARRIVE_TIME,
+      </if>
+      <if test="leaveTime != null" >
+        LEAVE_TIME,
+      </if>
+      <if test="pjUserId != null" >
+        PJ_USER_ID,
+      </if>
+      <if test="pjTime != null" >
+        PJ_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="jjdbh != null" >
+        #{jjdbh,jdbcType=VARCHAR},
+      </if>
+      <if test="pjPoliceId != null" >
+        #{pjPoliceId,jdbcType=DECIMAL},
+      </if>
+      <if test="reportType != null" >
+        #{reportType,jdbcType=INTEGER},
+      </if>
+      <if test="pjVehicleId != null" >
+        #{pjVehicleId,jdbcType=DECIMAL},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="arriveTime != null" >
+        #{arriveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="leaveTime != null" >
+        #{leaveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pjUserId != null" >
+        #{pjUserId,jdbcType=INTEGER},
+      </if>
+      <if test="pjTime != null" >
+        #{pjTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update b_pj_police
+    <set >
+      <if test="record.jjdbh != null" >
+        JJDBH = #{record.jjdbh,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pjPoliceId != null" >
+        PJ_POLICE_ID = #{record.pjPoliceId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.reportType != null" >
+        REPORT_TYPE = #{record.reportType,jdbcType=INTEGER},
+      </if>
+      <if test="record.pjVehicleId != null" >
+        PJ_VEHICLE_ID = #{record.pjVehicleId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.startTime != null" >
+        START_TIME = #{record.startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endTime != null" >
+        END_TIME = #{record.endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.arriveTime != null" >
+        ARRIVE_TIME = #{record.arriveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.leaveTime != null" >
+        LEAVE_TIME = #{record.leaveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.pjUserId != null" >
+        PJ_USER_ID = #{record.pjUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.pjTime != null" >
+        PJ_TIME = #{record.pjTime,jdbcType=TIMESTAMP}
+      </if>
+    </set>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update b_pj_police
+    set JJDBH = #{record.jjdbh,jdbcType=VARCHAR},
+      PJ_POLICE_ID = #{record.pjPoliceId,jdbcType=DECIMAL},
+      REPORT_TYPE = #{record.reportType,jdbcType=INTEGER},
+      PJ_VEHICLE_ID = #{record.pjVehicleId,jdbcType=DECIMAL},
+      START_TIME = #{record.startTime,jdbcType=TIMESTAMP},
+      END_TIME = #{record.endTime,jdbcType=TIMESTAMP},
+      ARRIVE_TIME = #{record.arriveTime,jdbcType=TIMESTAMP},
+      LEAVE_TIME = #{record.leaveTime,jdbcType=TIMESTAMP},
+      PJ_USER_ID = #{record.pjUserId,jdbcType=INTEGER},
+      PJ_TIME = #{record.pjTime,jdbcType=TIMESTAMP}
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tianyi.bph.domain.alarm.PJPolice" >
+    update b_pj_police
+    <set >
+      <if test="reportType != null" >
+        REPORT_TYPE = #{reportType,jdbcType=INTEGER},
+      </if>
+      <if test="pjVehicleId != null" >
+        PJ_VEHICLE_ID = #{pjVehicleId,jdbcType=DECIMAL},
+      </if>
+      <if test="startTime != null" >
+        START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        END_TIME = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="arriveTime != null" >
+        ARRIVE_TIME = #{arriveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="leaveTime != null" >
+        LEAVE_TIME = #{leaveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pjUserId != null" >
+        PJ_USER_ID = #{pjUserId,jdbcType=INTEGER},
+      </if>
+      <if test="pjTime != null" >
+        PJ_TIME = #{pjTime,jdbcType=TIMESTAMP}
+      </if>
+    </set>
+    where JJDBH = #{jjdbh,jdbcType=VARCHAR}
+      and PJ_POLICE_ID = #{pjPoliceId,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tianyi.bph.domain.alarm.PJPolice" >
+    update b_pj_police
+    set REPORT_TYPE = #{reportType,jdbcType=INTEGER},
+      PJ_VEHICLE_ID = #{pjVehicleId,jdbcType=DECIMAL},
+      START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      END_TIME = #{endTime,jdbcType=TIMESTAMP},
+      ARRIVE_TIME = #{arriveTime,jdbcType=TIMESTAMP},
+      LEAVE_TIME = #{leaveTime,jdbcType=TIMESTAMP},
+      PJ_USER_ID = #{pjUserId,jdbcType=INTEGER},
+      PJ_TIME = #{pjTime,jdbcType=TIMESTAMP}
+    where JJDBH = #{jjdbh,jdbcType=VARCHAR}
+      and PJ_POLICE_ID = #{pjPoliceId,jdbcType=DECIMAL}
+  </update>
+</mapper>

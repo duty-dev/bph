@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tianyi.bph.dao.alarm.CJFeedbaMapper" >
+  <resultMap id="BaseResultMap" type="com.tianyi.bph.domain.alarm.CJFeedba" >
+    <result column="JJDBH" property="jjdbh" jdbcType="VARCHAR" />
+    <result column="CJDBH" property="cjdbh" jdbcType="VARCHAR" />
+    <result column="INFO" property="info" jdbcType="VARCHAR" />
+    <result column="THE_TIME" property="theTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    JJDBH, CJDBH, INFO, THE_TIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.tianyi.bph.domain.alarm.CJFeedba" >
+    select
+    <include refid="Base_Column_List" />
+    from b_cj_feedback
+    where 1=1
+    <if test="jjdbh != null" >
+        AND JJDBH = #{jjdbh,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <insert id="insert" parameterType="com.tianyi.bph.domain.alarm.CJFeedba" >
+    insert into b_cj_feedback (JJDBH, CJDBH, INFO, 
+      THE_TIME)
+    values (#{jjdbh,jdbcType=VARCHAR}, #{cjdbh,jdbcType=VARCHAR}, #{info,jdbcType=VARCHAR}, 
+      #{theTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tianyi.bph.domain.alarm.CJFeedba" >
+    insert into b_cj_feedback
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="jjdbh != null" >
+        JJDBH,
+      </if>
+      <if test="cjdbh != null" >
+        CJDBH,
+      </if>
+      <if test="info != null" >
+        INFO,
+      </if>
+      <if test="theTime != null" >
+        THE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="jjdbh != null" >
+        #{jjdbh,jdbcType=VARCHAR},
+      </if>
+      <if test="cjdbh != null" >
+        #{cjdbh,jdbcType=VARCHAR},
+      </if>
+      <if test="info != null" >
+        #{info,jdbcType=VARCHAR},
+      </if>
+      <if test="theTime != null" >
+        #{theTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update b_cj_feedback
+    <set >
+      <if test="record.jjdbh != null" >
+        JJDBH = #{record.jjdbh,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cjdbh != null" >
+        CJDBH = #{record.cjdbh,jdbcType=VARCHAR},
+      </if>
+      <if test="record.info != null" >
+        INFO = #{record.info,jdbcType=VARCHAR},
+      </if>
+      <if test="record.theTime != null" >
+        THE_TIME = #{record.theTime,jdbcType=TIMESTAMP}
+      </if>
+    </set>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update b_cj_feedback
+    set JJDBH = #{record.jjdbh,jdbcType=VARCHAR},
+      CJDBH = #{record.cjdbh,jdbcType=VARCHAR},
+      INFO = #{record.info,jdbcType=VARCHAR},
+      THE_TIME = #{record.theTime,jdbcType=TIMESTAMP}
+  </update>
+</mapper>

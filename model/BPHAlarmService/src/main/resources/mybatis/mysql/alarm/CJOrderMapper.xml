@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tianyi.bph.dao.alarm.CJOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.tianyi.bph.domain.alarm.CJOrder" >
+    <id column="CJDBH" property="cjdbh" jdbcType="VARCHAR" />
+    <result column="JJDBH" property="jjdbh" jdbcType="VARCHAR" />
+    <result column="SMYD" property="smyd" jdbcType="VARCHAR" />
+    <result column="CJDWBH" property="cjdwbh" jdbcType="VARCHAR" />
+    <result column="CJQK" property="cjqk" jdbcType="VARCHAR" />
+    <result column="CJYBH" property="cjybh" jdbcType="VARCHAR" />
+    <result column="CJYXM" property="cjyxm" jdbcType="VARCHAR" />
+    <result column="CZSJ" property="czsj" jdbcType="TIMESTAMP" />
+    <result column="CLWBSJ" property="clwbsj" jdbcType="TIMESTAMP" />
+    <result column="CLJG" property="cljg" jdbcType="VARCHAR" />
+    <result column="DDXCSJ" property="ddxcsj" jdbcType="TIMESTAMP" />
+    <result column="SCFKSJ" property="scfksj" jdbcType="TIMESTAMP" />
+    <result column="FKNR" property="fknr" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    CJDBH, JJDBH, SMYD, CJDWBH, CJQK, CJYBH, CJYXM, CZSJ, CLWBSJ, CLJG, DDXCSJ, SCFKSJ, 
+    FKNR
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.tianyi.bph.domain.alarm.CJOrder" >
+    select
+    <include refid="Base_Column_List" />
+    from b_cj_order
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from b_cj_order
+    where CJDBH = #{cjdbh,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from b_cj_order
+    where CJDBH = #{cjdbh,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tianyi.bph.domain.alarm.CJOrder" >
+    insert into b_cj_order (CJDBH, JJDBH, SMYD, 
+      CJDWBH, CJQK, CJYBH, 
+      CJYXM, CZSJ, CLWBSJ, 
+      CLJG, DDXCSJ, SCFKSJ, 
+      FKNR)
+    values (#{cjdbh,jdbcType=VARCHAR}, #{jjdbh,jdbcType=VARCHAR}, #{smyd,jdbcType=VARCHAR}, 
+      #{cjdwbh,jdbcType=VARCHAR}, #{cjqk,jdbcType=VARCHAR}, #{cjybh,jdbcType=VARCHAR}, 
+      #{cjyxm,jdbcType=VARCHAR}, #{czsj,jdbcType=TIMESTAMP}, #{clwbsj,jdbcType=TIMESTAMP}, 
+      #{cljg,jdbcType=VARCHAR}, #{ddxcsj,jdbcType=TIMESTAMP}, #{scfksj,jdbcType=TIMESTAMP}, 
+      #{fknr,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tianyi.bph.domain.alarm.CJOrder" >
+    insert into b_cj_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cjdbh != null" >
+        CJDBH,
+      </if>
+      <if test="jjdbh != null" >
+        JJDBH,
+      </if>
+      <if test="smyd != null" >
+        SMYD,
+      </if>
+      <if test="cjdwbh != null" >
+        CJDWBH,
+      </if>
+      <if test="cjqk != null" >
+        CJQK,
+      </if>
+      <if test="cjybh != null" >
+        CJYBH,
+      </if>
+      <if test="cjyxm != null" >
+        CJYXM,
+      </if>
+      <if test="czsj != null" >
+        CZSJ,
+      </if>
+      <if test="clwbsj != null" >
+        CLWBSJ,
+      </if>
+      <if test="cljg != null" >
+        CLJG,
+      </if>
+      <if test="ddxcsj != null" >
+        DDXCSJ,
+      </if>
+      <if test="scfksj != null" >
+        SCFKSJ,
+      </if>
+      <if test="fknr != null" >
+        FKNR,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cjdbh != null" >
+        #{cjdbh,jdbcType=VARCHAR},
+      </if>
+      <if test="jjdbh != null" >
+        #{jjdbh,jdbcType=VARCHAR},
+      </if>
+      <if test="smyd != null" >
+        #{smyd,jdbcType=VARCHAR},
+      </if>
+      <if test="cjdwbh != null" >
+        #{cjdwbh,jdbcType=VARCHAR   m-y},
+      </if>
+      <if test="cjqk != null" >
+        #{cjqk,jdbcType=VARCHAR},
+      </if>
+      <if test="cjybh != null" >
+        #{cjybh,jdbcType=VARCHAR},
+      </if>
+      <if test="cjyxm != null" >
+        #{cjyxm,jdbcType=VARCHAR},
+      </if>
+      <if test="czsj != null" >
+        #{czsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="clwbsj != null" >
+        #{clwbsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cljg != null" >
+        #{cljg,jdbcType=VARCHAR},
+      </if>
+      <if test="ddxcsj != null" >
+        #{ddxcsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="scfksj != null" >
+        #{scfksj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fknr != null" >
+        #{fknr,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update b_cj_order
+    <set >
+      <if test="record.cjdbh != null" >
+        CJDBH = #{record.cjdbh,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jjdbh != null" >
+        JJDBH = #{record.jjdbh,jdbcType=VARCHAR},
+      </if>
+      <if test="record.smyd != null" >
+        SMYD = #{record.smyd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cjdwbh != null" >
+        CJDWBH = #{record.cjdwbh,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cjqk != null" >
+        CJQK = #{record.cjqk,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cjybh != null" >
+        CJYBH = #{record.cjybh,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cjyxm != null" >
+        CJYXM = #{record.cjyxm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.czsj != null" >
+        CZSJ = #{record.czsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.clwbsj != null" >
+        CLWBSJ = #{record.clwbsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cljg != null" >
+        CLJG = #{record.cljg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ddxcsj != null" >
+        DDXCSJ = #{record.ddxcsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.scfksj != null" >
+        SCFKSJ = #{record.scfksj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.fknr != null" >
+        FKNR = #{record.fknr,jdbcType=VARCHAR}
+      </if>
+    </set>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update b_cj_order
+    set CJDBH = #{record.cjdbh,jdbcType=VARCHAR},
+      JJDBH = #{record.jjdbh,jdbcType=VARCHAR},
+      SMYD = #{record.smyd,jdbcType=VARCHAR},
+      CJDWBH = #{record.cjdwbh,jdbcType=VARCHAR},
+      CJQK = #{record.cjqk,jdbcType=VARCHAR},
+      CJYBH = #{record.cjybh,jdbcType=VARCHAR},
+      CJYXM = #{record.cjyxm,jdbcType=VARCHAR},
+      CZSJ = #{record.czsj,jdbcType=TIMESTAMP},
+      CLWBSJ = #{record.clwbsj,jdbcType=TIMESTAMP},
+      CLJG = #{record.cljg,jdbcType=VARCHAR},
+      DDXCSJ = #{record.ddxcsj,jdbcType=TIMESTAMP},
+      SCFKSJ = #{record.scfksj,jdbcType=TIMESTAMP},
+      FKNR = #{record.fknr,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tianyi.bph.domain.alarm.CJOrder" >
+    update b_cj_order
+    <set >
+      <if test="jjdbh != null" >
+        JJDBH = #{jjdbh,jdbcType=VARCHAR},
+      </if>
+      <if test="smyd != null" >
+        SMYD = #{smyd,jdbcType=VARCHAR},
+      </if>
+      <if test="cjdwbh != null" >
+        CJDWBH = #{cjdwbh,jdbcType=VARCHAR},
+      </if>
+      <if test="cjqk != null" >
+        CJQK = #{cjqk,jdbcType=VARCHAR},
+      </if>
+      <if test="cjybh != null" >
+        CJYBH = #{cjybh,jdbcType=VARCHAR},
+      </if>
+      <if test="cjyxm != null" >
+        CJYXM = #{cjyxm,jdbcType=VARCHAR},
+      </if>
+      <if test="czsj != null" >
+        CZSJ = #{czsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="clwbsj != null" >
+        CLWBSJ = #{clwbsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cljg != null" >
+        CLJG = #{cljg,jdbcType=VARCHAR},
+      </if>
+      <if test="ddxcsj != null" >
+        DDXCSJ = #{ddxcsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="scfksj != null" >
+        SCFKSJ = #{scfksj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fknr != null" >
+        FKNR = #{fknr,jdbcType=VARCHAR}
+      </if>
+    </set>
+    where CJDBH = #{cjdbh,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tianyi.bph.domain.alarm.CJOrder" >
+    update b_cj_order
+    set JJDBH = #{jjdbh,jdbcType=VARCHAR},
+      SMYD = #{smyd,jdbcType=VARCHAR},
+      CJDWBH = #{cjdwbh,jdbcType=VARCHAR},
+      CJQK = #{cjqk,jdbcType=VARCHAR},
+      CJYBH = #{cjybh,jdbcType=VARCHAR},
+      CJYXM = #{cjyxm,jdbcType=VARCHAR},
+      CZSJ = #{czsj,jdbcType=TIMESTAMP},
+      CLWBSJ = #{clwbsj,jdbcType=TIMESTAMP},
+      CLJG = #{cljg,jdbcType=VARCHAR},
+      DDXCSJ = #{ddxcsj,jdbcType=TIMESTAMP},
+      SCFKSJ = #{scfksj,jdbcType=TIMESTAMP},
+      FKNR = #{fknr,jdbcType=VARCHAR}
+    where CJDBH = #{cjdbh,jdbcType=VARCHAR}
+  </update>
+</mapper>
