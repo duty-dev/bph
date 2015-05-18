@@ -132,6 +132,10 @@ var GpsgroupManage = {
 	},
 	editGroup:function(){
 		var organId = $("#organId").val();
+		if(m_gpsgroup_Id ==undefined){
+			$("body").popjs({"title":"提示","content":"请选择要操作的分组数据"}); 
+			return;
+		}
 		$("#dialog").tyWindow({
 			width : "680px",
 			height : "500px",
@@ -242,6 +246,10 @@ var GpsgroupManage = {
 		var row = kGrid.dataItem(kGrid.select());
 		var kgroupGrid = $("#dtGpsGroup").data("kendoGrid");
 		var grouprow = kgroupGrid.dataItem(kgroupGrid.select());
+		if(grouprow == null){
+			$("body").popjs({"title":"提示","content":"请选择要操作的分组数据"}); 
+			return;		
+		}
 		var groupId = grouprow.id;
 		if (row != null) {
 		$("body").tyWindow({"content":"确定要删除该成员?","center":true,"ok":true,"no":true,"okCallback":function(){ 
