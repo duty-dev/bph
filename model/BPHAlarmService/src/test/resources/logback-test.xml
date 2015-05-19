@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration  debug="false" scan="true">
+    <!-- 控制台输出 -->   
+    <Appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+       	<!-- 日志输出编码 -->  
+       	<encoder>
+       		<charset>
+	        	<Encoding>UTF-8</Encoding>
+	        </charset>
+       		<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符--> 
+        	<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%logger{50} %line] - %msg%n</pattern>   
+      	 </encoder>
+    </Appender>    
+    
+    <logger name="ch.qos.logback"  level="WARN" /> 
+      
+   
+    <logger name="com.tianyi.ehome.dao"  level="WARN" /> 
+    
+    <logger name="jdbc.audit"  level="WARN" /> 
+    <logger name="jdbc.resultset"  level="WARN" /> 
+    <logger name="jdbc.sqlonly"  level="WARN" />
+    <logger name="jdbc.sqltiming"  level="DEBUG" />
+    <logger name="jdbc.connection"  level="WARN" /> 
+    
+    
+    <logger name="org.apache.mina"  level="WARN" /> 
+    <logger name="org.apache.http"  level="WARN" /> 
+   
+    <logger name="com.mchange.v2"  level="INFO" /> 
+    <logger name="org.springframework"  level="WARN" />  
+    <logger name="org.apache.commons"  level="WARN" /> 
+    
+    
+    <logger name="com.alibaba.druid.pool"  level="WARN" />
+    
+    <logger name="org.apache.ibatis" level="WARN" />
+    <logger name="org.mybatis.spring" level="WARN" />
+    
+    <logger name="com.tiyi.videoplat.alarm.dao"  level="WARN" />
+    
+    <!-- 日志输出级别 -->
+    <root level="DEBUG">   
+        <appender-ref ref="STDOUT" />  
+    </root> 
+     
+</configuration>

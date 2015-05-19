@@ -1,0 +1,1032 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tianyi.bph.dao.alarm.Jjdb110Mapper">
+	<resultMap id="BaseResultMap" type="com.tianyi.bph.domain.alarm.Jjdb110">
+		<id column="JJDBH" property="jjdbh" jdbcType="VARCHAR" />
+		<result column="AJZT" property="ajzt" jdbcType="INTEGER" />
+		<result column="BJDH" property="bjdh" jdbcType="VARCHAR" />
+		<result column="BJDHYHDZ" property="bjdhyhdz" jdbcType="VARCHAR" />
+		<result column="BJDHYHXM" property="bjdhyhxm" jdbcType="VARCHAR" />
+		<result column="BJFSBH" property="bjfsbh" jdbcType="VARCHAR" />
+		<result column="CASE_LEVEL" property="caseLevel" jdbcType="INTEGER" />
+		<result column="BJLB" property="bjlb" jdbcType="VARCHAR" />
+		<result column="BJLX" property="bjlx" jdbcType="VARCHAR" />
+		<result column="BJXL" property="bjxl" jdbcType="VARCHAR" />
+		<result column="BJNR" property="bjnr" jdbcType="VARCHAR" />
+		<result column="BCJJNR" property="bcjjnr" jdbcType="VARCHAR" />
+		<result column="BJRXM" property="bjrxm" jdbcType="VARCHAR" />
+		<result column="BJRXB" property="bjrxb" jdbcType="VARCHAR" />
+		<result column="BJSJ" property="bjsj" jdbcType="TIMESTAMP" />
+		<result column="FKYQ" property="fkyq" jdbcType="VARCHAR" />
+		<result column="GLJJDBH" property="gljjdbh" jdbcType="VARCHAR" />
+		<result column="GXDWBH" property="gxdwbh" jdbcType="VARCHAR" />
+		<result column="JJDWBH" property="jjdwbh" jdbcType="VARCHAR" />
+		<result column="JJSJ" property="jjsj" jdbcType="TIMESTAMP" />
+		<result column="JJYBH" property="jjybh" jdbcType="VARCHAR" />
+		<result column="JJYXM" property="jjyxm" jdbcType="VARCHAR" />
+		<result column="LDGBH" property="ldgbh" jdbcType="VARCHAR" />
+		<result column="LHLXBH" property="lhlxbh" jdbcType="VARCHAR" />
+		<result column="LXDH" property="lxdh" jdbcType="VARCHAR" />
+		<result column="SDDWXZB" property="sddwxzb" jdbcType="DOUBLE" />
+		<result column="SDDWYZB" property="sddwyzb" jdbcType="DOUBLE" />
+		<result column="SFDZ" property="sfdz" jdbcType="VARCHAR" />
+		<result column="SFSW" property="sfsw" jdbcType="INTEGER" />
+		<result column="SFSWYBJ" property="sfswybj" jdbcType="INTEGER" />
+		<result column="TFHM" property="tfhm" jdbcType="VARCHAR" />
+		<result column="TRANSMITUNIT" property="transmitunit" jdbcType="VARCHAR" />
+		<result column="XZQHBH" property="xzqhbh" jdbcType="VARCHAR" />
+		<result column="YWBKRY" property="ywbkry" jdbcType="INTEGER" />
+		<result column="YWBZXL" property="ywbzxl" jdbcType="INTEGER" />
+		<result column="YWWXWZ" property="ywwxwz" jdbcType="INTEGER" />
+		<result column="YWXAJBS" property="ywxajbs" jdbcType="INTEGER" />
+		<result column="ZAGJ" property="zagj" jdbcType="VARCHAR" />
+		<result column="ZDDWXZB" property="zddwxzb" jdbcType="DOUBLE" />
+		<result column="ZDDWYZB" property="zddwyzb" jdbcType="DOUBLE" />
+		<result column="ZFAJBS" property="zfajbs" jdbcType="INTEGER" />
+		<result column="JAMS" property="jams" jdbcType="VARCHAR" />
+		<result column="JAR" property="jar" jdbcType="VARCHAR" />
+		<result column="JASJ" property="jasj" jdbcType="TIMESTAMP" />
+		<result column="T_PATROL_AREA_ID" property="tPatrolAreaId"
+			jdbcType="INTEGER" />
+		<result column="T_COMMUNITY_AREA_ID" property="tCommunityAreaId"
+			jdbcType="INTEGER" />
+		<result column="MARK" property="mark" jdbcType="BIT" />
+		<result column="MARK_USER_ID" property="markUserId" jdbcType="INTEGER" />
+		<result column="MARK_TIME" property="markTime" jdbcType="TIMESTAMP" />
+		<result column="GPS_CONFIG" property="gpsConfig" jdbcType="VARCHAR" />
+		<result column="BJLBMC" property="bjlbmc" jdbcType="VARCHAR" />
+		<result column="BJLXMC" property="bjlxmc" jdbcType="VARCHAR" />
+		<result column="BJXLMC" property="bjxlmc" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="resultMap" type="com.tianyi.bph.query.alarm.JJDBView">
+		<id column="JJDBH" property="jjdbh" jdbcType="VARCHAR" />
+		<result column="AJZT" property="ajzt" jdbcType="INTEGER" />
+		<result column="BJDH" property="bjdh" jdbcType="VARCHAR" />
+		<result column="SFDZ" property="sfdz" jdbcType="VARCHAR" />
+		<result column="BJDHYHXM" property="bjdhyhxm" jdbcType="VARCHAR" />
+		<result column="BJFSBH" property="bjfsbh" jdbcType="VARCHAR" />
+		<result column="CASE_LEVEL" property="caseLevel" jdbcType="INTEGER" />
+	    <result column="BJNR" property="bjnr" jdbcType="VARCHAR" />
+	    <result column="BJSJ" property="bjsj" jdbcType="TIMESTAMP" />
+	    <result column="BJLB" property="bjlb" jdbcType="VARCHAR" />
+		<result column="BJLX" property="bjlx" jdbcType="VARCHAR" />
+	    <result column="MARK" property="mark" jdbcType="BIT" />
+	    <result column="GXDWBH" property="gxdwbh" jdbcType="VARCHAR" />
+	    <result column="BJLBMC" property="bjlbmc" jdbcType="VARCHAR" />
+		<result column="BJLXMC" property="bjlxmc" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		jj.JJDBH, jj.AJZT, jj.BJDH, jj.BJDHYHDZ, jj.BJDHYHXM, jj.BJFSBH, jj.CASE_LEVEL,
+		jj.BJLB, jj.BJLX, jj.BJXL,
+		jj.BJNR,
+		jj.BCJJNR, jj.BJRXM, jj.BJRXB, jj.BJSJ, jj.FKYQ, jj.GLJJDBH,
+		jj.GXDWBH, jj.JJDWBH, jj.JJSJ, jj.JJYBH,
+		jj.JJYXM, jj.LDGBH,
+		jj.LHLXBH, jj.LXDH, jj.SDDWXZB,
+		jj.SDDWYZB, jj.SFDZ, jj.SFSW, jj.SFSWYBJ, jj.TFHM, jj.TRANSMITUNIT,
+		jj.XZQHBH,
+		jj.YWBKRY,
+		jj.YWBZXL, jj.YWWXWZ, jj.YWXAJBS, jj.ZAGJ, jj.ZDDWXZB, jj.ZDDWYZB, jj.ZFAJBS, jj.JAMS, jj.JAR,
+		jj.JASJ,
+		jj.T_PATROL_AREA_ID, jj.T_COMMUNITY_AREA_ID, jj.MARK, jj.MARK_USER_ID,
+		jj.MARK_TIME, jj.GPS_CONFIG
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.tianyi.bph.query.alarm.JJDBQuery">
+		select
+		<include refid="Base_Column_List" />,
+		atlb.TYPE_NAME as BJLBMC,atlx.TYPE_NAME as BJLXMC,atxl.TYPE_NAME as BJXLMC
+		from b_jjdb jj
+		left join b_alarm_type atlb on jj.BJLB = atlb.TYPE_CODE
+		left join b_alarm_type atlx on jj.BJLX = atlx.TYPE_CODE
+		left join b_alarm_type atxl on jj.BJXL = atxl.TYPE_CODE
+		where 1=1 
+		<if test="ajzt != null">
+			AND jj.AJZT = #{ajzt,jdbcType=INTEGER}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />,
+		atlb.TYPE_NAME as BJLBMC,atlx.TYPE_NAME as BJLXMC,atxl.TYPE_NAME as BJXLMC
+		from b_jjdb jj
+		left join b_alarm_type atlb on jj.BJLB = atlb.TYPE_CODE
+		left join b_alarm_type atlx on jj.BJLX = atlx.TYPE_CODE
+		left join b_alarm_type atxl on jj.BJXL = atxl.TYPE_CODE
+		where jj.JJDBH = #{jjdbh,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from b_jjdb
+		where JJDBH = #{jjdbh,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.tianyi.bph.domain.alarm.Jjdb110">
+		insert into b_jjdb (JJDBH,
+		AJZT, BJDH,
+		BJDHYHDZ, BJDHYHXM, BJFSBH,
+		CASE_LEVEL, BJLB, BJLX,
+		BJXL,
+		BJNR, BCJJNR,
+		BJRXM, BJRXB, BJSJ, FKYQ,
+		GLJJDBH, GXDWBH, JJDWBH,
+		JJSJ,
+		JJYBH, JJYXM, LDGBH,
+		LHLXBH, LXDH, SDDWXZB,
+		SDDWYZB, SFDZ, SFSW,
+		SFSWYBJ, TFHM, TRANSMITUNIT,
+		XZQHBH, YWBKRY, YWBZXL,
+		YWWXWZ, YWXAJBS,
+		ZAGJ,
+		ZDDWXZB, ZDDWYZB, ZFAJBS,
+		JAMS, JAR, JASJ, T_PATROL_AREA_ID,
+		T_COMMUNITY_AREA_ID, MARK, MARK_USER_ID,
+		MARK_TIME, GPS_CONFIG)
+		values
+		(#{jjdbh,jdbcType=VARCHAR}, #{ajzt,jdbcType=INTEGER},
+		#{bjdh,jdbcType=VARCHAR},
+		#{bjdhyhdz,jdbcType=VARCHAR},
+		#{bjdhyhxm,jdbcType=VARCHAR}, #{bjfsbh,jdbcType=VARCHAR},
+		#{caseLevel,jdbcType=CHAR}, #{bjlb,jdbcType=VARCHAR},
+		#{bjlx,jdbcType=VARCHAR},
+		#{bjxl,jdbcType=VARCHAR},
+		#{bjnr,jdbcType=VARCHAR}, #{bcjjnr,jdbcType=VARCHAR},
+		#{bjrxm,jdbcType=VARCHAR}, #{bjrxb,jdbcType=VARCHAR},
+		#{bjsj,jdbcType=TIMESTAMP}, #{fkyq,jdbcType=VARCHAR},
+		#{gljjdbh,jdbcType=VARCHAR}, #{gxdwbh,jdbcType=VARCHAR},
+		#{jjdwbh,jdbcType=VARCHAR},
+		#{jjsj,jdbcType=TIMESTAMP},
+		#{jjybh,jdbcType=VARCHAR}, #{jjyxm,jdbcType=VARCHAR},
+		#{ldgbh,jdbcType=VARCHAR},
+		#{lhlxbh,jdbcType=VARCHAR},
+		#{lxdh,jdbcType=VARCHAR}, #{sddwxzb,jdbcType=VARCHAR},
+		#{sddwyzb,jdbcType=VARCHAR}, #{sfdz,jdbcType=VARCHAR},
+		#{sfsw,jdbcType=INTEGER},
+		#{sfswybj,jdbcType=INTEGER},
+		#{tfhm,jdbcType=VARCHAR}, #{transmitunit,jdbcType=VARCHAR},
+		#{xzqhbh,jdbcType=VARCHAR}, #{ywbkry,jdbcType=INTEGER},
+		#{ywbzxl,jdbcType=INTEGER},
+		#{ywwxwz,jdbcType=INTEGER},
+		#{ywxajbs,jdbcType=INTEGER}, #{zagj,jdbcType=VARCHAR},
+		#{zddwxzb,jdbcType=VARCHAR}, #{zddwyzb,jdbcType=VARCHAR},
+		#{zfajbs,jdbcType=INTEGER},
+		#{jams,jdbcType=VARCHAR},
+		#{jar,jdbcType=VARCHAR}, #{jasj,jdbcType=TIMESTAMP},
+		#{tPatrolAreaId,jdbcType=INTEGER},
+		#{tCommunityAreaId,jdbcType=INTEGER}, #{mark,jdbcType=BIT},
+		#{markUserId,jdbcType=INTEGER},
+		#{markTime,jdbcType=TIMESTAMP},
+		#{gpsConfig,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.tianyi.bph.domain.alarm.Jjdb110">
+		insert into b_jjdb
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="jjdbh != null">
+				JJDBH,
+			</if>
+			<if test="ajzt != null">
+				AJZT,
+			</if>
+			<if test="bjdh != null">
+				BJDH,
+			</if>
+			<if test="bjdhyhdz != null">
+				BJDHYHDZ,
+			</if>
+			<if test="bjdhyhxm != null">
+				BJDHYHXM,
+			</if>
+			<if test="bjfsbh != null">
+				BJFSBH,
+			</if>
+			<if test="caseLevel != null">
+				CASE_LEVEL,
+			</if>
+			<if test="bjlb != null">
+				BJLB,
+			</if>
+			<if test="bjlx != null">
+				BJLX,
+			</if>
+			<if test="bjxl != null">
+				BJXL,
+			</if>
+			<if test="bjnr != null">
+				BJNR,
+			</if>
+			<if test="bcjjnr != null">
+				BCJJNR,
+			</if>
+			<if test="bjrxm != null">
+				BJRXM,
+			</if>
+			<if test="bjrxb != null">
+				BJRXB,
+			</if>
+			<if test="bjsj != null">
+				BJSJ,
+			</if>
+			<if test="fkyq != null">
+				FKYQ,
+			</if>
+			<if test="gljjdbh != null">
+				GLJJDBH,
+			</if>
+			<if test="gxdwbh != null">
+				GXDWBH,
+			</if>
+			<if test="jjdwbh != null">
+				JJDWBH,
+			</if>
+			<if test="jjsj != null">
+				JJSJ,
+			</if>
+			<if test="jjybh != null">
+				JJYBH,
+			</if>
+			<if test="jjyxm != null">
+				JJYXM,
+			</if>
+			<if test="ldgbh != null">
+				LDGBH,
+			</if>
+			<if test="lhlxbh != null">
+				LHLXBH,
+			</if>
+			<if test="lxdh != null">
+				LXDH,
+			</if>
+			<if test="sddwxzb != null">
+				SDDWXZB,
+			</if>
+			<if test="sddwyzb != null">
+				SDDWYZB,
+			</if>
+			<if test="sfdz != null">
+				SFDZ,
+			</if>
+			<if test="sfsw != null">
+				SFSW,
+			</if>
+			<if test="sfswybj != null">
+				SFSWYBJ,
+			</if>
+			<if test="tfhm != null">
+				TFHM,
+			</if>
+			<if test="transmitunit != null">
+				TRANSMITUNIT,
+			</if>
+			<if test="xzqhbh != null">
+				XZQHBH,
+			</if>
+			<if test="ywbkry != null">
+				YWBKRY,
+			</if>
+			<if test="ywbzxl != null">
+				YWBZXL,
+			</if>
+			<if test="ywwxwz != null">
+				YWWXWZ,
+			</if>
+			<if test="ywxajbs != null">
+				YWXAJBS,
+			</if>
+			<if test="zagj != null">
+				ZAGJ,
+			</if>
+			<if test="zddwxzb != null">
+				ZDDWXZB,
+			</if>
+			<if test="zddwyzb != null">
+				ZDDWYZB,
+			</if>
+			<if test="zfajbs != null">
+				ZFAJBS,
+			</if>
+			<if test="jams != null">
+				JAMS,
+			</if>
+			<if test="jar != null">
+				JAR,
+			</if>
+			<if test="jasj != null">
+				JASJ,
+			</if>
+			<if test="tPatrolAreaId != null">
+				T_PATROL_AREA_ID,
+			</if>
+			<if test="tCommunityAreaId != null">
+				T_COMMUNITY_AREA_ID,
+			</if>
+			<if test="mark != null">
+				MARK,
+			</if>
+			<if test="markUserId != null">
+				MARK_USER_ID,
+			</if>
+			<if test="markTime != null">
+				MARK_TIME,
+			</if>
+			<if test="gpsConfig != null">
+				GPS_CONFIG,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="jjdbh != null">
+				#{jjdbh,jdbcType=VARCHAR},
+			</if>
+			<if test="ajzt != null">
+				#{ajzt,jdbcType=INTEGER},
+			</if>
+			<if test="bjdh != null">
+				#{bjdh,jdbcType=VARCHAR},
+			</if>
+			<if test="bjdhyhdz != null">
+				#{bjdhyhdz,jdbcType=VARCHAR},
+			</if>
+			<if test="bjdhyhxm != null">
+				#{bjdhyhxm,jdbcType=VARCHAR},
+			</if>
+			<if test="bjfsbh != null">
+				#{bjfsbh,jdbcType=VARCHAR},
+			</if>
+			<if test="caseLevel != null">
+				#{caseLevel,jdbcType=INTEGER},
+			</if>
+			<if test="bjlb != null">
+				#{bjlb,jdbcType=VARCHAR},
+			</if>
+			<if test="bjlx != null">
+				#{bjlx,jdbcType=VARCHAR},
+			</if>
+			<if test="bjxl != null">
+				#{bjxl,jdbcType=VARCHAR},
+			</if>
+			<if test="bjnr != null">
+				#{bjnr,jdbcType=VARCHAR},
+			</if>
+			<if test="bcjjnr != null">
+				#{bcjjnr,jdbcType=VARCHAR},
+			</if>
+			<if test="bjrxm != null">
+				#{bjrxm,jdbcType=VARCHAR},
+			</if>
+			<if test="bjrxb != null">
+				#{bjrxb,jdbcType=VARCHAR},
+			</if>
+			<if test="bjsj != null">
+				#{bjsj,jdbcType=TIMESTAMP},
+			</if>
+			<if test="fkyq != null">
+				#{fkyq,jdbcType=VARCHAR},
+			</if>
+			<if test="gljjdbh != null">
+				#{gljjdbh,jdbcType=VARCHAR},
+			</if>
+			<if test="gxdwbh != null">
+				#{gxdwbh,jdbcType=VARCHAR},
+			</if>
+			<if test="jjdwbh != null">
+				#{jjdwbh,jdbcType=VARCHAR},
+			</if>
+			<if test="jjsj != null">
+				#{jjsj,jdbcType=TIMESTAMP},
+			</if>
+			<if test="jjybh != null">
+				#{jjybh,jdbcType=VARCHAR},
+			</if>
+			<if test="jjyxm != null">
+				#{jjyxm,jdbcType=VARCHAR},
+			</if>
+			<if test="ldgbh != null">
+				#{ldgbh,jdbcType=VARCHAR},
+			</if>
+			<if test="lhlxbh != null">
+				#{lhlxbh,jdbcType=VARCHAR},
+			</if>
+			<if test="lxdh != null">
+				#{lxdh,jdbcType=VARCHAR},
+			</if>
+			<if test="sddwxzb != null">
+				#{sddwxzb,jdbcType=DOUBLE},
+			</if>
+			<if test="sddwyzb != null">
+				#{sddwyzb,jdbcType=DOUBLE},
+			</if>
+			<if test="sfdz != null">
+				#{sfdz,jdbcType=VARCHAR},
+			</if>
+			<if test="sfsw != null">
+				#{sfsw,jdbcType=INTEGER},
+			</if>
+			<if test="sfswybj != null">
+				#{sfswybj,jdbcType=INTEGER},
+			</if>
+			<if test="tfhm != null">
+				#{tfhm,jdbcType=VARCHAR},
+			</if>
+			<if test="transmitunit != null">
+				#{transmitunit,jdbcType=VARCHAR},
+			</if>
+			<if test="xzqhbh != null">
+				#{xzqhbh,jdbcType=VARCHAR},
+			</if>
+			<if test="ywbkry != null">
+				#{ywbkry,jdbcType=INTEGER},
+			</if>
+			<if test="ywbzxl != null">
+				#{ywbzxl,jdbcType=INTEGER},
+			</if>
+			<if test="ywwxwz != null">
+				#{ywwxwz,jdbcType=INTEGER},
+			</if>
+			<if test="ywxajbs != null">
+				#{ywxajbs,jdbcType=INTEGER},
+			</if>
+			<if test="zagj != null">
+				#{zagj,jdbcType=VARCHAR},
+			</if>
+			<if test="zddwxzb != null">
+				#{zddwxzb,jdbcType=DOUBLE},
+			</if>
+			<if test="zddwyzb != null">
+				#{zddwyzb,jdbcType=DOUBLE},
+			</if>
+			<if test="zfajbs != null">
+				#{zfajbs,jdbcType=INTEGER},
+			</if>
+			<if test="jams != null">
+				#{jams,jdbcType=VARCHAR},
+			</if>
+			<if test="jar != null">
+				#{jar,jdbcType=VARCHAR},
+			</if>
+			<if test="jasj != null">
+				#{jasj,jdbcType=TIMESTAMP},
+			</if>
+			<if test="tPatrolAreaId != null">
+				#{tPatrolAreaId,jdbcType=INTEGER},
+			</if>
+			<if test="tCommunityAreaId != null">
+				#{tCommunityAreaId,jdbcType=INTEGER},
+			</if>
+			<if test="mark != null">
+				#{mark,jdbcType=BIT},
+			</if>
+			<if test="markUserId != null">
+				#{markUserId,jdbcType=INTEGER},
+			</if>
+			<if test="markTime != null">
+				#{markTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="gpsConfig != null">
+				#{gpsConfig,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByExampleSelective" parameterType="com.tianyi.bph.domain.alarm.Jjdb110">
+		update b_jjdb
+		<set>
+			<if test="ajzt != null">
+				AJZT = #{ajzt,jdbcType=INTEGER},
+			</if>
+			<if test="bjdh != null">
+				BJDH = #{bjdh,jdbcType=VARCHAR},
+			</if>
+			<if test="bjdhyhdz != null">
+				BJDHYHDZ = #{bjdhyhdz,jdbcType=VARCHAR},
+			</if>
+			<if test="bjdhyhxm != null">
+				BJDHYHXM = #{bjdhyhxm,jdbcType=VARCHAR},
+			</if>
+			<if test="bjfsbh != null">
+				BJFSBH = #{bjfsbh,jdbcType=VARCHAR},
+			</if>
+			<if test="caseLevel != null">
+				CASE_LEVEL = #{caseLevel,jdbcType=INTEGER},
+			</if>
+			<if test="bjlb != null">
+				BJLB = #{bjlb,jdbcType=VARCHAR},
+			</if>
+			<if test="bjlx != null">
+				BJLX = #{bjlx,jdbcType=VARCHAR},
+			</if>
+			<if test="bjxl != null">
+				BJXL = #{bjxl,jdbcType=VARCHAR},
+			</if>
+			<if test="bjnr != null">
+				BJNR = #{bjnr,jdbcType=VARCHAR},
+			</if>
+			<if test="bcjjnr != null">
+				BCJJNR = #{bcjjnr,jdbcType=VARCHAR},
+			</if>
+			<if test="bjrxm != null">
+				BJRXM = #{bjrxm,jdbcType=VARCHAR},
+			</if>
+			<if test="bjrxb != null">
+				BJRXB = #{bjrxb,jdbcType=VARCHAR},
+			</if>
+			<if test="bjsj != null">
+				BJSJ = #{bjsj,jdbcType=TIMESTAMP},
+			</if>
+			<if test="fkyq != null">
+				FKYQ = #{fkyq,jdbcType=VARCHAR},
+			</if>
+			<if test="gljjdbh != null">
+				GLJJDBH = #{gljjdbh,jdbcType=VARCHAR},
+			</if>
+			<if test="gxdwbh != null">
+				GXDWBH = #{gxdwbh,jdbcType=VARCHAR},
+			</if>
+			<if test="jjdwbh != null">
+				JJDWBH = #{jjdwbh,jdbcType=VARCHAR},
+			</if>
+			<if test="jjsj != null">
+				JJSJ = #{jjsj,jdbcType=TIMESTAMP},
+			</if>
+			<if test="jjybh != null">
+				JJYBH = #{jjybh,jdbcType=VARCHAR},
+			</if>
+			<if test="jjyxm != null">
+				JJYXM = #{jjyxm,jdbcType=VARCHAR},
+			</if>
+			<if test="ldgbh != null">
+				LDGBH = #{ldgbh,jdbcType=VARCHAR},
+			</if>
+			<if test="lhlxbh != null">
+				LHLXBH = #{lhlxbh,jdbcType=VARCHAR},
+			</if>
+			<if test="lxdh != null">
+				LXDH = #{lxdh,jdbcType=VARCHAR},
+			</if>
+			<if test="sddwxzb != null">
+				SDDWXZB = #{sddwxzb,jdbcType=DOUBLE},
+			</if>
+			<if test="sddwyzb != null">
+				SDDWYZB = #{sddwyzb,jdbcType=DOUBLE},
+			</if>
+			<if test="sfdz != null">
+				SFDZ = #{sfdz,jdbcType=VARCHAR},
+			</if>
+			<if test="sfsw != null">
+				SFSW = #{sfsw,jdbcType=INTEGER},
+			</if>
+			<if test="sfswybj != null">
+				SFSWYBJ = #{sfswybj,jdbcType=INTEGER},
+			</if>
+			<if test="tfhm != null">
+				TFHM = #{tfhm,jdbcType=VARCHAR},
+			</if>
+			<if test="transmitunit != null">
+				TRANSMITUNIT = #{transmitunit,jdbcType=VARCHAR},
+			</if>
+			<if test="xzqhbh != null">
+				XZQHBH = #{xzqhbh,jdbcType=VARCHAR},
+			</if>
+			<if test="ywbkry != null">
+				YWBKRY = #{ywbkry,jdbcType=INTEGER},
+			</if>
+			<if test="ywbzxl != null">
+				YWBZXL = #{ywbzxl,jdbcType=INTEGER},
+			</if>
+			<if test="ywwxwz != null">
+				YWWXWZ = #{ywwxwz,jdbcType=INTEGER},
+			</if>
+			<if test="ywxajbs != null">
+				YWXAJBS = #{ywxajbs,jdbcType=INTEGER},
+			</if>
+			<if test="zagj != null">
+				ZAGJ = #{zagj,jdbcType=VARCHAR},
+			</if>
+			<if test="zddwxzb != null">
+				ZDDWXZB = #{zddwxzb,jdbcType=DOUBLE},
+			</if>
+			<if test="zddwyzb != null">
+				ZDDWYZB = #{zddwyzb,jdbcType=DOUBLE},
+			</if>
+			<if test="zfajbs != null">
+				ZFAJBS = #{zfajbs,jdbcType=INTEGER},
+			</if>
+			<if test="jams != null">
+				JAMS = #{jams,jdbcType=VARCHAR},
+			</if>
+			<if test="jar != null">
+				JAR = #{jar,jdbcType=VARCHAR},
+			</if>
+			<if test="jasj != null">
+				JASJ = #{jasj,jdbcType=TIMESTAMP},
+			</if>
+			<if test="tPatrolAreaId != null">
+				T_PATROL_AREA_ID =
+				#{tPatrolAreaId,jdbcType=INTEGER},
+			</if>
+			<if test="tCommunityAreaId != null">
+				T_COMMUNITY_AREA_ID =
+				#{tCommunityAreaId,jdbcType=INTEGER},
+			</if>
+			<if test="mark != null">
+				MARK = #{mark,jdbcType=BIT},
+			</if>
+			<if test="markUserId != null">
+				MARK_USER_ID = #{markUserId,jdbcType=INTEGER},
+			</if>
+			<if test="markTime != null">
+				MARK_TIME = #{markTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="gpsConfig != null">
+				GPS_CONFIG = #{gpsConfig,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where JJDBH = #{jjdbh,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update b_jjdb
+		set
+		AJZT =
+		#{record.ajzt,jdbcType=INTEGER},
+		BJDH =
+		#{record.bjdh,jdbcType=VARCHAR},
+		BJDHYHDZ =
+		#{record.bjdhyhdz,jdbcType=VARCHAR},
+		BJDHYHXM =
+		#{record.bjdhyhxm,jdbcType=VARCHAR},
+		BJFSBH =
+		#{record.bjfsbh,jdbcType=VARCHAR},
+		CASE_LEVEL =
+		#{record.caseLevel,jdbcType=INTEGER},
+		BJLB =
+		#{record.bjlb,jdbcType=VARCHAR},
+		BJLX =
+		#{record.bjlx,jdbcType=VARCHAR},
+		BJXL =
+		#{record.bjxl,jdbcType=VARCHAR},
+		BJNR =
+		#{record.bjnr,jdbcType=VARCHAR},
+		BCJJNR =
+		#{record.bcjjnr,jdbcType=VARCHAR},
+		BJRXM =
+		#{record.bjrxm,jdbcType=VARCHAR},
+		BJRXB =
+		#{record.bjrxb,jdbcType=VARCHAR},
+		BJSJ = #{record.bjsj,jdbcType=TIMESTAMP},
+		FKYQ = #{record.fkyq,jdbcType=VARCHAR},
+		GLJJDBH =
+		#{record.gljjdbh,jdbcType=VARCHAR},
+		GXDWBH =
+		#{record.gxdwbh,jdbcType=VARCHAR},
+		JJDWBH =
+		#{record.jjdwbh,jdbcType=VARCHAR},
+		JJSJ = #{record.jjsj,jdbcType=TIMESTAMP},
+		JJYBH = #{record.jjybh,jdbcType=VARCHAR},
+		JJYXM =
+		#{record.jjyxm,jdbcType=VARCHAR},
+		LDGBH =
+		#{record.ldgbh,jdbcType=VARCHAR},
+		LHLXBH =
+		#{record.lhlxbh,jdbcType=VARCHAR},
+		LXDH =
+		#{record.lxdh,jdbcType=VARCHAR},
+		SDDWXZB =
+		#{record.sddwxzb,jdbcType=DOUBLE},
+		SDDWYZB =
+		#{record.sddwyzb,jdbcType=DOUBLE},
+		SFDZ =
+		#{record.sfdz,jdbcType=VARCHAR},
+		SFSW =
+		#{record.sfsw,jdbcType=INTEGER},
+		SFSWYBJ =
+		#{record.sfswybj,jdbcType=INTEGER},
+		TFHM =
+		#{record.tfhm,jdbcType=VARCHAR},
+		TRANSMITUNIT =
+		#{record.transmitunit,jdbcType=VARCHAR},
+		XZQHBH =
+		#{record.xzqhbh,jdbcType=VARCHAR},
+		YWBKRY =
+		#{record.ywbkry,jdbcType=INTEGER},
+		YWBZXL =
+		#{record.ywbzxl,jdbcType=INTEGER},
+		YWWXWZ =
+		#{record.ywwxwz,jdbcType=INTEGER},
+		YWXAJBS =
+		#{record.ywxajbs,jdbcType=INTEGER},
+		ZAGJ =
+		#{record.zagj,jdbcType=VARCHAR},
+		ZDDWXZB =
+		#{record.zddwxzb,jdbcType=DOUBLE},
+		ZDDWYZB =
+		#{record.zddwyzb,jdbcType=DOUBLE},
+		ZFAJBS =
+		#{record.zfajbs,jdbcType=INTEGER},
+		JAMS =
+		#{record.jams,jdbcType=VARCHAR},
+		JAR = #{record.jar,jdbcType=VARCHAR},
+		JASJ = #{record.jasj,jdbcType=TIMESTAMP},
+		T_PATROL_AREA_ID =
+		#{record.tPatrolAreaId,jdbcType=INTEGER},
+		T_COMMUNITY_AREA_ID =
+		#{record.tCommunityAreaId,jdbcType=INTEGER},
+		MARK =
+		#{record.mark,jdbcType=BIT},
+		MARK_USER_ID =
+		#{record.markUserId,jdbcType=INTEGER},
+		MARK_TIME =
+		#{record.markTime,jdbcType=TIMESTAMP},
+		GPS_CONFIG =
+		#{record.gpsConfig,jdbcType=VARCHAR}
+		where JJDBH = #{jjdbh,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.tianyi.bph.domain.alarm.Jjdb110">
+		update b_jjdb
+		<set>
+			<if test="ajzt != null">
+				AJZT = #{ajzt,jdbcType=INTEGER},
+			</if>
+			<if test="bjdh != null">
+				BJDH = #{bjdh,jdbcType=VARCHAR},
+			</if>
+			<if test="bjdhyhdz != null">
+				BJDHYHDZ = #{bjdhyhdz,jdbcType=VARCHAR},
+			</if>
+			<if test="bjdhyhxm != null">
+				BJDHYHXM = #{bjdhyhxm,jdbcType=VARCHAR},
+			</if>
+			<if test="bjfsbh != null">
+				BJFSBH = #{bjfsbh,jdbcType=VARCHAR},
+			</if>
+			<if test="caseLevel != null">
+				CASE_LEVEL = #{caseLevel,jdbcType=CHAR},
+			</if>
+			<if test="bjlb != null">
+				BJLB = #{bjlb,jdbcType=VARCHAR},
+			</if>
+			<if test="bjlx != null">
+				BJLX = #{bjlx,jdbcType=VARCHAR},
+			</if>
+			<if test="bjxl != null">
+				BJXL = #{bjxl,jdbcType=VARCHAR},
+			</if>
+			<if test="bjnr != null">
+				BJNR = #{bjnr,jdbcType=VARCHAR},
+			</if>
+			<if test="bcjjnr != null">
+				BCJJNR = #{bcjjnr,jdbcType=VARCHAR},
+			</if>
+			<if test="bjrxm != null">
+				BJRXM = #{bjrxm,jdbcType=VARCHAR},
+			</if>
+			<if test="bjrxb != null">
+				BJRXB = #{bjrxb,jdbcType=VARCHAR},
+			</if>
+			<if test="bjsj != null">
+				BJSJ = #{bjsj,jdbcType=TIMESTAMP},
+			</if>
+			<if test="fkyq != null">
+				FKYQ = #{fkyq,jdbcType=VARCHAR},
+			</if>
+			<if test="gljjdbh != null">
+				GLJJDBH = #{gljjdbh,jdbcType=VARCHAR},
+			</if>
+			<if test="gxdwbh != null">
+				GXDWBH = #{gxdwbh,jdbcType=VARCHAR},
+			</if>
+			<if test="jjdwbh != null">
+				JJDWBH = #{jjdwbh,jdbcType=VARCHAR},
+			</if>
+			<if test="jjsj != null">
+				JJSJ = #{jjsj,jdbcType=TIMESTAMP},
+			</if>
+			<if test="jjybh != null">
+				JJYBH = #{jjybh,jdbcType=VARCHAR},
+			</if>
+			<if test="jjyxm != null">
+				JJYXM = #{jjyxm,jdbcType=VARCHAR},
+			</if>
+			<if test="ldgbh != null">
+				LDGBH = #{ldgbh,jdbcType=VARCHAR},
+			</if>
+			<if test="lhlxbh != null">
+				LHLXBH = #{lhlxbh,jdbcType=VARCHAR},
+			</if>
+			<if test="lxdh != null">
+				LXDH = #{lxdh,jdbcType=VARCHAR},
+			</if>
+			<if test="sddwxzb != null">
+				SDDWXZB = #{sddwxzb,jdbcType=VARCHAR},
+			</if>
+			<if test="sddwyzb != null">
+				SDDWYZB = #{sddwyzb,jdbcType=VARCHAR},
+			</if>
+			<if test="sfdz != null">
+				SFDZ = #{sfdz,jdbcType=VARCHAR},
+			</if>
+			<if test="sfsw != null">
+				SFSW = #{sfsw,jdbcType=INTEGER},
+			</if>
+			<if test="sfswybj != null">
+				SFSWYBJ = #{sfswybj,jdbcType=INTEGER},
+			</if>
+			<if test="tfhm != null">
+				TFHM = #{tfhm,jdbcType=VARCHAR},
+			</if>
+			<if test="transmitunit != null">
+				TRANSMITUNIT = #{transmitunit,jdbcType=VARCHAR},
+			</if>
+			<if test="xzqhbh != null">
+				XZQHBH = #{xzqhbh,jdbcType=VARCHAR},
+			</if>
+			<if test="ywbkry != null">
+				YWBKRY = #{ywbkry,jdbcType=INTEGER},
+			</if>
+			<if test="ywbzxl != null">
+				YWBZXL = #{ywbzxl,jdbcType=INTEGER},
+			</if>
+			<if test="ywwxwz != null">
+				YWWXWZ = #{ywwxwz,jdbcType=INTEGER},
+			</if>
+			<if test="ywxajbs != null">
+				YWXAJBS = #{ywxajbs,jdbcType=INTEGER},
+			</if>
+			<if test="zagj != null">
+				ZAGJ = #{zagj,jdbcType=VARCHAR},
+			</if>
+			<if test="zddwxzb != null">
+				ZDDWXZB = #{zddwxzb,jdbcType=VARCHAR},
+			</if>
+			<if test="zddwyzb != null">
+				ZDDWYZB = #{zddwyzb,jdbcType=VARCHAR},
+			</if>
+			<if test="zfajbs != null">
+				ZFAJBS = #{zfajbs,jdbcType=INTEGER},
+			</if>
+			<if test="jams != null">
+				JAMS = #{jams,jdbcType=VARCHAR},
+			</if>
+			<if test="jar != null">
+				JAR = #{jar,jdbcType=VARCHAR},
+			</if>
+			<if test="jasj != null">
+				JASJ = #{jasj,jdbcType=TIMESTAMP},
+			</if>
+			<if test="tPatrolAreaId != null">
+				T_PATROL_AREA_ID = #{tPatrolAreaId,jdbcType=INTEGER},
+			</if>
+			<if test="tCommunityAreaId != null">
+				T_COMMUNITY_AREA_ID =
+				#{tCommunityAreaId,jdbcType=INTEGER},
+			</if>
+			<if test="mark != null">
+				MARK = #{mark,jdbcType=BIT},
+			</if>
+			<if test="markUserId != null">
+				MARK_USER_ID = #{markUserId,jdbcType=INTEGER},
+			</if>
+			<if test="markTime != null">
+				MARK_TIME = #{markTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="gpsConfig != null">
+				GPS_CONFIG = #{gpsConfig,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where JJDBH = #{jjdbh,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.tianyi.bph.domain.alarm.Jjdb110">
+		update b_jjdb
+		set
+		AJZT = #{ajzt,jdbcType=INTEGER},
+		BJDH = #{bjdh,jdbcType=VARCHAR},
+		BJDHYHDZ = #{bjdhyhdz,jdbcType=VARCHAR},
+		BJDHYHXM =
+		#{bjdhyhxm,jdbcType=VARCHAR},
+		BJFSBH = #{bjfsbh,jdbcType=VARCHAR},
+		CASE_LEVEL = #{caseLevel,jdbcType=INTEGER},
+		BJLB =
+		#{bjlb,jdbcType=VARCHAR},
+		BJLX = #{bjlx,jdbcType=VARCHAR},
+		BJXL =
+		#{bjxl,jdbcType=VARCHAR},
+		BJNR = #{bjnr,jdbcType=VARCHAR},
+		BCJJNR =
+		#{bcjjnr,jdbcType=VARCHAR},
+		BJRXM = #{bjrxm,jdbcType=VARCHAR},
+		BJRXB =
+		#{bjrxb,jdbcType=VARCHAR},
+		BJSJ = #{bjsj,jdbcType=TIMESTAMP},
+		FKYQ =
+		#{fkyq,jdbcType=VARCHAR},
+		GLJJDBH = #{gljjdbh,jdbcType=VARCHAR},
+		GXDWBH
+		= #{gxdwbh,jdbcType=VARCHAR},
+		JJDWBH = #{jjdwbh,jdbcType=VARCHAR},
+		JJSJ
+		= #{jjsj,jdbcType=TIMESTAMP},
+		JJYBH = #{jjybh,jdbcType=VARCHAR},
+		JJYXM =
+		#{jjyxm,jdbcType=VARCHAR},
+		LDGBH = #{ldgbh,jdbcType=VARCHAR},
+		LHLXBH =
+		#{lhlxbh,jdbcType=VARCHAR},
+		LXDH = #{lxdh,jdbcType=VARCHAR},
+		SDDWXZB =
+		#{sddwxzb,jdbcType=DOUBLE},
+		SDDWYZB = #{sddwyzb,jdbcType=DOUBLE},
+		SFDZ =
+		#{sfdz,jdbcType=VARCHAR},
+		SFSW = #{sfsw,jdbcType=INTEGER},
+		SFSWYBJ =
+		#{sfswybj,jdbcType=INTEGER},
+		TFHM = #{tfhm,jdbcType=VARCHAR},
+		TRANSMITUNIT = #{transmitunit,jdbcType=VARCHAR},
+		XZQHBH =
+		#{xzqhbh,jdbcType=VARCHAR},
+		YWBKRY = #{ywbkry,jdbcType=INTEGER},
+		YWBZXL
+		= #{ywbzxl,jdbcType=INTEGER},
+		YWWXWZ = #{ywwxwz,jdbcType=INTEGER},
+		YWXAJBS = #{ywxajbs,jdbcType=INTEGER},
+		ZAGJ = #{zagj,jdbcType=VARCHAR},
+		ZDDWXZB = #{zddwxzb,jdbcType=DOUBLE},
+		ZDDWYZB =
+		#{zddwyzb,jdbcType=DOUBLE},
+		ZFAJBS = #{zfajbs,jdbcType=INTEGER},
+		JAMS =
+		#{jams,jdbcType=VARCHAR},
+		JAR = #{jar,jdbcType=VARCHAR},
+		JASJ =
+		#{jasj,jdbcType=TIMESTAMP},
+		T_PATROL_AREA_ID =
+		#{tPatrolAreaId,jdbcType=INTEGER},
+		T_COMMUNITY_AREA_ID =
+		#{tCommunityAreaId,jdbcType=INTEGER},
+		MARK = #{mark,jdbcType=BIT},
+		MARK_USER_ID = #{markUserId,jdbcType=INTEGER},
+		MARK_TIME =
+		#{markTime,jdbcType=TIMESTAMP},
+		GPS_CONFIG = #{gpsConfig,jdbcType=VARCHAR}
+		where JJDBH = #{jjdbh,jdbcType=VARCHAR}
+	</update>
+	<select id="getJjdbListByQuery" resultMap="resultMap"
+		parameterType="com.tianyi.bph.query.alarm.JJDBQuery">
+		select jj.JJDBH, jj.AJZT, jj.BJDH, jj.SFDZ, jj.BJDHYHXM, jj.BJFSBH,jj.CASE_LEVEL,jj.GXDWBH,
+		jj.BJNR,jj.BJSJ,jj.BJLB,jj.BJLX,jj.MARK,atb.TYPE_NAME as BJLBMC,atX.TYPE_NAME as BJLXMC
+		from b_jjdb jj
+		left join b_alarm_type atb on jj.BJLB = atb.TYPE_CODE
+		left join b_alarm_type atx on jj.BJLX = atx.TYPE_CODE
+		where 1=1 
+		<if test="ajzt != null">
+			AND jj.AJZT in
+			<foreach collection="ajzt" index="index" item="item" open="(" separator="," close=")">  
+	        #{item}   
+	    </foreach>
+		</if>
+		<if test="bjdh != null">
+			AND jj.BJDH = #{bjdh,jdbcType=VARCHAR}
+		</if>
+		<if test="caseLevel != null">
+			AND jj.CASE_LEVEL = #{caseLevel,jdbcType=INTEGER}
+		</if>
+		<if test="bjlb != null">
+			AND jj.BJLB in 
+			<foreach collection="bjlb" index="index" item="item" open="(" separator="," close=")">  
+	        #{item}   
+	    </foreach>
+		</if>
+		<if test="bjlx != null">
+			AND jj.BJLX in
+			<foreach collection="bjlx" index="index" item="item" open="(" separator="," close=")">  
+	        #{item}   
+	    </foreach>
+		</if>
+		<if test="bjxl != null">
+			AND jj.BJXL in 
+			<foreach collection="bjxl" index="index" item="item" open="(" separator="," close=")">  
+	        #{item}   
+	    </foreach>
+		</if>
+		<if test="sfdz != null">
+			AND jj.SFDZ LIKE CONCAT ('%',#{sfdz,jdbcType=VARCHAR},'%' )
+		</if>
+		<if test="alarmLocation == 1">
+			AND jj.ZDDWXZB is not null AND ZDDWYZB is not null
+		</if>
+		<if test="alarmLocation == 0">
+			AND jj.ZDDWXZB is null AND ZDDWYZB is null
+		</if>
+		<if test="startTime != null">
+			AND <![CDATA[ jj.BJSJ >= #{startTime,jdbcType=TIMESTAMP} ]]>
+		</if>
+		<if test="endTime != null">
+			AND  <![CDATA[ jj.BJSJ <= #{endTime,jdbcType=TIMESTAMP} ]]>
+		</if>
+		<if test="organCodes != null">
+			AND jj.GXDWBH in 
+			<foreach collection="organCodes" index="index" item="item" open="(" separator="," close=")">  
+	        #{item}   
+	    </foreach>
+		</if>
+		<if test="keyWord != null">
+			AND jj.BJNR LIKE CONCAT ('%',#{keyWord,jdbcType=VARCHAR},'%' )
+		</if>
+		order by jj.BJSJ desc
+	</select>
+</mapper>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tianyi.bph.dao.alarm.CJPoliceMapper" >
+  <resultMap id="BaseResultMap" type="com.tianyi.bph.domain.alarm.CJPolice" >
+    <id column="JJDBH" property="jjdbh" jdbcType="VARCHAR" />
+    <id column="CJ_POLICE_ID" property="cjPoliceId" jdbcType="DECIMAL" />
+    <result column="CJDBH" property="cjdbh" jdbcType="VARCHAR" />
+    <result column="CJ_POLICE_NAME" property="cjPoliceName" jdbcType="VARCHAR" />
+    <result column="ORGAN_CODE" property="organCode" jdbcType="VARCHAR" />
+    <result column="ORGAN_NAME" property="organName" jdbcType="VARCHAR" />
+    <result column="THE_TIME" property="theTime" jdbcType="TIMESTAMP" />
+    <result column="ARRIVE_TIME" property="arriveTime" jdbcType="TIMESTAMP" />
+    <result column="LEAVE_TIME" property="leaveTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    JJDBH, CJ_POLICE_ID, CJDBH, CJ_POLICE_NAME, ORGAN_CODE, ORGAN_NAME, THE_TIME, ARRIVE_TIME, 
+    LEAVE_TIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.tianyi.bph.domain.alarm.CJPolice" >
+    select
+    <include refid="Base_Column_List" />
+    from b_cj_police
+    where 1=1
+    <if test="jjdbh != null" >
+        AND JJDBH = #{jjdbh,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.tianyi.bph.domain.alarm.CJPoliceKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from b_cj_police
+    where JJDBH = #{jjdbh,jdbcType=VARCHAR}
+      and CJ_POLICE_ID = #{cjPoliceId,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.tianyi.bph.domain.alarm.CJPoliceKey" >
+    delete from b_cj_police
+    where JJDBH = #{jjdbh,jdbcType=VARCHAR}
+      and CJ_POLICE_ID = #{cjPoliceId,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.tianyi.bph.domain.alarm.CJPolice" >
+    insert into b_cj_police (JJDBH, CJ_POLICE_ID, CJDBH, 
+      CJ_POLICE_NAME, ORGAN_CODE, ORGAN_NAME, 
+      THE_TIME, ARRIVE_TIME, LEAVE_TIME
+      )
+    values (#{jjdbh,jdbcType=VARCHAR}, #{cjPoliceId,jdbcType=DECIMAL}, #{cjdbh,jdbcType=VARCHAR}, 
+      #{cjPoliceName,jdbcType=VARCHAR}, #{organCode,jdbcType=VARCHAR}, #{organName,jdbcType=VARCHAR}, 
+      #{theTime,jdbcType=TIMESTAMP}, #{arriveTime,jdbcType=TIMESTAMP}, #{leaveTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.tianyi.bph.domain.alarm.CJPolice" >
+    insert into b_cj_police
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="jjdbh != null" >
+        JJDBH,
+      </if>
+      <if test="cjPoliceId != null" >
+        CJ_POLICE_ID,
+      </if>
+      <if test="cjdbh != null" >
+        CJDBH,
+      </if>
+      <if test="cjPoliceName != null" >
+        CJ_POLICE_NAME,
+      </if>
+      <if test="organCode != null" >
+        ORGAN_CODE,
+      </if>
+      <if test="organName != null" >
+        ORGAN_NAME,
+      </if>
+      <if test="theTime != null" >
+        THE_TIME,
+      </if>
+      <if test="arriveTime != null" >
+        ARRIVE_TIME,
+      </if>
+      <if test="leaveTime != null" >
+        LEAVE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="jjdbh != null" >
+        #{jjdbh,jdbcType=VARCHAR},
+      </if>
+      <if test="cjPoliceId != null" >
+        #{cjPoliceId,jdbcType=DECIMAL},
+      </if>
+      <if test="cjdbh != null" >
+        #{cjdbh,jdbcType=VARCHAR},
+      </if>
+      <if test="cjPoliceName != null" >
+        #{cjPoliceName,jdbcType=VARCHAR},
+      </if>
+      <if test="organCode != null" >
+        #{organCode,jdbcType=VARCHAR},
+      </if>
+      <if test="organName != null" >
+        #{organName,jdbcType=VARCHAR},
+      </if>
+      <if test="theTime != null" >
+        #{theTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="arriveTime != null" >
+        #{arriveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="leaveTime != null" >
+        #{leaveTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update b_cj_police
+    <set >
+      <if test="record.jjdbh != null" >
+        JJDBH = #{record.jjdbh,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cjPoliceId != null" >
+        CJ_POLICE_ID = #{record.cjPoliceId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.cjdbh != null" >
+        CJDBH = #{record.cjdbh,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cjPoliceName != null" >
+        CJ_POLICE_NAME = #{record.cjPoliceName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.organCode != null" >
+        ORGAN_CODE = #{record.organCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.organName != null" >
+        ORGAN_NAME = #{record.organName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.theTime != null" >
+        THE_TIME = #{record.theTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.arriveTime != null" >
+        ARRIVE_TIME = #{record.arriveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.leaveTime != null" >
+        LEAVE_TIME = #{record.leaveTime,jdbcType=TIMESTAMP}
+      </if>
+    </set>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update b_cj_police
+    set JJDBH = #{record.jjdbh,jdbcType=VARCHAR},
+      CJ_POLICE_ID = #{record.cjPoliceId,jdbcType=DECIMAL},
+      CJDBH = #{record.cjdbh,jdbcType=VARCHAR},
+      CJ_POLICE_NAME = #{record.cjPoliceName,jdbcType=VARCHAR},
+      ORGAN_CODE = #{record.organCode,jdbcType=VARCHAR},
+      ORGAN_NAME = #{record.organName,jdbcType=VARCHAR},
+      THE_TIME = #{record.theTime,jdbcType=TIMESTAMP},
+      ARRIVE_TIME = #{record.arriveTime,jdbcType=TIMESTAMP},
+      LEAVE_TIME = #{record.leaveTime,jdbcType=TIMESTAMP}
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tianyi.bph.domain.alarm.CJPolice" >
+    update b_cj_police
+    <set >
+      <if test="cjdbh != null" >
+        CJDBH = #{cjdbh,jdbcType=VARCHAR},
+      </if>
+      <if test="cjPoliceName != null" >
+        CJ_POLICE_NAME = #{cjPoliceName,jdbcType=VARCHAR},
+      </if>
+      <if test="organCode != null" >
+        ORGAN_CODE = #{organCode,jdbcType=VARCHAR},
+      </if>
+      <if test="organName != null" >
+        ORGAN_NAME = #{organName,jdbcType=VARCHAR},
+      </if>
+      <if test="theTime != null" >
+        THE_TIME = #{theTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="arriveTime != null" >
+        ARRIVE_TIME = #{arriveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="leaveTime != null" >
+        LEAVE_TIME = #{leaveTime,jdbcType=TIMESTAMP}
+      </if>
+    </set>
+    where JJDBH = #{jjdbh,jdbcType=VARCHAR}
+      and CJ_POLICE_ID = #{cjPoliceId,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tianyi.bph.domain.alarm.CJPolice" >
+    update b_cj_police
+    set CJDBH = #{cjdbh,jdbcType=VARCHAR},
+      CJ_POLICE_NAME = #{cjPoliceName,jdbcType=VARCHAR},
+      ORGAN_CODE = #{organCode,jdbcType=VARCHAR},
+      ORGAN_NAME = #{organName,jdbcType=VARCHAR},
+      THE_TIME = #{theTime,jdbcType=TIMESTAMP},
+      ARRIVE_TIME = #{arriveTime,jdbcType=TIMESTAMP},
+      LEAVE_TIME = #{leaveTime,jdbcType=TIMESTAMP}
+    where JJDBH = #{jjdbh,jdbcType=VARCHAR}
+      and CJ_POLICE_ID = #{cjPoliceId,jdbcType=DECIMAL}
+  </update>
+</mapper>

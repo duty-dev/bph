@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tianyi.bph.dao.alarm.JJDBStateMapper" >
+  <resultMap id="BaseResultMap" type="com.tianyi.bph.domain.alarm.JJDBState" >
+    <id column="STATE" property="state" jdbcType="INTEGER" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="COLOR" property="color" jdbcType="VARCHAR" />
+    <result column="ICON_CODE" property="iconCode" jdbcType="VARCHAR" />
+    <result column="MARK" property="mark" jdbcType="INTEGER" />
+    <result column="CONTRAST" property="contrast" jdbcType="VARCHAR" />
+    <result column="NOTE" property="note" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    STATE, NAME, COLOR, ICON_CODE, MARK, CONTRAST, NOTE
+  </sql>
+  <select id="selectJJDBStateList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from b_jjdb_state
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from b_jjdb_state
+    where STATE = #{state,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from b_jjdb_state
+    where STATE = #{state,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.tianyi.bph.domain.alarm.JJDBState" >
+    insert into b_jjdb_state (STATE, NAME, COLOR, 
+      ICON_CODE, MARK, CONTRAST, 
+      NOTE)
+    values (#{state,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{color,jdbcType=VARCHAR}, 
+      #{iconCode,jdbcType=VARCHAR}, #{mark,jdbcType=INTEGER}, #{contrast,jdbcType=VARCHAR}, 
+      #{note,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tianyi.bph.domain.alarm.JJDBState" >
+    insert into b_jjdb_state
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="state != null" >
+        STATE,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="color != null" >
+        COLOR,
+      </if>
+      <if test="iconCode != null" >
+        ICON_CODE,
+      </if>
+      <if test="mark != null" >
+        MARK,
+      </if>
+      <if test="contrast != null" >
+        CONTRAST,
+      </if>
+      <if test="note != null" >
+        NOTE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="color != null" >
+        #{color,jdbcType=VARCHAR},
+      </if>
+      <if test="iconCode != null" >
+        #{iconCode,jdbcType=VARCHAR},
+      </if>
+      <if test="mark != null" >
+        #{mark,jdbcType=INTEGER},
+      </if>
+      <if test="contrast != null" >
+        #{contrast,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update b_jjdb_state
+    <set >
+      <if test="record.state != null" >
+        STATE = #{record.state,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null" >
+        NAME = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.color != null" >
+        COLOR = #{record.color,jdbcType=VARCHAR},
+      </if>
+      <if test="record.iconCode != null" >
+        ICON_CODE = #{record.iconCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mark != null" >
+        MARK = #{record.mark,jdbcType=INTEGER},
+      </if>
+      <if test="record.contrast != null" >
+        CONTRAST = #{record.contrast,jdbcType=VARCHAR},
+      </if>
+      <if test="record.note != null" >
+        NOTE = #{record.note,jdbcType=VARCHAR}
+      </if>
+    </set>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update b_jjdb_state
+    set STATE = #{record.state,jdbcType=INTEGER},
+      NAME = #{record.name,jdbcType=VARCHAR},
+      COLOR = #{record.color,jdbcType=VARCHAR},
+      ICON_CODE = #{record.iconCode,jdbcType=VARCHAR},
+      MARK = #{record.mark,jdbcType=INTEGER},
+      CONTRAST = #{record.contrast,jdbcType=VARCHAR},
+      NOTE = #{record.note,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tianyi.bph.domain.alarm.JJDBState" >
+    update b_jjdb_state
+    <set >
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="color != null" >
+        COLOR = #{color,jdbcType=VARCHAR},
+      </if>
+      <if test="iconCode != null" >
+        ICON_CODE = #{iconCode,jdbcType=VARCHAR},
+      </if>
+      <if test="mark != null" >
+        MARK = #{mark,jdbcType=INTEGER},
+      </if>
+      <if test="contrast != null" >
+        CONTRAST = #{contrast,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        NOTE = #{note,jdbcType=VARCHAR}
+      </if>
+    </set>
+    where STATE = #{state,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tianyi.bph.domain.alarm.JJDBState" >
+    update b_jjdb_state
+    set NAME = #{name,jdbcType=VARCHAR},
+      COLOR = #{color,jdbcType=VARCHAR},
+      ICON_CODE = #{iconCode,jdbcType=VARCHAR},
+      MARK = #{mark,jdbcType=INTEGER},
+      CONTRAST = #{contrast,jdbcType=VARCHAR},
+      NOTE = #{note,jdbcType=VARCHAR}
+    where STATE = #{state,jdbcType=INTEGER}
+  </update>
+</mapper>
