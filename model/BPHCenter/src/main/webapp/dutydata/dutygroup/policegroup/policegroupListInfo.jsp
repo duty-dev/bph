@@ -122,7 +122,7 @@ var PolicegroupManage = {
 	createGroup:function(){
 		var organId = $("#organId").val();
 		$("#dialog").tyWindow({
-			width : "680px",
+			width : "688px",
 			height : "500px",
 			title : "新建警员分组",
 			position : {
@@ -141,7 +141,7 @@ var PolicegroupManage = {
 			return;
 		}
 		$("#dialog").tyWindow({
-			width : "680px",
+			width : "688px",
 			height : "500px",
 			title : "警员信息",
 			position : {

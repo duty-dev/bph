@@ -34,7 +34,7 @@
                	                        dataSource: {
                	                            data:odata
                	                        },
-               	                     height: 792,
+               	                     height: 502,
                                      sortable: true,
 									 resizable: true,
                                      selectable: "multiple",

@@ -7,7 +7,7 @@
 
 
 <div id="tlSReport"  style="width:150%"></div>
-<div>
+<div style="padding:10px 0;">
 详情统计
 </div>
 <div id="tlReport" style="width:150%"></div>

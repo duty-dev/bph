@@ -11,7 +11,7 @@
             	loadData(1);
             });
                 	function loadData(pageNo) {
-                	var	serviceName = $("#serviceName").val().trim();
+                	var	serviceName = $.trim($("#serviceName").val());
                 	$.ajax({
                			url:"<%=basePath%>serviceSet/getServiceSetList.do",
                			type:"post",
@@ -88,7 +88,7 @@
                 	var sessionId=$("#token").val();
                 	$("#dialog").tyWindow({
                 		width: "680px",
-                		height: "480px",
+                		height: "580px",
                 	    title: "服务新增",
                 	    position: {
                 	        top: "100px"
@@ -133,7 +133,7 @@
                 	var sessionId = $("#token").val();
                 	$("#dialog").tyWindow({
                 		width: "680px",
-                		height: "480px",
+                		height: "580px",
                 	    title: "服务信息编辑",
                 	    position: {
                 	        top: "100px"

@@ -107,7 +107,7 @@ input{font-family:Arial, "微软雅黑", "宋体";}
 .ty-screen-mode-btn3{top:13px;left:92px;}
 .ty-input{float:left;list-style-type: none;margin-top:8px;}
 .ty-input-end{float:left;width:10px;height:26px;background:url("../images/icon.png") no-repeat -188px 0;position:absolute;}
-.ty-input input.k-textbox:focus+em{background-position:-398px 0px;}
+input.k-textbox:focus+em{background-position:-398px 0px;}
 .ty-textarea{background-color:#040607;border:1px solid #597684;resize:none;}
 .ty-total-decorate{width:200px;height:38px;position:absolute;top:-54px;right:200px;overflow:hidden;}
 .ty-total-decorate span{float:left;font-size:32px;color:#97c6dc;padding-right:5px;}
@@ -130,7 +130,12 @@ input{font-family:Arial, "微软雅黑", "宋体";}
 
 .ty-tree-line{width:21px;height:16px;border-right:1px solid #416578;position:absolute;top:-10px;left:-16px;}
 .ty-tree-temp{width:16px;height:26px;background:url(../images/icon.png) no-repeat 0px -236px;position:absolute;top:-13px;left:-19px;}
-.ty-tree-node{width:23px;height:26px;background:url(../images/icon.png) no-repeat -63px -236px;position:absolute;top:-2px;left:-14px;}
-.ty-tree-top{background:none !important;}
-.ty-tree-last{width:23px;height:26px;background:url(../images/icon.png) no-repeat -17px -236px;position:absolute;top:-4px;left:-14px;z-index:-1;}
+.ty-tree-node{width:23px;height:26px;background:url(../images/icon.png) no-repeat -63px -236px;position:absolute;top:-2px;left:-14px;z-index:1;}
+.ty-tree-top{background:url(../images/icon.png) no-repeat;background-position:-40px -201px !important;width:26px !important;height:26px;position:absolute;top:-4px;left:-14px;}
+.ty-tree-last{width:23px;height:26px;background:url(../images/icon.png) no-repeat -17px -236px;position:absolute;top:-4px;left:-14px;z-index:1;}
 .ty-back-btn{position:absolute;top:0px;left:-80px;}
+
+#page{width:100%;padding:10px 0;color: #a0a0a0;background-color: #000;}
+#page a{border:#81C9F0 1px solid;padding:2px 6px;background-position: 50% bottom;color: #81C9F0;margin-right:3px;text-decoration: none;}
+#page a:hover{border: #f0f0f0 1px solid;color: #ffffff;background-color: #FEAB6E;}
+#page span{border:#ffffff 1px solid;padding:2px 6px;font-weight:bold;color: #ffffff;margin-right:10px;background-color: #87020B;}

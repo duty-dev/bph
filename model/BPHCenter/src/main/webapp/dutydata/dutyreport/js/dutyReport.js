@@ -18,7 +18,6 @@
 			$("#dteBeginDate").kendoDatePicker({
     			value: bd
 			});
-			
 			bd.setHours(0, 0);
 			ed.setHours(23,30);
 			$("#spnBeginTime").kendoTimePicker();
@@ -71,9 +70,9 @@
 					});
 					
 					$("#dutyProperty").kendoMultiSelect({
+						dataSource : ds,
 						dataTextField: "name",
-		  				dataValueField: "id",
-		  				dataSource : ds
+		  				dataValueField: "id"
 		             });
 				}
 			});
@@ -89,9 +88,9 @@
 					});
 					
 					$("#cmbpoliceType").kendoMultiSelect({
+						dataSource : ds,
 						dataTextField: "name",
-		  				dataValueField: "id",
-		  				dataSource : ds
+		  				dataValueField: "id"
 		             });
 				}
 			});

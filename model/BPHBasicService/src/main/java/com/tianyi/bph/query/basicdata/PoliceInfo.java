@@ -10,6 +10,16 @@ public class PoliceInfo  extends ItemInfo<PoliceJJVM> {
 	private  List<GpsInfo> gpsItems;
 	
 	private  List<WeaponInfo> weaponItems;
+	
+	private String dutyTypeName;
+
+	public String getDutyTypeName() {
+		return dutyTypeName;
+	}
+
+	public void setDutyTypeName(String dutyTypeName) {
+		this.dutyTypeName = dutyTypeName;
+	}
 
 	public List<GpsInfo> getGpsItems() {
 		return gpsItems;

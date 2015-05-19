@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>BPHReportService</artifactId>
+	<packaging>jar</packaging>
+	<parent>
+		<groupId>com.tiyi.BPH</groupId>
+		<artifactId>BPH</artifactId>
+		<version>1.0</version>
+		<relativePath>../../pom.xml</relativePath>
+	</parent>
+
+	<description>公安扁平化系统::业务服务模块</description>
+
+	<organization>
+		<name>四川天翼网络</name>
+	</organization>
+	
+	<dependencies>
+	<dependency>
+			<groupId>com.tiyi.BPH</groupId>
+			<artifactId>BPHBasicService</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	<dependency>
+			<groupId>com.tiyi.BPH</groupId>
+			<artifactId>BPHAlarmService</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+	
+	<repositories>
+		<repository>
+			<id>jboss</id>
+			<name>jboss repository</name>
+			<url>https://repository.jboss.org/nexus/content/groups/public</url>
+		</repository>
+	</repositories>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<excludes>
+						<exclude>spring/</exclude>
+						<exclude>logback.xml</exclude>
+						<exclude>sysConfig.properties</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

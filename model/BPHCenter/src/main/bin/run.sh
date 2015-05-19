@@ -1,0 +1,1 @@
+eval exec java -server jetty-runner.jar org.mortbay.jetty.runner.Runner --config jetty.xml --path / webapp PLATFORM_DIR=`pwd` "&"

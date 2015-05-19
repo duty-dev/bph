@@ -70,7 +70,7 @@ public class DutyGroupRouteController {
 		query.setPageSize(10);
 		mv.addObject("organ", organ);
 		mv.addObject("query", query);
-		mv.addObject("num", "600");
+		mv.addObject("num", "300");
 		return mv;
 	}
 
@@ -180,7 +180,7 @@ public class DutyGroupRouteController {
 		query.setPageSize(month);
 		mv.addObject("organ", organ);
 		mv.addObject("query", query);
-		mv.addObject("num", "600");
+		mv.addObject("num", "300");
 		return mv;
 	}
 
@@ -306,7 +306,7 @@ public class DutyGroupRouteController {
 		query.setPageSize(month);
 		mv.addObject("organ", organ);
 		mv.addObject("query", query);
-		mv.addObject("num", "600");
+		mv.addObject("num", "300");
 		return mv;
 	}
 
@@ -429,7 +429,7 @@ public class DutyGroupRouteController {
 		query.setPageSize(month);
 		mv.addObject("organ", organ);
 		mv.addObject("query", query);
-		mv.addObject("num", "600");
+		mv.addObject("num", "300");
 		return mv;
 	}
 

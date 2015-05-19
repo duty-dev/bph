@@ -17,13 +17,7 @@
 </head>  
   <body>
     <div id="wrapper">
-		<div id='main-nav-bg'></div>
-		<nav class="" id="main-nav">
-			<div style="display:none" class='navigation'> 
-				<%@ include file="../../left.jsp"%> 
-			</div>
-		</nav>
-		<section id='content'>
+		
 			<div class="container-fluid">
 				<div id="content-wrapper" class="row-fluid">
 					<div class='span12'>
@@ -53,7 +47,7 @@
 					</div>
 				</div>
 			</div>
-		</section>
+		<div class="clear"></div>
 	</div>
 	<!-- 引用 js  -->
 	<script type="text/javascript" charset="utf-8" src="<%=basePath%>dutydata/common.js"></script>

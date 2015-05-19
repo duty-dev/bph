@@ -39,17 +39,17 @@
                	                        	field: "logId",
                	                            title: "日志ID",
                	                            hidden:true
-               	                        }, {
+               	                        }, /* {
                							field: "操作",
                							template: "<button id='#: logId#' class='ty-edit-btn' title='修改'>修改</button> "
                							+"<button id='#: logId#' class='ty-delete-btn' title='删除'>删除</button> "
-               							}, {
+               							}, */ {
                	                            field: "logTypeName",
                	                            title: "日志类型"
-               	                        },{
+               	                        }/* ,{
                	                            field: "loginUserId",
                	                            title: "用户ID"
-               	                        }, {
+               	                        } */, {
                	                            field: "loginUserName",
                	                            title: "用户名称"
                	                        }, {

@@ -29,6 +29,8 @@
 		<module>model/BPHAlarmService</module>
 		<!-- 勤务报务业务处理模块 -->
 		<module>model/BPHDutyReportService</module> 
+		<!-- 勤务报务业务处理模块 -->
+		<module>model/BPHReportService</module> 
 		<!-- 对外接口服务模块 
 		<module>model/BPHInterface</module>
 		-->

@@ -58,6 +58,12 @@ public class VehicleExtItem {
 	public void setShiftInfo(ExtShiftInfo shiftInfo) {
 		this.shiftInfo = shiftInfo;
 	} 
+	public String getDutyTypeName() {
+		return dutyTypeName;
+	}
+	public void setDutyTypeName(String dutyTypeName) {
+		this.dutyTypeName = dutyTypeName;
+	}
 	/**
 	 * 关联的定位设备子项目
 	 */
@@ -71,4 +77,6 @@ public class VehicleExtItem {
 	 * 隶属的班次信息
 	 */ 
 	private ExtShiftInfo shiftInfo; 
+	
+	private String dutyTypeName;
 }

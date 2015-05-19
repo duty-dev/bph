@@ -34,7 +34,7 @@
                	                        dataSource: {
                	                            data:udata
                	                        },
-               	                     height: 792,
+               	                     height: 502,
                                      sortable: true,
                                      resizable: true,
                                      selectable: "multiple",
@@ -75,7 +75,7 @@
                							var id = $(this).find("td").first().text();
                							editUser(id);
                						});
-               						$("#grid .k-grid-content").mCustomScrollbar( {scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
+               						
                						var pg = pagination(pageNo,total,'loadData',10);
                	                	$("#page").html(pg);
                					}
@@ -229,5 +229,8 @@ function loadTree(userId){
 			}
 		});
 }
+$(function(){
+	
+});
 </script>
 

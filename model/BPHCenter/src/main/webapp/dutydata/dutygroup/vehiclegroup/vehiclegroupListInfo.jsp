@@ -130,7 +130,7 @@ var VehicleGroupManage = {
 	createGroup:function(){
 		var organId = $("#organId").val();
 		$("#dialog").tyWindow({
-			width : "680px",
+			width : "688px",
 			height : "500px",
 			title : "车辆分组信息",
 			position : {
@@ -151,7 +151,7 @@ var VehicleGroupManage = {
 		}
 		if(m_vehiclegroup_Id!=undefined){
 		$("#dialog").tyWindow({
-			width : "680px",
+			width : "688px",
 			height : "500px",
 			title : "车辆分组信息",
 			position : {

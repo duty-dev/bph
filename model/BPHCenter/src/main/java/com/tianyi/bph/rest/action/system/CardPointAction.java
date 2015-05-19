@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.tianyi.bph.BaseLogController;
 import com.tianyi.bph.common.Pager;
 import com.tianyi.bph.domain.system.CardPoint;
+import com.tianyi.bph.domain.system.TCardPoint;
 import com.tianyi.bph.query.system.CardPointQuery;
+import com.tianyi.bph.query.system.TCardPointExample;
 import com.tianyi.bph.service.system.CardPointService;
 import com.tianyi.bph.common.ReturnResult;
 
@@ -130,8 +132,13 @@ public class CardPointAction extends BaseLogController {
 	@RequestMapping(value = "/queryCardPointList.do")
 	@ResponseBody
 	public ReturnResult queryCardPointList(int organId) {
-		List<CardPoint> cardPoints = cardPointService.queryCardPointList(organId);
-		return ReturnResult.SUCCESS("", cardPoints);
+		TCardPointExample example = new TCardPointExample();
+		TCardPointExample.Criteria criteria = example.createCriteria();
+		criteria.andOrganIdEqualTo(organId);
+		List<TCardPoint> listCardPoints = cardPointService
+				.getCardPointList(example);
+		//List<CardPoint> cardPoints = cardPointService.queryCardPointList(organId);
+		return ReturnResult.SUCCESS("", listCardPoints);
 	}
 	
 }

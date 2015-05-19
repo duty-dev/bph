@@ -17,16 +17,12 @@ public class BaseQuery {
 	 */
 	private Integer pageStart;
 
-	/*public Integer getPageStart() {
-		if (pageNo != 0 && pageSize != 0) {
-			pageStart = pageSize * (pageNo - 1);
-		}
-		return pageStart;
-	}*/
-	
-
 	public BaseQuery() {
 		super();
+	}
+
+	public void setPageStart(Integer pageStart) {
+		this.pageStart = pageStart;
 	}
 
 	public Integer getPageStart() {

@@ -23,6 +23,8 @@ public class PoliceExtItem {
 	private Integer itemTypeId;
 
 	
+	private String dutyTypeName;
+	
 	/**
 	 * 关联的定位设备子项目
 	 */
@@ -81,5 +83,11 @@ public class PoliceExtItem {
 	}
 	public void setData(PoliceJJVM data) {
 		this.data = data;
+	}
+	public String getDutyTypeName() {
+		return dutyTypeName;
+	}
+	public void setDutyTypeName(String dutyTypeName) {
+		this.dutyTypeName = dutyTypeName;
 	}
 }

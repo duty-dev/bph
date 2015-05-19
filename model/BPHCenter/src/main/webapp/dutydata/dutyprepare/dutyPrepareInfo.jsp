@@ -35,63 +35,63 @@
 
 <script id="dutyItem-template" type="text/x-kendo-template">
     <span> #: item.displayName     #</span>
-	<button type="button" class="ty-delete-btn"  onclick=DutyItemManage.onDeleteNode('#: item.uid #')></button>
+	<button type="button" class="ty-delete-btn" style="margin:0;"  onclick=DutyItemManage.onDeleteNode('#: item.uid #')></button>
 </script>
 
-<div id="dutyResource" style="width:25%; float:left;">
+<div id="dutyResource" style="width:25%; float:left;min-width:400px;">
 	<div class="demo-section k-header"> 
         <h4>报备资源</h4> 
         <div id="tabstrip-sprites">
         	<ul>
-        		<li>
+        		<li style="width:24%;height:25px;line-height:0;">
         			警员
         		</li>
-        		<li>
+        		<li style="width:24%;height:25px;line-height:0;">
         			警车
         		</li>
-        		<li>
+        		<li style="width:24%;height:25px;line-height:0;">
         			武器
         		</li>
-        		<li>
+        		<li style="width:24%;height:25px;line-height:0;">
         			定位设备
         		</li>
         	</ul>
         	<div>
 				<div class="policeresourcetoolbar"> 
                 	<span id="undo" class="k-button" onclick="DutyBaseManage.selectPolResCondition();">过滤条件</span> 
-                	<input type="search" class="k-textbox" id="policeresName" name="policeresName" style="width:100px"  placeholder="等待输入..." />
-                	<span id="undo" class="k-button" onclick="DutyBaseManage.searchPoliceResWithOutList();">查询</span>  
+                	<input type="search" class="k-textbox" id="policeresName" name="policeresName" style="width:100px"  placeholder="等待输入..." /><em class="ty-input-end"></em>
+                	<span id="undo" class="k-button" style="margin-left:10px;" onclick="DutyBaseManage.searchPoliceResWithOutList();">查询</span>  
                 </div>
         		<div id='policeSourceTV'  style="height:700px;overflow;auto"></div>
         	</div>
         	<div>
 				<div class="vehicleresourcetoolbar">
                 	<span id="undo" class="k-button" onclick="DutyBaseManage.selectVehResCondition();">过滤条件</span> 
-                	<input type="search" class="k-textbox" id="vehicleresName" name="vehicleresName" style="width:100px"  placeholder="等待输入..." />
-                	<span id="undo" class="k-button" onclick="DutyBaseManage.searchVehicleResWithOutList();">查询</span> 
+                	<input type="search" class="k-textbox" id="vehicleresName" name="vehicleresName" style="width:100px"  placeholder="等待输入..." /><em class="ty-input-end"></em>
+                	<span id="undo" class="k-button" style="margin-left:10px;" onclick="DutyBaseManage.searchVehicleResWithOutList();">查询</span> 
                 </div>
         		<div id='vehicleSourceTV' style="height:700px;overflow;auto"></div>
         	</div>
 			<div>
 				<div class="weaponresourcetoolbar">
                 	<span id="undo" class="k-button" onclick="DutyBaseManage.selectWepResCondition();">过滤条件</span> 
-                	<input type="search" class="k-textbox" id="weaponresName" name="weaponresName" style="width:100px"  placeholder="等待输入..." />
-                	<span id="undo" class="k-button" onclick="DutyBaseManage.searchWeaponResWithOutList();">查询</span> 
+                	<input type="search" class="k-textbox" id="weaponresName" name="weaponresName" style="width:100px"  placeholder="等待输入..." /><em class="ty-input-end"></em>
+                	<span id="undo" class="k-button" style="margin-left:10px;" onclick="DutyBaseManage.searchWeaponResWithOutList();">查询</span> 
                 </div>
         		<div id='weaponSourceTV' style="height:700px;overflow;auto"></div>
         	</div>
         	<div>
 				<div class="gpsresourcetoolbar">
                 	<span id="undo" class="k-button" onclick="DutyBaseManage.selectGpsResCondition();">过滤条件</span> 
-                	<input type="search" class="k-textbox" id="gpsresName" name="gpsresName" style="width:100px"  placeholder="等待输入..." />
-                	<span id="undo" class="k-button" onclick="DutyBaseManage.searchGpsResWithOutList();">查询</span> 
+                	<input type="search" class="k-textbox" id="gpsresName" name="gpsresName" style="width:100px"  placeholder="等待输入..." /><em class="ty-input-end"></em>
+                	<span id="undo" class="k-button" style="margin-left:10px;" onclick="DutyBaseManage.searchGpsResWithOutList();">查询</span> 
                 </div>
         		<div id='gpsSourceTV' style="height:700px;overflow;auto"></div>
         	</div>
         </div>
      </div>
 </div> 	
-<div id="dutyItems"  style="width:60%; float:left">
+<div id="dutyItems"  style="width:60%; float:left;margin-left:10px;">
 	<div> 
         <h4>报备明细</h4>
 		<div class="dutyItemtoolbar">

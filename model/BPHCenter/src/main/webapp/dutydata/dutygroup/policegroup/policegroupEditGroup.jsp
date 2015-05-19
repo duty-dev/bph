@@ -208,7 +208,7 @@ var m_policeGroup_Org = {
   </head>
   
   <body class="ty-body">
-	<div id="winPG" style="width:620px;height:320px;" title="警员分组管理">
+	<div id="winPG" style="width:622px;height:320px;" title="警员分组管理">
 			<div style="float:left;width:250px;margin-top:10px;">
 				<!-- 左开始 -->
 				<div class="demo-section k-header"> 

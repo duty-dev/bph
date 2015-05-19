@@ -31,14 +31,16 @@ public class ServiceSetServiceImpl implements ServiceSetService{
 		if(record==null){
 			throw new RestException("对象不能为空");
 		}
+		int i=0;
 		ServiceSetQuery query=new ServiceSetQuery();
-		query.setServiceType(record.getServiceType());
-		int i=serviceSetDao.selectByQuery(query);
-		if(i>0){
-			return 0;
+		if(record.getServiceType() != 1){
+			query.setServiceType(record.getServiceType());
+			i=serviceSetDao.selectByQuery(query);
+			if(i>0){
+				return 0;
+			}
 		}
 		i=serviceSetDao.insert(record);
-		System.out.println("添加成功"+record.getServiceId());
 		return i;
 	}
 

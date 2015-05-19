@@ -119,7 +119,7 @@ var WeapongroupManage = {
 	createGroup:function(){
 		var organId = $("#organId").val();
 		$("#dialog").tyWindow({
-			width : "680px",
+			width : "688px",
 			height : "500px",
 			title : "新建武器分组信息",
 			position : {
@@ -138,7 +138,7 @@ var WeapongroupManage = {
 			return;
 		}
 		$("#dialog").tyWindow({
-			width : "680px",
+			width : "688px",
 			height : "500px",
 			title : "编辑武器分组信息",
 			position : {

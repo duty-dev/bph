@@ -3,27 +3,31 @@ package com.tianyi.bph.query.system;
 import com.tianyi.bph.query.BaseQuery;
 
 public class RoleQuery extends BaseQuery{
-
-	private String name;
 	
-	private String note;
+    private String name;
+    
+    private String note;
 	
 	private Integer nameSort;//名称排序
 	
 	private Integer timeSort;//时间排序
 	
 	private Long userId;
-
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
-
+	
 	public String getName() {
 		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
 	}
 
 	public Integer getNameSort() {
@@ -42,15 +46,12 @@ public class RoleQuery extends BaseQuery{
 		this.timeSort = timeSort;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public String getNote() {
-		return note;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
-	public void setNote(String note) {
-		this.note = note;
-	}
 }

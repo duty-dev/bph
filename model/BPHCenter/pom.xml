@@ -58,7 +58,17 @@
 		</dependency>
 		<dependency>
 			<groupId>com.tiyi.BPH</groupId>
+			<artifactId>BPHAlarmService</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.tiyi.BPH</groupId>
 			<artifactId>BPHDutyReportService</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.tiyi.BPH</groupId>
+			<artifactId>BPHReportService</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<!-- SPring MVC -->

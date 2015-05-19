@@ -400,13 +400,17 @@ public class PoliceServiceImpl implements PoliceService {
 		}
 		map.put("ymd", ymd);
 
+		String dutyTypeName = "";
 		List<ExtDbResult> rs = exportMapper.loadDutyItemInfo(map);
 
 		for (ExtDbResult r : rs) {
+			if(r.getDutyTypeName()!=null){
+				dutyTypeName = r.getDutyTypeName();
+			}
 			if (r.getItemTypeId() == 2) {
 				PoliceInfo p = this.createPoliceInfo(r);
 				p.setShiftInfo(this.createShiftInfo(r)); // 只有第一层需要写班次信息
-
+				p.setDutyTypeName(dutyTypeName);
 				cache.put(p.getDutyItemId(), p);// 添加到缓存
 				cache2.put(p.getData().getId(), null);
 				ps.add(p);// 添加到list
@@ -460,6 +464,7 @@ public class PoliceServiceImpl implements PoliceService {
 
 			pei.setData(rs.getData());
 			pei.setDutyItemId(rs.getDutyItemId());
+			pei.setDutyTypeName(rs.getDutyTypeName());
 			pei.setItemTypeId(rs.getItemTypeId());
 			pei.setShiftInfo(rs.getShiftInfo());
 			if (rs.getGpsItems() != null) {

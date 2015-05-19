@@ -1,0 +1,1 @@
+call java -server -cp jetty-runner.jar --config jetty.xml org.mortbay.jetty.runner.Runner --path / webapp

@@ -28,7 +28,7 @@
                	                        dataSource: {
                	                            data:udata,
                	                        },
-               	                     height: 510,
+               	                     height: 502,
                                      sortable: true,
                                      selectable: "multiple",
                	                        columns: [{

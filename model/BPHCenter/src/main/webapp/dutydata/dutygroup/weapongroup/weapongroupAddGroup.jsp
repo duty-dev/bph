@@ -191,13 +191,13 @@ var WeaponGroupManage ={
   
   <body class="ty-body">
 		<!-- <div id="vertical" style="overflow-x:hidden;"> -->
-	<div id="winPG" style="width:560px;height:320px;" title="武器分组管理">
+	<div id="winPG" style="width:622px;height:320px;" title="武器分组管理">
 			<div style="float:left;width:250px;margin-top:10px;">
 				<!-- 左开始 -->
 				<div class="demo-section k-header"> 
 					<input type="hidden" id="txtWeaponGroupId"></input>
 					<ul>
-						<li class="ty-input"><label class="ty-input-label" for="txtWeaponGroupName">组名称:</label><input
+						<li class="ty-input fit"><label class="ty-input-label" for="txtWeaponGroupName">组名称:</label><input
 							type="text" class="k-textbox" name="txtWeaponGroupName" onblur="WeaponGroupManage.isExistGroup();"
 							id="txtWeaponGroupName" /></li>
 						<li class="ty-input"><label>共享类型:</label>
@@ -213,8 +213,8 @@ var WeaponGroupManage ={
 				</div>
 			</div> 
 			
-							<div style="width:300px; float:left">
-								<div id="divOrg" style="height:450px; overflow:auto" >
+							<div style="width:370px; float:left">
+								<div id="divOrg" style="height:320px; overflow:auto" >
 									<ul id="treeOrg" style="overflow:auto"></ul>
 								</div>
 							</div>

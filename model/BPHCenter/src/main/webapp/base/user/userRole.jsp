@@ -9,7 +9,7 @@
                    <div class="box">
                      <hr class="hr clear">
                      <div class="shadow" id="zhegaiceng">
-						<img src="<%=basePath%>images/images/zhedang.png" style="height:800px">
+						<img src="<%=basePath%>images/images/zhedang.png" style="height:100%">
    					</div>
                      <div class="box-content">
                      

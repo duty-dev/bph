@@ -61,7 +61,7 @@ section .container-fluid{padding-right:0;}
 
 #main-nav .title{ width:215px; font-size:16px; font-weight:400; letter-spacing:0.5em; line-height:16px; margin-top:-7px; float:left;}
 
-.tree-box{height:790px; border-right:solid #81c9f0 1px;}
+.tree-box{height:772px; border-right:solid #81c9f0 1px;overflow:auto;}
 
 h2{float:left; width:100px; height:20px; padding:0 0 0 15px; margin:10px 0; font-size:17px; font-weight:normal; line-height:24px; color:#97c6dc; letter-spacing:0.1em; background:url(../images/ico.png) 0px -17px no-repeat;}
 /* ============底部============== */
@@ -110,9 +110,9 @@ h2{float:left; width:100px; height:20px; padding:0 0 0 15px; margin:10px 0; font
 /* =============表单样式============== */
 
 /* =============权限管理============== */
-.pow{ min-width:100px; height:816px; background:url(../images/line5.png) no-repeat; padding-left:20px;}
+.pow{ min-width:100px; height:759px; background:url(../images/line5.png) no-repeat; padding-left:20px;}
 .pow .box{margin:10px;}
-.pow .box .box-content{ background:#131e24; margin:10px; height:740px; border:none;}
+.pow .box .box-content{ background:#131e24; margin:10px; height:714px; border:none;}
 /* =============弹出窗口样式============== */
 
 /* ============消息提示样式============== */

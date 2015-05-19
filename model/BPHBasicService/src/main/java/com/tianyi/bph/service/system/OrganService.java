@@ -70,4 +70,5 @@ public interface OrganService {
 
 	//List<Organ> getOrganListByParentId(Integer organId,Integer parentId);
 	List<Organ> getOrganListByParentId(OrganQuery organQuery);
+	public List<Organ> findOrganById(OrganQuery query);
 }

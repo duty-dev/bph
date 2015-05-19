@@ -23,13 +23,6 @@
 			<artifactId>BPHBasicService</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
-		<dependency>
-			<groupId>com.tiyi.BPH</groupId>
-			<artifactId>BPHCommon</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
 	</dependencies>
 	
 	<repositories>

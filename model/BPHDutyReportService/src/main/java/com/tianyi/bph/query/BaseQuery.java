@@ -11,9 +11,25 @@ public class BaseQuery {
     private int      pageSize;
     //当前页码
     private int      pageNo;
+    /**
+	 * 分页起始行数，自动计算
+	 */
+	private Integer pageStart;
 
-    public BaseQuery() {
+    public void setPageStart(Integer pageStart) {
+		this.pageStart = pageStart;
+	}
+
+	public BaseQuery() {
+    	super();
     }
+    
+    public Integer getPageStart() {
+		if (pageNo != 0 && pageSize != 0) {
+			pageStart = pageSize * (pageNo - 1);
+		}
+		return pageStart;
+	}
 
     public BaseQuery(int pageSize, int pageNo) {
         this.pageSize = pageSize;

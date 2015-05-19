@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 
 import com.tianyi.bph.service.BaseTest;
-import com.tianyi.bph.service.LogService;
 
 public class AreaServiceTest extends BaseTest {
 

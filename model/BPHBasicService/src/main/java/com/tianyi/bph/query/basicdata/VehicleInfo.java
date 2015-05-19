@@ -25,4 +25,11 @@ public class VehicleInfo   extends ItemInfo<Vehicle> {
 	public void setPoliceItems(List<PoliceEInfo> policeItems) {
 		this.policeItems = policeItems;
 	} 
+	public String getDutyTypeName() {
+		return dutyTypeName;
+	}
+	public void setDutyTypeName(String dutyTypeName) {
+		this.dutyTypeName = dutyTypeName;
+	}
+	private String dutyTypeName;
 }

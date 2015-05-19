@@ -277,13 +277,16 @@ public class VehicleServiceImpl implements VehicleService {
 		map.put("ymd", ymd);
 
 		List<ExtDbResult> rs = exportMapper.loadDutyItemInfo(map);
-
+String dutyTypeName = "";
 		for (ExtDbResult r : rs) {
+			if(r.getDutyTypeName()!=null){
+				dutyTypeName = r.getDutyTypeName();
+			}
 			if (r.getItemTypeId() == 1) {
 
 				VehicleInfo v = this.createVehicleInfo(r);
 				v.setShiftInfo(this.createShiftInfo(r)); // 只有第一层需要写班次信息
-
+				v.setDutyTypeName(dutyTypeName);
 				cache.put(v.getDutyItemId(), v);// 添加到缓存
 				cache2.put(v.getData().getId(), null);
 				vs.add(v);// 添加到list
@@ -338,6 +341,7 @@ public class VehicleServiceImpl implements VehicleService {
 
 			pei.setData(rs.getData());
 			pei.setDutyItemId(rs.getDutyItemId());
+			pei.setDutyTypeName(rs.getDutyTypeName());
 			pei.setItemTypeId(rs.getItemTypeId());
 			pei.setShiftInfo(rs.getShiftInfo());
 

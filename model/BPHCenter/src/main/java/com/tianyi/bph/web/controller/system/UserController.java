@@ -167,13 +167,13 @@ public class UserController extends BaseLogController {
 		//勤务报备
 		List<String> dutyArray=moduleService.findModuleByParentId(Integer.parseInt(SystemConfig.DUTY_MANAGER));
 		//报备分组
-		List<String> dutyReportGroup=moduleService.findModuleByParentId(Integer.parseInt(SystemConfig.REPORT_GROUP));
+		//List<String> dutyReportGroup=moduleService.findModuleByParentId(Integer.parseInt(SystemConfig.REPORT_GROUP));
 		 
 		 request.getSession().setAttribute("funList", functionList);
 		 request.getSession().setAttribute("baseArray", baseArray);
 		 request.getSession().setAttribute("conductArray", conductArray);
 		 request.getSession().setAttribute("dutyArray", dutyArray);
-		 request.getSession().setAttribute("dutyReportGroup", dutyReportGroup);
+		 //request.getSession().setAttribute("dutyReportGroup", dutyReportGroup);
 		 
 	}
 	

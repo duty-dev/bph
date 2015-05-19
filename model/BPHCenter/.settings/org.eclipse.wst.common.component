@@ -12,7 +12,13 @@
         <dependent-module archiveName="BPHBasicService-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/BPHService/BPHService">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="BPHAlarmService-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/BPHAlarmService/BPHAlarmService">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="BPHDutyReportService-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/BPHDutyReportService/BPHDutyReportService">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="BPHReportService-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/BPHReportService/BPHReportService">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="context-root" value="BPHCenter"/>

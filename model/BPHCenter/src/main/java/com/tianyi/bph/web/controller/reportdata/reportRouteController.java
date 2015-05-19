@@ -41,20 +41,8 @@ public class reportRouteController {
 		User user = (User) request.getAttribute("User");
 		if (organId == null) {
 			organId = user.getOrgId();
-		}
-		Organ organ = new Organ();
-		organ = organService.getOrganByPrimaryKey(organId);
-		List<Organ> subOrgList = new ArrayList<Organ>();
-		OrganQuery organQuery = new OrganQuery();
-		organQuery.setParentId(organId); 
-		subOrgList = organService.getOrganListByParentId(organQuery);
-		
-		mv.addObject("organ", organ); 
-		mv.addObject("organName", organ.getShortName()); 
-		mv.addObject("organParentName", ""); 
-		mv.addObject("organCode", organ.getCode()); 
-		mv.addObject("organPath", organ.getPath()); 
-		mv.addObject("subOrgList", subOrgList); 
+		}  
+		mv.addObject("organId", organId);   
 		mv.addObject("num", "300");
 		return mv;
 	}  

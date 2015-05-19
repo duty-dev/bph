@@ -14,7 +14,7 @@ public class GroupTest extends BaseTest {
 	
 	//@Test
 	public void testSave(){
-		//groupAction.saveGroupInfo("222", 1, 1, 1, "[{\"id\":\"1\",\"groupType\":\"2\"}]");
+		//groupAction.saveGroupInfo("222", 1, 1, 1, 2,"[{\"id\":\"1\",\"groupType\":\"2\"}]",1,"[{\"id\":\"1\",\"groupType\":\"2\"}]");
 	}
 	
 	@Test
@@ -22,6 +22,8 @@ public class GroupTest extends BaseTest {
 		ReturnResult result=groupAction.getGroupInfo(1);
 		System.out.println(result.getData());
 	}
+	
+	// ==========================================
 	/*public static void main(String[] args) {
 		test1();
 	}

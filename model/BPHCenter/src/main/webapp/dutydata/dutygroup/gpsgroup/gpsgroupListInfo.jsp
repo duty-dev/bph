@@ -117,7 +117,7 @@ var GpsgroupManage = {
 	createGroup:function(){
 		var organId = $("#organId").val();
 		$("#dialog").tyWindow({
-			width : "680px",
+			width : "688px",
 			height : "500px",
 			title : "新建定位设备分组",
 			position : {
@@ -137,7 +137,7 @@ var GpsgroupManage = {
 			return;
 		}
 		$("#dialog").tyWindow({
-			width : "680px",
+			width : "688px",
 			height : "500px",
 			title : "编辑定位设备信息",
 			position : {
