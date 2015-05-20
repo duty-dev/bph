@@ -82,6 +82,9 @@
             		</div>
             	</div>
           	</div>
+          	<div>
+          		<span id="btnAddType1" class="k-button"  onclick="searchAction()">搜索</span>
+          	</div>
 		</div>
         </div><!----机构树结束---->
         <div class="line8 box"></div>
@@ -225,8 +228,7 @@ $(function() {
     				cf=false;
     			}
 	        } 
-	        
-	        //<li>
-          //  		 			刑事案件<button type='button' class='ty-delete-btn' title='删除' onclick=''></button>
-          //  		 		</li>
+	       function searchAction(){
+	       		alert("search");
+	       }
 </script>
