@@ -69,4 +69,21 @@ public class alarmStatisticController {
 		}
 		return atList;
 	}
+	
+	
+	@RequestMapping(value = "/getReportDataByQuery.do")
+	public @ResponseBody
+	ReturnResult getReportDataByQuery(
+			@RequestParam(value = "QueryString", required = false) String QueryString,
+			HttpServletRequest request) {
+		try {
+			 
+			return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
+					MessageCode.SELECT_SUCCESS, 0, null);
+
+		} catch (Exception ex) {
+			return ReturnResult.MESSAGE(MessageCode.STATUS_FAIL,
+					MessageCode.SELECT_ORGAN_FAIL, 0, null);
+		}
+	}
 }
