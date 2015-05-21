@@ -44,10 +44,10 @@ $(document).ready(function() {
 <div id="template">
  
 	<div class="fl ml30 set-hei48">
-		<span id="btnalarmType" class="k-button"  onclick="">警情分类</span>
-        <span id="btnalarmCircle" class="k-button"  onclick="">周期</span> 
-        <span id="btnalarmTimeSpan" class="k-button"  onclick="">时间段</span>
-        <span id="btnalarmOrgan" class="k-button"  onclick="">机构</span>   
+		<span id="btnalarmType" class="k-button"  onclick="onChangeReportAction(1);">警情分类</span>
+        <span id="btnalarmCircle" class="k-button"  onclick="onChangeReportAction(2);">周期</span> 
+        <span id="btnalarmTimeSpan" class="k-button"  onclick="onChangeReportAction(3);">时间段</span>
+        <span id="btnalarmOrgan" class="k-button"  onclick="onChangeReportAction(4);">机构</span>   
 		<div class="temp">
 			<div class="ty-total-decorate"><span id="gridListTotal"></span><i></i></div>
 		</div>

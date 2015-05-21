@@ -1,6 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
  <style>
- 	li{ float:left;list-style:none; padding:5px;width:120px;} 
+ 	li{ float:left;list-style:none; padding:5px;} 
  	table{border:1px solid #fff;margin-top:5px;}
  	table td{border:1px solid #fff;}
  	table tr{border:1px solid #fff;} 
@@ -135,7 +135,7 @@ $(function() {
 		$("#radio_byday").attr("checked","checked");  
 		$("#dpSDate").data("kendoDatePicker").enable(false);
 		$("#dpEDate").data("kendoDatePicker").enable(false);
-		
+		searchAction(1);
 });
 function searchByMonth(){
 	var datepicker1 = $("#dpSDay").data("kendoDatePicker");
@@ -279,7 +279,7 @@ function onDpDay(){
 	 		
 	 			var win =$('#alarmTypeListWin');
 				win.kendoWindow({
-	                        width: "700px",
+	                        width: "900px",
 	                        height:"450px",
 	                        title: "警情选择"
 	                    });
@@ -340,17 +340,49 @@ function onDpDay(){
     				cf=false;
     			}
 	        } 
-	         function searchAction(){
+	        
+	        function onChangeReportAction(reportType){
+	        	searchAction(reportType);
+	        }
+	        
+	        function getActionUrl (rType){
+	        	var urlStr = "";
+	        	switch(rType)
+	        	{
+	        		case 1:
+	        			urlStr = "<%=basePath%>alarmStatisticWeb/getReportDataByAlarmType.do";
+	        			break;
+	        		case 2:
+	        			urlStr = "<%=basePath%>alarmStatisticWeb/getReportDataByAlarmCircle.do";
+	        			break;
+	        		case 3:
+	        			urlStr = "<%=basePath%>alarmStatisticWeb/getReportDataByAlarmTimeSpan.do";
+	        			break;
+	        		case 4:
+	        			urlStr = "<%=basePath%>alarmStatisticWeb/getReportDataByAlarmOrgan.do";
+	        			break;
+	        	}
+	        	return urlStr;
+	        }
+	         function searchAction(repType){
 	         	packageQuery();
+	         	var url = getActionUrl(repType); 
 	         	$.ajax({
-						url : "<%=basePath%>alarmStatisticWeb/getReportDataByQuery.do",
+						url : url,
 						type : "post",
-						data : {"QueryString" : JSON.stringify(m_Query_pkg)},
+						data : {"reportCondition" : JSON.stringify(m_Query_pkg)},
 						dataType : "json",
 						success : function(req) { 
 							if(req.code==200){ 
-								 //加载统计图形数据
-								 alert("调用后台方法成功")
+								if(repType == 1){
+									ReportManage.initAlarmTypeData(req.data);	
+								}else if(repType == 2){
+									ReportManage.initAlarmCircleData(req.data);
+								}else if(repType == 3){
+									ReportManage.initAlarmTimeSpanData(req.data);
+								}else if(repType == 4){
+									ReportManage.initAlarmOrganData(req.data);
+								}
 							}else{
 								$("body").popjs({"title":"提示","content":"查询统计数据失败！"});
 							} 
