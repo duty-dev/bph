@@ -583,46 +583,7 @@
 			</foreach>
 
 		</if>
-		union
-		select distinct p.id,p.isUsed as isused, p.type_id as typeId,pt.name as
-		typeName,
-
-		p.name, p.org_id as orgId,(select orn.short_name from t_organ as orn where
-		orn.organ_id = ( select org_id from t_police as tp where tp.id = p.id)) as
-		orgName,p.idcardno, p.number, p.title,
-
-		p.mobile, p.mobile_short as mobileShort, p.intercom_group as intercomGroup,
-
-		p.intercom_person, p.gps_id as gpsId, p.gps_name as gpsName,org.code as
-		orgCode,
-
-		org.path as orgPath,tg.icon_url as iconUrl,CONCAT(pt.name,":",p.name) as
-		display_name
-		from t_duty_police_group_member as m
-
-		left join t_police p on m.police_id = p.id
-		left join t_policetype pt on pt.id = p.type_id
-		left join t_duty_police_group pg on pg.id = m.group_id
-		left join t_duty_police_group_org pgo on pgo.police_group_id = pg.id
-		left join t_organ org on org.organ_id = pgo.org_id
-		left join t_gps tg on p.gps_id = tg.id
-		where
-		p.isUsed = 1 and
-		org.organ_id = #{orgId,jdbcType=INTEGER} and
-		pgo.org_id= #{orgId,jdbcType=INTEGER}
-
-		<if test="name !=null">
-			and p.name like CONCAT('%','${name}','%' )
-		</if>
-		<if test="ids !=null">
-			and p.type_id in
-
-			<foreach item="item" index="index" collection="ids" open="("
-				separator="," close=")">
-				#{item}
-			</foreach>
-
-		</if>
+		
 
 	</select>
 

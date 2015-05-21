@@ -14,7 +14,7 @@
 
 <script id="vehicleSource-template" type="text/x-kendo-template">
     <span> #: item.number #</span>
-	<span> (#: item.typeName#  #:item.brand#)</span>
+	<span> (#: item.typeName# )</span>
 	<span> 　#: item.orgName #</span>
 	#item.itemTypeId=1#
 </script>

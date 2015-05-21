@@ -150,6 +150,7 @@
 <script type="text/javascript">
 var m_organId = 1; 
 var alarmTypeArr = []; 
+var nowdata = new Date;
 var m_byMonth = false;
 var m_byDay = false;
 var m_timeSpan_Start ;//通过更多条件选择的时间区域开始时间

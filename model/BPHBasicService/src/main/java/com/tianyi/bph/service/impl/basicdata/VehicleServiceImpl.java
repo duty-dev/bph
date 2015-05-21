@@ -487,4 +487,10 @@ String dutyTypeName = "";
 		// TODO Auto-generated method stub
 		return vehicleMapper.findByNumberAndId(map);
 	}
+
+	@Override
+	public List<VehicleVM> loadVMListWithGroupList(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return vehicleMapper.loadVMListWithGroupList(map);
+	}
 }

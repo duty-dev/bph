@@ -95,5 +95,6 @@ public interface VehicleMapper {
 	List<Vehicle> getVehicleInfo(Map<String, Object> map);
 	List<GpsBaseVM> selectGpsId(int orgId);
 	List<VehicleVM> findByNumberAndId(Map<String, Object> map);
+	List<VehicleVM> loadVMListWithGroupList(Map<String, Object> map);
     
 }

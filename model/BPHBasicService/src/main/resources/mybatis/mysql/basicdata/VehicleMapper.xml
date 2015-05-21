@@ -39,6 +39,26 @@
     <result column="icon_url" jdbcType="VARCHAR" property="iconUrl" />
   </resultMap>
   
+	<resultMap id="BaseModelMap" type="com.tianyi.bph.query.basicdata.VehicleVM">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="typeName" property="typeName" jdbcType="VARCHAR" />  
+		<result column="vehicle_type_id" property="typeId" jdbcType="INTEGER" />
+		<result column="org_id" property="orgId" jdbcType="INTEGER" />
+		<result column="orgName" property="orgName" jdbcType="VARCHAR" /> 
+		<result column="purpose" property="purpose" jdbcType="VARCHAR" />  
+		<result column="brand" property="brand" jdbcType="VARCHAR" />   
+		<result column="number" property="number" jdbcType="VARCHAR" />  
+		<result column="intercom_group" property="intercomGroup"
+			jdbcType="VARCHAR" />
+		<result column="intercom_person" property="intercomPerson"
+			jdbcType="VARCHAR" />
+		<result column="gps_icon" property="iconUrl" jdbcType="VARCHAR" />
+		<result column="gps_id" property="gpsId" jdbcType="INTEGER" />
+		<result column="gps_name" property="gpsName" jdbcType="VARCHAR" />
+		<result column="orgcode" jdbcType="VARCHAR" property="orgCode" />
+		<result column="orgpath" jdbcType="VARCHAR" property="orgPath" />
+		<result column="iconUrl" jdbcType="VARCHAR" property="iconUrl" /> 
+	</resultMap>
   
   <sql id="Base_Column_List">
     id, vehicle_type_id, org_id, number, intercom_group,intercom_person, gps_id, gps_name, purpose, brand, 
@@ -436,11 +456,10 @@
   		 	left join t_duty_vehicle_group pg on pg.id = gm.group_id
   		 </if> 
   		 where 
-  		 (
+  		 
   		 o.organ_id = #{orgId,jdbcType=INTEGER}
-  		  or 
-  		  o.path like CONCAT(#{orgPath,jdbcType=VARCHAR},"/",#{orgCode,jdbcType=VARCHAR},"%")
-  		)
+  		  
+  		 
   		<if test ="number !=null">
   			and v.number like CONCAT('%','${number}','%' )  
   		</if>
@@ -462,4 +481,57 @@
   		</if> 
   </select>
   
+	<select id="loadVMListWithGroupList" parameterType="java.util.Map"
+		resultMap="BaseModelMap">
+
+		select distinct 
+		p.id, 
+		p.vehicle_type_id as typeId,
+		pt.name as typeName, 
+		p.org_id as orgId,
+		p.purpose as purpose,
+		p.brand as brand,
+		(select orn.short_name from t_organ as orn where
+		orn.organ_id = ( select tp.org_id from t_vehicle as tp where tp.id = p.id)) as
+		orgName, 
+		p.number,  
+		p.intercom_group as
+		intercomGroup,
+		p.intercom_person, 
+		p.gps_id as gpsId, 
+		p.gps_name as gpsName,
+		org.code as orgCode,
+		org.path as orgPath,
+		tg.icon_url as iconUrl
+
+		from t_duty_vehicle_group_member as m
+
+		left join t_vehicle p on m.vehicle_id = p.id
+		left join t_vehicletype pt on pt.id = p.vehicle_type_id
+		left join t_duty_vehicle_group pg on pg.id = m.group_id
+		left join t_duty_vehicle_group_org pgo on pgo.vehicle_group_id = pg.id
+		left join t_organ org on org.organ_id = pgo.org_id
+		left join t_gps tg on p.gps_id = tg.id
+		where 
+		pgo.org_id= #{orgId,jdbcType=INTEGER} and
+		pgo.vehicle_group_id in
+		<foreach item="item" index="index" collection="gids" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+
+		<if test="number !=null">
+			and p.number like CONCAT('%','${number}','%' )
+		</if>
+		<if test="ids !=null">
+			and p.vehicle_type_id in
+
+			<foreach item="item" index="index" collection="ids" open="("
+				separator="," close=")">
+				#{item}
+			</foreach>
+
+		</if>
+
+	</select>
 </mapper>
