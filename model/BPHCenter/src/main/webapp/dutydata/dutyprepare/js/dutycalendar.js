@@ -1,23 +1,24 @@
 /*
- * 鎶ュ棣栭〉锛屾棩鍘嗛〉闈笟鍔￠�杈戞搷浣�
+ * 报备首页，日历页面业务逻辑操作
  * 
- * 鍖呮嫭锛氭棩鍘嗙殑灞曠ず锛�
- * 鎶ュ鎯呭喌缁熻
- * 鎶ュ鏄庣粏锛�
+ * 包括：日历的展示；
+ * 报备情况统计
+ * 报备明细；
  * 
  */
+
 
 var y;
 var m_date = null; 
 var m;
-var m_xid_max = 0; // duty鐨則reegrid鐨刬d,蹇呴』纭繚
-var m_ymd = null; /* 褰撳墠骞存湀鏃�*/
+var m_xid_max = 0; // duty的treegrid的id,必须确保
+var m_ymd = null; /* 当前年月日 */
 var m_dutyCalendar_Org = {};
 var m_duty = {};
 var sessionId ;
 $(function() { 
 
-	// 鑾峰彇鍦板潃鏍忓弬鏁帮紝鑾峰彇缁勭粐缁撴瀯淇℃伅锛� 
+	// 获取地址栏参数，获取组织结构信息；
 	m_dutyCalendar_Org.id = $("#organId").val();
 	m_dutyCalendar_Org.code =$("#organCode").val();
 	m_dutyCalendar_Org.path =$("#organPath").val(); 
@@ -29,8 +30,8 @@ $(function() {
 	m = m_month;
 	$("#sp_years").text(y+"年");
 	$("#sp_month").text(m+"月");
-	changeDivHeight(); // 琛ㄦ牸鑷姩楂樺害璁剧疆
-	getDateData(y + "-" + m + "-" + 1);// 鍒濆鍖栭粯璁ゆ湀浠芥暟鎹� 
+	changeDivHeight(); // 表格自动高度设置
+	getDateData(y + "-" + m + "-" + 1);// 初始化默认月份数据
 });
 function loadData(pageNo){  
 	m_dutyCalendar_Org.id = $("#organId").val();
@@ -44,11 +45,11 @@ function loadData(pageNo){
 	m = m_month;
 	$("#sp_years").text(y+"年");
 	$("#sp_month").text(m+"月");
-	changeDivHeight(); // 琛ㄦ牸鑷姩楂樺害璁剧疆
-	getDateData(y + "-" + m + "-" + 1);// 鍒濆鍖栭粯璁ゆ湀浠芥暟鎹� 
+	changeDivHeight(); // 表格自动高度设置
+	getDateData(y + "-" + m + "-" + 1);// 初始化默认月份数据
 }
 
-// 璁剧疆鏃ュ巻绐椾綋鐨勯珮搴�
+// 设置日历窗体的高度
 function changeDivHeight() {
 
 	var bodyHeight = document.body.clientHeight;
@@ -69,7 +70,7 @@ function changeDivHeight() {
 		$(dateBoxMainDateTDBoxS[i]).width(dateBoxMainDateTDBoxWidht);
 	}
 }
-// 鐐瑰嚮鏃ユ湡涓婃湀涓嬫湀浜嬩欢
+// 点击日期上月下月事件
 function getDateClick(action) {
 	if (action == 'next') {
 		m++;
@@ -90,7 +91,7 @@ function getDateClick(action) {
 	$("#sp_month").text(m+"月");
 	getDateData(date);
 }
-// 鏍规嵁鏃ユ湡锛岃幏鍙栧悗鍙版暟鎹�
+// 根据日期，获取后台数据
 function getDateData(date) {
 	$.ajax({
 		url : '/BPHCenter/dutyCalendarWeb/getCalender.do?orgId=' + m_dutyCalendar_Org.id+"&sessionId="+sessionId
@@ -108,42 +109,41 @@ function getDateData(date) {
 		}
 	});
 }
-// 鍒濆鍖栨棩鏈熸暟鎹樉绀�
-function setDateData(result) {
-	// 閺冦儱宸婚弫鐗堝祦缂佸嫯顥婇幋鎰殶缂侊拷
+// 初始化日期数据显示
+function setDateData(result) { 
 	var dateArray = new Array();
 	// var json = eval("(" + result + ")");
 	var json = result;
-	for ( var i = 0; i < 6; i++) {// 閸掓繂顫愰崠锟�鐞涳拷7閸掓鈹栭弫鐗堝祦娴滃瞼娣弫鎵矋
+	for ( var i = 0; i < 6; i++) { 
 		dateArray[i] = new Array();
 		for ( var j = 0; j < 7; j++) {
 			dateArray[i][j] = 0;
 		}
 	}
-	var lineIndexOf = 0;// 閸掓繂顫愰崠鏍х秼閸撳秶绮嶇憗鍛邦攽娑撳鐖�
+	var lineIndexOf = 0; 
 	for ( var i = 0; i < json.length; i++) {
-		dateArray[lineIndexOf][parseInt(json[i]["week"])] = new Array();// 婢圭増妲憀ineIndexOf鐞涘奔绗�week(娴狅綀銆冮崨銊ュ殤閻ㄥ嫪绗呴弽锟�閸掓ぞ绗呴弰顖欑娑擃亝鏌婇弫鎵矋
-		var today = new Array();// 閸掓稑缂撴稉锟芥稉顏呮煀閺佹壆绮嶉敍灞借嫙鐎瑰本鏆ｉ弫鐗堝祦闁插秶绮�
+		dateArray[lineIndexOf][parseInt(json[i]["week"])] = new Array();
+		var today = new Array(); 
 		today['y'] = json[i]["y"];
 		today['m'] = json[i]["m"];
 		today['d'] = json[i]["d"];
 		today['totalpolice'] = json[i]["totalpolice"];
 		today['dutyList'] = json[i]["dutyList"];
 		dateArray[lineIndexOf][parseInt(json[i]["week"])] = today;
-		if (parseInt(json[i]["week"]) == 6) {// 閸掋倖鏌囬弰顖氭儊鐠囥儲宕茬悰锟�閼汇儱缍嬮崜宥勭瑓閺嶅洤鍩岄崚鎷屾彧6閸楀啿褰查幑銏ｎ攽+1
+		if (parseInt(json[i]["week"]) == 6) { 
 			lineIndexOf++;
 
 		}
 	}
 	PlanArray = dateArray;
-	creatHtml(dateArray);// 鐏忓棝鍣哥紒鍕倵閻ㄥ嫭鏆熺紒鍕炊缂佹獘tml闁插秶绮嶉崝鐔诲厴閸戣姤鏆熼敍灞借嫙閹绘帒鍙嗛崚鐧廡ML娑擄拷
+	creatHtml(dateArray); 
 	// p(dateArray);
 }
-
+//创建日历html
 function creatHtml(arr) {
-	// 閺冦儱宸婚弫鐗堝祦HTML缂佸嫯顥婇柈銊ュ瀻
+	 
 	var html = "";
-	for ( var i = 0; i < 6; i++) {// 瀵邦亞骞嗛弫鎵矋閿涘矂鍣哥紒鍒猼ml
+	for ( var i = 0; i < 6; i++) { 
 		var trHtml = "<tr  style='vertical-align:top'>";
 		for ( var j = 0; j < 7; j++) {
 
@@ -249,13 +249,13 @@ function creatHtml(arr) {
 		}
 		html = html + trHtml + "</tr>";
 	}
-	$("#dateBody").empty();// 濞撳懐鈹杊tml
-	$("#dateBody").append(html);// 閹绘帒鍙唄tml
-	changeDivHeight();// 閹绘帒鍙唄tml鐞涖劍鐗告妯哄娑撳秵妲搁懛顏勫З闁倸绨查惃鍕剁礉鐠嬪啰鏁ゆ妯哄鐠嬪啯鏆ｉ崙鑺ユ殶閿涘矁鍤滈柅鍌氱安妤傛ê瀹�
+	$("#dateBody").empty(); 
+	$("#dateBody").append(html); 
+	changeDivHeight();
 }
 
 var dtime = null;
-// 鐐瑰嚮鏃ュ巻鍙锋暟锛岃繘鍏ヨ缁嗘姤澶囬〉闈�
+// 点击日历号数，进入详细报备页面
 function onClickData(date) {
 	dtime = null;
 	var dt = date.replace(/-/gm, '');
@@ -268,7 +268,7 @@ function onClickData(date) {
 var timeouts;
 var timer = 1500;
 
-// 榧犳爣鍦ㄨ繘鍏ユ湁鏁堟棩鍘嗗彿鏁拌〃鏍煎唴锛屼笖鍋滅暀鏃堕棿瓒呰繃1.5S鏃讹紝寮瑰嚭鎶ュ鏄庣粏锛�
+// 鼠标在进入有效日历号数表格内，且停留时间超过1.5S时，弹出报备明细；
 function mouseOverFunction(date) {
 	dtime = null;
 	var dt = date.replace(/-/gm, '');
@@ -282,11 +282,11 @@ function mouseOverFunction(date) {
 	// clearTimeout(timeouts);
 	// },2*1000);
 }
-// 榧犳爣绉诲紑浜嬩欢锛屾竻妤氬畾鏃跺櫒锛�
+// 鼠标移开事件，清楚定时器；
 function mouseOutFunction() { 
 	window.clearTimeout(timeouts);
 }
-// 鐐瑰嚮鍏蜂綋鏃ユ湡锛屽姞杞借缁嗕俊鎭璇濇
+// 点击具体日期，加载详细信息对话框
 function getDateInfo(date) {
 	$("#txttargetName").val("");
 	m_dutyCalendar_Org.date = date;
@@ -488,20 +488,20 @@ function getRowStatistics(row){
 			
 			return rs;
 		}
-// 榧犳爣绉诲姩鍒版棩鍘嗗簳閮紝鏄剧ず鍒犻櫎銆佸鍒舵寜閽�
+// 鼠标移动到日历底部，显示删除、复制按钮
 function mouseOverOpratdiv(tags) {
 	$("#calendarOpratdiv_" + tags + " a[id='dellink_" + tags + "']").html("删除");
 	$("#calendarOpratdiv_" + tags + " a[id='copylink_" + tags + "']").html(
 			"复制");
 }
-// 榧犳爣绉诲紑鏃ュ巻搴曢儴锛岄殣钘忓垹闄ゃ�澶嶅埗鎸夐挳
+// 鼠标移开日历底部，隐藏删除、复制按钮
 function mouseOutOpratdiv(tags) {
 	$("#calendarOpratdiv_" + tags + " a[id='dellink_" + tags + "']")
 			.html("　");
 	$("#calendarOpratdiv_" + tags + " a[id='copylink_" + tags + "']").html(
 			"　");
 }
-// 鍒犻櫎鎶ュ
+// 删除报备
 function deleteDutyConfirm(date, i, j) {
 	$("body").tyWindow({"content":  "确认删除    " + date + " 的报备数据吗？","center":true,"ok":true,"no":true,"okCallback":function(){ 
 		 
@@ -528,7 +528,7 @@ function deleteDutyAction(dt, i, j) {
 				},
 				async : false,
 				success : function(req) {
-					if (req.code==200) {// 鎴愬姛濉厖鏁版嵁
+					if (req.code==200) {// 成功填充数据
 						var y = dt.substring(0, 4);
 						var m = dt.substring(4, 6);
 						var d = dt.substring(6, 9);
@@ -560,9 +560,9 @@ function deleteDutyAction(dt, i, j) {
 			});
 }
 var pasteDate = "";
-var copyX = 0;// 瑕佸鍒舵暟缁勭殑X涓嬫爣
-var copyY = 0;// 瑕佸鍒舵暟缁勭殑Y涓嬫爣
-var PlanArray = new Array();// 鎶ュ鎯呭喌鏁扮粍锛岃褰曟瘡澶╃殑鎶ュ鎯呭喌
+var copyX = 0;// 要复制数组的X下标
+var copyY = 0;// 要复制数组的Y下标
+var PlanArray = new Array();// 报备情况数组，记录每天的报备情况
 function copyDutyByDays(date, i, j) {
 	pasteDate = "";
 	copyX = i;
@@ -575,12 +575,12 @@ function copyDutyByDays(date, i, j) {
 
 			var obj = $("td[doc='td_" + i + "_" + j + "']");
 			var LT = getPasteBtnBoxWidthHeight();
-			if (i == copyX) {// 鍚屼竴琛岋紝涔嬪垽鏂垪
+			if (i == copyX) {// 同一行，之判断列
 				if (j > copyY) {
-					$(obj).find('div[class=DateBoxbg]').each(function() { // 閬僵
+					$(obj).find('div[class=DateBoxbg]').each(function() { // 遮罩
 						$(this).css('display', 'block');
 					});
-					$(obj).find('div[class=pasteBtnBox]').each(function() { // 閬僵
+					$(obj).find('div[class=pasteBtnBox]').each(function() {// 遮罩
 						$(this).css('left', LT[0]);
 						$(this).css('top', LT[1]);
 						$(this).show();
@@ -591,10 +591,10 @@ function copyDutyByDays(date, i, j) {
 			} else if (i > copyX) {// 涓嬩竴琛岋紝鐩存帴杩藉姞div
 				// var obj=$("#pasteBtn_" + i+"_"+j).parent().parent();
 				// $(obj).find('li[class=nobaobei]').hide();
-				$(obj).find('div[class=DateBoxbg]').each(function() { // 閬僵
+				$(obj).find('div[class=DateBoxbg]').each(function() {// 遮罩
 					$(this).css('display', 'block');
 				});
-				$(obj).find('div[class=pasteBtnBox]').each(function() { // 閬僵
+				$(obj).find('div[class=pasteBtnBox]').each(function() { // 遮罩
 					$(this).css('left', LT[0]);
 					$(this).css('top', LT[1]);
 					$(this).show();
@@ -607,7 +607,7 @@ function copyDutyByDays(date, i, j) {
 
 	}
 
-	// $('div[class=DateBoxbg]').each(function(){ //閬僵
+	// $('div[class=DateBoxbg]').each(function(){ // 遮罩
 	// $(this).css('display','block');
 	// });
 	// var LT=getPasteBtnBoxWidthHeight();
@@ -618,7 +618,7 @@ function copyDutyByDays(date, i, j) {
 	// });
 
 }
-// 璁＄畻娴忚鍣ㄩ珮搴︼紝璁＄畻琛岄珮
+// 计算浏览器高度，计算行高
 function getPasteBtnBoxWidthHeight() {
 
 	var arr = new Array();
@@ -634,7 +634,7 @@ function getPasteBtnBoxWidthHeight() {
 	});
 	return arr;
 }
-// 绮樿创鎸夐挳浜嬩欢
+// 粘贴按钮事件
 function selectPasteBox(date, i, j) {
 	var dt = date.replace(/-/gm, '');
 
@@ -704,12 +704,10 @@ function fmtShiftPeriod(value, row, index) {
 		return result;
 	}
 }
-
 /**
- * 鍒濆鍖栨棩鏈�
+ * 汇总各级节点的数据
  * 
- * @param ymd
- * @param item
+ * @param duty
  */
 function initDate(item) {
 
@@ -758,7 +756,7 @@ var YMD = {
 // createExcelApplication(obj);
 // };
 
-// 瀵煎嚭鍏蜂綋鏃ユ湡鐨勬姤澶囨槑缁�
+// 导出具体日期的报备明细
 function btnExportAction() {
 	$.ajax({
 		url : "dutyCalendar/exportDataToExcle.do",
@@ -806,7 +804,7 @@ function btnExportAction() {
 		}
 	});
 };
-// 娓呴櫎褰撴湀鎵�湁鎶ュ鏁版嵁
+// 清除当月所有报备数据
 function clearAlldutyData() {
 	$("body").tyWindow({"content": "确认删除    " + y + "年" + m + "月" + " 的所有报备数据吗？","center":true,"ok":true,"no":true,"okCallback":function(){ 
 		
@@ -843,7 +841,7 @@ function deleteAllDutyDataAction(year, month) {
 	});
 };
 
-// 娓呴櫎绮樿创妯℃澘锛屾竻绌哄壀鍒囨澘
+// 清除粘贴模板，清空剪切板
 function clearClipbord() {
 	$('div[class=pasteBtnBox]').each(function() { // 寮�閬嶅巻
 		$(this).hide();
