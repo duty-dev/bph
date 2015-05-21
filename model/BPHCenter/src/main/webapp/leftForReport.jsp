@@ -1,9 +1,9 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
  <style>
  	li{ float:left;list-style:none; padding:5px;} 
- 	table{border:1px solid #fff;margin-top:5px;}
- 	table td{border:1px solid #fff;}
- 	table tr{border:1px solid #fff;} 
+ 	#tbl_alarmType {border:1px solid #fff;margin-top:5px;}
+ 	#tbl_alarmType td{border:1px solid #fff;}
+ 	#tbl_alarmType tr{border:1px solid #fff;} 
  	.a {float:left;}
  </style> 
 <div id="navigationLeft">
@@ -72,7 +72,7 @@
             			<h5>时间</h5>
             		</div>
             		<div style="width:38%;float:left">  
-            			<span id="btnAddType2" class="k-button"  onclick="">更多条件</span>  
+            			<span id="btnAddType2" class="k-button"  onclick="addOtherTimeSpan()">更多条件</span>  
             		</div>
             		<div id="div_dateType" style="width:100%;float:left">  
             		  	<label><input id="radio_bymonth" type="radio" name="timeType" value="0" onclick="searchByMonth();" />按月查询(不超过12月)</label>
@@ -94,13 +94,57 @@
 </div>    
 
 <div id="alarmTypeWindow" style="display:none">
-	<div id="alarmTypeListWin">
+	<div id="alarmTypeListWin" style="overflow:hidden">
 		<div><span id="undo" class="k-button" onclick="confirmAlarmType();">确定</span></div> 
-		 
+		<div style="overflow:auto;height:380px">
 			<table id="tbl_alarmType" >
-			</table>
-		 
-		<div><span id="undo" class="k-button" onclick="confirmAlarmType();">确定</span></div> 
+			</table> 
+		</div>
+    </div> 
+</div>
+<div id="timeSpanWindow" style="display:none">
+	<div id="timeSpanWin" style="overflow:hidden">
+		<div><span id="undo" class="k-button" onclick="confirmTimeSpan();">确定</span></div>  
+		<div style="overflow:auto;height:290px">
+			<table id="div_timaspan" style="width:100%;height:91%;border:1px solid white;">
+				<tr>
+					<td rowspan="7" style="width:250px;text-align:center"><img width="200px" src="<%=basePath%>images/images/xx.jpg" /></td> 　
+					<td></td> 
+					<td style="width:90px"><input id="radio_allday" type="radio" name="timeArea" value="1" onclick="selectTimeSpan();" />全天</td>
+					<td>00:00——23:59</td>  　
+				</tr> 
+				<tr> 
+					<td></td> 
+					<td style="width:90px"><input id="radio_birght" type="radio" name="timeArea" value="2" onclick="selectTimeSpan();" />白天</td>
+					<td>06:00——19:59</td> 
+  				</tr>
+				<tr> 
+					<td></td> 
+					<td style="width:90px"><input id="radio_night" type="radio" name="timeArea" value="3" onclick="selectTimeSpan();" />晚上</td>
+					<td>20:00——05:59</td> 
+  				</tr>
+				<tr> 
+					<td></td> 
+					<td style="width:90px"><input id="radio_morning" type="radio" name="timeArea" value="4" onclick="selectTimeSpan();" />凌晨</td>
+					<td>23:00——05:59</td> 
+  				</tr>
+				<tr> 
+					<td></td> 
+					<td style="width:90px"><input id="radio_heavyUp1" type="radio" name="timeArea" value="5" onclick="selectTimeSpan();" />早高峰</td>
+					<td>07:00——09:59</td> 
+  				</tr>
+				<tr> 
+					<td></td> 
+					<td style="width:90px"><input id="radio_heavyUp2" type="radio" name="timeArea" value="6" onclick="selectTimeSpan();" />完高峰</td>
+					<td>16:00——19:59</td> 
+  				</tr>
+				<tr> 
+					<td></td> 
+					<td style="width:90px"><input id="radio_default" type="radio" name="timeArea" value="7" onclick="selectTimeSpan();" />自定义</td>
+	  				<td></td>
+  				</tr>
+			</table> 
+		</div>
     </div> 
 </div>
 <script type="text/javascript">
@@ -137,6 +181,43 @@ $(function() {
 		$("#dpEDate").data("kendoDatePicker").enable(false);
 		searchAction(1);
 });
+
+function selectTimeSpan(){
+	var sObj = $("#div_timaspan input[name='timeArea']:checked");
+	var timet = sObj[0].value;
+	switch(timet)
+	{
+		case "1":
+			m_timeSpan_Start = "";
+			m_timeSpan_End = "";
+			break;
+		case "2":
+			m_timeSpan_Start = "";
+			m_timeSpan_End = "";
+			break;
+		case "3":
+			m_timeSpan_Start = "";
+			m_timeSpan_End = "";
+			break;
+		case "4":
+			m_timeSpan_Start = "";
+			m_timeSpan_End = "";
+			break;
+		case "5":
+			m_timeSpan_Start = "";
+			m_timeSpan_End = "";
+			break;
+		case "6":
+			m_timeSpan_Start = "";
+			m_timeSpan_End = "";
+			break;
+		case "7":
+			m_timeSpan_Start = "";
+			m_timeSpan_End = "";
+			break;
+	}
+	
+}
 function searchByMonth(){
 	var datepicker1 = $("#dpSDay").data("kendoDatePicker");
 	var datepicker2 = $("#dpEDay").data("kendoDatePicker");
@@ -146,16 +227,28 @@ function searchByMonth(){
 	var datepicker4 = $("#dpEDate").data("kendoDatePicker");
 	datepicker3.enable();
 	datepicker4.enable();
+	$("#dpSDay").data("kendoDatePicker").value("");
+	$("#dpEDay").data("kendoDatePicker").value("");
+	$("#dpSDate").data("kendoDatePicker").value("");
+	$("#dpEDate").data("kendoDatePicker").value("");
+	m_timeSpan_Start = "";
+	m_timeSpan_End = "";
 }
 function searchByDay(){
 	var datepicker1 = $("#dpSDay").data("kendoDatePicker");
 	var datepicker2 = $("#dpEDay").data("kendoDatePicker");
-	datepicker1.enable();
-	datepicker2.enable();
 	var datepicker3 = $("#dpSDate").data("kendoDatePicker");
 	var datepicker4 = $("#dpEDate").data("kendoDatePicker");
+	datepicker1.enable();
+	datepicker2.enable();
 	datepicker3.enable(false);
 	datepicker4.enable(false);
+	$("#dpSDay").data("kendoDatePicker").value("");
+	$("#dpEDay").data("kendoDatePicker").value("");
+	$("#dpSDate").data("kendoDatePicker").value("");
+	$("#dpEDate").data("kendoDatePicker").value("");
+	m_timeSpan_Start = "";
+	m_timeSpan_End = "";
 }
 function onDpDate(){
 	var dates = $("#dpSDate").data("kendoDatePicker").value();
@@ -167,17 +260,21 @@ function onDpDate(){
 		var monthe = datee.getMonth() + 1;
 		if(years == yeare){
 			if(monthe < months){
-				$("body").popjs({"title":"提示","content":"按月查询，起始月份不能大于截止月份"});  
+				$("body").popjs({"title":"提示","content":"按月查询，起始月份不能大于截止月份"}); 
+				$("#dpEDate").data("kendoDatePicker").value("");   
 			}else if(monthe == months){
 				$("body").popjs({"title":"提示","content":"按月查询，起止月份不能相等"});  
+				$("#dpEDate").data("kendoDatePicker").value("");  
 			}else{
 				m_byMonth = true;	
 			}
 		}else if(yeare < years){
-			$("body").popjs({"title":"提示","content":"按月查询，起始年份不能大于截止年份"});   
+			$("body").popjs({"title":"提示","content":"按月查询，起始年份不能大于截止年份"}); 
+			$("#dpEDate").data("kendoDatePicker").value("");    
 		}else{
 			if(((monthe+12)- months)>12){
-				$("body").popjs({"title":"提示","content":"按月查询，起止月份不能超过12个月"});  
+				$("body").popjs({"title":"提示","content":"按月查询，起止月份不能超过12个月"}); 
+				$("#dpEDate").data("kendoDatePicker").value("");  
 			}else{
 				m_byMonth = true;	
 			}
@@ -202,10 +299,12 @@ function onDpDay(){
 		var end = new Date(enddate);
 		if(start  > end){
 			$("body").popjs({"title":"提示","content":"按天查询，起始日期不能大于截止日期"});   
+			$("#dpEDay").data("kendoDatePicker").value(""); 
 		}else{
 			var iDay = parseInt(Math.abs(start - end) / 1000 / 60 / 60 / 24); //把相差的毫秒数转换为天数
 			if(iDay > 31){
-				$("body").popjs({"title":"提示","content":"按天查询，起止日期不能大于31天"});   
+				$("body").popjs({"title":"提示","content":"按天查询，起止日期不能大于31天"});  
+				$("#dpEDay").data("kendoDatePicker").value(""); 
 			}else{
 				m_byDay = true;
 			}
@@ -321,6 +420,24 @@ function onDpDay(){
 	 				}
 	 			});
 	 		}
+	 		
+	 		function addOtherTimeSpan(){ 
+				$("#dpSDay").data("kendoDatePicker").value("");
+				$("#dpEDay").data("kendoDatePicker").value("");
+				$("#dpSDate").data("kendoDatePicker").value("");
+				$("#dpEDate").data("kendoDatePicker").value("");
+	 			var win =$('#timeSpanWin');
+				win.kendoWindow({
+	                        width: "500px",
+	                        height:"350px",
+	                        title: "小时选择"
+	                    });
+				win.data("kendoWindow").open();
+	 		}
+	 		function confirmTimeSpan(){
+	 			var win= $("#timeSpanWin").data("kendoWindow");
+				win.close();
+	 		}
 	        function arrowZoom(){
     		//箭头点击收放效果
     			if(cf){
@@ -398,37 +515,44 @@ function onDpDay(){
 	       		 $.each(alrlel,function(index,s){
 	       		 	m_Query_pkg.alarmLevel.push(s.value);
 	       		 }); 
-	       		 var dateType = $('#div_dateType input:radio[name="timeType"]:checked').val()
-	       		 if(dateType == 0){
-	 				 //kendoDatePicker 
-	 				 if(m_byMonth){
-	 				 	var dates = $("#dpSDate").data("kendoDatePicker").value();
-						var datee = $("#dpEDate").data("kendoDatePicker").value();
-	 				 	m_Query_pkg.startDate = dates.getFullYear()+ "-" + ((dates.getMonth() + 1) > 10 ? (dates.getMonth() + 1) : "0" + (dates.getMonth() + 1))+ "-" + "01";
-	 				 	m_Query_pkg.endData = datee.getFullYear()+ "-" + ((datee.getMonth() + 1) > 10 ? (datee.getMonth() + 1) : "0" + (datee.getMonth() + 1))+ "-" + "01";
-	 				 }else{ 
-	 				 	m_Query_pkg.startDate = "";
-	 				 	m_Query_pkg.endData = "";
-	 				 }
-	 			 }else if(dateType == 1){
-	 			 	if(m_byDay){
-	 			 		var dates = $("#dpSDay").data("kendoDatePicker").value();
-						var datee = $("#dpEDay").data("kendoDatePicker").value();
-	 				 	m_Query_pkg.startDate = dates.getFullYear()+ "-" + ((dates.getMonth() + 1) > 10 ? (dates.getMonth() + 1) : "0" + (dates.getMonth() + 1))+ "-" + (dates.getDate() < 10 ?"0" + dates.getDate() : dates.getDate());
-	 				 	m_Query_pkg.endData = datee.getFullYear()+ "-" + ((datee.getMonth() + 1) > 10 ? (datee.getMonth() + 1) : "0" + (datee.getMonth() + 1))+ "-" + (datee.getDate() < 10 ?"0" + datee.getDate() : datee.getDate());
-	 				 }else{
-	 				 	m_Query_pkg.startDate = "";
-	 				 	m_Query_pkg.endData = "";
-	 				 }
-	       		 }else{
-	       		 	if(m_timeSpan_Start !=undefined&&m_timeSpan_Start!=""){
+	       		 if(m_timeSpan_Start !=undefined&&m_timeSpan_Start!=""){
 	       		 		m_Query_pkg.startDate = m_timeSpan_Start;
 	 				 	m_Query_pkg.endData = m_timeSpan_End;
-	       		 	}else{
-	       		 		m_Query_pkg.startDate = "";
-	 				 	m_Query_pkg.endData = "";
-	       		 	}
-	       		 }
+	       		 }else{
+	       			 var dateType = $('#div_dateType input:radio[name="timeType"]:checked').val()
+	       			 if(dateType == 0){
+	 					 //kendoDatePicker 
+	 					 if(m_byMonth){
+	 					 	var dates = $("#dpSDate").data("kendoDatePicker").value();
+							var datee = $("#dpEDate").data("kendoDatePicker").value();
+							if(dates!=null&&datee!=null){
+	 				 			m_Query_pkg.startDate = dates.getFullYear()+ "-" + ((dates.getMonth() + 1) > 10 ? (dates.getMonth() + 1) : "0" + (dates.getMonth() + 1))+ "-" + "01";
+	 				 			m_Query_pkg.endData = datee.getFullYear()+ "-" + ((datee.getMonth() + 1) > 10 ? (datee.getMonth() + 1) : "0" + (datee.getMonth() + 1))+ "-" + "01";
+	 				 		}else{ 
+	 				 			m_Query_pkg.startDate = "";
+	 				 			m_Query_pkg.endData = "";
+	 				 		}
+	 				 	}else{ 
+	 				 		m_Query_pkg.startDate = "";
+	 				 		m_Query_pkg.endData = "";
+	 					 }
+	 				 }else if(dateType == 1){
+	 			 		if(m_byDay){
+	 			 			var dates = $("#dpSDay").data("kendoDatePicker").value();
+							var datee = $("#dpEDay").data("kendoDatePicker").value();
+							if(dates!=null&&datee!=null){
+	 					 		m_Query_pkg.startDate = dates.getFullYear()+ "-" + ((dates.getMonth() + 1) > 10 ? (dates.getMonth() + 1) : "0" + (dates.getMonth() + 1))+ "-" + (dates.getDate() < 10 ?"0" + dates.getDate() : dates.getDate());
+	 					 		m_Query_pkg.endData = datee.getFullYear()+ "-" + ((datee.getMonth() + 1) > 10 ? (datee.getMonth() + 1) : "0" + (datee.getMonth() + 1))+ "-" + (datee.getDate() < 10 ?"0" + datee.getDate() : datee.getDate());
+	 					 	}else{ 
+	 					 		m_Query_pkg.startDate = "";
+	 					 		m_Query_pkg.endData = "";
+	 					 	}
+	 					 }else{
+	 					 	m_Query_pkg.startDate = "";
+	 					 	m_Query_pkg.endData = "";
+	 					 }
+	       			 } 
+	       		}
 	       		 
 	       }
 </script>
