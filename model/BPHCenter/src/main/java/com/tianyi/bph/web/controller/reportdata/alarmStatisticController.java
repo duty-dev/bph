@@ -74,7 +74,7 @@ public class alarmStatisticController {
 	@RequestMapping(value = "/getReportDataByQuery.do")
 	public @ResponseBody
 	ReturnResult getReportDataByQuery(
-			@RequestParam(value = "QueryString", required = false) String QueryString,
+			@RequestParam(value = "reportCondition", required = false) String reportCondition,
 			HttpServletRequest request) {
 		try {
 			 
