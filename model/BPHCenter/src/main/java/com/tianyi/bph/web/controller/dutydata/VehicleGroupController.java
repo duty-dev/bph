@@ -119,7 +119,7 @@ public class VehicleGroupController {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("pageStart", 0);
-		map.put("pageSize", 10);
+		map.put("pageSize", 10000);
 		map.put("groupId", groupId);
 
 		int total = vehicleGroupService.countMemberByGroupId(groupId);
