@@ -118,5 +118,6 @@ public interface VehicleService {
 	public Vehicle selectByPrimaryKey(Integer vehicleId);
 	public List<GpsBaseVM> selectGpsId(int orgId);
 	public List<VehicleVM> findByNumberAndId(Map<String, Object> map);
+	public List<VehicleVM> loadVMListWithGroupList(Map<String, Object> map);
 	
 }

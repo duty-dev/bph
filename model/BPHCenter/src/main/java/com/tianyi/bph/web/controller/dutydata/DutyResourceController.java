@@ -207,16 +207,8 @@ public class DutyResourceController {
 			map.put("orgCode", organ.getCode());
 			String typeId = joQuery.getString("typeId");
 			String groupId = joQuery.getString("groupId");
- 
-			if (groupId != null && !groupId.equals("")) {
-				String[] gs = {};
-				gs = groupId.split(",");
-				int[] gids = new int[gs.length];
-				for (int i = 0; i < gs.length; i++) {
-					gids[i] = Integer.parseInt(String.valueOf(gs[i]));
-				}
-				map.put("gids", gids);
-			}
+
+			map.put("number", number);
 			if (typeId != null && !typeId.equals("")) {
 				String[] s = {};
 				s = typeId.split(",");
@@ -226,9 +218,20 @@ public class DutyResourceController {
 				}
 				map.put("ids", ids);
 			} 
-			map.put("number", number);
 
-			list = vehicleService.loadVMListWithGroup(map);
+			if (groupId != null && !groupId.equals("")) {
+				String[] gs = {};
+				gs = groupId.split(",");
+				int[] gids = new int[gs.length];
+				for (int i = 0; i < gs.length; i++) {
+					gids[i] = Integer.parseInt(String.valueOf(gs[i]));
+				}
+				map.put("gids", gids);
+				list = vehicleService.loadVMListWithGroupList(map);
+			} else {
+				list = vehicleService.loadVMListWithGroup(map);
+			} 
+			//list = vehicleService.loadVMListWithGroup(map);
 			int total = list.size();
 			return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
 					MessageCode.SELECT_SUCCESS, total, list);

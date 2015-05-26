@@ -15,7 +15,7 @@
 		<tr>
 			<td >任务属性:</td>
 			<td colspan="3"><select id="dutyProperty"></select></td>
-			<td>衣着:<input id="ckAttireType1" type="checkbox"  value="0">着装　　　
+			<td>衣着:<input id="ckAttireType1" type="checkbox"  value="0">制服　　
 				<input id="ckAttireType2" type="checkbox"  value="1">便衣</td>
 			<td></td>
 		</tr>
