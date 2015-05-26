@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tianyi.bph.dao.report.CaseReportMapper" >
+	<select id="loadMaxYMD">
+		select IFNULL(MAX(ymd),0)  from t_case_report
+	</select>
+  	
+  	<select id="loadMaxDate">
+  		select max(cdate) from t_case_report
+  	</select>
+  	
+  	<insert  id="insertCaseInfo">
+  		insert into t_case_report
+  		(
+  			CODE,
+			cdate,
+			cyear,
+			cmonth,
+			cday,
+			chour,
+			ymd,
+			org_id,
+			state,
+			phone,
+			clevel,
+			type1,
+			type2,
+			type3,
+			content,
+			address,
+			operator
+		)
+		SELECT
+			bj.JJDBH,
+			bj.BJSJ,
+			YEAR (bj.BJSJ),
+			MONTH (bj.BJSJ),
+			DAY (bj.BJSJ),
+			HOUR (bj.bjsj),
+			DATE_FORMAT(bj.BJSJ, '%Y%m%d'),
+			org.ORGAN_ID,
+			bj.AJZT,
+			bj.LXDH,
+			bj.CASE_LEVEL,
+			bj.BJLB,
+			bj.BJLX,
+			bj.BJXL,
+			bj.BJNR,
+			bj.SFDZ,
+			bj.JJYXM
+		FROM
+			b_jjdb AS bj
+		LEFT JOIN t_organ AS org  ON bj.gxdwbh = org.CODE
+		WHERE
+			1=1
+			<if test="beginTime != null" >
+				and bj.bjsj &gt;=#{beginTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime != null" >
+				and bj.bjsj  &lt; #{endTime,jdbcType=TIMESTAMP}
+			</if>
+  	</insert>
+  	
+  	
+</mapper>
