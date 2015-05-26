@@ -72,6 +72,7 @@
     	</mvc:interceptor>
 	</mvc:interceptors>
 	
+	
 	<!-- 异常处理 -->
 	<bean class="com.tianyi.bph.rest.ExceptioinResolver" />
 

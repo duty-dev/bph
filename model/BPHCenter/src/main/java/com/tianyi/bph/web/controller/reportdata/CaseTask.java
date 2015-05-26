@@ -8,6 +8,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.tianyi.bph.service.report.CaseReportService;
+import com.tianyi.bph.service.system.LogService;
 
 
 /*
@@ -19,8 +20,12 @@ public class CaseTask {
 	@Autowired
 	private CaseReportService  caseReportService;
 	
-	@Scheduled(cron = "0 16 9 * * ?")  /*每天凌晨3:30执行数据导入*/
-	public  void run(){
+	@Autowired 
+	private LogService logService;
+	
+	@Scheduled(cron = "0 32 12 * * ?")  /*每天凌晨3:30执行数据导入*/
+	public  void run() {
+		try{
 		Date  maxDate=caseReportService.loadMaxDate();
 		
 		Date beginTime=null;
@@ -31,7 +36,7 @@ public class CaseTask {
 		}else{
 			Calendar  c=Calendar.getInstance();
 			c.setTime(maxDate);
-			c.set(Calendar.HOUR,0);
+			c.set(Calendar.HOUR_OF_DAY,0);
 			c.set(Calendar.MINUTE, 0);
 			c.set(Calendar.SECOND, 0);
 			c.set(Calendar.MILLISECOND, 0);
@@ -41,13 +46,15 @@ public class CaseTask {
 		
 		Calendar c2=Calendar.getInstance();
 		c2.setTime(new Date());
-		c2.set(Calendar.HOUR,0);
+		c2.set(Calendar.HOUR_OF_DAY,0);
 		c2.set(Calendar.MINUTE, 0);
 		c2.set(Calendar.SECOND, 0);
 		c2.set(Calendar.MILLISECOND, 0);
 		endTime = c2.getTime();
 		
 		caseReportService.insertCaseInfo(beginTime, endTime);
-		
+		}catch(Exception ex){
+			logService.insert("", "", "","导入数据时发生错误!", 0);
+		}
 	}
 }

@@ -5,7 +5,7 @@
 		select IFNULL(MAX(ymd),0)  from t_case_report
 	</select>
   	
-  	<select id="loadMaxDate">
+  	<select id="loadMaxDate"  resultType="java.util.Date">
   		select max(cdate) from t_case_report
   	</select>
   	
@@ -61,5 +61,13 @@
 			</if>
   	</insert>
   	
+  	<select id="loadCaseTypeReport"  parameterType="java.util.Map" >
+  		select 
+  			
+  		from 
+  			t_case_report
+  		where 
+  	
+  	</select>
   	
 </mapper>

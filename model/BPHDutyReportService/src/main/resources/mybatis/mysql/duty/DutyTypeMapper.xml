@@ -315,8 +315,8 @@
   </select>
   
     <select id="loadDutyItemCount"  parameterType="java.util.Map"  resultType="com.tianyi.bph.query.duty.DutyItemCountVM">
+    
   		select count(di.id) as orgName ,dit.name as itemTypeName
-  		
   		from t_duty_item di
   		
   		left join t_duty d on di.duty_id = d.id

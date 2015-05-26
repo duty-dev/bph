@@ -352,6 +352,7 @@
 	
 	<!-- 获取全部机构信息-->
 	<select id="findOrganByQuery" parameterType="com.tianyi.bph.query.system.OrganQuery" resultMap="BaseResultMap">
+		
 		SELECT  O.NAME,O.SHORT_NAME,O.ORGAN_ID,O.PARENT_ID,O.ORGAN_TYPE_ID,O.PATH,O.CODE,O.SHORT_NAME as text from t_organ O where 1=1
 		<if test="path !=null">
 			and O.PATH like  CONCAT(#{path,jdbcType=VARCHAR},'%')

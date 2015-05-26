@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.tianyi.bph.dao.report.CaseReportMapper;
 import com.tianyi.bph.service.report.CaseReportService;
@@ -13,7 +14,7 @@ import com.tianyi.bph.service.report.CaseReportService;
 @Service
 public class CaseReportServiceImpl implements  CaseReportService {
 
-	@Resource(name = "caseReportMapper")
+	@Autowired
 	private CaseReportMapper caseReportMapper;
 	
 	@Override
@@ -24,8 +25,13 @@ public class CaseReportServiceImpl implements  CaseReportService {
 
 	@Override
 	public Date loadMaxDate() {
-		Date maxDate=caseReportMapper.loadMaxDate();
-		return maxDate;
+		try{
+			Date maxDate=caseReportMapper.loadMaxDate();
+			return maxDate;
+		}catch(Exception ex){
+			return null;
+		}
+
 	}
 	
 	@Override

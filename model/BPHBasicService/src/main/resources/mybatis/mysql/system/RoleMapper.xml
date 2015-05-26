@@ -186,6 +186,7 @@
 	</sql>
 	
 	<select id="findByQuery" parameterType="com.tianyi.bph.query.system.RoleQuery"  resultMap="AllResultMap" >
+		
 		<include refid="find" />
 	</select>
 	
