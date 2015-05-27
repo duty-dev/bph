@@ -2,6 +2,7 @@ package com.tianyi.bph.service.impl.report;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -9,6 +10,7 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.tianyi.bph.dao.report.CaseReportMapper;
+import com.tianyi.bph.domain.report.CaseTypeAGGR;
 import com.tianyi.bph.service.report.CaseReportService;
 
 @Service
@@ -31,7 +33,6 @@ public class CaseReportServiceImpl implements  CaseReportService {
 		}catch(Exception ex){
 			return null;
 		}
-
 	}
 	
 	@Override
@@ -41,6 +42,12 @@ public class CaseReportServiceImpl implements  CaseReportService {
 		map.put("endTime", endTime);
 		
 		caseReportMapper.insertCaseInfo(map);
+	}
+
+	@Override
+	public List<CaseTypeAGGR> loadCaseTypeReport(Map<String, Object> map) {
+		List<CaseTypeAGGR> ls=caseReportMapper.loadCaseTypeReport(map);
+		return ls;
 	}
 
 

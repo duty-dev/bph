@@ -77,7 +77,9 @@ public class alarmStatisticController {
 			@RequestParam(value = "reportCondition", required = false) String reportCondition,
 			HttpServletRequest request) {
 		try {
-			 
+			
+			int x=100;
+			
 			return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
 					MessageCode.SELECT_SUCCESS, 0, null);
 

@@ -53,6 +53,7 @@
 		<property name="useTrailingSlashMatch" value="false" />
 	</bean>
 	
+	
 	<!-- 拦截器 -->
  	 <mvc:interceptors>
 	 	<mvc:interceptor>

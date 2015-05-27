@@ -321,6 +321,7 @@
 	    FROM T_USERS U 
 	    where U.POLICE_USER_ID = #{policeUserId,jdbcType=DECIMAL}
 	</select>
+	
 	<!-- 通过警员ID与用户ID判断数据是否存在  -->
 	<select id="getListForPoliceIdAndUserId" parameterType="com.tianyi.bph.query.system.UserQuery" resultType="Integer">
 		select count(*) from T_USERS U 

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import com.tianyi.bph.service.report.CaseReportService;
 import com.tianyi.bph.service.system.LogService;
 
-
 /*
  * 定时执行警情案件数据导入
  * 异步执行
@@ -57,4 +56,5 @@ public class CaseTask {
 			logService.insert("", "", "","导入数据时发生错误!", 0);
 		}
 	}
+	
 }
