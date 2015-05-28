@@ -5,8 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
-import org.mybatis.generator.api.MyBatisGenerator;
+import org.junit.Test; 
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.xml.ConfigurationParser;
 import org.mybatis.generator.exception.InvalidConfigurationException;
@@ -33,21 +32,6 @@ public class UnitTest {
         } catch (XMLParserException e) {
             e.printStackTrace();
         }
-        DefaultShellCallback callback = new DefaultShellCallback(overwrite);
-        MyBatisGenerator myBatisGenerator = null;
-        try {
-            myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
-        } catch (InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
-        try {
-            myBatisGenerator.generate(null);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+       
 	}
 }
