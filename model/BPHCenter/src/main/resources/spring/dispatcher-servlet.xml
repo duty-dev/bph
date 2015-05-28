@@ -53,6 +53,7 @@
 		<property name="useTrailingSlashMatch" value="false" />
 	</bean>
 	
+	
 	<!-- 拦截器 -->
  	 <mvc:interceptors>
 	 	<mvc:interceptor>
@@ -71,6 +72,7 @@
 	        <bean class="com.tianyi.bph.rest.PrivilegeInteceptor" />
     	</mvc:interceptor>
 	</mvc:interceptors>
+	
 	
 	<!-- 异常处理 -->
 	<bean class="com.tianyi.bph.rest.ExceptioinResolver" />

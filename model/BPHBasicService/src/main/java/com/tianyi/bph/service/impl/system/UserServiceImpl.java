@@ -193,6 +193,11 @@ public class UserServiceImpl implements UserService{
 		if (StringUtils.isEmpty(password)) {
 			return result.FAILUER("密码不能为空！");
 		}
+		
+		//User u=userDao.selectByPrimaryKey(10L);
+		
+		//long uid=u.getUserId();
+		
 		User user = userDao.getUserByName(username);
 		if (user == null) {
 			return ReturnResult.FAILUER("用户不存在！");

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tianyi.bph.dao.report.CaseReportMapper" >
+	<resultMap id="caseTypeAGGRMap" type="com.tianyi.bph.domain.report.CaseTypeAGGR">
+    	<result column="type_code" property="typeCode"   jdbcType="VARCHAR"/>
+    	<result column="type_name"  property="typeName" jdbcType="VARCHAR"/>
+    	<result column="type_level" property="typeLevel" jdbcType="INTEGER" />
+    	<result column="type_count" property="amount" jdbcType="INTEGER" />
+    </resultMap>
+
+	<select id="loadMaxYMD">
+		select IFNULL(MAX(ymd),0)  from t_case_report
+	</select>
+  	
+  	<select id="loadMaxDate"  resultType="java.util.Date">
+  		select max(cdate) from t_case_report
+  	</select>
+  	
+  	<insert  id="insertCaseInfo">
+  		insert into t_case_report
+  		(
+  			CODE,
+			cdate,
+			cyear,
+			cmonth,
+			cday,
+			chour,
+			ymd,
+			org_id,
+			org_code,
+			org_path,
+			org_full_path,
+			state,
+			phone,
+			clevel,
+			type1,
+			type2,
+			type3,
+			content,
+			address,
+			operator
+		)
+		SELECT
+			bj.JJDBH,
+			bj.BJSJ,
+			YEAR (bj.BJSJ),
+			MONTH (bj.BJSJ),
+			DAY (bj.BJSJ),
+			HOUR (bj.bjsj),
+			DATE_FORMAT(bj.BJSJ, '%Y%m%d'),
+			org.ORGAN_ID,
+			org.CODE,
+			org.PATH,
+			CONCAT(org.PATH,'/',org.CODE),
+			bj.AJZT,
+			bj.LXDH,
+			bj.CASE_LEVEL,
+			bj.BJLB,
+			bj.BJLX,
+			bj.BJXL,
+			bj.BJNR,
+			bj.SFDZ,
+			bj.JJYXM
+		FROM
+			b_jjdb AS bj
+		LEFT JOIN t_organ AS org  ON bj.gxdwbh = org.CODE
+		WHERE
+			1=1
+			<if test="beginTime != null" >
+				and bj.bjsj &gt;=#{beginTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime != null" >
+				and bj.bjsj  &lt; #{endTime,jdbcType=TIMESTAMP}
+			</if>
+  	</insert>
+  	
+  	<select id="loadCaseTypeReport"  parameterType="java.util.Map"  resultMap="caseTypeAGGRMap">
+		select 
+			t.type_code		as type_code,
+			bat.type_name 	as type_name,
+			t.type_level		as type_level,
+			t.type_count		as type_count
+		FROM(
+			select
+				type1 		as type_code,
+				1 				as type_level,
+				count(*) 	as type_count
+			from 
+				t_case_report
+			where 
+				org_full_path like CONCAT(#{orgFullPath,jdbcType=VARCHAR},'%') and 
+				clevel in 
+					<foreach item="item" index="index" collection="levels" open="(" separator="," close=")">  
+						#{item}
+					</foreach> AND
+				ymd  &gt;=#{beginYMD,jdbcType=INTEGER} and ymd &lt;=#{endYMD,jdbcType=INTEGER} and
+				chour  &gt;=#{beginHour,jdbcType=INTEGER} and chour &lt;=#{endHour,jdbcType=INTEGER}
+			group by 
+				type1
+			UNION 
+			select
+				type2 		as type_code,
+				2				as	type_level,
+				count(*) 	as type_count
+			from 
+				t_case_report
+			where
+				org_full_path like CONCAT(#{orgFullPath,jdbcType=VARCHAR},'%') and 
+				clevel in 
+					<foreach item="item" index="index" collection="levels" open="(" separator="," close=")">  
+						#{item}
+					</foreach> AND
+				ymd  &gt;=#{beginYMD,jdbcType=INTEGER} and ymd &lt;=#{endYMD,jdbcType=INTEGER} and
+				chour  &gt;=#{beginHour,jdbcType=INTEGER} and chour &lt;=#{endHour,jdbcType=INTEGER}
+			group by 
+				type2
+		)as t
+		left join b_alarm_type as bat on t.type_code=bat.TYPE_CODE
+		where 
+			t.type_code is not NULL
+  	</select>
+  	
+</mapper>

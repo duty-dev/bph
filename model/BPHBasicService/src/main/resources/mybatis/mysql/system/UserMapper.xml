@@ -34,6 +34,8 @@
     <result column="OSORT_NO" jdbcType="DECIMAL" property="sortNo" />
   </resultMap>
   
+  
+  
   <resultMap id="RoleResultMap" type="com.tianyi.bph.domain.system.Role">
     <id property="id" column="ROLE_ID" />
      <result  property="name" column="ROLE_NAME" />
@@ -78,7 +80,7 @@
     U.USER_ID, U.LOGIN_NAME, U.USER_NAME, U.PASSWORD, U.ORGAN_ID, U.CREATE_TIME, U.UPDATE_TIME, U.PRESET, U.STATE, 
     U.LOGIN_TIME, U.NOTE,U.POLICE_USER_ID
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey"  parameterType="java.lang.Long"  resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />,O.PATH AS PATH,O.NAME AS organName
     from T_USERS U
@@ -319,6 +321,7 @@
 	    FROM T_USERS U 
 	    where U.POLICE_USER_ID = #{policeUserId,jdbcType=DECIMAL}
 	</select>
+	
 	<!-- 通过警员ID与用户ID判断数据是否存在  -->
 	<select id="getListForPoliceIdAndUserId" parameterType="com.tianyi.bph.query.system.UserQuery" resultType="Integer">
 		select count(*) from T_USERS U 

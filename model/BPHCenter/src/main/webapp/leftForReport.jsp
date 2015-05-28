@@ -468,7 +468,7 @@ function onDpDay(){
 	        	switch(rType)
 	        	{
 	        		case 1:
-	        			urlStr = "<%=basePath%>alarmStatisticWeb/getReportDataByAlarmType.do";
+	        			urlStr = "<%=basePath%>caseReportWeb/loadCaseTypeReport.do";
 	        			break;
 	        		case 2:
 	        			urlStr = "<%=basePath%>alarmStatisticWeb/getReportDataByAlarmCircle.do";

@@ -38,6 +38,7 @@
   	
   	<!-- 通过父功能id获取下级功能id -->
   	<select id="findModuleByParentId" resultType="String">
+  	
 	  	select M.MODULE_ID
 	  	from t_module M where M.PARENT_ID in
 	  	<foreach collection="parentIds" index="index" item="item" open="(" separator="," close=")">  
