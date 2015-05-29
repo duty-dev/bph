@@ -7,11 +7,11 @@ public class WarningColor {
 
     private Integer warningId;
 
-    private Integer index;
+    private Integer level;
 
-    private BigDecimal ge;
+    private double ge;
 
-    private BigDecimal lt;
+    private double lt;
 
     private String defaultColor;
 
@@ -31,27 +31,29 @@ public class WarningColor {
         this.warningId = warningId;
     }
 
-    public Integer getIndex() {
-        return index;
-    }
 
-    public void setIndex(Integer index) {
-        this.index = index;
-    }
 
-    public BigDecimal getGe() {
+    public Integer getLevel() {
+		return level;
+	}
+
+	public void setLevel(Integer level) {
+		this.level = level;
+	}
+
+	public double getGe() {
         return ge;
     }
 
-    public void setGe(BigDecimal ge) {
+    public void setGe(double ge) {
         this.ge = ge;
     }
 
-    public BigDecimal getLt() {
+    public double getLt() {
         return lt;
     }
 
-    public void setLt(BigDecimal lt) {
+    public void setLt(double lt) {
         this.lt = lt;
     }
 

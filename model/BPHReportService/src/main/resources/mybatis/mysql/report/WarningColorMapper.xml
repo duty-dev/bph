@@ -4,13 +4,13 @@
   <resultMap id="BaseResultMap" type="com.tianyi.bph.domain.report.WarningColor" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="warning_id" property="warningId" jdbcType="INTEGER" />
-    <result column="index" property="index" jdbcType="INTEGER" />
+    <result column="level" property="level" jdbcType="INTEGER" />
     <result column="ge" property="ge" jdbcType="DECIMAL" />
     <result column="lt" property="lt" jdbcType="DECIMAL" />
     <result column="default_color" property="defaultColor" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, warning_id, index, ge, lt, default_color
+    id, warning_id, level, ge, lt, default_color
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -22,15 +22,15 @@
     delete from t_warning_color
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.tianyi.bph.domain.report.WarningColor" >
-    insert into t_warning_color (id, warning_id, index, 
+  <insert id="insert" parameterType="com.tianyi.bph.domain.report.WarningColor"  useGeneratedKeys="true" keyProperty="id">
+    insert into t_warning_color (id, warning_id, level, 
       ge, lt, default_color
       )
-    values (#{id,jdbcType=INTEGER}, #{warningId,jdbcType=INTEGER}, #{index,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{warningId,jdbcType=INTEGER}, #{level,jdbcType=INTEGER}, 
       #{ge,jdbcType=DECIMAL}, #{lt,jdbcType=DECIMAL}, #{defaultColor,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.tianyi.bph.domain.report.WarningColor" >
+  <insert id="insertSelective" parameterType="com.tianyi.bph.domain.report.WarningColor" useGeneratedKeys="true" keyProperty="id">
     insert into t_warning_color
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -39,8 +39,8 @@
       <if test="warningId != null" >
         warning_id,
       </if>
-      <if test="index != null" >
-        index,
+      <if test="level != null" >
+        level,
       </if>
       <if test="ge != null" >
         ge,
@@ -59,8 +59,8 @@
       <if test="warningId != null" >
         #{warningId,jdbcType=INTEGER},
       </if>
-      <if test="index != null" >
-        #{index,jdbcType=INTEGER},
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
       </if>
       <if test="ge != null" >
         #{ge,jdbcType=DECIMAL},
@@ -79,8 +79,8 @@
       <if test="warningId != null" >
         warning_id = #{warningId,jdbcType=INTEGER},
       </if>
-      <if test="index != null" >
-        index = #{index,jdbcType=INTEGER},
+      <if test="level != null" >
+        level = #{level,jdbcType=INTEGER},
       </if>
       <if test="ge != null" >
         ge = #{ge,jdbcType=DECIMAL},
@@ -97,7 +97,7 @@
   <update id="updateByPrimaryKey" parameterType="com.tianyi.bph.domain.report.WarningColor" >
     update t_warning_color
     set warning_id = #{warningId,jdbcType=INTEGER},
-      index = #{index,jdbcType=INTEGER},
+      level = #{level,jdbcType=INTEGER},
       ge = #{ge,jdbcType=DECIMAL},
       lt = #{lt,jdbcType=DECIMAL},
       default_color = #{defaultColor,jdbcType=VARCHAR}

@@ -20,13 +20,13 @@
     delete from t_warning_case_type
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.tianyi.bph.domain.report.WarningCaseType" >
+  <insert id="insert" parameterType="com.tianyi.bph.domain.report.WarningCaseType"  useGeneratedKeys="true" keyProperty="id">
     insert into t_warning_case_type (id, warning_id, case_type_code, 
       case_type_level)
     values (#{id,jdbcType=INTEGER}, #{warningId,jdbcType=INTEGER}, #{caseTypeCode,jdbcType=VARCHAR}, 
       #{caseTypeLevel,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.tianyi.bph.domain.report.WarningCaseType" >
+  <insert id="insertSelective" parameterType="com.tianyi.bph.domain.report.WarningCaseType"  useGeneratedKeys="true" keyProperty="id">
     insert into t_warning_case_type
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
