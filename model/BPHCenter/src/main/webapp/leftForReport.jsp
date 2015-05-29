@@ -13,7 +13,7 @@
         </div>
         <div class="pull-left box">
           <div>
-            <div class="title box"></div>
+            <div class="title box"  style="width:315px;"></div>
             <div class="hide" onclick="arrowZoom();"></div>
             <div class="clear"> 
             </div>
@@ -108,7 +108,7 @@
 		<div style="overflow:auto;height:290px">
 			<table id="div_timaspan" style="width:100%;height:91%;border:1px solid white;">
 				<tr>
-					<td rowspan="7" style="width:250px;text-align:center"><img width="200px" src="<%=basePath%>images/images/xx.jpg" /></td> 　
+					<td rowspan="6" style="width:250px;text-align:center"><img width="200px" src="<%=basePath%>images/images/xx.jpg" /></td> 　
 					<td></td> 
 					<td style="width:90px"><input id="radio_allday" type="radio" name="timeArea" value="1" onclick="selectTimeSpan();" />全天</td>
 					<td>00:00——23:59</td>  　
@@ -138,23 +138,15 @@
 					<td style="width:90px"><input id="radio_heavyUp2" type="radio" name="timeArea" value="6" onclick="selectTimeSpan();" />完高峰</td>
 					<td>16:00——19:59</td> 
   				</tr>
-				<tr> 
-					<td></td> 
-					<td style="width:90px"><input id="radio_default" type="radio" name="timeArea" value="7" onclick="selectTimeSpan();" />自定义</td>
-	  				<td></td>
-  				</tr>
 			</table> 
 		</div>
     </div> 
 </div>
 <script type="text/javascript">
 var m_organId = 1; 
-var alarmTypeArr = []; 
-var nowdata = new Date;
-var m_byMonth = false;
-var m_byDay = false;
-var m_timeSpan_Start ;//通过更多条件选择的时间区域开始时间
-var m_timeSpan_End ;//通过更多条件选择的时间区域结束时间
+var alarmParentTypeArr = []; 
+var alarmSubTypeArr = []; 
+var alarmTimeSpanArr=[{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23}]; 
 var m_Query_pkg={};
 $(function() {
 		$("#dpSDate").kendoDatePicker({ 
@@ -177,45 +169,36 @@ $(function() {
 		});		  
 		m_organId = $("#organId").val();
 		parentNodeClick(m_organId);
+		$("#div_alarmLevel input:checkbox").attr("checked","checked");  
 		$("#radio_byday").attr("checked","checked");  
 		$("#dpSDate").data("kendoDatePicker").enable(false);
 		$("#dpEDate").data("kendoDatePicker").enable(false);
 		searchAction(1);
 });
 
-function selectTimeSpan(){
+function selectTimeSpan(){ 
 	var sObj = $("#div_timaspan input[name='timeArea']:checked");
 	var timet = sObj[0].value;
 	switch(timet)
 	{
 		case "1":
-			m_timeSpan_Start = "";
-			m_timeSpan_End = "";
+			alarmTimeSpanArr=[{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23}];
 			break;
 		case "2":
-			m_timeSpan_Start = "";
-			m_timeSpan_End = "";
+			alarmTimeSpanArr=[{6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}];
 			break;
 		case "3":
-			m_timeSpan_Start = "";
-			m_timeSpan_End = "";
+			alarmTimeSpanArr=[{20,21,22,23,0,1,2,3,4,5,6}];
 			break;
 		case "4":
-			m_timeSpan_Start = "";
-			m_timeSpan_End = "";
+			alarmTimeSpanArr=[{23,0,1,2,3,4,5,6}];
 			break;
 		case "5":
-			m_timeSpan_Start = "";
-			m_timeSpan_End = "";
+			alarmTimeSpanArr=[{7,8,9,10}];
 			break;
 		case "6":
-			m_timeSpan_Start = "";
-			m_timeSpan_End = "";
-			break;
-		case "7":
-			m_timeSpan_Start = "";
-			m_timeSpan_End = "";
-			break;
+			alarmTimeSpanArr=[{16,17,18,19,20}];
+			break; 
 	}
 	
 }
@@ -231,9 +214,8 @@ function searchByMonth(){
 	$("#dpSDay").data("kendoDatePicker").value("");
 	$("#dpEDay").data("kendoDatePicker").value("");
 	$("#dpSDate").data("kendoDatePicker").value("");
-	$("#dpEDate").data("kendoDatePicker").value("");
-	m_timeSpan_Start = "";
-	m_timeSpan_End = "";
+	$("#dpEDate").data("kendoDatePicker").value(""); 
+	m_Query_pkg.periodType = 1;
 }
 function searchByDay(){
 	var datepicker1 = $("#dpSDay").data("kendoDatePicker");
@@ -247,9 +229,8 @@ function searchByDay(){
 	$("#dpSDay").data("kendoDatePicker").value("");
 	$("#dpEDay").data("kendoDatePicker").value("");
 	$("#dpSDate").data("kendoDatePicker").value("");
-	$("#dpEDate").data("kendoDatePicker").value("");
-	m_timeSpan_Start = "";
-	m_timeSpan_End = "";
+	$("#dpEDate").data("kendoDatePicker").value(""); 
+	m_Query_pkg.periodType = 2;
 }
 function onDpDate(){
 	var dates = $("#dpSDate").data("kendoDatePicker").value();
@@ -263,21 +244,29 @@ function onDpDate(){
 			if(monthe < months){
 				$("body").popjs({"title":"提示","content":"按月查询，起始月份不能大于截止月份"}); 
 				$("#dpEDate").data("kendoDatePicker").value("");   
+				return;
 			}else if(monthe == months){
 				$("body").popjs({"title":"提示","content":"按月查询，起止月份不能相等"});  
 				$("#dpEDate").data("kendoDatePicker").value("");  
-			}else{
-				m_byMonth = true;	
+				return;
+			}else{ 
+				m_Query_pkg.startDate = $("#dpSDate").data("kendoDatePicker").value();
+				m_Query_pkg.endDate = $("#dpEDate").data("kendoDatePicker").value();
+				m_Query_pkg.periodType = 1;
 			}
 		}else if(yeare < years){
 			$("body").popjs({"title":"提示","content":"按月查询，起始年份不能大于截止年份"}); 
 			$("#dpEDate").data("kendoDatePicker").value("");    
+			return;
 		}else{
 			if(((monthe+12)- months)>12){
 				$("body").popjs({"title":"提示","content":"按月查询，起止月份不能超过12个月"}); 
 				$("#dpEDate").data("kendoDatePicker").value("");  
-			}else{
-				m_byMonth = true;	
+				return;
+			}else{ 
+				m_Query_pkg.startDate = $("#dpSDate").data("kendoDatePicker").value();
+				m_Query_pkg.endDate = $("#dpEDate").data("kendoDatePicker").value();
+				m_Query_pkg.periodType = 1;
 			}
 		}
 	}
@@ -301,13 +290,17 @@ function onDpDay(){
 		if(start  > end){
 			$("body").popjs({"title":"提示","content":"按天查询，起始日期不能大于截止日期"});   
 			$("#dpEDay").data("kendoDatePicker").value(""); 
+			return;
 		}else{
 			var iDay = parseInt(Math.abs(start - end) / 1000 / 60 / 60 / 24); //把相差的毫秒数转换为天数
 			if(iDay > 31){
 				$("body").popjs({"title":"提示","content":"按天查询，起止日期不能大于31天"});  
 				$("#dpEDay").data("kendoDatePicker").value(""); 
+				return;
 			}else{
-				m_byDay = true;
+				m_Query_pkg.startDate = $("#dpSDay").data("kendoDatePicker").value();
+				m_Query_pkg.endDate = $("#dpEDay").data("kendoDatePicker").value();
+				m_Query_pkg.periodType = 2;
 			}
 		}
 	}
@@ -352,7 +345,9 @@ function onDpDay(){
 	 		}
 	 		
 	 		function loadData(orgId){
+	 			m_organId = orgId;
 	 			//alert("加载数据");
+	 			searchAction(1);
 	 		}
 	 		function addAlarmTypeList(){
 	 			$.ajax({
@@ -365,9 +360,9 @@ function onDpDay(){
 								
 								for(var j = 0; j< req.data.length; j++){
 									  html += "<tr><td style='width:100px'>";
-									  html += "<input type='checkbox' value='"+req.data[j].alarmType.typeCode+"' /><span id='sp_"+req.data[j].alarmType.typeCode+"'>"+ req.data[j].alarmType.typeName+ "</span></td><td><ul>";  
+									  html += "<input name='parentAlarmType' type='checkbox' value='"+req.data[j].alarmType.typeCode+"' /><span id='sp_"+req.data[j].alarmType.typeCode+"'>"+ req.data[j].alarmType.typeName+ "</span></td><td><ul>";  
 									  for(var m =0; m<req.data[j].alarmTypeList.length;m++){
-									  	html += "<li><input type='checkbox' value='"+req.data[j].alarmTypeList[m].typeCode+"' /><span id='sp_"+req.data[j].alarmTypeList[m].typeCode+"'>"+req.data[j].alarmTypeList[m].typeName+"</span></li>"; 
+									  	html += "<li><input name='subAlarmType' type='checkbox' value='"+req.data[j].alarmTypeList[m].typeCode+"' /><span id='sp_"+req.data[j].alarmTypeList[m].typeCode+"'>"+req.data[j].alarmTypeList[m].typeName+"</span></li>"; 
 									  } 
 									  html += "<ul></td></tr>";
 								} 
@@ -386,42 +381,78 @@ function onDpDay(){
 				win.data("kendoWindow").open();
 	 		}
 	 		function confirmAlarmType(){
-	 			var count = $("#tbl_alarmType input:checkbox:checked").length;
-	 			if(count > 0){
-	 				var typeHtml = "";
-	 				var alarmTypeObj = $("#tbl_alarmType input:checkbox:checked");
-	 				$.each(alarmTypeObj, function(index, tobj){
-	 					var tpId = tobj.value;
-	 					alarmTypeArr.push(tpId);
-	 					var tpName = $("#sp_"+tpId).html();
-	 					typeHtml += "<li id='li_"+tpId+"'>";
-	 					typeHtml += tpName + "<button type='button' class='ty-delete-btn' title='删除' onclick=deleteSelectNode('"+tpId+"')></button> ";
-	 					typeHtml += "</li>";
+	 			var parentcount = $("#tbl_alarmType input[name='parentAlarmType']:checkbox:checked").length;
+	 			var totalhtml = "";
+	 			if(parentcount > 0){
+	 				var parenttypeHtml = "";
+	 				var parentalarmTypeObj = $("#tbl_alarmType input[name='parentAlarmType']:checkbox:checked");
+	 				$.each(parentalarmTypeObj, function(index, pobj){
+	 					var tpcode = pobj.value;
+	 					alarmParentTypeArr.push(tpcode);
+	 					var tpName = $("#sp_"+tpcode).html();
+	 					parenttypeHtml += "<li id='li_"+tpcode+"'>";
+	 					parenttypeHtml += tpName + "<button type='button' class='ty-delete-btn' title='删除' onclick=deleteParentNode('"+tpcode+"')></button> ";
+	 					parenttypeHtml += "</li>";
 	 				}); 
-	 				$("#ul_alarmTypeList").empty();
-	 				$("#ul_alarmTypeList").html(typeHtml)
+	 				
+	 				totalhtml +=parenttypeHtml; 
+	 				
+	 			}else{ 
+	 				alarmParentTypeArr = [];  
+	 			}
+	 			
+	 			var subcount = $("#tbl_alarmType input[name='subAlarmType']:checkbox:checked").length;
+	 			if(subcount > 0){
+	 				var subtypeHtml = "";
+	 				var subalarmTypeObj = $("#tbl_alarmType input[name='subAlarmType']:checkbox:checked");
+	 				$.each(subalarmTypeObj, function(index, sobj){
+	 					var spcode = sobj.value;
+	 					alarmSubTypeArr.push(spcode);
+	 					var tpName = $("#sp_"+spcode).html();
+	 					subtypeHtml += "<li id='li_"+spcode+"'>";
+	 					subtypeHtml += tpName + "<button type='button' class='ty-delete-btn' title='删除' onclick=deleteSubNode('"+spcode+"')></button> ";
+	 					subtypeHtml += "</li>";
+	 				}); 
+	 				totalhtml += subtypeHtml
 	 				
 	 			}else{
 	 				
-	 				alarmTypeArr = [];
-	 				
-	 				$("#ul_alarmTypeList").empty();
-	 				$("#ul_alarmTypeList").html("<li>无相关警情类型</li>")
-	 			}
-	 			
+	 				alarmSubTypeArr = [];
+	 			} 
+ 				$("#ul_alarmTypeList").empty();
+ 				if(totalhtml.length>0){
+ 					$("#ul_alarmTypeList").html(totalhtml);
+ 				}else{ 
+ 					$("#ul_alarmTypeList").html("<li>无相关警情类型</li>")
+ 				}
 				var win= $("#alarmTypeListWin").data("kendoWindow");
 				win.close();
 	 		}
-	 		function deleteSelectNode(code){
+	 		function deleteParentNode(code){
 	 		
 	 			$("#li_"+code).hide();
-	 			$.each(alarmTypeArr,function(index,value){
+	 			$.each(alarmParentTypeArr,function(index,value){
 	 				if(code == value){
-	 					alarmTypeArr.splice(index,1);
+	 					alarmParentTypeArr.splice(index,1);
 	 				}
-	 			});
+	 			}); 
+	 			if(alarmParentTypeArr.length==0&&alarmSubTypeArr.length==0){
+	 				$("#ul_alarmTypeList").html("<li>无相关警情类型</li>")
+	 			}
 	 		}
+
+	 		function deleteSubNode(code){
 	 		
+	 			$("#li_"+code).hide();
+	 			$.each(alarmSubTypeArr,function(index,value){
+	 				if(code == value){
+	 					alarmSubTypeArr.splice(index,1);
+	 				}
+	 			}); 
+	 			if(alarmSubTypeArr.length==0&&alarmParentTypeArr.length==0){
+	 				$("#ul_alarmTypeList").html("<li>无相关警情类型</li>")
+	 			}
+	 		}
 	 		function addOtherTimeSpan(){ 
 				$("#dpSDay").data("kendoDatePicker").value("");
 				$("#dpEDay").data("kendoDatePicker").value("");
@@ -471,13 +502,13 @@ function onDpDay(){
 	        			urlStr = "<%=basePath%>caseReportWeb/loadCaseTypeReport.do";
 	        			break;
 	        		case 2:
-	        			urlStr = "<%=basePath%>alarmStatisticWeb/getReportDataByAlarmCircle.do";
+	        			urlStr = "<%=basePath%>caseReportWeb/loadCasePeriodReport.do";
 	        			break;
 	        		case 3:
-	        			urlStr = "<%=basePath%>alarmStatisticWeb/getReportDataByAlarmTimeSpan.do";
+	        			urlStr = "<%=basePath%>caseReportWeb/loadCaseHourReport.do";
 	        			break;
 	        		case 4:
-	        			urlStr = "<%=basePath%>alarmStatisticWeb/getReportDataByAlarmOrgan.do";
+	        			urlStr = "<%=basePath%>caseReportWeb/loadCaseOrgReport.do";
 	        			break;
 	        	}
 	        	return urlStr;
@@ -488,10 +519,10 @@ function onDpDay(){
 	         	$.ajax({
 						url : url,
 						type : "post",
-						data : {"reportCondition" : JSON.stringify(m_Query_pkg)},
+						data : {"query" : JSON.stringify(m_Query_pkg)},
 						dataType : "json",
 						success : function(req) { 
-							if(req.code==200){ 
+							if(req.code==200){  
 								if(repType == 1){
 									ReportManage.initAlarmTypeData(req.data);	
 								}else if(repType == 2){
@@ -509,51 +540,22 @@ function onDpDay(){
 	         }
 	        
 	       function packageQuery(){ 
-	       		 m_Query_pkg.organId = m_organId;
-	       		 m_Query_pkg.alarmType = alarmTypeArr;
+	       		 m_Query_pkg.organId = m_organId; 
+	       		 m_Query_pkg.alarmParentType = alarmParentTypeArr;
+	       		 m_Query_pkg.alarmSubType = alarmSubTypeArr;
+	       		 if(m_Query_pkg.alarmParentType.length==0&&m_Query_pkg.alarmSubType.length==0){
+	       			$("body").popjs({"title":"提示","content":"请选择警情类型，至少选取一个警情类别！"});
+	       			return;
+	       		 }
+	       		 m_Query_pkg.alarmTimeSpan = alarmTimeSpanArr;
 	       		 m_Query_pkg.alarmLevel = []
 	       		 var alrlel = $("#div_alarmLevel input:checkbox:checked");
 	       		 $.each(alrlel,function(index,s){
 	       		 	m_Query_pkg.alarmLevel.push(s.value);
-	       		 }); 
-	       		 if(m_timeSpan_Start !=undefined&&m_timeSpan_Start!=""){
-	       		 		m_Query_pkg.startDate = m_timeSpan_Start;
-	 				 	m_Query_pkg.endData = m_timeSpan_End;
-	       		 }else{
-	       			 var dateType = $('#div_dateType input:radio[name="timeType"]:checked').val()
-	       			 if(dateType == 0){
-	 					 //kendoDatePicker 
-	 					 if(m_byMonth){
-	 					 	var dates = $("#dpSDate").data("kendoDatePicker").value();
-							var datee = $("#dpEDate").data("kendoDatePicker").value();
-							if(dates!=null&&datee!=null){
-	 				 			m_Query_pkg.startDate = dates.getFullYear()+ "-" + ((dates.getMonth() + 1) > 10 ? (dates.getMonth() + 1) : "0" + (dates.getMonth() + 1))+ "-" + "01";
-	 				 			m_Query_pkg.endData = datee.getFullYear()+ "-" + ((datee.getMonth() + 1) > 10 ? (datee.getMonth() + 1) : "0" + (datee.getMonth() + 1))+ "-" + "01";
-	 				 		}else{ 
-	 				 			m_Query_pkg.startDate = "";
-	 				 			m_Query_pkg.endData = "";
-	 				 		}
-	 				 	}else{ 
-	 				 		m_Query_pkg.startDate = "";
-	 				 		m_Query_pkg.endData = "";
-	 					 }
-	 				 }else if(dateType == 1){
-	 			 		if(m_byDay){
-	 			 			var dates = $("#dpSDay").data("kendoDatePicker").value();
-							var datee = $("#dpEDay").data("kendoDatePicker").value();
-							if(dates!=null&&datee!=null){
-	 					 		m_Query_pkg.startDate = dates.getFullYear()+ "-" + ((dates.getMonth() + 1) > 10 ? (dates.getMonth() + 1) : "0" + (dates.getMonth() + 1))+ "-" + (dates.getDate() < 10 ?"0" + dates.getDate() : dates.getDate());
-	 					 		m_Query_pkg.endData = datee.getFullYear()+ "-" + ((datee.getMonth() + 1) > 10 ? (datee.getMonth() + 1) : "0" + (datee.getMonth() + 1))+ "-" + (datee.getDate() < 10 ?"0" + datee.getDate() : datee.getDate());
-	 					 	}else{ 
-	 					 		m_Query_pkg.startDate = "";
-	 					 		m_Query_pkg.endData = "";
-	 					 	}
-	 					 }else{
-	 					 	m_Query_pkg.startDate = "";
-	 					 	m_Query_pkg.endData = "";
-	 					 }
-	       			 } 
-	       		}
-	       		 
+	       		 });  
+	       		 if(m_Query_pkg.alarmLevel.length==0){
+	       			$("body").popjs({"title":"提示","content":"请选择警情级别，至少选取一个等级警情！"});
+	       			return;
+	       		 }
 	       }
 </script>

@@ -19,7 +19,7 @@ import com.tianyi.bph.service.alarm.AlarmDispatchService;
 
 @Controller
 @RequestMapping("/alarmStatisticWeb")
-public class alarmStatisticController {
+public class AlarmStatisticController {
 	// getAlarmTypeList
 
 	@Autowired
@@ -68,24 +68,5 @@ public class alarmStatisticController {
 			}
 		}
 		return atList;
-	}
-	
-	
-	@RequestMapping(value = "/getReportDataByQuery.do")
-	public @ResponseBody
-	ReturnResult getReportDataByQuery(
-			@RequestParam(value = "reportCondition", required = false) String reportCondition,
-			HttpServletRequest request) {
-		try {
-			
-			int x=100;
-			
-			return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
-					MessageCode.SELECT_SUCCESS, 0, null);
-
-		} catch (Exception ex) {
-			return ReturnResult.MESSAGE(MessageCode.STATUS_FAIL,
-					MessageCode.SELECT_ORGAN_FAIL, 0, null);
-		}
-	}
+	} 
 }
