@@ -52,6 +52,7 @@ public class CaseTask {
 		endTime = c2.getTime();
 		
 		caseReportService.insertCaseInfo(beginTime, endTime);
+		
 		}catch(Exception ex){
 			logService.insert("", "", "","导入数据时发生错误!", 0);
 		}

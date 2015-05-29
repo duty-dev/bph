@@ -48,10 +48,12 @@
 			cday,
 			chour,
 			ymd,
+			ym,
 			org_id,
 			org_code,
 			org_path,
 			org_full_path,
+			org_parent_id,
 			state,
 			phone,
 			clevel,
@@ -60,6 +62,7 @@
 			type3,
 			content,
 			address,
+			gps,
 			operator
 		)
 		SELECT
@@ -84,6 +87,7 @@
 			bj.BJXL,
 			bj.BJNR,
 			bj.SFDZ,
+			bj.GPS_CONFIG,
 			bj.JJYXM
 		FROM
 			b_jjdb AS bj
