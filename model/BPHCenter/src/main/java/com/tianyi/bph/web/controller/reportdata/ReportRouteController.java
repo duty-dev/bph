@@ -19,7 +19,7 @@ import com.tianyi.bph.service.system.OrganService;
 
 @Controller
 @RequestMapping("/reportRouteWeb")
-public class reportRouteController {
+public class ReportRouteController {
 	@Autowired
 	private OrganService organService;
 
@@ -43,7 +43,7 @@ public class reportRouteController {
 			organId = user.getOrgId();
 		}  
 		mv.addObject("organId", organId);   
-		mv.addObject("num", "300");
+		mv.addObject("num", "1000");
 		return mv;
 	}  
 
@@ -78,7 +78,7 @@ public class reportRouteController {
 		mv.addObject("organCode", organ.getCode()); 
 		mv.addObject("organPath", organ.getPath()); 
 		mv.addObject("subOrgList", subOrgList); 
-		mv.addObject("num", "300");
+		mv.addObject("num", "1000");
 		return mv;
 	}
 
@@ -114,7 +114,7 @@ public class reportRouteController {
 		mv.addObject("organCode", organ.getCode()); 
 		mv.addObject("organPath", organ.getPath()); 
 		mv.addObject("subOrgList", subOrgList); 
-		mv.addObject("num", "300");
+		mv.addObject("num", "1000");
 		return mv;
 	}
 }
