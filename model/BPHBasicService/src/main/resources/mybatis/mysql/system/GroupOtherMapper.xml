@@ -3,8 +3,8 @@
 <mapper namespace="com.tianyi.bph.dao.system.GroupOtherMapper" >
   <resultMap id="BaseResultMap" type="com.tianyi.bph.domain.system.GroupOther" >
     <result column="GROUP_ID" property="groupId" jdbcType="INTEGER" />
-    <result column="LIST_ID" property="listId" jdbcType="INTEGER" />
-    <result column="TYPE" property="groupType" jdbcType="INTEGER" />
+    <result column="LIST_ID" property="sourceId" jdbcType="INTEGER" />
+    <result column="TYPE" property="sourceType" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -83,7 +83,7 @@
   </select>
   <insert id="insert" parameterType="com.tianyi.bph.domain.system.GroupOther" >
     insert into r_group_other (GROUP_ID, LIST_ID,TYPE)
-    values (#{groupId,jdbcType=INTEGER}, #{listId,jdbcType=INTEGER},#{groupType,jdbcType=INTEGER})
+    values (#{groupId,jdbcType=INTEGER}, #{sourceId,jdbcType=INTEGER},#{sourceType,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.tianyi.bph.domain.system.GroupOther" >
     insert into r_group_other
@@ -100,7 +100,7 @@
         #{groupId,jdbcType=INTEGER},
       </if>
       <if test="listId != null" >
-        #{listId,jdbcType=INTEGER},
+        #{sourceId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -111,7 +111,7 @@
         GROUP_ID = #{record.groupId,jdbcType=INTEGER},
       </if>
       <if test="record.listId != null" >
-        LIST_ID = #{record.listId,jdbcType=INTEGER},
+        LIST_ID = #{record.sourceId,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -121,7 +121,7 @@
   <update id="updateByExample" parameterType="map" >
     update r_group_other
     set GROUP_ID = #{record.groupId,jdbcType=INTEGER},
-      LIST_ID = #{record.listId,jdbcType=INTEGER}
+      LIST_ID = #{record.sourceId,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -146,7 +146,7 @@
   	delete from r_group_other where 
   	GROUP_ID=#{groupId,jdbcType=DECIMAL}
   	AND 
-  	LIST_ID =#{listId,jdbcType=DECIMAL}
+  	LIST_ID =#{sourceId,jdbcType=DECIMAL}
   </delete>
   
 </mapper>

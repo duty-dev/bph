@@ -62,7 +62,7 @@ var GpsgroupManage = {
 				if(req.data != null){
 				var total =  req.totalRows;
 				var rows =req.data; 
-			 
+				$("#dtGpsGroup").empty();
 				$("#dtGpsGroup").kendoGrid({
 					dataSource:{data : rows }, 
 					columns : [ {

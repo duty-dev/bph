@@ -132,6 +132,12 @@ public class DutyServiceImpl implements DutyService {
 		vm.setCreateTime(new Date());
 
 		if (vm.getId() == 0) {
+			Duty duty = dutyMapper.getdutyIdByYmd(vm.getYmd());
+			if(duty!=null){
+				dutyItemsMapper.deleteByDutyId(duty.getId());
+				policeTargetMapper.deleteByDutyId(duty.getId());
+			}
+			dutyMapper.deleteByYMD(vm.getYmd());
 			dutyMapper.insert(vm);
 		} else {
 			dutyMapper.updateByPrimaryKey(vm);

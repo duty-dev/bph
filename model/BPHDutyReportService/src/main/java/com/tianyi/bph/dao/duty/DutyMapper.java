@@ -116,4 +116,6 @@ public interface DutyMapper {
 	 * @param param
 	 */
 	void deleteTempById(Integer param);
+
+	Duty getdutyIdByYmd(Integer targetYmd);
 }

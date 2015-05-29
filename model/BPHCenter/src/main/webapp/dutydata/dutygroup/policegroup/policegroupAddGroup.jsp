@@ -44,6 +44,7 @@ var m_policeGroup_Org = {
 					    check : PoliceGroupManage.onCheck,//check复选框
 					    dataSource: [eval('(' + json_data + ')')]
 					}).data("kendoTreeView");
+					
 				} else {
 					alert("提示, "+req.msg+"", "warning");
 				}
@@ -218,13 +219,13 @@ var m_policeGroup_Org = {
 					</ul>
 					</div>
 					<p style="float:left;width:250px;margin-top:10px;">
-						<span class="k-button"  onclick="PoliceGroupManage.savePoliceGroup()">保存</span>
+						<button class="ty-button"  onclick="PoliceGroupManage.savePoliceGroup()">确定</button>
 					</p>
 				
 			</div> 
 			
 							<div style="width:370px; float:left">
-								<div id="divOrg" style="height:320px; overflow:auto" >
+								<div id="divOrg" style="height:320px; overflow:auto" class="ty-tree-bg">
 									<ul id="treeOrg" style="overflow:auto"></ul>
 								</div>
 							</div> 

@@ -414,6 +414,7 @@ public class OrganServiceImpl implements OrganService{
 		}
 		return organList;
 	}
+	
 	@Override
 	public List<Organ> findOrganById(OrganQuery query) {
 		// TODO Auto-generated method stub

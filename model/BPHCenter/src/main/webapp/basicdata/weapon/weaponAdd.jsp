@@ -221,7 +221,7 @@ var WeaponAddManage= {
 					</ul>
 					<p class="ty-input-row">
 						<!--<span class="k-button"  onclick="WeaponAddManage.saveWeaponNotOut()">保存并继续</span>-->
-						<button class="ty-button"  onclick="WeaponAddManage.saveWeaponWithOut()">保存</button>
+						<button class="ty-button"  onclick="WeaponAddManage.saveWeaponWithOut()">确定</button>
 					</p>
 
 

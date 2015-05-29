@@ -40,7 +40,7 @@ background-color: #CAE1FF;
 }
     </style>
     <script  type="text/javascript" charset="utf-8"  src="<%=basePath %>supermap/libs/SuperMap.Include.js"></script>
-     <script  type="text/javascript" charset="utf-8"  src="<%=basePath %>supermap/libs/map.js"></script>
+     <script  type="text/javascript" charset="utf-8"  src="<%=basePath %>supermap/common/cricleMap.js"></script>
     <%-- <script  type="text/javascript" charset="utf-8"  src="<%=basePath %>supermap/libs/mapmodify.js"></script> --%>
      <%-- <script  type="text/javascript" charset="utf-8"  src="<%=basePath %>supermap/libs/mapofrightclick.js"></script> --%>
     <script type="text/javascript">
@@ -49,31 +49,38 @@ background-color: #CAE1FF;
     	initMap();
 	});
 	/**
-     * 跳转界面 
+     * 修改密码界面 跳转
      */
     function gotoDrawKpoint(){
-    	var organId = $.trim($("#organId").val());
+    	var circleId = $.trim($("#circleId").val());
     	var sessionId = $.trim($("#token").val());
-    	
+    	if(circleId == ""){
+    		alert("请先选择圈层！");
+    		return;
+    	}
     	$("#drawDialog").tyWindow({
-    		width: "660px",
-    		height: "590px",
+    		width: "480px",
+    		height: "480px",
     	    title: "图形属性设置",
     	    position: {
-    	        top: "100px"
+    	        top: "100px",
+    	        left:  document.body.clientWidth-480
     	      },
-    		content: "<%=path %>/map/gotoDrawKpoint.do?userId="+${User.userId}+"&random="+Math.random(),
+    		content: "<%=path %>/map/gotoDrawCircle.do?circleId="+circleId+"&random="+Math.random(),
     		iframe : true,
     		init:function(){
     			//alert($("#tyIframeContent").prop("id"));
     			//alert($("#tyIframeContent #centerPointX").val());
     		}
     		}); 
-    		
+    		acModifyFeature();
+    		// draw_polygon();
     	}
     </script>
-    
+    <input type="hidden"  id="circleId">
     <!--地图显示的div-->
+    <input type="button" value="绘面" onclick="draw_polygon()" style="width:50px; margin-bottom: 5px;">
+    <input type="button" value="绘制" onclick="gotoDrawKpoint()" style="width:80px; margin-bottom: 5px;"/>
     <div id="map" style="position:absolute;left:260px;right:0px;width: 82%;height:85%;">
 	 <div id ="myMenu">
 		<ul style="margin-top: 0px; margin-bottom: 0px;" >

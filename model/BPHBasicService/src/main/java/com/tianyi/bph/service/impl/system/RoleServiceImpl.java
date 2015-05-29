@@ -13,6 +13,8 @@ import com.tianyi.bph.dao.system.ModuleDAO;
 import com.tianyi.bph.dao.system.RoleDAO;
 import com.tianyi.bph.dao.system.RoleModuleFuctionDAO;
 import com.tianyi.bph.dao.system.UserRoleDAO;
+import com.tianyi.bph.domain.system.Module;
+import com.tianyi.bph.domain.system.ModuleJson;
 import com.tianyi.bph.domain.system.Role;
 import com.tianyi.bph.domain.system.RoleModuleFuctionKey;
 import com.tianyi.bph.domain.system.UserRoleKey;
@@ -222,6 +224,42 @@ public class RoleServiceImpl implements RoleService{
 	public List<String> getModuleIdsByRoleIds(String[] roleIds) {
 		// TODO Auto-generated method stub
 		return roleDao.getModuleIdsByRoleIds(roleIds);
+	}
+
+
+	@Override
+	public List<ModuleJson> getModuleList() {
+		List<ModuleJson> mjsonListAll=new ArrayList<ModuleJson>();
+		List<String> strList=new  ArrayList<String>();
+		strList.add(SystemConfig.SYSTEM_MANAGER);
+		strList.add(SystemConfig.BASE_MANAGER);
+		strList.add(SystemConfig.DUTY_MANAGER);
+		strList.add(SystemConfig.POLICE_MANAGER);
+		for (String string : strList) {
+			ModuleJson moduleJson=moduleDao.selectModuleJsonByPrimaryKey(Integer.parseInt(string));
+			List<ModuleJson> moduleList=moduleDao.findModuleList();
+			initializeModule(moduleJson,moduleList);
+			mjsonListAll.add(moduleJson);
+		}
+		return mjsonListAll;
+	}
+	
+	/**
+	 * 递归查询功能信息
+	 * @param parentOrgan
+	 * @param childOrgans
+	 * @param list
+	 */
+	public void initializeModule(ModuleJson parentModule, List<ModuleJson> childModules){
+		List<ModuleJson> children = new ArrayList<ModuleJson>();
+		for (ModuleJson child : childModules) {
+			if (child.getParentId() != null && 
+					child.getParentId().intValue()==Integer.parseInt(parentModule.getName())) {
+				children.add(child);
+				initializeModule(child, childModules);
+			}
+		}
+		parentModule.setChildren(children);
 	}
 
 }

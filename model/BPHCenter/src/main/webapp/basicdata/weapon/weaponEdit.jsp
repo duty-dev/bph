@@ -198,7 +198,7 @@ var WeaponEditManage= {
 							class="k-textbox" name="weaponStandard" id="weaponStandard" value="${weapon.standard }" /></li>
 					</ul>
 					<p class="ty-input-row">
-						<button class="ty-button"  onclick="WeaponEditManage.saveWeaponWithOut()">保存</buton>
+						<button class="ty-button"  onclick="WeaponEditManage.saveWeaponWithOut()">确定</buton>
 					</p>
 
 

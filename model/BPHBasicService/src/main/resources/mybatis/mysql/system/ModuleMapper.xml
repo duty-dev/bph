@@ -11,11 +11,28 @@
 	    <result column="MTYPE" jdbcType="VARCHAR" property="mtype" />
 	    <result column="OP_TYPE" jdbcType="VARCHAR" property="opType" />
 	    <result column="SORT_NO" jdbcType="VARCHAR" property="sortNo" />
+	    <result column="url" jdbcType="VARCHAR" property="url" />	
+	    <result column="moduleType" jdbcType="VARCHAR" property="moduleType" />
+	    <result column="moduleOpType" jdbcType="VARCHAR" property="moduleOpType" />
+	    <result column="assemblyName" jdbcType="VARCHAR" property="assemblyName" />
+	    <result column="typeName" jdbcType="VARCHAR" property="typeName" />
+	  </resultMap>
+	  
+	  <resultMap id="JsonBaseResultMap" type="com.tianyi.bph.domain.system.ModuleJson">
+	  	<id column="MODULE_ID" jdbcType="DECIMAL" property="name" />
+	  	<result column="NAME" jdbcType="VARCHAR" property="title" />
+	  	<result column="PARENT_ID" jdbcType="TIMESTAMP" property="parentId" />
+	  	<result column="url" jdbcType="VARCHAR" property="url" />	
+	    <result column="moduleType" jdbcType="VARCHAR" property="moduleType" />
+	    <result column="moduleOpType" jdbcType="VARCHAR" property="moduleOpType" />
+	    <result column="assemblyName" jdbcType="VARCHAR" property="assemblyName" />
+	    <result column="typeName" jdbcType="VARCHAR" property="typeName" />
 	  </resultMap>
 	  
 	 <sql id="Module_Column_List">
 	    M.MODULE_ID as MID, M.CODE as MCODE, M.NAME as MNAME, M.PARAM as MPARAM, M.PARENT_ID as MPARENT_ID, 
-	    M.MTYPE as MMTYPE, M.OP_TYPE as MOP_TYPE, M.SORT_NO as MSORT_NO
+	    M.MTYPE as MMTYPE, M.OP_TYPE as MOP_TYPE, M.SORT_NO as MSORT_NO,M.url as url,M.moduleType as moduleType,
+	    M.moduleOpType as moduleOpType,M.assemblyName as assemblyName,M.typeName as typeName
   	 </sql>
   	 
   	 
@@ -24,6 +41,23 @@
 	    M.*,M.NAME as text
 	    from t_module M
 	    where M.MODULE_ID = #{id,jdbcType=DECIMAL}
+   	</select>
+   
+   <select id="selectModuleJsonByPrimaryKey" parameterType="java.lang.Integer" resultMap="JsonBaseResultMap">
+   	 select 
+	   	M.MODULE_ID,M.NAME,M.url as url,M.moduleType as moduleType,
+	    M.moduleOpType as moduleOpType,M.assemblyName as assemblyName,M.typeName as typeName,
+	    M.PARENT_ID as parentId
+	    from t_module M
+	    where M.MODULE_ID = #{id,jdbcType=DECIMAL}
+   </select>
+   
+   <select id="findModuleList" resultMap="JsonBaseResultMap">
+   		select 
+		    M.NAME,M.MODULE_ID,M.url as url,M.moduleType as moduleType,
+		    M.moduleOpType as moduleOpType,M.assemblyName as assemblyName,M.typeName as typeName,
+		    M.PARENT_ID as parentId
+	  	from t_module M where 1=1 	  	
    </select>
   	 
   	
@@ -38,7 +72,6 @@
   	
   	<!-- 通过父功能id获取下级功能id -->
   	<select id="findModuleByParentId" resultType="String">
-  	
 	  	select M.MODULE_ID
 	  	from t_module M where M.PARENT_ID in
 	  	<foreach collection="parentIds" index="index" item="item" open="(" separator="," close=")">  

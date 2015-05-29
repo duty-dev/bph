@@ -418,7 +418,7 @@ var policeAddManage= {
 					</ul>
 					<p class="ty-input-row">
 						<!--<span id="undo" class="k-button" onclick="policeAddManage.savePoliceNotOut()">保存并继续</span>-->
-						<button id="undo" class="ty-button" onclick="policeAddManage.savePoliceWithOut()">保存</button>
+						<button id="undo" class="ty-button" onclick="policeAddManage.savePoliceWithOut()">确定</button>
 					</p>
 
 

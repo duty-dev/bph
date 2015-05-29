@@ -37,7 +37,7 @@ var DutyTaskManage ={
 <body> 
 	<div id="dutyTaskgrid" style="width:150%"></div>  
 	<p style="float:left;width:100%;margin-top:10px;"> 
-		<span id="undo" class="k-button" onclick="DutyTaskManage.saveDutyTask()">保存</span>
+		<button id="undo" class="ty-button" onclick="DutyTaskManage.saveDutyTask()">确定</button>
 	</p>  
 </body> 
 </html>

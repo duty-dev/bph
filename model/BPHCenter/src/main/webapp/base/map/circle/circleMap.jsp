@@ -11,7 +11,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
 <head>
 <title>扁平化指挥系统</title>
-<%@ include file="../../emulateIE.jsp" %>	
+<%@ include file="../../../emulateIE.jsp" %>	
 </head>
 
 <body>
@@ -30,7 +30,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
            
              <div class="row-fluid"><!----功能模块---->
                <div class="set">
-                 <h1>地图信息</h1>
+                 <h1>圈层信息</h1>
                  <div class="clear box">
                 
                  </div>
@@ -39,7 +39,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
            
              <div class="row-fluid"><!----信息显示区---->
           <%--      <%@ include file="mapInfoOfClound.jsp"%>  --%>
-          <%@include file="mapInfo.jsp" %>
+          <%@include file="circleInfo.jsp" %>
              </div><!----信息显示区结束---->
              <div class="clear"></div>
            </div>

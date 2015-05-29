@@ -131,7 +131,7 @@ function checkType(e){
 					<p style="font-size:10px;">请选择png格式图片进行上传，图标尺寸限制1Mb；</p>
 					<p id="retMsg" style="display:none">${requestScope.uploadError}</p> 
 					<p class="ty-input-row">  	
-					 <button id="submit" class="ty-button" onClick="iconFormSubmit();" >保存图标</button>  
+					 <button id="submit" class="ty-button" onClick="iconFormSubmit();" >确定</button>  
 					</p>
 				</div>
 				

@@ -5,7 +5,7 @@
            <div >#: name #</div>
 </script>
 
-<script id="policeSource-template" type="text/x-kendo-template">
+<script id="policeSource-template" type="text/x-kendo-template"> 
     <span> #: item.name #</span>
 	<span> (#: item.number #)</span>
 	<span> 　#: item.orgName #</span>
@@ -14,7 +14,7 @@
 
 <script id="vehicleSource-template" type="text/x-kendo-template">
     <span> #: item.number #</span>
-	<span> (#: item.typeName# )</span>
+	<span> (#: item.typeName#  #:item.brand#)</span>
 	<span> 　#: item.orgName #</span>
 	#item.itemTypeId=1#
 </script>
@@ -33,7 +33,7 @@
 	#item.itemTypeId=4#
 </script>
 
-<script id="dutyItem-template" type="text/x-kendo-template">
+<script id="dutyItem-template" type="text/x-kendo-template"> 
     <span> #: item.displayName     #</span>
 	<button type="button" class="ty-delete-btn" style="margin:0;"  onclick=DutyItemManage.onDeleteNode('#: item.uid #')></button>
 </script>

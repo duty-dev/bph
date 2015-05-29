@@ -69,7 +69,6 @@
                							editOrgan1(id);
                						});
                						
-               						$("#grid .k-grid-content").mCustomScrollbar( {scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
                						var pg = pagination(pageNo,total,'loadData',10);
                	                	$("#page").html(pg);
                					}

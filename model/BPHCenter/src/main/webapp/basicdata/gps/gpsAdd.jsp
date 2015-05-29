@@ -65,14 +65,14 @@ var sessionId = $("#token").val();
 				}
 		});
 		var rootPath = '<%=basePath%>';
-		$("#gpsIcons").kendoComboBox({ 
-			dataTextField : "name",
-			dataValueField : "id",
-			dataSource : gpsIconData,
-			template: '<span><img width="25px" height="25px" src="'+rootPath+'#: iconUrl #" />#: name #</span>',
-
-	        select: GpsAddManage.onSelectIcon  
-		}).prev().find(".k-input").attr("readonly",true);
+//		$("#gpsIcons").kendoComboBox({ 
+//			dataTextField : "name",
+//			dataValueField : "id",
+//			dataSource : gpsIconData,
+//			template: '<span><img width="25px" height="25px" src="'+rootPath+'#: iconUrl #" />#: name #</span>',
+//
+//	        select: GpsAddManage.onSelectIcon  
+//		}).prev().find(".k-input").attr("readonly",true);
 	});
 	
 	var gpsIconData="";
@@ -84,7 +84,7 @@ var sessionId = $("#token").val();
 				var dataItem = this.dataItem(e.item.index()); 
 				bph_gpsAdd_pkg.iconId = dataItem.id;
 				bph_gpsAdd_pkg.iconUrl = dataItem.iconUrl; 
-				$("#icon_thumb").attr("src","<%=basePath %>"+dataItem.iconUrl);
+				//$("#icon_thumb").attr("src","<%=basePath %>"+dataItem.iconUrl);
 			},
 			isComplete:false,
 			saveGpsWithOut:function(){ 
@@ -257,19 +257,19 @@ var sessionId = $("#token").val();
 									<li style="padding:5px;"><span class="ty-input-warn">*</span><label for="gpsNumber" class="fl mr5">GPS编号:</label><input
 										type="text" class="k-textbox" name="gpsNumber"  onblur="GpsAddManage.isExistNumber()" 
 										id="gpsNumber" /></li>
-									<li style="padding:5px;"><span class="ty-input-warn"></span><label for="gpsIcons" class="fl mr5">GPS图标:</label><input
-										id="gpsIcons" placeholder="请选择对应图标..."  /></li>
+									<!--<li style="padding:5px;"><span class="ty-input-warn"></span><label for="gpsIcons" class="fl mr5">GPS图标:</label><input
+										id="gpsIcons" placeholder="请选择对应图标..."  /></li>-->
 								</ul> 
 					 		</td>
 					 		<td>
-					 		<img id="icon_thumb" alt="" width="100px" height="100px" src="">
+					 		<!--<img id="icon_thumb" alt="" width="100px" height="100px" src="">-->
 					 		</td>
 					 	</tr>
 					 </table>
 					
 					<p class="ty-input-row">
 						<!--<span class="k-button"  onclick="GpsAddManage.saveGpsNotOut()">保存并继续</span>-->
-						<button class="ty-button"  onclick="GpsAddManage.saveGpsWithOut()">保存</button>
+						<button class="ty-button"  onclick="GpsAddManage.saveGpsWithOut()">确定</button>
 					</p>
 
 

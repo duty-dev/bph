@@ -61,6 +61,7 @@ var VehicleGroupManage = {
 								var rows = req.data;
 								 
 					var total =  req.totalRows;
+					$("#dtVehicleGroup").empty();
 								$("#dtVehicleGroup")
 										.kendoGrid(
 												{

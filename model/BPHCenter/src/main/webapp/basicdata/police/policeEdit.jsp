@@ -390,7 +390,7 @@ isExistIdCard:function(){
 							</li>
 					</ul>
 					<p class="ty-input-row">
-						<button class="ty-button" onclick="policeEditManage.savePoliceWithOut()">保存</button>
+						<button class="ty-button" onclick="policeEditManage.savePoliceWithOut()">确定</button>
 					</p>
 
 

@@ -27,6 +27,7 @@ import com.tianyi.bph.common.Pager;
 import com.tianyi.bph.common.ReturnResult;
 import com.tianyi.bph.common.SystemConfig;
 import com.tianyi.bph.common.ehcache.CacheUtils;
+import com.tianyi.bph.domain.system.ModuleJson;
 import com.tianyi.bph.domain.system.User;
 import com.tianyi.bph.query.system.OrganQuery;
 import com.tianyi.bph.query.system.UserQuery;
@@ -36,6 +37,7 @@ import com.tianyi.bph.rest.PrivilegeCache.PrivilegeUser;
 import com.tianyi.bph.service.ServiceSetService;
 import com.tianyi.bph.service.system.LogService;
 import com.tianyi.bph.service.system.OrganService;
+import com.tianyi.bph.service.system.RoleService;
 import com.tianyi.bph.service.system.UserAddModuleService;
 import com.tianyi.bph.service.system.UserRoleService;
 import com.tianyi.bph.service.system.UserService;
@@ -62,6 +64,8 @@ public class UserAction {
 	@Autowired OrganService organService;
 	
 	@Autowired LogService logService;
+	
+	@Autowired private RoleService roleService;
 	
 	private CacheManager manager;
 	
@@ -92,6 +96,9 @@ public class UserAction {
 			 */
 			List<String> funListStr=userRoleService.getFunctionsByUserId(user.getUserId());
 			user.setFunctionList(funListStr);
+			
+			//List<ModuleJson> moduleList=roleService.getModuleList();
+			//user.setModules(moduleList);
 			/**
 			 * 服务配置信息
 			 */

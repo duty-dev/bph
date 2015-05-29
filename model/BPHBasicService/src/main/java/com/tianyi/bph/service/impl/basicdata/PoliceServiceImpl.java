@@ -566,8 +566,8 @@ public class PoliceServiceImpl implements PoliceService {
 		p.setMobileShort(result.getPoliceMobileShort());
 		p.setName(result.getPoliceName());
 		p.setNumber(result.getPoliceNumber());
-		p.setOrgId(result.getOrgId());
-
+		p.setOrgId(result.getPoliceOrgId());
+		p.setTypeId(result.getPoliceTypeId());
 		return p;
 	}
 

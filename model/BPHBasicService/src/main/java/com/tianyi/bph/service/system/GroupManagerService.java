@@ -16,7 +16,7 @@ import com.tianyi.bph.query.system.GroupManagerExample;
 * @version V1.0
  */
 public interface GroupManagerService {
-	int deleteByPrimaryKey(Integer groupId);
+	int deleteByPrimaryKey(Integer groupId,Integer groupType);
 
     int insert(GroupManager record);
 

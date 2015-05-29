@@ -176,6 +176,7 @@ public class CardPointServiceImpl implements CardPointService {
 	 */
 	@Override
 	@Transactional(readOnly = false)
+	@MQDataInterceptor(type = Constants.MQ_TYPE_CARDPOINT, operate = Constants.MQ_OPERATE_ADD)
 	public TCardPoint insertCardPoint(TCardPoint cardPoint) {
 		TCardPointExample example = new TCardPointExample();
 		example.createCriteria().andNameEqualTo(cardPoint.getName());
@@ -221,6 +222,7 @@ public class CardPointServiceImpl implements CardPointService {
 
 	@Override
 	@Transactional(readOnly = false)
+	@MQDataInterceptor(type = Constants.MQ_TYPE_CARDPOINT, operate = Constants.MQ_OPERATE_DELETE)
 	public int deleteCardPointById(Integer id) {
 		mapper.deleteCardPointCamera(id);
 		mapper.deleteCardPointUser(id);
@@ -235,6 +237,7 @@ public class CardPointServiceImpl implements CardPointService {
 
 	@Override
 	@Transactional(readOnly = false)
+	@MQDataInterceptor(type = Constants.MQ_TYPE_CARDPOINT, operate = Constants.MQ_OPERATE_UPDATE)
 	public TCardPoint updateCardPoint(TCardPoint cardPoint) {
 		mapper.deleteCardPointUser(cardPoint.getId());
 		mapper.deleteCardPointCamera(cardPoint.getId());
