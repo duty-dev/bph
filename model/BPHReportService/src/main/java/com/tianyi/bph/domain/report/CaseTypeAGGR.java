@@ -10,19 +10,28 @@ public class CaseTypeAGGR {
 	String typeName;
 	Integer typeLevel;
 	Integer  amount;
+	String typeParentCode;
 	
+	public String getTypeParentCode() {
+		return typeParentCode;
+	}
+	public void setTypeParentCode(String typeParentCode) {
+		this.typeParentCode = typeParentCode;
+	}
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+	public String getTypeName() {
+		return typeName;
+	}
+
 	public String getTypeCode() {
 		return typeCode;
 	}
 	public void setTypeCode(String typeCode) {
 		this.typeCode = typeCode;
 	}
-	public String getTypeName() {
-		return typeName;
-	}
-	public void setType1Name(String typeName) {
-		this.typeName = typeName;
-	}
+
 	public Integer getTypeLevel() {
 		return typeLevel;
 	}
