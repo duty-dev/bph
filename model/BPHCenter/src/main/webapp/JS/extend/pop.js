@@ -46,9 +46,13 @@
 			var sclT=$(window).scrollTop();
 			var layerW=$("#pop").width();
 			var layerH=$("#pop").height();
+			if(winW==0 && winH==0){
+				var f = window.parent.document.getElementById("tyIframeContent");
+				winW = $(f).width();
+				winH = $(f).height();
+			}
 			var left=sclL+(winW-layerW)/2;
 			var top=sclT+(winH-layerH)/2;
-			
 			$("#pop").css({"display":"block","position":"absolute","top":top,"left":left});
 			$("#popOk").focus().keydown(function(event) {  
 		        if (event.keyCode == 32) {  
