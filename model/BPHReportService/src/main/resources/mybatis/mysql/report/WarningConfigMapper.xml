@@ -96,7 +96,7 @@
   <resultMap id="ColorMap"  type="com.tianyi.bph.domain.report.WarningColor" >
     <id column="color_id" property="id" jdbcType="INTEGER" />
     <result column="warning_id" property="warningId" jdbcType="INTEGER" />
-    <result column="index" property="index" jdbcType="INTEGER" />
+    <result column="level" property="level" jdbcType="INTEGER" />
     <result column="ge" property="ge" jdbcType="DECIMAL" />
     <result column="lt" property="lt" jdbcType="DECIMAL" />
     <result column="default_color" property="defaultColor" jdbcType="VARCHAR" />
@@ -118,7 +118,7 @@
   		cfg.org_id					as org_id,
   		cfg.share					as share,
   		color.id						as color_id,
-  		color.index				as index,
+  		color.level					as level,
   		color.ge					as ge,
   		color.lt						as lt,
   		color.default_color 	as default_color,

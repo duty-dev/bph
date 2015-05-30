@@ -18,7 +18,7 @@ import com.tianyi.bph.service.BaseTest;
 public class UnitTest {
 	@Test
 	public  void main()  {
-        genCfg();
+        //genCfg();
     }
 	
 	public void genCfg(){
