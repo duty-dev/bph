@@ -42,7 +42,10 @@ public class ReportRouteController {
 		if (organId == null) {
 			organId = user.getOrgId();
 		}  
+		Organ organ = new Organ();
+		organ = organService.getOrganByPrimaryKey(organId);
 		mv.addObject("organId", organId);   
+		mv.addObject("organName", organ.getShortName());   
 		mv.addObject("num", "1000");
 		return mv;
 	}  

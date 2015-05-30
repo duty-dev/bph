@@ -14,7 +14,7 @@
         <div class="pull-left box">
           <div>
             <div class="title box"  style="width:315px;"></div>
-            <div class="hide" onclick="arrowZoom();"></div>
+            <div class="hide" onclick="arrowZoom();"></div> 
             <div class="clear"> 
             </div>
           </div>
@@ -146,9 +146,15 @@
 var m_organId = 1; 
 var alarmParentTypeArr = []; 
 var alarmSubTypeArr = []; 
-var alarmTimeSpanArr=[{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23}]; 
+var alarmTypeNameArr = [];
+var alarmPeriodXLabel = []; 
+var alarmOrganXLabel = [];
+var alarmTimeSpanArr=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
+var m_isFirst_load = true; 
 var m_Query_pkg={};
+var m_orgName ;
 $(function() {
+	    m_orgName = $("#organName").val(); 
 		$("#dpSDate").kendoDatePicker({ 
              start: "year", 
              depth: "year", 
@@ -172,8 +178,8 @@ $(function() {
 		$("#div_alarmLevel input:checkbox").attr("checked","checked");  
 		$("#radio_byday").attr("checked","checked");  
 		$("#dpSDate").data("kendoDatePicker").enable(false);
-		$("#dpEDate").data("kendoDatePicker").enable(false);
-		searchAction(1);
+		$("#dpEDate").data("kendoDatePicker").enable(false); 
+	 	searchAction(1);
 });
 
 function selectTimeSpan(){ 
@@ -182,22 +188,22 @@ function selectTimeSpan(){
 	switch(timet)
 	{
 		case "1":
-			alarmTimeSpanArr=[{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23}];
+			alarmTimeSpanArr=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
 			break;
 		case "2":
-			alarmTimeSpanArr=[{6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}];
+			alarmTimeSpanArr=[6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
 			break;
 		case "3":
-			alarmTimeSpanArr=[{20,21,22,23,0,1,2,3,4,5,6}];
+			alarmTimeSpanArr=[20,21,22,23,0,1,2,3,4,5,6];
 			break;
 		case "4":
-			alarmTimeSpanArr=[{23,0,1,2,3,4,5,6}];
+			alarmTimeSpanArr=[23,0,1,2,3,4,5,6];
 			break;
 		case "5":
-			alarmTimeSpanArr=[{7,8,9,10}];
+			alarmTimeSpanArr=[7,8,9,10];
 			break;
 		case "6":
-			alarmTimeSpanArr=[{16,17,18,19,20}];
+			alarmTimeSpanArr=[16,17,18,19,20];
 			break; 
 	}
 	
@@ -250,8 +256,12 @@ function onDpDate(){
 				$("#dpEDate").data("kendoDatePicker").value("");  
 				return;
 			}else{ 
-				m_Query_pkg.startDate = $("#dpSDate").data("kendoDatePicker").value();
-				m_Query_pkg.endDate = $("#dpEDate").data("kendoDatePicker").value();
+				alarmPeriodXLabel = [];
+				for(var m = months; m<monthe+1; m++){
+					alarmPeriodXLabel.push(m);
+				} 
+				m_Query_pkg.startDate =  years + "-" + months + "-" + "01";
+				m_Query_pkg.endDate = yeare + "-" + monthe + "-" + "01";
 				m_Query_pkg.periodType = 1;
 			}
 		}else if(yeare < years){
@@ -264,8 +274,15 @@ function onDpDate(){
 				$("#dpEDate").data("kendoDatePicker").value("");  
 				return;
 			}else{ 
-				m_Query_pkg.startDate = $("#dpSDate").data("kendoDatePicker").value();
-				m_Query_pkg.endDate = $("#dpEDate").data("kendoDatePicker").value();
+				alarmPeriodXLabel = [];
+				for(var m = months; m<monthe+1; m++){
+					alarmPeriodXLabel.push(m);
+				} 
+				for(var n = 1; n<monthe+1; n++){
+					alarmPeriodXLabel.push(n);
+				} 
+				m_Query_pkg.startDate =  years + "-" + months + "-" + "01";
+				m_Query_pkg.endDate = yeare + "-" + monthe + "-" + "01";
 				m_Query_pkg.periodType = 1;
 			}
 		}
@@ -297,9 +314,39 @@ function onDpDay(){
 				$("body").popjs({"title":"提示","content":"按天查询，起止日期不能大于31天"});  
 				$("#dpEDay").data("kendoDatePicker").value(""); 
 				return;
-			}else{
-				m_Query_pkg.startDate = $("#dpSDay").data("kendoDatePicker").value();
-				m_Query_pkg.endDate = $("#dpEDay").data("kendoDatePicker").value();
+			}else{ 
+				alarmPeriodXLabel = [];
+				if(months < monthe){
+					if(months==2){
+						if(((years%4)==0)&&((years%100)!=0)||((years%400)==0)){ 
+							for(var d = days; d<30; d++){
+								alarmPeriodXLabel.push(d);
+							} 
+						}else{
+							for(var d = days; d<29; d++){
+								alarmPeriodXLabel.push(d);
+							} 
+						}
+					}else if(months==4||months==6||months==9||months==11){
+						for(var d = days; d<31; d++){
+								alarmPeriodXLabel.push(d);
+							} 
+					}else{
+						for(var d = days; d<32; d++){
+								alarmPeriodXLabel.push(d);
+							} 
+					}
+						
+					for(var n = 1; n<daye+1; n++){
+						alarmPeriodXLabel.push(n);
+					} 
+				}else{
+					for(var n = days; n<daye+1; n++){
+						alarmPeriodXLabel.push(n);
+					} 
+				}
+				m_Query_pkg.startDate = years + "-" + months + "-" + days;
+				m_Query_pkg.endDate = yeare + "-" + monthe + "-" + daye;
 				m_Query_pkg.periodType = 2;
 			}
 		}
@@ -325,18 +372,17 @@ function onDpDay(){
 								
 								if(req.data.length>0){
 									for(var i = 0;  i<req.data.length;i++ ){
-										subListHtml += "<a style='margin-left:30px;float:left'";
+										subListHtml += "<a name='a_orgName' style='margin-left:30px;float:left'";
 										if(req.data[i].hasChild){
 											subListHtml += " onclick='parentNodeClick("+req.data[i].id+")'";
 										}else{
-											subListHtml += " onclick='loadData("+req.data[i].id+")'";
+											subListHtml += " onclick='loadData("+req.data[i].id+",'"+req.data[i].shortName+"')'";
 										}
-										subListHtml += ">"+req.data[i].shortName+"</a>"
+										subListHtml += ">"+req.data[i].shortName+"</a>";
 									}
 								}  
 								$("#div_suborgList").empty();
-								$("#div_suborgList").append(subListHtml);
-								loadData(parentId);
+								$("#div_suborgList").append(subListHtml); 
 							}else{
 								$("body").popjs({"title":"提示","content":"获取组织机构数据出错"}); 
 							}			
@@ -344,8 +390,9 @@ function onDpDay(){
 				});
 	 		}
 	 		
-	 		function loadData(orgId){
+	 		function loadData(orgId,orgName){
 	 			m_organId = orgId;
+	 			m_orgName = orgName;
 	 			//alert("加载数据");
 	 			searchAction(1);
 	 		}
@@ -360,9 +407,9 @@ function onDpDay(){
 								
 								for(var j = 0; j< req.data.length; j++){
 									  html += "<tr><td style='width:100px'>";
-									  html += "<input name='parentAlarmType' type='checkbox' value='"+req.data[j].alarmType.typeCode+"' /><span id='sp_"+req.data[j].alarmType.typeCode+"'>"+ req.data[j].alarmType.typeName+ "</span></td><td><ul>";  
+									  html += "<input id='ipt_"+req.data[j].alarmType.typeCode+"' name='parentAlarmType' type='checkbox' value='"+req.data[j].alarmType.typeCode+"' /><span id='sp_"+req.data[j].alarmType.typeCode+"'>"+ req.data[j].alarmType.typeName+ "</span></td><td><ul>";  
 									  for(var m =0; m<req.data[j].alarmTypeList.length;m++){
-									  	html += "<li><input name='subAlarmType' type='checkbox' value='"+req.data[j].alarmTypeList[m].typeCode+"' /><span id='sp_"+req.data[j].alarmTypeList[m].typeCode+"'>"+req.data[j].alarmTypeList[m].typeName+"</span></li>"; 
+									  	html += "<li><input  id='ipt_"+req.data[j].alarmTypeList[m].typeCode+"'  name='subAlarmType' type='checkbox' value='"+req.data[j].alarmTypeList[m].typeCode+"' /><span id='sp_"+req.data[j].alarmTypeList[m].typeCode+"'>"+req.data[j].alarmTypeList[m].typeName+"</span></li>"; 
 									  } 
 									  html += "<ul></td></tr>";
 								} 
@@ -372,6 +419,13 @@ function onDpDay(){
 					}
 				});
 	 		
+	 			for(var i = 0; i<alarmParentTypeArr.length;i++){
+	 				$("#ipt_"+alarmParentTypeArr[i]).attr("checked","checked"); 
+	 			}
+	 		
+	 			for(var i = 0; i<alarmSubTypeArr.length;i++){
+	 				$("#ipt_"+alarmSubTypeArr[i]).attr("checked","checked"); 
+	 			}
 	 			var win =$('#alarmTypeListWin');
 				win.kendoWindow({
 	                        width: "900px",
@@ -381,6 +435,7 @@ function onDpDay(){
 				win.data("kendoWindow").open();
 	 		}
 	 		function confirmAlarmType(){
+	 			alarmTypeNameArr.length = 0;
 	 			var parentcount = $("#tbl_alarmType input[name='parentAlarmType']:checkbox:checked").length;
 	 			var totalhtml = "";
 	 			if(parentcount > 0){
@@ -388,7 +443,9 @@ function onDpDay(){
 	 				var parentalarmTypeObj = $("#tbl_alarmType input[name='parentAlarmType']:checkbox:checked");
 	 				$.each(parentalarmTypeObj, function(index, pobj){
 	 					var tpcode = pobj.value;
+	 					var tpName = pobj.parentElement.innerText;
 	 					alarmParentTypeArr.push(tpcode);
+	 					alarmTypeNameArr.push(tpName);
 	 					var tpName = $("#sp_"+tpcode).html();
 	 					parenttypeHtml += "<li id='li_"+tpcode+"'>";
 	 					parenttypeHtml += tpName + "<button type='button' class='ty-delete-btn' title='删除' onclick=deleteParentNode('"+tpcode+"')></button> ";
@@ -407,7 +464,9 @@ function onDpDay(){
 	 				var subalarmTypeObj = $("#tbl_alarmType input[name='subAlarmType']:checkbox:checked");
 	 				$.each(subalarmTypeObj, function(index, sobj){
 	 					var spcode = sobj.value;
+	 					var spName = sobj.parentElement.innerText;
 	 					alarmSubTypeArr.push(spcode);
+	 					alarmTypeNameArr.push(spName);
 	 					var tpName = $("#sp_"+spcode).html();
 	 					subtypeHtml += "<li id='li_"+spcode+"'>";
 	 					subtypeHtml += tpName + "<button type='button' class='ty-delete-btn' title='删除' onclick=deleteSubNode('"+spcode+"')></button> ";
@@ -514,6 +573,13 @@ function onDpDay(){
 	        	return urlStr;
 	        }
 	         function searchAction(repType){
+	         	if(m_isFirst_load){
+	         		m_isFirst_load = false;
+	         		return;
+	         	}
+	         	if(repType==undefined){
+	         		repType = 1;
+	         	}
 	         	packageQuery();
 	         	var url = getActionUrl(repType); 
 	         	$.ajax({
@@ -524,13 +590,17 @@ function onDpDay(){
 						success : function(req) { 
 							if(req.code==200){  
 								if(repType == 1){
-									ReportManage.initAlarmTypeData(req.data);	
+									ReportManage.initAlarmTypeData(req.data,m_orgName,alarmTypeNameArr);	
 								}else if(repType == 2){
-									ReportManage.initAlarmCircleData(req.data);
+									ReportManage.initAlarmCircleData(req.data,m_orgName,alarmPeriodXLabel);
 								}else if(repType == 3){
-									ReportManage.initAlarmTimeSpanData(req.data);
+									ReportManage.initAlarmTimeSpanData(req.data,m_orgName);
 								}else if(repType == 4){
-									ReportManage.initAlarmOrganData(req.data);
+									var orglist = $("#div_suborgList a[name='a_orgName']");
+									$.each(orglist,function(index,s){
+	       		 						alarmOrganXLabel.push(s.text);
+	       		 					});
+									ReportManage.initAlarmOrganData(req.data,m_orgName,alarmOrganXLabel);
 								}
 							}else{
 								$("body").popjs({"title":"提示","content":"查询统计数据失败！"});
@@ -544,7 +614,9 @@ function onDpDay(){
 	       		 m_Query_pkg.alarmParentType = alarmParentTypeArr;
 	       		 m_Query_pkg.alarmSubType = alarmSubTypeArr;
 	       		 if(m_Query_pkg.alarmParentType.length==0&&m_Query_pkg.alarmSubType.length==0){
-	       			$("body").popjs({"title":"提示","content":"请选择警情类型，至少选取一个警情类别！"});
+	       			$("body").popjs({"title":"提示","content":"请选择警情类型，至少选取一个警情类别！","callback":function(){
+					 		return;
+						}});   
 	       			return;
 	       		 }
 	       		 m_Query_pkg.alarmTimeSpan = alarmTimeSpanArr;
@@ -554,7 +626,9 @@ function onDpDay(){
 	       		 	m_Query_pkg.alarmLevel.push(s.value);
 	       		 });  
 	       		 if(m_Query_pkg.alarmLevel.length==0){
-	       			$("body").popjs({"title":"提示","content":"请选择警情级别，至少选取一个等级警情！"});
+	       			$("body").popjs({"title":"提示","content":"请选择警情级别，至少选取一个等级警情！","callback":function(){
+					 		return;
+						}});   
 	       			return;
 	       		 }
 	       }
