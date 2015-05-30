@@ -13,10 +13,12 @@ import org.mybatis.generator.exception.InvalidConfigurationException;
 import org.mybatis.generator.exception.XMLParserException;
 import org.mybatis.generator.internal.DefaultShellCallback;
 
+import com.tianyi.bph.service.BaseTest;
+
 public class UnitTest {
 	@Test
 	public  void main()  {
-        genCfg();
+        //genCfg();
     }
 	
 	public void genCfg(){

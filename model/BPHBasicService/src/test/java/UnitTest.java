@@ -13,7 +13,9 @@ import org.mybatis.generator.exception.InvalidConfigurationException;
 import org.mybatis.generator.exception.XMLParserException;
 import org.mybatis.generator.internal.DefaultShellCallback;
 
-public class UnitTest {
+import com.tianyi.bph.service.BaseTest;
+
+public class UnitTest extends BaseTest {
 	@Test
 	public  void main()  {
         genCfg();

@@ -18,6 +18,7 @@
     <result column="POLICE_USER_ID" jdbcType="DECIMAL" property="policeUserId" />
   </resultMap>
   
+  
   <resultMap id="OrganResultMap" type="com.tianyi.bph.domain.system.Organ">
     <id column="OID" jdbcType="DECIMAL" property="id" />
     <result column="ONAME" jdbcType="VARCHAR" property="name" />
