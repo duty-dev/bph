@@ -120,4 +120,39 @@ public class ReportRouteController {
 		mv.addObject("num", "1000");
 		return mv;
 	}
+	/**
+	 * web跳转到四色预警
+	 * 
+	 * @param request
+	 * @param
+	 * 
+	 * @return
+	 */
+	@RequestMapping({ "/gotoFourColorWarningAdd.do",
+			"/gotoFourColorWarningAdd.action" })
+	@ResponseBody
+	public ModelAndView gotoFourColorWarningAdd(
+			@RequestParam(value = "organId", required = false) Integer organId,
+			HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView(
+				"/reportdata/fourcolorwarning/fourColorwarning.jsp");
+		User user = (User) request.getAttribute("User");
+		if (organId == null) {
+			organId = user.getOrgId();
+		}
+		Organ organ = new Organ();
+		organ = organService.getOrganByPrimaryKey(organId);
+		List<Organ> subOrgList = new ArrayList<Organ>();
+		OrganQuery organQuery = new OrganQuery();
+		organQuery.setParentId(organId); 
+		subOrgList = organService.getOrganListByParentId(organQuery);
+		
+		mv.addObject("organ", organ); 
+		mv.addObject("organName", organ.getShortName()); 
+		mv.addObject("organCode", organ.getCode()); 
+		mv.addObject("organPath", organ.getPath()); 
+		mv.addObject("subOrgList", subOrgList); 
+		mv.addObject("num", "1000");
+		return mv;
+	}
 }

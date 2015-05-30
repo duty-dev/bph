@@ -415,17 +415,18 @@ function onDpDay(){
 								} 
 								$("#tbl_alarmType").empty();
 								$("#tbl_alarmType").html(html);
+								
+	 							for(var i = 0; i<alarmParentTypeArr.length;i++){
+	 								$("#ipt_"+alarmParentTypeArr[i]).attr("checked","checked"); 
+	 							}
+	 		
+	 							for(var i = 0; i<alarmSubTypeArr.length;i++){
+	 								$("#ipt_"+alarmSubTypeArr[i]).attr("checked","checked"); 
+	 							}
 							}
 					}
 				});
 	 		
-	 			for(var i = 0; i<alarmParentTypeArr.length;i++){
-	 				$("#ipt_"+alarmParentTypeArr[i]).attr("checked","checked"); 
-	 			}
-	 		
-	 			for(var i = 0; i<alarmSubTypeArr.length;i++){
-	 				$("#ipt_"+alarmSubTypeArr[i]).attr("checked","checked"); 
-	 			}
 	 			var win =$('#alarmTypeListWin');
 				win.kendoWindow({
 	                        width: "900px",
@@ -435,6 +436,8 @@ function onDpDay(){
 				win.data("kendoWindow").open();
 	 		}
 	 		function confirmAlarmType(){
+	 			alarmParentTypeArr.length = 0;
+	 			alarmSubTypeArr.length = 0;
 	 			alarmTypeNameArr.length = 0;
 	 			var parentcount = $("#tbl_alarmType input[name='parentAlarmType']:checkbox:checked").length;
 	 			var totalhtml = "";
@@ -448,7 +451,7 @@ function onDpDay(){
 	 					alarmTypeNameArr.push(tpName);
 	 					var tpName = $("#sp_"+tpcode).html();
 	 					parenttypeHtml += "<li id='li_"+tpcode+"'>";
-	 					parenttypeHtml += tpName + "<button type='button' class='ty-delete-btn' title='删除' onclick=deleteParentNode('"+tpcode+"')></button> ";
+	 					parenttypeHtml += tpName + "<button type='button' class='ty-delete-btn' title='删除' onclick=deleteParentNode('"+tpcode+"','"+tpName+"')></button> ";
 	 					parenttypeHtml += "</li>";
 	 				}); 
 	 				
@@ -469,7 +472,7 @@ function onDpDay(){
 	 					alarmTypeNameArr.push(spName);
 	 					var tpName = $("#sp_"+spcode).html();
 	 					subtypeHtml += "<li id='li_"+spcode+"'>";
-	 					subtypeHtml += tpName + "<button type='button' class='ty-delete-btn' title='删除' onclick=deleteSubNode('"+spcode+"')></button> ";
+	 					subtypeHtml += tpName + "<button type='button' class='ty-delete-btn' title='删除' onclick=deleteSubNode('"+spcode+"','"+tpName+"')></button> ";
 	 					subtypeHtml += "</li>";
 	 				}); 
 	 				totalhtml += subtypeHtml
@@ -487,7 +490,7 @@ function onDpDay(){
 				var win= $("#alarmTypeListWin").data("kendoWindow");
 				win.close();
 	 		}
-	 		function deleteParentNode(code){
+	 		function deleteParentNode(code,tName){
 	 		
 	 			$("#li_"+code).hide();
 	 			$.each(alarmParentTypeArr,function(index,value){
@@ -495,17 +498,27 @@ function onDpDay(){
 	 					alarmParentTypeArr.splice(index,1);
 	 				}
 	 			}); 
+	 			$.each(alarmTypeNameArr,function(index,value){
+	 				if(tName == value){
+	 					alarmTypeNameArr.splice(index,1);
+	 				}
+	 			}); 
 	 			if(alarmParentTypeArr.length==0&&alarmSubTypeArr.length==0){
 	 				$("#ul_alarmTypeList").html("<li>无相关警情类型</li>")
 	 			}
 	 		}
 
-	 		function deleteSubNode(code){
+	 		function deleteSubNode(code,tName){
 	 		
 	 			$("#li_"+code).hide();
 	 			$.each(alarmSubTypeArr,function(index,value){
 	 				if(code == value){
 	 					alarmSubTypeArr.splice(index,1);
+	 				}
+	 			}); 
+	 			$.each(alarmTypeNameArr,function(index,value){
+	 				if(tName == value){
+	 					alarmTypeNameArr.splice(index,1);
 	 				}
 	 			}); 
 	 			if(alarmSubTypeArr.length==0&&alarmParentTypeArr.length==0){
