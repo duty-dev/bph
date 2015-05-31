@@ -10,4 +10,9 @@ public interface WarningCfgService {
 	void saveWarningCfg(WarningCfgVM  vm) ;
 	
 	List<WarningCfgVM> loadWarningCfgVMByOrgId(Map<String,Object> map);
+	int loadWarningCfgVMCountByOrgId(Map<String,Object> map);
+
+	void deleteById(Integer caseId);
+
+	WarningCfgVM loadWarningCfgVMInfoById(Integer caseId);
 }

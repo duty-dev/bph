@@ -6,6 +6,8 @@ public class WarningCaseType {
     private Integer warningId;
 
     private String caseTypeCode;
+    
+    private String caseTypeName;
 
     private Integer caseTypeLevel;
 
@@ -30,7 +32,7 @@ public class WarningCaseType {
     }
 
     public void setCaseTypeCode(String caseTypeCode) {
-        this.caseTypeCode = caseTypeCode == null ? null : caseTypeCode.trim();
+        this.caseTypeCode=caseTypeCode;
     }
 
     public Integer getCaseTypeLevel() {
@@ -40,4 +42,12 @@ public class WarningCaseType {
     public void setCaseTypeLevel(Integer caseTypeLevel) {
         this.caseTypeLevel = caseTypeLevel;
     }
+
+	public String getCaseTypeName() {
+		return caseTypeName;
+	}
+
+	public void setCaseTypeName(String caseTypeName) {
+		this.caseTypeName = caseTypeName;
+	}
 }

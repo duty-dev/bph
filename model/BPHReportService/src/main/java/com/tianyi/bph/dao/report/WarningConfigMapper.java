@@ -22,4 +22,12 @@ public interface WarningConfigMapper {
     int updateByPrimaryKey(WarningConfig record);
     
     List<WarningCfgVM> loadWarningCfgVMByOrgId(Map<String,Object> map);
+
+	int loadWarningCfgVMCountByOrgId(Map<String, Object> map);
+
+	void deleteCaseTypeItemByCaseId(Integer caseId);
+
+	void deleteColorItemByCaseId(Integer caseId);
+
+	WarningCfgVM loadWarningCfgVMInfoById(Integer caseId);
 }

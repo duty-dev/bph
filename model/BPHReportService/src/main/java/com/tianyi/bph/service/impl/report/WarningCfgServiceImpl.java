@@ -46,11 +46,12 @@ public class WarningCfgServiceImpl implements WarningCfgService{
 			List<WarningCaseType> caseTypes =vm.getCaseTypes();
 			for(WarningCaseType caseType : caseTypes){
 				caseType.setWarningId(vm.getId());
-				if(caseType.getId()==0){
+				warningConfigMapper.deleteCaseTypeItemByCaseId(vm.getId());
+//				if(caseType.getId()==0){
 					warningCaseTypeMapper.insert(caseType);	
-				}else{
-					warningCaseTypeMapper.updateByPrimaryKey(caseType);	
-				}
+//				}else{ 
+//					warningCaseTypeMapper.updateByPrimaryKey(caseType);	
+//				}
 			}
 		}catch(Exception ex){
 			int x=100;
@@ -62,6 +63,26 @@ public class WarningCfgServiceImpl implements WarningCfgService{
 	public List<WarningCfgVM> loadWarningCfgVMByOrgId(Map<String, Object> map) {
 		List<WarningCfgVM> ls=warningConfigMapper.loadWarningCfgVMByOrgId(map);
 		return ls;
+	}
+
+	@Override
+	public int loadWarningCfgVMCountByOrgId(Map<String, Object> map) {
+		return warningConfigMapper.loadWarningCfgVMCountByOrgId(map);
+		
+	}
+
+	@Override
+	public void deleteById(Integer caseId) {
+		// TODO Auto-generated method stub
+		warningConfigMapper.deleteCaseTypeItemByCaseId(caseId);
+		warningConfigMapper.deleteColorItemByCaseId(caseId);
+		warningConfigMapper.deleteByPrimaryKey(caseId);
+	}
+
+	@Override
+	public WarningCfgVM loadWarningCfgVMInfoById(Integer caseId) {
+		// TODO Auto-generated method stub
+		return warningConfigMapper.loadWarningCfgVMInfoById(caseId);
 	}
 	
 }
