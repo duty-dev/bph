@@ -79,4 +79,10 @@
       case_type_level = #{caseTypeLevel,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <delete id="deleteByWarningId" parameterType="java.lang.Integer" >
+  	delete from t_warning_case_type
+  	where warning_id=#{warningId,jdbcType=INTEGER}
+  </delete>
+  
 </mapper>

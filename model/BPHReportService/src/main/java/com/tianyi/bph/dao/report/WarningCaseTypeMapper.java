@@ -16,4 +16,6 @@ public interface WarningCaseTypeMapper {
     int updateByPrimaryKeySelective(WarningCaseType record);
 
     int updateByPrimaryKey(WarningCaseType record);
+    
+    void deleteByWarningId(Integer warningId);
 }

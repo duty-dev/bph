@@ -8,17 +8,27 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.tianyi.bph.dao.report.CaseReportMapper;
+import com.tianyi.bph.dao.report.WarningConfigMapper;
 import com.tianyi.bph.domain.report.CaseHourAGGR;
 import com.tianyi.bph.domain.report.CaseOrgAGGR;
 import com.tianyi.bph.domain.report.CasePeriodAGGR;
 import com.tianyi.bph.domain.report.CaseTypeAGGR;
+import com.tianyi.bph.domain.report.WarningAGGR;
+import com.tianyi.bph.domain.report.WarningOrgAGGR;
+import com.tianyi.bph.domain.system.Organ;
+import com.tianyi.bph.query.report.WarningCfgVM;
 import com.tianyi.bph.service.report.CaseReportService;
+import com.tianyi.bph.service.system.OrganService;
 
 @Service
 public class CaseReportServiceImpl implements  CaseReportService {
 
 	@Autowired
 	private CaseReportMapper caseReportMapper;
+	@Autowired
+	private WarningConfigMapper warningCfgMapper;
+	@Autowired
+	private OrganService orgService;
 	
 	@Override
 	public int loadMaxYMD() {
@@ -67,6 +77,30 @@ public class CaseReportServiceImpl implements  CaseReportService {
 	public List<CaseOrgAGGR> loadCaseOrgReport(Map<String, Object> map) {
 		List<CaseOrgAGGR> ls=caseReportMapper.loadCaseOrgReport(map);
 		return ls;
+	}
+
+	@Override
+	public List<WarningOrgAGGR> loadWarningReport(Map<String, Object> map) {
+		
+		Integer orgId=(Integer) map.get("orgId");
+		Integer cfgId=(Integer)map.get("cfgId");
+		
+		Organ org=orgService.getOrganByPrimaryKey(orgId);
+		
+		WarningCfgVM wcfgvm=warningCfgMapper.loadWarningCfgVMById(cfgId);
+		
+		Map<String,Object> map1=new HashMap<String,Object>();
+		map1.put("orgId", orgId);
+		map1.put("orgPath", org.getPath());
+		map1.put("beginYmd", map.get("beginYmd"));
+		map1.put("endYmd", map.get("endYmd"));
+		map1.put("type2Codes", map.get("type2Codes"));
+		map1.put("caseLevels", map.get("caseLevels"));
+		
+		List<WarningOrgAGGR> w1=caseReportMapper.loadWarningReport(map);
+		
+		
+		return null;
 	}
 
 
