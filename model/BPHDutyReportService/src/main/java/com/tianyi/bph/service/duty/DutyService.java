@@ -83,7 +83,7 @@ public interface DutyService {
 	 * 根据日期，删除报备数据
 	 * @param targetYmd
 	 */
-	void deleteByYMD(Integer targetYmd);
+	void deleteByYMD(Map<String, Object> map);
 
 	/**
 	 * 插入新的报备数据信息

@@ -160,7 +160,9 @@ var WarningAddManage= {
 			$.ajax({
 				url : "<%=basePath%>colorWarningWeb/saveWarningConfig.do",
 				type : "post",
-				data : bph_warningAdd_pkg,
+				data : {
+					'colorWarning' : JSON.stringify(bph_warningAdd_pkg)
+				}, 
 				dataType : "json",
 				success : function(req) { 
 					$("body").popjs({"title":"提示","content":"修改预警信息成功！","callback":function(){ 
