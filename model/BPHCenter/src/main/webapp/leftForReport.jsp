@@ -1,151 +1,190 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
- <style>
- 	li{ float:left;list-style:none; padding:5px;} 
- 	#tbl_alarmType {border:1px solid #fff;margin-top:5px;}
- 	#tbl_alarmType td{border:1px solid #fff;}
- 	#tbl_alarmType tr{border:1px solid #fff;} 
- 	.a {float:left;}
- </style> 
+<style>
+li {
+	float: left;
+	list-style: none;
+	padding: 5px;
+}
+
+#tbl_alarmType {
+	border: 1px solid #fff;
+	margin-top: 5px;
+}
+
+#tbl_alarmType td {
+	border: 1px solid #fff;
+}
+
+#tbl_alarmType tr {
+	border: 1px solid #fff;
+}
+
+.a {
+	float: left;
+}
+</style>
 <div id="navigationLeft">
-        <div class="line1-mid box">
-          <div class="t1-start"></div>
-          <div class="end"></div>
-        </div>
-        <div class="pull-left box">
-          <div>
-            <div class="title box"></div>
-            <div class="hide" onclick="arrowZoom();"></div>
-            <div class="clear"> 
-            </div>
-          </div>
-        </div>
-        <div class="pull-right box">
-          <div class="line7"></div>
-        </div>
-        <div class="tree-box clear"><!----机构树---->
-        <div id="box">
-             <div class="clear">
-              	<div style="width:100%;float:left"><h5>机构选择</h5></div> 
-          		 <div style="width:100%;float:left"> 
-          		 <div id="div_orgPath"> 
-          		 
-          		 </div>
-          		 <div id="div_suborgList" style="margin-top:5px;width:200px;" > 
-          		 
-          		 </div>
-          		</div>
-          	 </div>
-          	<div> 
-          		 <div class="clear"> 
-            		<div style="width:60%;float:left">
-            			<h5>警情类型</h5>
-            		</div>
-            		<div style="width:38%;float:left">
-            			<span id="btnAddType1" class="k-button"  onclick="addAlarmTypeList()">添加</span>
-            		</div> 
-            	</div>
-          	</div>
-          	<div>
-          		 <div class="clear">
-          		 	<div>  
-            		 	<ul id="ul_alarmTypeList"> 
-            		 		<li>
-            		 			无相关警情类型
-            		 		</li>
-            		 	</ul>
-            		</div>
-          		 </div>
-          	</div>
-          	<div> 
-          		 <div class="clear"> 
-            		<div style="width:100%;float:left"><h5> 警情级别</h5></div> 
-            		<div id="div_alarmLevel">  
-            		 	<label class="a"><input id="ckalarmLevel1" type="checkbox" value="1">一级警情</label>
-						<label class="a"><input id="ckalarmLevel2" type="checkbox" value="2">二级警情</label>
-						<label class="a"><input id="ckalarmLevel3" type="checkbox" value="3">三级警情</label> 
-            		</div>
-            	</div>
-          	</div>
-          	<div> 
-          		 <div class="clear">
-            		<div style="width:60%;float:left">
-            			<h5>时间</h5>
-            		</div>
-            		<div style="width:38%;float:left">  
-            			<span id="btnAddType2" class="k-button"  onclick="addOtherTimeSpan()">更多条件</span>  
-            		</div>
-            		<div id="div_dateType" style="width:100%;float:left">  
-            		  	<label><input id="radio_bymonth" type="radio" name="timeType" value="0" onclick="searchByMonth();" />按月查询(不超过12月)</label>
-            		  	<label>起</label><input id="dpSDate" /><label>止</label><input id="dpEDate"  />
-            		  	<label><input id="radio_byday" type="radio" name="timeType" value="1" onclick="searchByDay();" />按天查询(不超过31天)</label>
-            			<label>起</label><input id="dpSDay"   /><label>止</label><input id="dpEDay"   />
-            		</div> 
-            	</div>
-          	</div>
-          	<div> 
-          		 <div class="clear">
-            		<span id="btnAddType1" class="k-button" style="float:right"  onclick="searchAction()">搜索</span>
-            	</div>
-          	</div>
+	<div class="line1-mid box">
+		<div class="t1-start"></div>
+		<div class="end"></div>
+	</div>
+	<div class="pull-left box">
+		<div>
+			<div class="title box"></div>
+			<div class="hide" onclick="arrowZoom();"></div>
+			<div class="clear"></div>
 		</div>
-        </div><!----机构树结束----> 
-        <div class="line8 box"></div>
-        <div class="line2"></div>
-</div>    
+	</div>
+	<div class="pull-right box">
+		<div class="line7"></div>
+	</div>
+	<div class="tree-box clear">
+		<!----机构树---->
+		<div id="box">
+			<div class="clear">
+				<div style="width:100%;float:left">
+					<h5>机构选择</h5>
+				</div>
+				<div style="width:100%;float:left">
+					<div id="div_orgPath"></div>
+					<div id="div_suborgList" style="margin-top:5px;width:200px;">
+
+					</div>
+				</div>
+			</div>
+			<div>
+				<div class="clear">
+					<div style="width:60%;float:left">
+						<h5>警情类型</h5>
+					</div>
+					<div style="width:38%;float:left">
+						<span id="btnAddType1" class="k-button"
+							onclick="addAlarmTypeList()">添加</span>
+					</div>
+				</div>
+			</div>
+			<div>
+				<div class="clear">
+					<div>
+						<ul id="ul_alarmTypeList">
+							<li>无相关警情类型</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div>
+				<div class="clear">
+					<div style="width:100%;float:left">
+						<h5>警情级别</h5>
+					</div>
+					<div id="div_alarmLevel">
+						<label class="a"><input id="ckalarmLevel1" type="checkbox"
+							value="1">一级警情</label> <label class="a"><input
+							id="ckalarmLevel2" type="checkbox" value="2">二级警情</label> <label
+							class="a"><input id="ckalarmLevel3" type="checkbox"
+							value="3">三级警情</label>
+					</div>
+				</div>
+			</div>
+			<div>
+				<div class="clear">
+					<div style="width:60%;float:left">
+						<h5>时间</h5>
+					</div>
+					<div style="width:38%;float:left">
+						<span id="btnAddType2" class="k-button"
+							onclick="addOtherTimeSpan()">更多条件</span>
+					</div>
+					<div id="div_dateType" style="width:100%;float:left">
+						<label><input id="radio_bymonth" type="radio"
+							name="timeType" value="0" onclick="searchByMonth();" />按月查询(不超过12月)</label>
+						<label>起</label><input id="dpSDate" /><label>止</label><input
+							id="dpEDate" /> <label><input id="radio_byday"
+							type="radio" name="timeType" value="1" onclick="searchByDay();" />按天查询(不超过31天)</label>
+						<label>起</label><input id="dpSDay" /><label>止</label><input
+							id="dpEDay" />
+					</div>
+				</div>
+			</div>
+			<div>
+				<div class="clear">
+					<span id="btnAddType1" class="k-button" style="float:right"
+						onclick="searchAction()">搜索</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!----机构树结束---->
+	<div class="line8 box"></div>
+	<div class="line2"></div>
+</div>
 
 <div id="alarmTypeWindow" style="display:none">
 	<div id="alarmTypeListWin" style="overflow:hidden">
-		<div><span id="undo" class="k-button" onclick="confirmAlarmType();">确定</span></div> 
-		<div style="overflow:auto;height:380px">
-			<table id="tbl_alarmType" >
-			</table> 
+		<div>
+			<span id="undo" class="k-button" onclick="confirmAlarmType();">确定</span>
 		</div>
-    </div> 
+		<div style="overflow:auto;height:380px">
+			<table id="tbl_alarmType">
+			</table>
+		</div>
+	</div>
 </div>
 <div id="timeSpanWindow" style="display:none">
 	<div id="timeSpanWin" style="overflow:hidden">
-		<div><span id="undo" class="k-button" onclick="confirmTimeSpan();">确定</span></div>  
-		<div style="overflow:auto;height:290px">
-			<table id="div_timaspan" style="width:100%;height:91%;border:1px solid white;">
-				<tr>
-					<td rowspan="7" style="width:250px;text-align:center"><img width="200px" src="<%=basePath%>images/images/xx.jpg" /></td> 　
-					<td></td> 
-					<td style="width:90px"><input id="radio_allday" type="radio" name="timeArea" value="1" onclick="selectTimeSpan();" />全天</td>
-					<td>00:00——23:59</td>  　
-				</tr> 
-				<tr> 
-					<td></td> 
-					<td style="width:90px"><input id="radio_birght" type="radio" name="timeArea" value="2" onclick="selectTimeSpan();" />白天</td>
-					<td>06:00——19:59</td> 
-  				</tr>
-				<tr> 
-					<td></td> 
-					<td style="width:90px"><input id="radio_night" type="radio" name="timeArea" value="3" onclick="selectTimeSpan();" />晚上</td>
-					<td>20:00——05:59</td> 
-  				</tr>
-				<tr> 
-					<td></td> 
-					<td style="width:90px"><input id="radio_morning" type="radio" name="timeArea" value="4" onclick="selectTimeSpan();" />凌晨</td>
-					<td>23:00——05:59</td> 
-  				</tr>
-				<tr> 
-					<td></td> 
-					<td style="width:90px"><input id="radio_heavyUp1" type="radio" name="timeArea" value="5" onclick="selectTimeSpan();" />早高峰</td>
-					<td>07:00——09:59</td> 
-  				</tr>
-				<tr> 
-					<td></td> 
-					<td style="width:90px"><input id="radio_heavyUp2" type="radio" name="timeArea" value="6" onclick="selectTimeSpan();" />完高峰</td>
-					<td>16:00——19:59</td> 
-  				</tr>
-				<tr> 
-					<td></td> 
-					<td style="width:90px"><input id="radio_default" type="radio" name="timeArea" value="7" onclick="selectTimeSpan();" />自定义</td>
-	  				<td></td>
-  				</tr>
-			</table> 
+		<div>
+			<span id="undo" class="k-button" onclick="confirmTimeSpan();">确定</span>
 		</div>
-    </div> 
+		<div style="overflow:auto;height:290px">
+			<table id="div_timaspan"
+				style="width:100%;height:91%;border:1px solid white;">
+				<tr>
+					<td rowspan="7" style="width:250px;text-align:center"><img
+						width="200px" src="<%=basePath%>images/images/xx.jpg" /></td>
+					<td></td>
+					<td style="width:90px"><input id="radio_allday" type="radio"
+						name="timeArea" value="1" onclick="selectTimeSpan();" />全天</td>
+					<td>00:00——23:59</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td style="width:90px"><input id="radio_birght" type="radio"
+						name="timeArea" value="2" onclick="selectTimeSpan();" />白天</td>
+					<td>06:00——19:59</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td style="width:90px"><input id="radio_night" type="radio"
+						name="timeArea" value="3" onclick="selectTimeSpan();" />晚上</td>
+					<td>20:00——05:59</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td style="width:90px"><input id="radio_morning" type="radio"
+						name="timeArea" value="4" onclick="selectTimeSpan();" />凌晨</td>
+					<td>23:00——05:59</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td style="width:90px"><input id="radio_heavyUp1" type="radio"
+						name="timeArea" value="5" onclick="selectTimeSpan();" />早高峰</td>
+					<td>07:00——09:59</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td style="width:90px"><input id="radio_heavyUp2" type="radio"
+						name="timeArea" value="6" onclick="selectTimeSpan();" />完高峰</td>
+					<td>16:00——19:59</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td style="width:90px"><input id="radio_default" type="radio"
+						name="timeArea" value="7" onclick="selectTimeSpan();" />自定义</td>
+					<td></td>
+				</tr>
+			</table>
+		</div>
+	</div>
 </div>
 <script type="text/javascript">
 var m_organId = 1; 
@@ -359,10 +398,11 @@ function onDpDay(){
 					url:"<%=basePath%>alarmStatisticWeb/getAlarmTypeList.do",
 					type:"post", 
 					dataType:"json",
+					/*  成功返回数据后处理函数*/
 					success:function(req){
 							if(req.code == 200){ 
 								var html = "";  
-								
+								alert("hi");
 								for(var j = 0; j< req.data.length; j++){
 									  html += "<tr><td style='width:100px'>";
 									  html += "<input type='checkbox' value='"+req.data[j].alarmType.typeCode+"' /><span id='sp_"+req.data[j].alarmType.typeCode+"'>"+ req.data[j].alarmType.typeName+ "</span></td><td><ul>";  
@@ -385,6 +425,7 @@ function onDpDay(){
 	                    });
 				win.data("kendoWindow").open();
 	 		}
+	 		
 	 		function confirmAlarmType(){
 	 			var count = $("#tbl_alarmType input:checkbox:checked").length;
 	 			if(count > 0){
@@ -478,82 +519,108 @@ function onDpDay(){
 	        			break;
 	        		case 4:
 	        			urlStr = "<%=basePath%>alarmStatisticWeb/getReportDataByAlarmOrgan.do";
-	        			break;
-	        	}
-	        	return urlStr;
-	        }
-	         function searchAction(repType){
-	         	packageQuery();
-	         	var url = getActionUrl(repType); 
-	         	$.ajax({
-						url : url,
-						type : "post",
-						data : {"reportCondition" : JSON.stringify(m_Query_pkg)},
-						dataType : "json",
-						success : function(req) { 
-							if(req.code==200){ 
-								if(repType == 1){
-									ReportManage.initAlarmTypeData(req.data);	
-								}else if(repType == 2){
-									ReportManage.initAlarmCircleData(req.data);
-								}else if(repType == 3){
-									ReportManage.initAlarmTimeSpanData(req.data);
-								}else if(repType == 4){
-									ReportManage.initAlarmOrganData(req.data);
-								}
-							}else{
-								$("body").popjs({"title":"提示","content":"查询统计数据失败！"});
-							} 
-						}
-					}); 
-	         }
-	        
-	       function packageQuery(){ 
-	       		 m_Query_pkg.organId = m_organId;
-	       		 m_Query_pkg.alarmType = alarmTypeArr;
-	       		 m_Query_pkg.alarmLevel = []
-	       		 var alrlel = $("#div_alarmLevel input:checkbox:checked");
-	       		 $.each(alrlel,function(index,s){
-	       		 	m_Query_pkg.alarmLevel.push(s.value);
-	       		 }); 
-	       		 if(m_timeSpan_Start !=undefined&&m_timeSpan_Start!=""){
-	       		 		m_Query_pkg.startDate = m_timeSpan_Start;
-	 				 	m_Query_pkg.endData = m_timeSpan_End;
-	       		 }else{
-	       			 var dateType = $('#div_dateType input:radio[name="timeType"]:checked').val()
-	       			 if(dateType == 0){
-	 					 //kendoDatePicker 
-	 					 if(m_byMonth){
-	 					 	var dates = $("#dpSDate").data("kendoDatePicker").value();
-							var datee = $("#dpEDate").data("kendoDatePicker").value();
-							if(dates!=null&&datee!=null){
-	 				 			m_Query_pkg.startDate = dates.getFullYear()+ "-" + ((dates.getMonth() + 1) > 10 ? (dates.getMonth() + 1) : "0" + (dates.getMonth() + 1))+ "-" + "01";
-	 				 			m_Query_pkg.endData = datee.getFullYear()+ "-" + ((datee.getMonth() + 1) > 10 ? (datee.getMonth() + 1) : "0" + (datee.getMonth() + 1))+ "-" + "01";
-	 				 		}else{ 
-	 				 			m_Query_pkg.startDate = "";
-	 				 			m_Query_pkg.endData = "";
-	 				 		}
-	 				 	}else{ 
-	 				 		m_Query_pkg.startDate = "";
-	 				 		m_Query_pkg.endData = "";
-	 					 }
-	 				 }else if(dateType == 1){
-	 			 		if(m_byDay){
-	 			 			var dates = $("#dpSDay").data("kendoDatePicker").value();
-							var datee = $("#dpEDay").data("kendoDatePicker").value();
-							if(dates!=null&&datee!=null){
-	 					 		m_Query_pkg.startDate = dates.getFullYear()+ "-" + ((dates.getMonth() + 1) > 10 ? (dates.getMonth() + 1) : "0" + (dates.getMonth() + 1))+ "-" + (dates.getDate() < 10 ?"0" + dates.getDate() : dates.getDate());
-	 					 		m_Query_pkg.endData = datee.getFullYear()+ "-" + ((datee.getMonth() + 1) > 10 ? (datee.getMonth() + 1) : "0" + (datee.getMonth() + 1))+ "-" + (datee.getDate() < 10 ?"0" + datee.getDate() : datee.getDate());
-	 					 	}else{ 
-	 					 		m_Query_pkg.startDate = "";
-	 					 		m_Query_pkg.endData = "";
-	 					 	}
-	 					 }else{
-	 					 	m_Query_pkg.startDate = "";
-	 					 	m_Query_pkg.endData = "";
-	 					 }
-	       			 } 
-	       		}
-	       		 
-	       }
+			break;
+		}
+		return urlStr;
+	}
+	function searchAction(repType) {
+		//packageQuery();
+		var url = getActionUrl(repType);
+		$.ajax({
+			url : url,
+			type : "post",
+			data : {
+				"reportCondition" : JSON.stringify(m_Query_pkg)
+			},
+			dataType : "json",
+			success : function(req) {
+				if (req.code == 200) {
+					if (repType == 1) {
+						ReportManage.initAlarmTypeData(req.data);
+					} else if (repType == 2) {
+						ReportManage.initAlarmCircleData(req.data);
+					} else if (repType == 3) {
+						ReportManage.initAlarmTimeSpanData(req.data);
+					} else if (repType == 4) {
+						ReportManage.initAlarmOrganData(req.data);
+					}
+					//			}else{
+					//				$("body").popjs({"title":"提示","content":"查询统计数据失败！"});
+					//			} 
+				}
+			}
+		});
+	}
+
+	function packageQuery() {
+		m_Query_pkg.organId = m_organId;
+		m_Query_pkg.alarmType = alarmTypeArr;
+		m_Query_pkg.alarmLevel = []
+		var alrlel = $("#div_alarmLevel input:checkbox:checked");
+		$.each(alrlel, function(index, s) {
+			m_Query_pkg.alarmLevel.push(s.value);
+		});
+		if (m_timeSpan_Start != undefined && m_timeSpan_Start != "") {
+			m_Query_pkg.startDate = m_timeSpan_Start;
+			m_Query_pkg.endData = m_timeSpan_End;
+		} else {
+			var dateType = $(
+					'#div_dateType input:radio[name="timeType"]:checked').val()
+			if (dateType == 0) {
+				//kendoDatePicker 
+				if (m_byMonth) {
+					var dates = $("#dpSDate").data("kendoDatePicker").value();
+					var datee = $("#dpEDate").data("kendoDatePicker").value();
+					if (dates != null && datee != null) {
+						m_Query_pkg.startDate = dates.getFullYear()
+								+ "-"
+								+ ((dates.getMonth() + 1) > 10 ? (dates
+										.getMonth() + 1) : "0"
+										+ (dates.getMonth() + 1)) + "-" + "01";
+						m_Query_pkg.endData = datee.getFullYear()
+								+ "-"
+								+ ((datee.getMonth() + 1) > 10 ? (datee
+										.getMonth() + 1) : "0"
+										+ (datee.getMonth() + 1)) + "-" + "01";
+					} else {
+						m_Query_pkg.startDate = "";
+						m_Query_pkg.endData = "";
+					}
+				} else {
+					m_Query_pkg.startDate = "";
+					m_Query_pkg.endData = "";
+				}
+			} else if (dateType == 1) {
+				if (m_byDay) {
+					var dates = $("#dpSDay").data("kendoDatePicker").value();
+					var datee = $("#dpEDay").data("kendoDatePicker").value();
+					if (dates != null && datee != null) {
+						m_Query_pkg.startDate = dates.getFullYear()
+								+ "-"
+								+ ((dates.getMonth() + 1) > 10 ? (dates
+										.getMonth() + 1) : "0"
+										+ (dates.getMonth() + 1))
+								+ "-"
+								+ (dates.getDate() < 10 ? "0" + dates.getDate()
+										: dates.getDate());
+						m_Query_pkg.endData = datee.getFullYear()
+								+ "-"
+								+ ((datee.getMonth() + 1) > 10 ? (datee
+										.getMonth() + 1) : "0"
+										+ (datee.getMonth() + 1))
+								+ "-"
+								+ (datee.getDate() < 10 ? "0" + datee.getDate()
+										: datee.getDate());
+					} else {
+						m_Query_pkg.startDate = "";
+						m_Query_pkg.endData = "";
+					}
+				} else {
+					m_Query_pkg.startDate = "";
+					m_Query_pkg.endData = "";
+				}
+			}
+		}
+
+	}
 </script>

@@ -40,8 +40,8 @@ public class CaseReportController {
 			List<CaseReportResult<CaseTypeAGGR>>  results=new ArrayList<CaseReportResult<CaseTypeAGGR>>();
 			List<CaseTypeAGGR>  ls=null;
 			
-			Integer bd=20140701;
-			Integer ed=20140731;
+			Integer bd=20140301;
+			Integer ed=20140930;
 			
 			ReportPeriod  rp=new ReportPeriod(bd,ed,1);
 			

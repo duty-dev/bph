@@ -1,12 +1,69 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <script type="text/javascript">
 
+//图表的标题
+var title ="sssss"
+function GetSeriesArray(data)
+{
+	var array = [];
+	for(var i=0;i<data.data.length;i++)
+		{
+		array[i] = data.data[i].amount;
+		}
+	return {name:GetSerieName(data),data:array};
+}
+
+function GetSerieName(data){
+	var name = "统计时间：";
+	name +=GetStandardYM(data.beginYmd)+"-"+GetStandardYM(data.endYmd);
+	return name;
+}
+//通过数字获取标准的年月格式
+function GetStandardYM(date)
+{
+	return parseInt(date/10000).toString()+"年"+parseInt(parseInt(date/100)%100).toString()+"月"+parseInt(date%100).toString()+"日";
+	}
+//获取Y轴的最大显示值(当期)
+function GetMaxValue(data)
+{
+	var max = 0;
+	for(var i =0;i<data.data.length;i++)
+		{
+		if(max<data.data[i].amount)
+			{
+			max = data.data[i].amount;
+			}
+		}
+	return max;
+	}
+
+//获取X轴的显示值
+function GetCategoryAxis(data)
+{
+	
+	var array = [];
+	for(var i = 0;i<data.length;i++)
+		{
+		array[i] = data[i].typeName;
+		}
+	return array;
+	}
+	
 var ReportManage ={
-	initAlarmTypeData:function(data){
+
+	/* 警情分类 */
+	initAlarmTypeData:function(data,orgName,XLabel){
+		//series：数组   用来控制同比环比，数组一个对象就是无；ps:name用来显示筛选时间，data对应柱状图上的数据
+		var seriesArray = [{name:"黄",data:[2,3,4,5,6]},{name:"蓝",data:[2,3,4,5,6]}];//GetSeriesArray(data[2]);
+		//maxValue:Y轴的最大值；
+		var maxValue = 20;
+		//X轴下显示的值
+		var categoriesAxis = ["1","2","3","4","5"];
+		
 		$("#jqtj").empty();
 		$("#jqtj").kendoChart({
                 title: {
-                    text: "四川省各市州警情统计"
+                    text: title
                 },
                 legend: {
                     visible: true
@@ -14,15 +71,9 @@ var ReportManage ={
                 seriesDefaults: {
                     type: "column"
                 },
-                series: [{
-                    name: "刑事案件",
-                    data: [1, 2, 5, 6, 6, 7]
-                }, {
-                    name: "治安案件",
-                    data: [2, 4, 3, 4, 8, 9]
-                }],
+                series:seriesArray ,
                 valueAxis: {
-                    max: 9,
+                    max: maxValue,
                     line: {
                         visible: false
                     },
@@ -31,7 +82,7 @@ var ReportManage ={
                     }
                 },
                 categoryAxis: {
-                    categories: ["成都市", "德阳市", "绵阳市", "乐山市", "广元市", "达州市"],
+                    categories: categoriesAxis,
                     majorGridLines: {
                         visible: false
                     }
@@ -43,10 +94,15 @@ var ReportManage ={
             });  
 	},
 	initAlarmCircleData:function(data){
+		var seriesArray = [{name:"黄",data:[2,3,4,5,6]},{name:"蓝",data:[2,3,4,5,6]}];
+		//maxValue:Y轴的最大值；
+		var maxValue = 20;
+		//X轴下显示的值
+		var categoriesAxis = ["1","2","3","4","5"];
 		$("#jqtj").empty(); 
 		$("#jqtj").kendoChart({
                 title: {
-                    text: "四川省各市州警情统计"
+                    text: title
                 },
                 legend: {
                     position: "bottom"
@@ -55,16 +111,7 @@ var ReportManage ={
                     type: "line",
                     style: "smooth"
                 },
-                series: [{
-                    name: "刑事案件",
-                    data: [1, 2, 5, 6, 6, 7]
-                }, {
-                    name: "治安案件",
-                    data: [2, 4, 3, 4, 8, 9]
-                }, {
-                    name: "交通案件",
-                    data: [3, 2, 5, 3, 6, 8]
-                }],
+                series:seriesArray,
                 valueAxis: {
                     labels: {
                         format: "{0}"
@@ -75,7 +122,7 @@ var ReportManage ={
                     axisCrossingValue: -10
                 },
                 categoryAxis: {
-                    categories: ["成都市", "德阳市", "绵阳市", "乐山市", "广元市", "达州市"],
+                    categories: categoriesAxis,
                     majorGridLines: {
                         visible: false
                     }
@@ -88,10 +135,15 @@ var ReportManage ={
             }); 
 	},
 	initAlarmTimeSpanData:function(data){
+		var seriesArray = [{name:"黄",data:[2,3,4,5,6]},{name:"蓝",data:[2,3,4,5,6]}];
+		//maxValue:Y轴的最大值；
+		var maxValue = 20;
+		//X轴下显示的值
+		var categoriesAxis = ["1","2","3","4","5"];
 		$("#jqtj").empty();
 		$("#jqtj").kendoChart({
                 title: {
-                    text: "四川省各市州警情统计"
+                    text: title
                 },
                 legend: {
                     position: "bottom"
@@ -104,16 +156,7 @@ var ReportManage ={
                         }
                     }
                 },
-                series: [{
-                    name: "刑事案件",
-                    data: [1, 2, 5, 6, 6, 7]
-                }, {
-                    name: "治安案件",
-                    data: [2, 4, 3, 4, 8, 9]
-                }, {
-                    name: "交通案件",
-                    data: [3, 2, 5, 3, 6, 8]
-                }],
+                series:seriesArray ,
                 valueAxis: {
                     labels: {
                         format: "{0}"
@@ -124,7 +167,7 @@ var ReportManage ={
                     axisCrossingValue: -10
                 },
                 categoryAxis: {
-                    categories: ["成都市", "德阳市", "绵阳市", "乐山市", "广元市", "达州市"],
+                    categories: categoriesAxis,
                     majorGridLines: {
                         visible: false
                     }
@@ -137,10 +180,15 @@ var ReportManage ={
             }); 
 	},
 	initAlarmOrganData:function(data){
+		var seriesArray = [{name:"黄",data:[2,3,4,5,6]},{name:"蓝",data:[2,3,4,5,6]}];
+		//maxValue:Y轴的最大值；
+		var maxValue = 20;
+		//X轴下显示的值
+		var categoriesAxis = ["1","2","3","4","5"];
 		$("#jqtj").empty();
 		$("#jqtj").kendoChart({
                 title: {
-                    text: "四川省各市州警情统计"
+                    text: title
                 },
                 legend: {
                     visible: false
@@ -148,18 +196,9 @@ var ReportManage ={
                 seriesDefaults: {
                     type: "column"
                 },
-                series: [{
-                    name: "刑事案件",
-                    data: [1, 2, 5, 6, 6, 7]
-                }, {
-                    name: "治安案件",
-                    data: [2, 4, 3, 4, 8, 9]
-                }, {
-                    name: "交通案件",
-                    data: [3, 2, 5, 3, 6, 8]
-                }],
+                series: seriesArray,
                 valueAxis: {
-                    max: 9,
+                    max: maxValue,
                     line: {
                         visible: false
                     },
@@ -168,7 +207,7 @@ var ReportManage ={
                     }
                 },
                 categoryAxis: {
-                    categories: ["成都市", "德阳市", "绵阳市", "乐山市", "广元市", "达州市"],
+                    categories: categoriesAxis,
                     majorGridLines: {
                         visible: false
                     }
