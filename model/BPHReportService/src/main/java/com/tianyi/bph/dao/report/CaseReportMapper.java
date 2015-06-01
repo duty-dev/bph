@@ -9,6 +9,7 @@ import com.tianyi.bph.domain.report.CaseHourAGGR;
 import com.tianyi.bph.domain.report.CaseOrgAGGR;
 import com.tianyi.bph.domain.report.CasePeriodAGGR;
 import com.tianyi.bph.domain.report.CaseTypeAGGR;
+import com.tianyi.bph.domain.report.WarningOrgAGGR;
 
 
 @MyBatisRepository
@@ -27,4 +28,7 @@ public interface CaseReportMapper {
 	List<CaseHourAGGR> loadCaseHourReport(Map<String, Object>  map);
 	
 	List<CaseOrgAGGR> loadCaseOrgReport(Map<String, Object>  map);
+	
+	List<WarningOrgAGGR> loadWarningReport(Map<String, Object>  map);
+	
 }

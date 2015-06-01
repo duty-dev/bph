@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.tianyi.bph.dao.report.WarningCaseLevelMapper;
 import com.tianyi.bph.dao.report.WarningCaseTypeMapper;
 import com.tianyi.bph.dao.report.WarningColorMapper;
 import com.tianyi.bph.dao.report.WarningConfigMapper;
+import com.tianyi.bph.domain.report.WarningCaseLevel;
 import com.tianyi.bph.domain.report.WarningCaseType;
 import com.tianyi.bph.domain.report.WarningColor;
 import com.tianyi.bph.query.report.WarningCfgVM;
@@ -24,6 +26,8 @@ public class WarningCfgServiceImpl implements WarningCfgService{
 	private WarningColorMapper  warningColorMapper;
 	@Autowired
 	private WarningCaseTypeMapper warningCaseTypeMapper;
+	@Autowired
+	private WarningCaseLevelMapper warningCaseLevelMapper;
 	
 	@Override
 	@Transactional
@@ -34,24 +38,30 @@ public class WarningCfgServiceImpl implements WarningCfgService{
 			}else{
 				warningConfigMapper.updateByPrimaryKey(vm);
 			}
-			List<WarningColor> colors=vm.getColors();
-			for(WarningColor color : colors){
-				color.setWarningId(vm.getId());
-				if(color.getId() ==0){
-					warningColorMapper.insert(color);
-				}else{
-					warningColorMapper.updateByPrimaryKey(color);
-				}
+			
+			Integer warningId=vm.getId();
+			
+			warningCaseLevelMapper.deleteByWarningId(warningId);
+			List<WarningCaseLevel> caseLevels=vm.getCaseLevels();
+			for(WarningCaseLevel caseLevel : caseLevels){
+				caseLevel.setWarningId(vm.getId());
+				warningCaseLevelMapper.insert(caseLevel);
 			}
+			
+			warningCaseTypeMapper.deleteByWarningId(warningId);
 			List<WarningCaseType> caseTypes =vm.getCaseTypes();
 			for(WarningCaseType caseType : caseTypes){
 				caseType.setWarningId(vm.getId());
-				if(caseType.getId()==0){
-					warningCaseTypeMapper.insert(caseType);	
-				}else{
-					warningCaseTypeMapper.updateByPrimaryKey(caseType);	
-				}
+				warningCaseTypeMapper.insert(caseType);	
 			}
+			
+			List<WarningColor> colors=vm.getColors();
+			warningColorMapper.deleteByWarningId(warningId);
+			for(WarningColor color : colors){
+				color.setWarningId(vm.getId());
+				warningColorMapper.insert(color);
+			}
+			
 		}catch(Exception ex){
 			int x=100;
 		}

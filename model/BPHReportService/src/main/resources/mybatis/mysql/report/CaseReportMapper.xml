@@ -77,7 +77,7 @@
 			org.ORGAN_ID,
 			org.CODE,
 			org.PATH,
-			CONCAT(org.PATH,'/',org.CODE),
+			org.Path,  
 			org.parent_id,
 			bj.AJZT,
 			bj.LXDH,
@@ -123,7 +123,10 @@
 						#{item}
 					</foreach> AND
 				ymd  &gt;=#{beginYMD,jdbcType=INTEGER} and ymd &lt;=#{endYMD,jdbcType=INTEGER} and
-				chour  &gt;=#{beginHour,jdbcType=INTEGER} and chour &lt;=#{endHour,jdbcType=INTEGER}
+				chour in
+					<foreach item="item" index="index" collection="hours" open="(" separator="," close=")">  
+						#{item}
+					</foreach>
 			group by 
 				type1
 			UNION 
@@ -140,7 +143,10 @@
 						#{item}
 					</foreach> AND
 				ymd  &gt;=#{beginYMD,jdbcType=INTEGER} and ymd &lt;=#{endYMD,jdbcType=INTEGER} and
-				chour  &gt;=#{beginHour,jdbcType=INTEGER} and chour &lt;=#{endHour,jdbcType=INTEGER}
+				chour in
+					<foreach item="item" index="index" collection="hours" open="(" separator="," close=")">  
+						#{item}
+					</foreach>
 			group by 
 				type2
 		)as t
@@ -190,7 +196,7 @@
   		where
   			ymd  &gt;=#{beginYMD,jdbcType=INTEGER} and ymd &lt;=#{endYMD,jdbcType=INTEGER} and
   			org_full_path like CONCAT(#{orgFullPath,jdbcType=VARCHAR},'%')	and 
-			clevel in 
+			clevel in
 				<foreach item="item" index="index" collection="levels" open="(" separator="," close=")">  
 					#{item}
 				</foreach> AND
@@ -264,4 +270,40 @@
 		left join b_alarm_type as bat on t.type_code=bat.TYPE_CODE
   	</select>
   	
+  	<resultMap id="WarningAGGRMap" type="com.tianyi.bph.domain.report.WarningOrgAGGR">
+    	<result column="org_id" property="orgId"   jdbcType="INTEGER"/>
+    	<result column="org_name" property="orgName"  jdbcType="VARCHAR" />
+    	<result column="org_code" property="orgCode"  jdbcType="VARCHAR" />
+    	<result column="amount" property="amount"  jdbcType="DECIMAL" />
+    </resultMap>
+  	
+  	<select id="loadWarningReport"  parameterType="java.util.Map"  resultMap="WarningAGGRMap">
+  		select
+  			org.organ_id 	as org_id,
+  			org.name			as org_name,
+  			org.code			as org_code,
+  			t.amount			as amount
+  		from t_organ as org
+  		left join(
+	  		select
+	  			right(org_path,12)		as org_code,
+	  			count(*)  					as amount
+	  		from t_case_report
+	  		where
+	  			ymd &gt;=#{beginYmd,jdbcType=INTEGER} and 
+	  			ymd &lt;=#{endYmd,jdbcType=INTEGER} and
+	  			org_path like CONCAT(#{orgPath,jdbcType=VARCHAR},'/','%') and
+	  			clevel in 
+	  				<foreach item="item" index="index" collection="caseLevels" open="(" separator="," close=")">  
+							#{item}
+					</foreach> and
+				type2 in
+					<foreach item="item" index="index" collection="type2Codes" open="(" separator="," close=")">  
+							#{item}
+					</foreach>
+	  		group by
+	  			LEFT(org_path,CHAR_LENGTH(#{orgPath,jdbcType=VARCHAR})+12)
+	  		)as t on org.code=t.org_code
+  	</select>
+
 </mapper>

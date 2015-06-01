@@ -22,4 +22,7 @@ public interface WarningConfigMapper {
     int updateByPrimaryKey(WarningConfig record);
     
     List<WarningCfgVM> loadWarningCfgVMByOrgId(Map<String,Object> map);
+    
+    WarningCfgVM loadWarningCfgVMById(Integer id);
+    
 }
