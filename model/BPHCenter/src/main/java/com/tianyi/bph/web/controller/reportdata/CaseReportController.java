@@ -312,8 +312,14 @@ public class CaseReportController {
 		} catch (Exception ex) {
 			return ReturnResult.MESSAGE(MessageCode.STATUS_FAIL,
 					MessageCode.SELECT_ORGAN_FAIL, 0, null);
-		}
-			
+		}	
+	}
+	
+	@RequestMapping(value = "/loadWarningReport.do")
+	public @ResponseBody ReturnResult loadWarningReport(
+			@RequestParam(value = "query", required = false) String query,
+			HttpServletRequest request) { 
 		
+		return null;
 	}
 }
