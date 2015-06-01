@@ -44,9 +44,9 @@ public class WarningCfgServiceImpl implements WarningCfgService{
 				}
 			}
 			List<WarningCaseType> caseTypes =vm.getCaseTypes();
+			warningConfigMapper.deleteCaseTypeItemByCaseId(vm.getId());
 			for(WarningCaseType caseType : caseTypes){
 				caseType.setWarningId(vm.getId());
-				warningConfigMapper.deleteCaseTypeItemByCaseId(vm.getId());
 //				if(caseType.getId()==0){
 					warningCaseTypeMapper.insert(caseType);	
 //				}else{ 
