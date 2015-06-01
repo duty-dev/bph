@@ -130,8 +130,16 @@ public class DutyServiceImpl implements DutyService {
 	@Transactional
 	public void save(DutyVM vm) {
 		vm.setCreateTime(new Date());
-
+		Map<String, Object> map = new HashMap<String, Object>(); 
+		map.put("ymd", vm.getYmd());
+		map.put("organId",vm.getOrgId());
 		if (vm.getId() == 0) {
+			Duty duty = dutyMapper.getdutyIdByYmd(map);
+			if(duty!=null){
+				dutyItemsMapper.deleteByDutyId(duty.getId());
+				policeTargetMapper.deleteByDutyId(duty.getId());
+			}
+			dutyMapper.deleteByYMD(map);
 			dutyMapper.insert(vm);
 		} else {
 			dutyMapper.updateByPrimaryKey(vm);
@@ -242,9 +250,9 @@ public class DutyServiceImpl implements DutyService {
 	/**
 	 * 根据日期，删除报备数据
 	 */
-	public void deleteByYMD(Integer targetYmd) {
+	public void deleteByYMD(Map<String, Object> map) {
 		// TODO Auto-generated method stub
-		dutyMapper.deleteByYMD(targetYmd);
+		dutyMapper.deleteByYMD(map);
 	}
 
 	/**

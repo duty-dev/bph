@@ -60,6 +60,7 @@ var WeapongroupManage = {
 				if (req.code == 200) { 
 					var rows =req.data; 
 					var total =  req.totalRows;
+					$("#dtWeaponGroup").empty();
 					$("#dtWeaponGroup").kendoGrid({
 						dataSource: {data: rows}, 
 						columns : [ {

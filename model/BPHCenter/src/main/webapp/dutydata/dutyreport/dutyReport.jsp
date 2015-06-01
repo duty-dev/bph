@@ -8,7 +8,7 @@
 			+ path + "/";
 %>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html>
 <head>
 <title>扁平化指挥系统</title>
 <%@ include file="../../emulateIE.jsp" %>	

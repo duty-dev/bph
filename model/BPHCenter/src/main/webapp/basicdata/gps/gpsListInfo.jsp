@@ -86,10 +86,6 @@ var GpsManage = {
 								},{
 									title : 'GPS名称',
 									field : 'gpsName' 
-								},{
-									title : 'GPS图标',
-									template: "<img width='25px' height='25px' src='<%=basePath%>#: iconUrl #'> ",
-             							width:120
 								}
 							],
 							change: function (e) {

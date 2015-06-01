@@ -186,7 +186,10 @@ public class DutyCalenderController {
 				int dutyId = duty.getId();
 				dutyService.deleteByDutyId(dutyId);
 			}
-			dutyService.deleteByYMD(targetYmd);
+			Map<String, Object> map = new HashMap<String, Object>(); 
+			map.put("ymd", targetYmd);
+			map.put("organId",orgId);
+			dutyService.deleteByYMD(map);
 			DutyVM lduty = dutyService.loadVMByOrgIdAndYmd(orgId, ymd);
 			ObjResult<DutyVM> rs = new ObjResult<DutyVM>(true, null,
 					lduty == null ? 0 : lduty.getId(), lduty);
@@ -266,5 +269,67 @@ public class DutyCalenderController {
 			return ReturnResult.MESSAGE(MessageCode.STATUS_FAIL,
 					MessageCode.SELECT_ORGAN_FAIL, 0, null);
 		}
+	}
+	/**
+	 * 清除当月所有报备数据信息
+	 * 
+	 * @param orgId
+	 *            组织机构id
+	 * @param year
+	 *            年
+	 * @param month
+	 *            月
+	 * @param response
+	 * @param request
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/deleteAllDutyData.do")
+	public @ResponseBody
+	ReturnResult deleteAllDutyData(
+			@RequestParam(value = "orgId", required = false) Integer orgId,
+			@RequestParam(value = "year", required = false) Integer year,
+			@RequestParam(value = "month", required = false) Integer month,
+			HttpServletResponse response, HttpServletRequest request)
+			throws IOException {
+		List<Duty> dutylist = new ArrayList<Duty>();
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.YEAR, year);
+		cal.set(Calendar.MONTH, month);
+		cal.set(Calendar.DAY_OF_MONTH, 1);
+		cal.add(Calendar.DAY_OF_MONTH, -1);
+
+		int firstYMD = Integer.parseInt(year.toString()
+				+ (month < 10 ? "0" + month.toString() : month.toString())
+				+ "00");
+		int lastYMD = Integer.parseInt(year.toString()
+				+ (month < 10 ? "0" + month.toString() : month.toString())
+				+ "32");
+
+		Map<String, Object> maps = new HashMap<String, Object>();
+		maps.put("orgId", orgId);
+		maps.put("firstYMD", firstYMD);
+		maps.put("lastYMD", lastYMD);
+		dutylist = dutyService.loadVMListByOrgAndYmd(maps);
+
+		if (dutylist.size() > 0) {
+			int[] ids = new int[dutylist.size()];
+			for (int i = 0; i < dutylist.size(); i++) {
+				int id = dutylist.get(i).getId();
+				ids[i] = id;
+			}
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("orgId", orgId);
+			if (ids.length > 0) {
+				map.put("ids", ids);
+				dutyService.deleteByDutyIdlist(map);
+				for (int j = 0; j < ids.length; j++) {
+					int dId = ids[j];
+					dutyService.deleteByPrimaryKey(dId);
+				}
+			}
+		}
+		return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
+				MessageCode.SELECT_SUCCESS, 0, null);
 	}
 }

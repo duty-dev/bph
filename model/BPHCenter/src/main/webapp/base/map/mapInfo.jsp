@@ -40,12 +40,37 @@ background-color: #CAE1FF;
 }
     </style>
     <script  type="text/javascript" charset="utf-8"  src="<%=basePath %>supermap/libs/SuperMap.Include.js"></script>
-    <script  type="text/javascript" charset="utf-8"  src="<%=basePath %>supermap/libs/map.js"></script>
+     <script  type="text/javascript" charset="utf-8"  src="<%=basePath %>supermap/libs/map.js"></script>
+    <%-- <script  type="text/javascript" charset="utf-8"  src="<%=basePath %>supermap/libs/mapmodify.js"></script> --%>
+     <%-- <script  type="text/javascript" charset="utf-8"  src="<%=basePath %>supermap/libs/mapofrightclick.js"></script> --%>
     <script type="text/javascript">
     var basePath = '<%= basePath%>';
     $(document).ready(function(){
     	initMap();
 	});
+	/**
+     * 跳转界面 
+     */
+    function gotoDrawKpoint(){
+    	var organId = $.trim($("#organId").val());
+    	var sessionId = $.trim($("#token").val());
+    	
+    	$("#drawDialog").tyWindow({
+    		width: "660px",
+    		height: "590px",
+    	    title: "图形属性设置",
+    	    position: {
+    	        top: "100px"
+    	      },
+    		content: "<%=path %>/map/gotoDrawKpoint.do?userId="+${User.userId}+"&random="+Math.random(),
+    		iframe : true,
+    		init:function(){
+    			//alert($("#tyIframeContent").prop("id"));
+    			//alert($("#tyIframeContent #centerPointX").val());
+    		}
+    		}); 
+    		
+    	}
     </script>
     
     <!--地图显示的div-->
@@ -54,11 +79,12 @@ background-color: #CAE1FF;
 		<ul style="margin-top: 0px; margin-bottom: 0px;" >
 			<li>
 				<div style="float:left;width:52px;height:30px; text-align: center; font-size: 15px;">居中</div> </li>
-			<li >
+			<li>
 				<div style="float:left;width:52px;height:30px; text-align: center; font-size: 15px;">删除</div> </li>
 			</li>
 		</ul>
 	</div>
+		<div id="drawDialog"></div>
     </div>
 
 

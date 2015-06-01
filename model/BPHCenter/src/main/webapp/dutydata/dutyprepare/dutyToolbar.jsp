@@ -53,13 +53,13 @@ $(document).ready(function() {
                    <span id="btnlockNode" class="k-button"  onclick="DutyPrepareManage.onShowTemplateWindow()">保存模板</span> 
                    <span id="btnlockNode" class="k-button"  onclick="DutyPrepareManage.onSaveDuty()">保存</span> 
                    <!--<span id="btnlockNode" class="k-button"  onclick="DutyPrepareManage.onExportDuty()">导出</span>-->  
-		<div class="temp">
+		<div class="temp"> 
 			<div class="ty-total-decorate"><span id="gridListTotal"></span><i></i></div>
 		</div>
 	</div> 
 	<div class="fr set-hei48">
 		<div class="temp">
-		<button id="btnlockNode" class="k-button ty-back-btn"  onclick="DutyPrepareManage.returnBackToCalendar()">返回</button>
+			<button id="btnlockNode" class="k-button ty-back-btn"  onclick="DutyPrepareManage.returnBackToCalendar()">返回</button>
 		</div> 
 		<div class="ty-screen-mode" id="tyScreenMode">
 			<i class="ty-screen-mode-btn1" title="标准模式"></i><i class="ty-screen-mode-btn2" title="模块全屏"></i><i class="ty-screen-mode-btn3" title="内容全屏"></i>

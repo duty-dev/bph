@@ -62,6 +62,7 @@ var PolicegroupManage = {
 				if(req.data != null){
 					var rows =req.data;  
 					var total =  req.totalRows;
+					$("#dtPoliceGroup").empty();
 					$("#dtPoliceGroup").kendoGrid({
 					dataSource: {data:rows}, 
 					columns : [ {

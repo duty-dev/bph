@@ -2,7 +2,7 @@
 <script type="text/javascript">
 
 var ReportManage ={
-	initAlarmTypeData:function(data){
+	initAlarmTypeData:function(data,title,XLabel){
 		$("#jqtj").empty();
 		$("#jqtj").kendoChart({
                 title: {
@@ -42,7 +42,7 @@ var ReportManage ={
                 }
             });  
 	},
-	initAlarmCircleData:function(data){
+	initAlarmCircleData:function(data,title,XLabel){
 		$("#jqtj").empty(); 
 		$("#jqtj").kendoChart({
                 title: {
@@ -136,7 +136,7 @@ var ReportManage ={
                 }
             }); 
 	},
-	initAlarmOrganData:function(data){
+	initAlarmOrganData:function(data,title,XLabel){
 		$("#jqtj").empty();
 		$("#jqtj").kendoChart({
                 title: {

@@ -155,13 +155,17 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
     <delete id="deleteByYMD" parameterType="java.lang.Integer">
-  	delete from t_duty where ymd=#{targetYmd,jdbcType=INTEGER}
+  	delete from t_duty where ymd=#{ymd,jdbcType=INTEGER} and is_template= 0 and org_id = #{organId,jdbcType=INTEGER}
   </delete>
   
   
-    <delete id="deleteTempById" parameterType="java.lang.Integer">
+    <delete id="deleteTempById" parameterType="java.util.Map">
   	delete from t_duty where id = #{param} and is_template= 1
   </delete>
+  
+    <select id="getdutyIdByYmd" parameterType="java.util.Map"  resultType="com.tianyi.bph.domain.duty.Duty">
+  	select * from t_duty where ymd=#{ymd,jdbcType=INTEGER} and is_template= 0 and org_id = #{organId,jdbcType=INTEGER}
+  </select>
   
    <select id="loadTempById" parameterType="Integer" resultType="com.tianyi.bph.domain.duty.Duty">  
        		select * from t_duty where id = #{param} and is_template= 1

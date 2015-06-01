@@ -60,10 +60,10 @@ public class AreaServiceImpl implements AreaService {
 	@Override
 	public List<Area> selectByExample(AreaExample example) {
 		List<Area> list = mapper.selectByExample(example);
-		for (final Area area : list) {
-			area.setRelationUserKeys(areaRelationUserMapper.selectByAreaId(area
-					.getId()));
-		}
+		// for (final Area area : list) {
+		// area.setRelationUserKeys(areaRelationUserMapper.selectByAreaId(area
+		// .getId()));
+		// }
 		return list;
 	}
 
@@ -136,12 +136,7 @@ public class AreaServiceImpl implements AreaService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		List<Area> list = mapper.selectByOrganId(organ.getPath());
-		for (final Area area : list) {
-			area.setRelationUserKeys(areaRelationUserMapper.selectByAreaId(area
-					.getId()));
-		}
-		return list;
+		return mapper.selectByOrganId(organ.getPath());
 	}
 
 	@Override

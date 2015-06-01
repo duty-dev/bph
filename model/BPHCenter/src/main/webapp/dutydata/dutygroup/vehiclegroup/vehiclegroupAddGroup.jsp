@@ -207,12 +207,12 @@ var m_vehicleGroup_Org = {
 							</li> 
 					</ul>
 					<p style="float:left;width:250px;margin-top:10px;">
-						<span class="k-button"  onclick="VehicleGroupManage.saveVehicleGroup()">保存</span>
+						<button class="ty-button"  onclick="VehicleGroupManage.saveVehicleGroup()">确定</button>
 					</p>
 				</div>
 			</div>
 							<div style="width:370px; float:left">
-								<div id="divOrg" style="height:320px; overflow:auto" >
+								<div id="divOrg" style="height:320px; overflow:auto" class="ty-tree-bg">
 									<ul id="treeOrg" style="overflow:auto"></ul>
 								</div>
 							</div> 

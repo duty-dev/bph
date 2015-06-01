@@ -33,6 +33,6 @@ if(pageCount > 5)
 str += sign + '<a href=\'#this\' onclick=\'javascript:'+actionName+'(\"'+ p+ '\")\'>下一页</a>';
 }
 str += ' <a href=\'#this\' onclick=\'javascript:'+actionName+'(\"'+pageCount+'\")\'>最后一页</a>';
-str += ' <font color="#81C9F0">当前页面</font> <font color="#FFF">' + page + '</font><font color="#81C9F0"> / 共计 </font> <font color="#FFF">' + pageCount + '</font> <font color="#81C9F0">页</font> ';
+str += ' <font color="#81C9F0">当前页面</font> <font color="#81C9F0">' + page + '</font><font color="#81C9F0"> / 共计 </font> <font color="#81C9F0">' + pageCount + '</font> <font color="#81C9F0">页</font> ';
 return str;
 }

@@ -23,17 +23,6 @@ public class GroupManager {
     private Integer areaType;
     
     private String areaContent;
-    private String jsonData;
-    
-    private Integer listId;
-    
-    public Integer getListId() {
-		return listId;
-	}
-
-	public void setListId(Integer listId) {
-		this.listId = listId;
-	}
     
 
 	public String getSourceData() {
@@ -80,13 +69,6 @@ public class GroupManager {
 	}
 
 	private List<GroupOther> groupOther;
-	public String getJsonData() {
-		return jsonData;
-	}
-
-	public void setJsonData(String jsonData) {
-		this.jsonData = jsonData;
-	}
 	
 	private AreaGroup areaGroup;
 

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.tianyi.bph.BaseLogController;
 import com.tianyi.bph.common.DateUtil;
 import com.tianyi.bph.common.JsonUtils;
 import com.tianyi.bph.common.ReturnResult;
@@ -33,7 +34,7 @@ import com.tianyi.bph.vo.ALarmVO;
  */
 @Controller
 @RequestMapping("/alarm")
-public class AlarmAction {
+public class AlarmAction extends BaseLogController{
 	
 	@Autowired AlarmDispatchService alarmDispatchService;
 	
@@ -132,6 +133,7 @@ public class AlarmAction {
 			if(!StringUtils.isEmpty(gpsConfig)){alarmInfo.setGpsConfig(gpsConfig);}
 			alarmInfo.setMark(mark);
 			alarmDispatchService.updateJjdbInfo(alarmInfo);
+			addLog(request, "更新警情",2);
 			return ReturnResult.SUCCESS("警情更新");
 		}catch(Exception e){
 			e.printStackTrace();
@@ -170,6 +172,7 @@ public class AlarmAction {
 			if(!StringUtils.isEmpty(leaveTime)){pjPolice.setLeaveTime((DateUtil.parse(leaveTime, "yyyyMMddHHmmss")));}
 			if(pjUserId != null){pjPolice.setPjUserId(pjUserId);}
 			alarmDispatchService.dispatchPolice(pjPolice);
+			addLog(request, "警情派警",2);
 			return ReturnResult.SUCCESS("警情派警");
 		}catch(Exception e){
 			e.printStackTrace();
@@ -211,6 +214,7 @@ public class AlarmAction {
 			if(userId != null){alarmCommunication.setUserId(userId);}
 			if(isByMyself != null){alarmCommunication.setIsByMyself(isByMyself);}
 			alarmDispatchService.pushAlarmMsg(alarmCommunication);
+			addLog(request, "发布警情消息",2);
 			return ReturnResult.SUCCESS("警情消息推送");
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -235,6 +239,7 @@ public class AlarmAction {
 			if(!StringUtils.isEmpty(jjdbh)){pjPolice.setJjdbh(jjdbh);}
 			if(pjPoliceId != null){pjPolice.setPjPoliceId(pjPoliceId);}
 			alarmDispatchService.deletePJByPrimaryKey(pjPolice);
+			addLog(request, "删除派警信息",2);
 			return ReturnResult.SUCCESS("删除派警");
 		}catch(Exception e){
 			e.printStackTrace();

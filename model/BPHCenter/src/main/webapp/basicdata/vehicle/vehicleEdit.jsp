@@ -312,7 +312,7 @@ var vehicleEditManage= {
 							id="txtvehiclegpsname" value="${vehicle.gpsName}" /></li>
 					</ul>
 					<p class="ty-input-row">
-						<button class="ty-button"  onclick="vehicleEditManage.saveVehicleWithOut()">保存</button>
+						<button class="ty-button"  onclick="vehicleEditManage.saveVehicleWithOut()">确定</button>
 					</p>
 
 

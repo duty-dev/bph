@@ -127,10 +127,7 @@
     left join t_police as p on m.police_id=p.id and  p.isUsed =1
     left join t_organ as org on dpg.org_id=org.organ_id
     where group_id = #{groupId,jdbcType=INTEGER}
-    order by m.id
-  		<if test="pageStart != null">
-	    	limit #{pageStart,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
-	  	</if>
+    order by m.id 
     
   </select>
   

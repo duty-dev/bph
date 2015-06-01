@@ -93,9 +93,9 @@ public interface DutyMapper {
 
 	/**
 	 * 根据日期删除勤务报备
-	 * @param targetYmd
+	 * @param map
 	 */
-	void deleteByYMD(Integer targetYmd);
+	void deleteByYMD(Map<String, Object> map);
  
 	/**
 	 * 根据日期，获取勤务报备详细数据
@@ -116,4 +116,6 @@ public interface DutyMapper {
 	 * @param param
 	 */
 	void deleteTempById(Integer param);
+
+	Duty getdutyIdByYmd(Map<String, Object> map);
 }

@@ -323,7 +323,7 @@ var vehicleAddManage= {
 					</ul>
 					<p class="ty-input-row">
 						<!--<span class="k-button"  onclick="vehicleAddManage.saveVehicleNotOut()">保存并继续</span>-->
-						<button class="ty-button"  onclick="vehicleAddManage.saveVehicleWithOut()">保存</button>
+						<button class="ty-button"  onclick="vehicleAddManage.saveVehicleWithOut()">确定</button>
 					</p>
 
 

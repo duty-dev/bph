@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,12 +23,17 @@ import com.tianyi.bph.domain.report.CasePeriodAGGR;
 import com.tianyi.bph.domain.report.CaseReportResult;
 import com.tianyi.bph.domain.report.CaseTypeAGGR;
 import com.tianyi.bph.domain.report.ReportPeriod;
+import com.tianyi.bph.domain.system.Organ;
+import com.tianyi.bph.domain.system.User;
 import com.tianyi.bph.service.report.CaseReportService;
+import com.tianyi.bph.service.system.OrganService;
 
 @Controller
 @RequestMapping("/caseReportWeb")
 public class CaseReportController {
-	
+
+	@Autowired
+	private OrganService organService;
 	@Autowired
 	private CaseReportService caseReportService;
 	
@@ -35,17 +42,41 @@ public class CaseReportController {
 			@RequestParam(value = "query", required = false) String query,
 			HttpServletRequest request) {
 		try {
-			
+			JSONObject joQuery = JSONObject.fromObject(query); 
 			Map<String,Object> map=new HashMap<String,Object>();
 			List<CaseReportResult<CaseTypeAGGR>>  results=new ArrayList<CaseReportResult<CaseTypeAGGR>>();
 			List<CaseTypeAGGR>  ls=null;
+			
+			
+			//组织机构id
+			int organId = Integer.parseInt(joQuery.getString("orgId"));
+			User user = (User) request.getAttribute("User");
+			if (organId == 0) {
+				organId = user.getOrgId();
+			}
+			Organ organ = organService.getOrganByPrimaryKey(organId);
+			map.put("orgFullPath", organ.getPath());
+			  
+			//查询时间
+			
+			//查询时间方式，1、月  2、日
+			
+			//警情级别
+			
+			//警情类型    父级节点
+			
+			//警情级别    二级节点
+			
+			//时间区间    时间节点
+			
+			
+			
 			
 			Integer bd=20140701;
 			Integer ed=20140731;
 			
 			ReportPeriod  rp=new ReportPeriod(bd,ed,1);
 			
-			map.put("orgFullPath", "/510000000000");
 			
 			List<Integer>  levels=new ArrayList<Integer>();
 			levels.add(0);

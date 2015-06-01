@@ -8,32 +8,43 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.tianyi.bph.common.JsonUtils;
+import com.tianyi.bph.dao.system.AreaGroupMapper;
 import com.tianyi.bph.dao.system.GroupManagerMapper;
 import com.tianyi.bph.dao.system.GroupOtherMapper;
+import com.tianyi.bph.domain.system.AreaGroup;
 import com.tianyi.bph.domain.system.GroupManager;
 import com.tianyi.bph.domain.system.GroupOther;
+import com.tianyi.bph.domain.system.JsonPoint;
+import com.tianyi.bph.domain.system.JsonPointVO;
 import com.tianyi.bph.exception.RestException;
 import com.tianyi.bph.query.system.GroupManagerExample;
 import com.tianyi.bph.service.system.GroupManagerService;
 
 @Service
+@Transactional
 public class GroupManagerServiceImpl implements GroupManagerService {
 
 	@Autowired
 	GroupManagerMapper groupDao;
 	@Autowired
 	GroupOtherMapper groupOtherDao;
+	@Autowired
+	AreaGroupMapper areaGroupDao;
 
 	@Override
-	public int deleteByPrimaryKey(Integer groupId) {
+	public int deleteByPrimaryKey(Integer groupId,Integer groupType) {
 		// TODO Auto-generated method stub
 		if (groupId == null) {
 			throw new RestException("对象不能为空");
 		}
-
-		groupOtherDao.deleteByPrimaryKey(groupId);
-
+		if(groupType==1){
+			groupOtherDao.deleteByPrimaryKey(groupId);
+		}else{
+			areaGroupDao.deleteByPrimaryKey(groupId);
+		}
 		int i = groupDao.deleteByPrimaryKey(groupId);
 
 		return i;
@@ -46,19 +57,28 @@ public class GroupManagerServiceImpl implements GroupManagerService {
 			throw new RestException("对象不能为空");
 		}
 		groupDao.insert(record);
-		if (!StringUtils.isEmpty(record.getJsonData())) {
-			JSONArray array = JSONArray.fromObject(record.getJsonData());
-			for (int i = 0; i < array.size(); i++) {
-				JSONObject o = (JSONObject) array.get(i);
-				int type = o.getInt("groupType");
-				int id = o.getInt("listId");
-				GroupOther other = new GroupOther();
-				other.setGroupId(record.getGroupId());
-				other.setGroupType(type);
-				other.setListId(id);
-				groupOtherDao.insert(other);
+		if(record.getGroupType()==1){//资源收藏
+			if (!StringUtils.isEmpty(record.getSourceData())) {
+				JSONArray array = JSONArray.fromObject(record.getSourceData());
+				for (int i = 0; i < array.size(); i++) {
+					JSONObject o = (JSONObject) array.get(i);
+					int type = o.getInt("sourceType");
+					int id = o.getInt("sourceId");
+					GroupOther other = new GroupOther();
+					other.setGroupId(record.getGroupId());
+					other.setSourceType(type);
+					other.setSourceId(id);
+					groupOtherDao.insert(other);
+				}
 			}
+		}else{//区域收藏
+			AreaGroup areaGroup = new AreaGroup();
+			areaGroup.setGroupId(record.getGroupId());
+			areaGroup.setAreaGroupType(record.getAreaType());
+			areaGroup.setAreaGroupContent(record.getAreaContent());
+			areaGroupDao.insert(areaGroup);
 		}
+		
 		return record.getGroupId();
 	}
 
@@ -103,21 +123,28 @@ public class GroupManagerServiceImpl implements GroupManagerService {
 		GroupManager group = groupDao.selectByPrimaryKey(record.getGroupId());
 		if (group != null) {
 			id = groupDao.updateByPrimaryKeySelective(record);
-			
-			if (!StringUtils.isEmpty(record.getJsonData())) {
-				groupOtherDao.deleteByPrimaryKey(record.getGroupId());
+			if(record.getGroupType()==1){
+				if (!StringUtils.isEmpty(record.getSourceData())) {
+					groupOtherDao.deleteByPrimaryKey(record.getGroupId());
 
-				JSONArray array = JSONArray.fromObject(record.getJsonData());
-				for (int i = 0; i < array.size(); i++) {
-					JSONObject o = (JSONObject) array.get(i);
-					int type = o.getInt("groupType");
-					int listId = o.getInt("listId");
-					GroupOther other = new GroupOther();
-					other.setGroupId(group.getGroupId());
-					other.setGroupType(type);
-					other.setListId(listId);
-					groupOtherDao.insert(other);
+					JSONArray array = JSONArray.fromObject(record.getSourceData());
+					for (int i = 0; i < array.size(); i++) {
+						JSONObject o = (JSONObject) array.get(i);
+						int type = o.getInt("sourceType");
+						int Id = o.getInt("sourceId");
+						GroupOther other = new GroupOther();
+						other.setGroupId(group.getGroupId());
+						other.setSourceType(type);
+						other.setSourceId(Id);
+						groupOtherDao.insert(other);
+					}
 				}
+			}else{
+				AreaGroup areagroup =new AreaGroup();
+				areagroup.setGroupId(record.getGroupId());
+				areagroup.setAreaGroupType(record.getAreaType());
+				areagroup.setAreaGroupContent(record.getAreaContent());
+				areaGroupDao.updateByExampleSelective(areagroup);
 			}
 		}
 		return id;
@@ -135,6 +162,26 @@ public class GroupManagerServiceImpl implements GroupManagerService {
 			throw new RestException("userId 不能为空");
 		}
 		List<GroupManager> groupList = groupDao.getListByUserId(userId);
+		if(groupList != null && groupList.size()>0){
+			for (GroupManager groupManager : groupList) {//区域收藏
+				if(groupManager.getAreaGroup() != null){
+					if(!StringUtils.isEmpty(groupManager.getAreaGroup().getAreaGroupContent())){
+						String aa=groupManager.getAreaGroup().getAreaGroupContent().replaceAll("\"","'");
+						groupManager.getAreaGroup().setAreaGroupContent(aa);
+					}else{
+						groupManager.setAreaGroup(null);
+					}
+				}
+				//自定义收藏
+				if(groupManager.getGroupOther() !=null && groupManager.getGroupOther().size()>0){
+					for(GroupOther other:groupManager.getGroupOther()){
+						if(other.getSourceId()==null ||other.getSourceId()==0){
+							groupManager.setGroupOther(null);
+						}
+					}
+				}
+			}
+		}
 		return groupList;
 	}
 
@@ -147,16 +194,16 @@ public class GroupManagerServiceImpl implements GroupManagerService {
 		int id=0;
 		GroupManager group = groupDao.selectByPrimaryKey(record.getGroupId());
 		if (group != null) {
-			if (!StringUtils.isEmpty(record.getJsonData())) {
-				JSONArray array = JSONArray.fromObject(record.getJsonData());
+			if (!StringUtils.isEmpty(record.getSourceData())) {
+				JSONArray array = JSONArray.fromObject(record.getSourceData());
 				for (int i = 0; i < array.size(); i++) {
 					JSONObject o = (JSONObject) array.get(i);
-					int type = o.getInt("groupType");
-					int listId = o.getInt("listId");
+					int type = o.getInt("sourceType");
+					int Id = o.getInt("sourceId");
 					GroupOther other = new GroupOther();
 					other.setGroupId(group.getGroupId());
-					other.setGroupType(type);
-					other.setListId(listId);
+					other.setSourceType(type);
+					other.setSourceId(Id);
 					groupOtherDao.insert(other);
 				}
 			}
@@ -173,7 +220,7 @@ public class GroupManagerServiceImpl implements GroupManagerService {
 		}
 		GroupOther orther=new GroupOther();
 		orther.setGroupId(record.getGroupId());
-		orther.setListId(record.getListId());
+		orther.setSourceId(record.getSourceId());
 		int i=groupOtherDao.deleteSource(orther);
 		return i;
 	}

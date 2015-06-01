@@ -12,6 +12,7 @@ public class CircleLayerVo {
 
 	private int id;			//圈层id
 	private String name;	//圈层名称
+	private String text;	//圈层描述
 	private String note;	//描述
 
 	private DisplayProperty displayProperty;
@@ -46,7 +47,12 @@ public class CircleLayerVo {
 	public void setMapProperty(List<MapProperty> mapProperty) {
 		this.mapProperty = mapProperty;
 	}
-
+	public String getText() {
+		return text;
+	}
+	public void setText(String text) {
+		this.text = text;
+	}
 	public CircleLayer ctrate() {
 		CircleLayer circleLayer = new CircleLayer();
 		circleLayer.setId(this.id);
@@ -72,7 +78,7 @@ public class CircleLayerVo {
 			setId(circleLayer.getId());
 			setName(circleLayer.getName());
 			setNote(circleLayer.getNote());
-			
+			setText(circleLayer.getName());
 			if (StringUtils.hasLength(circleLayer.getDisplayProperty())) {
 				setDisplayProperty(JsonUtils.toObj(circleLayer.getDisplayProperty(),
 						DisplayProperty.class));

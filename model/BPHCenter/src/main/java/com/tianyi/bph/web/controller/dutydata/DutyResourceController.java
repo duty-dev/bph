@@ -181,6 +181,7 @@ public class DutyResourceController {
 		}
 	}
 
+
 	/*
 	 * 获取武器资源列表
 	 * 

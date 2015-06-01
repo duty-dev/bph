@@ -30,6 +30,9 @@ $(function() {
 	obj.orgId = $("#organId").val();
 	obj.ymd = ymd;
 	DutyPrepareManage.loadDuty(obj,0); 
+
+	//var backdate = ymd.substring(0,4)+"-"+ymd.substring(4,6)+"-"+ymd.substring(6,8);
+	//$("#a_backToCalendar").attr("href","/BPHCenter/dutyRouteWeb/gotoDutyCalendar.do?orgId="+m_dutyprepare_Org.id+"&date="+backdate);
 });
 //管理窗体及对话框。
 var DutyPrepareManage={
@@ -84,13 +87,21 @@ var DutyPrepareManage={
 		initTemplateWindow:function(){
 			$("#templateWindow").kendoWindow({
                 width: "450px",
-                title:"保存备勤模板"
+                title:"保存备勤模板",
+    	        position:{
+    	        	top:'25%',
+    	        	left:'40%'
+    	        }
             });
 		},
 		initCalendarWindow:function(){
 			$("#calendarWindow").kendoWindow({
-                width: "450px",
-                title:"复制报备信息"
+                width: "300px",
+                title:"复制报备信息",
+    	        position:{
+    	        	top:'25%',
+    	        	left:'40%'
+    	        }
             });
 			
 			$("#cc").kendoCalendar({
@@ -131,7 +142,11 @@ var DutyPrepareManage={
 			var win =$('#windowDutyType');
 			win.kendoWindow({
 	                        width: "600px",
-	                        title: "备勤类型"
+	                        title: "备勤类型",
+	            	        position:{
+	            	        	top:'25%',
+	            	        	left:'40%'
+	            	        }
 	                    });
 			win.data("kendoWindow").open();
 		},
@@ -342,8 +357,9 @@ var DutyPrepareManage={
 			} 
 		},
 		returnBackToCalendarAction:function(){
-			var date = ymd.substring(0,4)+"-"+ymd.substring(4,6)+"-"+ymd.substring(6,8);
-			window.location.href="/BPHCenter/dutyRouteWeb/gotoDutyCalendar.action?sessionId="+sessionId+"&orgId="+m_dutyprepare_Org.id+"&date="+date;
+			window.history.back(-1)
+			//var date = ymd.substring(0,4)+"-"+ymd.substring(4,6)+"-"+ymd.substring(6,8);
+			//window.location.href="/BPHCenter/dutyRouteWeb/gotoDutyCalendar.do?sessionId="+sessionId+"&orgId="+m_dutyprepare_Org.id+"&date="+date;
 		}
 };
 //管理基础资料
@@ -417,8 +433,15 @@ var DutyBaseManage = {
 			success : function(req) {
 				if(req.code == 200){
 					if(req.data != null){
+						for(var i= 0;i<req.data.length;i++){
+							if(req.data[i].iconUrl == undefined){
+								req.data[i].iconUrl = "/BPHCenter/images/images/jihui.png";
+							}
+						}
+						
 						m_policesourceData = req.data;
 						$("#policeSourceTV").data("kendoTreeView").setDataSource(req.data);
+						$("#policeSourceTV").mCustomScrollbar({scrollButtons:{enable:true},advanced:{updateOnContentResize:true}});
 					} 
 				}
 			}
@@ -497,7 +520,11 @@ var DutyBaseManage = {
                     var win =$('#polResConWindow');
 			win.kendoWindow({
 	                        width: "450px",
-	                        title: "警员分组过滤条件"
+	                        title: "警员分组过滤条件",
+	            	        position:{
+	            	        	top:'25%',
+	            	        	left:'40%'
+	            	        }
 	                    });
 			win.data("kendoWindow").open(); 
 	}, 
@@ -645,6 +672,7 @@ var DutyBaseManage = {
 					if(req.data != null){
 						m_vehicleSourceData = req.data;
 						$("#vehicleSourceTV").data("kendoTreeView").setDataSource(req.data);
+						$("#vehicleSourceTV").mCustomScrollbar({scrollButtons:{enable:true},advanced:{updateOnContentResize:true}});
 					} 
 				}
 			}
@@ -722,7 +750,11 @@ var DutyBaseManage = {
                      var win =$('#vehResConWindow');
          			win.kendoWindow({
          	                        width: "450px",
-         	                        title: "车辆分组过滤条件"
+         	                        title: "车辆分组过滤条件",
+         	           	        position:{
+         	       	        	top:'25%',
+         	       	        	left:'40%'
+         	       	        }
          	                    });
          			win.data("kendoWindow").open();     
 	},
@@ -869,6 +901,7 @@ var DutyBaseManage = {
 					if(req.data != null){
 						m_weaponSourceData = req.data;
 						$("#weaponSourceTV").data("kendoTreeView").setDataSource(req.data);
+						$("#weaponSourceTV").mCustomScrollbar({scrollButtons:{enable:true},advanced:{updateOnContentResize:true}});
 					} 
 				}
 			}
@@ -946,7 +979,11 @@ var DutyBaseManage = {
               var win =$('#wepResConWindow');
          			win.kendoWindow({
          	                        width: "450px",
-         	                        title: "武器分组过滤条件"
+         	                        title: "武器分组过滤条件",
+         	           	        position:{
+         	       	        	top:'25%',
+         	       	        	left:'40%'
+         	       	        }
          	                    });
          			win.data("kendoWindow").open();  
 	},
@@ -1096,6 +1133,7 @@ var DutyBaseManage = {
 					if(req.data!=null){
 						m_gpsSourceData = req.data;
 						$("#gpsSourceTV").data("kendoTreeView").setDataSource(req.data);
+						$("#gpsSourceTV").mCustomScrollbar({scrollButtons:{enable:true},advanced:{updateOnContentResize:true}});
 					}
 				}else{
 					$("body").popjs({"title":"提示","content":"获取定位设备失败"}); 
@@ -1175,7 +1213,11 @@ var DutyBaseManage = {
               var win =$('#gpsResConWindow');
          			win.kendoWindow({
          	                        width: "450px",
-         	                        title: "武器分组过滤条件"
+         	                        title: "武器分组过滤条件",
+         	           	        position:{
+         	       	        	top:'25%',
+         	       	        	left:'40%'
+         	       	        }
          	                    });
          			win.data("kendoWindow").open();   
 	},
@@ -1271,7 +1313,11 @@ var DutyBaseManage = {
 		var win =$('#windowTemplete');
 		win.kendoWindow({
                         width: "450px",
-                        title: "备勤模板"
+                        title: "备勤模板",
+            	        position:{
+            	        	top:'25%',
+            	        	left:'40%'
+            	        }
                     });
 		win.data("kendoWindow").open(); 
 	},
@@ -1327,12 +1373,20 @@ var DutyItemManage={
 			 $("#tpkEndTime").kendoTimePicker();
 			 
 			 $("#shiftWindow").kendoWindow({
-                 width: "450px"
+                 width: "450px",
+     	        position:{
+    	        	top:'25%',
+    	        	left:'40%'
+    	        }
              });
 		},
 		initUserNodeWindow:function(){
 			$("#userNodeWindow").kendoWindow({
-                width: "450px"
+                width: "450px",
+    	        position:{
+    	        	top:'25%',
+    	        	left:'40%'
+    	        }
             });
 		},
 		initTaskWindow:function(){
@@ -1662,6 +1716,11 @@ var DutyItemManage={
 		},
 		/* 从新计算并加载数据 */
 		reCalcDuty:function(data) {
+//			for(var m = 0;m<data.length;m++){
+//				if(data[m].iconUrl == undefined){
+//					data[m].iconUrl = "/BPHCenter/images/images/jihui.png";
+//				}
+//			}
 			/* 从新计算并加载数据 */
 			var item_new =null;
 			var item_old =null;
@@ -1935,7 +1994,11 @@ var DutyItemManage={
 						 winTask.kendoWindow({
 					                        width: "600px", 
 					                        height:"530px",
-					                        title: "警员关联任务"
+					                        title: "警员关联任务",
+					            	        position:{
+					            	        	top:'25%',
+					            	        	left:'40%'
+					            	        }
 					                    });
 						 winTask.data("kendoWindow").open();  
 					} else {

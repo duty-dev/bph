@@ -215,7 +215,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<div id="dtSelGroupMember"></div>
 								
 					<p style="width:100%;margin-top:10px;">
-						<span class="k-button"  onclick="PoliceGroupManage.appendMember()">保存</span>
+						<button class="ty-button"  onclick="PoliceGroupManage.appendMember()">确定</button>
 					</p>
 							</div>
 						  
