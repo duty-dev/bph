@@ -320,6 +320,35 @@ public class CaseReportController {
 			@RequestParam(value = "query", required = false) String query,
 			HttpServletRequest request) { 
 		
+		try{
+			Map<String,Object> map= new HashMap<String,Object>();
+			ReportPeriod rp=new ReportPeriod(20150101,20150430,1);
+			
+			
+			map.put("orgId", 72);
+			map.put("orgPath", "/510000000000/510100000000");
+			List<Integer> caseLevels=new ArrayList<Integer>();
+			caseLevels.add(1);
+			caseLevels.add(2);
+			caseLevels.add(3);
+			
+			List<String> caseTypes=new ArrayList<String>();
+			caseTypes.add("caseType110010901");
+			caseTypes.add("caseType110011600");
+			map.put("type2Codes", caseTypes);
+			
+			map.put("beginYmd", rp.getBeginYmd());
+			map.put("endYmd", rp.getEndYmd());
+			
+			
+			
+		}catch(Exception ex){
+			
+		}
+		
+		
+		
+		
 		return null;
 	}
 }

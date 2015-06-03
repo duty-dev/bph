@@ -20,9 +20,9 @@ import com.tianyi.bph.web.controller.reportdata.CaseReportController;
 
 public class CaseReportControllerTest extends BaseTest{
 	
-//	@Autowired
-//	private CaseReportController   caseReportControll;
-//	
+	@Autowired
+	private CaseReportController   caseReportControll;
+	
 	@Autowired
 	private WarningCfgService warningCfgService;
 	
@@ -34,10 +34,11 @@ public class CaseReportControllerTest extends BaseTest{
 		this.saveWarning();
 		//this.loadWarningByOrgId();
 	}
-//	@Test
-//	public  void  loadCasePeriodReport(){
-//		caseReportControll.loadCasePeriodReport(null, null);
-//	}
+	@Test
+	public  void  loadCasePeriodReport(){
+		caseReportControll.loadCasePeriodReport(null, null);
+
+	}
 	
 //	@Test
 //	public  void  loadCaseHourReport(){
