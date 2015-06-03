@@ -23,8 +23,13 @@ import com.tianyi.bph.domain.report.CasePeriodAGGR;
 import com.tianyi.bph.domain.report.CaseReportResult;
 import com.tianyi.bph.domain.report.CaseTypeAGGR;
 import com.tianyi.bph.domain.report.ReportPeriod;
+import com.tianyi.bph.domain.report.WarningCaseLevel;
+import com.tianyi.bph.domain.report.WarningCaseType;
+import com.tianyi.bph.domain.report.WarningColor;
 import com.tianyi.bph.domain.system.Organ;
 import com.tianyi.bph.domain.system.User;
+import com.tianyi.bph.query.report.QueryCondition;
+import com.tianyi.bph.query.report.WarningCfgVM;
 import com.tianyi.bph.service.report.CaseReportService;
 import com.tianyi.bph.service.system.OrganService;
 
@@ -36,86 +41,86 @@ public class CaseReportController {
 	private OrganService organService;
 	@Autowired
 	private CaseReportService caseReportService;
-	
+
 	@RequestMapping(value = "/loadCaseTypeReport.do")
-	public @ResponseBody ReturnResult loadCaseTypeReport(
+	public @ResponseBody
+	ReturnResult loadCaseTypeReport(
 			@RequestParam(value = "query", required = false) String query,
 			HttpServletRequest request) {
 		try {
-			JSONObject joQuery = JSONObject.fromObject(query); 
-			Map<String,Object> map=new HashMap<String,Object>();
-			List<CaseReportResult<CaseTypeAGGR>>  results=new ArrayList<CaseReportResult<CaseTypeAGGR>>();
-			List<CaseTypeAGGR>  ls=null;
-			
-			
-			//组织机构id
-			int organId = Integer.parseInt(joQuery.getString("orgId"));
+			JSONObject jobj = JSONObject.fromObject(query);
+			Map<String, Class<?>> classMap = new HashMap<String, Class<?>>();
+
+			classMap.put("caseType", String.class);
+			classMap.put("caseTimaSpan", Integer.class);
+			classMap.put("caseLevels", Integer.class);
+			QueryCondition queryCondition = (QueryCondition) JSONObject.toBean(
+					jobj, QueryCondition.class, classMap);
+
+			Map<String, Object> map = new HashMap<String, Object>();
+			List<CaseReportResult<CaseTypeAGGR>> results = new ArrayList<CaseReportResult<CaseTypeAGGR>>();
+			List<CaseTypeAGGR> ls = null;
+			// 组织机构id
+			int organId = queryCondition.getOrganId();
 			User user = (User) request.getAttribute("User");
 			if (organId == 0) {
 				organId = user.getOrgId();
 			}
 			Organ organ = organService.getOrganByPrimaryKey(organId);
 			map.put("orgFullPath", organ.getPath());
-			  
-			//查询时间
-			
-			//查询时间方式，1、月  2、日
-			
-			//警情级别
-			
-			//警情类型    父级节点
-			
-			//警情级别    二级节点
-			
-			//时间区间    时间节点
-			
-			
-			
-			
-			Integer bd=20140701;
-			Integer ed=20140731;
-			
-			ReportPeriod  rp=new ReportPeriod(bd,ed,1);
-			
-			
-			List<Integer>  levels=new ArrayList<Integer>();
-			levels.add(0);
-			levels.add(1);
-			levels.add(2);
-			map.put("levels",levels );
-			map.put("beginHour", 0);
-			map.put("endHour", 23);
-			
-			//当期
-			CaseReportResult<CaseTypeAGGR> cResult=new CaseReportResult<CaseTypeAGGR>();
+
+			// 查询时间
+			// 查询时间方式，1、月 2、日
+			String startDate = queryCondition.getStartDate();
+			String sDate = startDate.replace("-", "").trim();
+			String endDate = queryCondition.getEndDate();
+			String eDate = endDate.replace("-", "").trim();
+			Integer bd = Integer.parseInt(sDate);
+			Integer ed = Integer.parseInt(eDate);
+			ReportPeriod rp = new ReportPeriod(bd, ed,
+					queryCondition.getPeriodType());
+			// 警情类型 父级节点
+			List<String> caseTypes = queryCondition.getCaseType();
+
+			// 警情级别 二级节点
+			List<Integer> levels = queryCondition.getCaseLevels();
+			// 时间区间 时间节点
+			List<Integer> hours = queryCondition.getCaseTimaSpan();
+			map.put("levels", levels);
+			map.put("hours", hours);
+
+			// 当期
+			CaseReportResult<CaseTypeAGGR> cResult = new CaseReportResult<CaseTypeAGGR>();
 			map.put("beginYMD", rp.getBeginYmd());
 			map.put("endYMD", rp.getEndYmd());
-			ls=caseReportService.loadCaseTypeReport(map);
+			ls = caseReportService.loadCaseTypeReport(map);
 			cResult.setBeginYmd(rp.getBeginYmd());
 			cResult.setEndYmd(rp.getEndYmd());
 			cResult.setData(ls);
 			results.add(cResult);
-			
-			//同比
-			CaseReportResult<CaseTypeAGGR> yResult=new CaseReportResult<CaseTypeAGGR>();
+
+			// 同比
+			CaseReportResult<CaseTypeAGGR> yResult = new CaseReportResult<CaseTypeAGGR>();
 			map.put("beginYMD", rp.getYOYBeginYmd());
 			map.put("endYMD", rp.getYOYEndYmd());
-			ls=caseReportService.loadCaseTypeReport(map);
+			ls = caseReportService.loadCaseTypeReport(map);
 			yResult.setBeginYmd(rp.getYOYBeginYmd());
 			yResult.setEndYmd(rp.getYOYEndYmd());
 			yResult.setData(ls);
-			results.add(yResult);;
-			
-			//环比
-			CaseReportResult<CaseTypeAGGR> mResult=new CaseReportResult<CaseTypeAGGR>();
+			results.add(yResult);
+			;
+
+			// 环比
+			CaseReportResult<CaseTypeAGGR> mResult = new CaseReportResult<CaseTypeAGGR>();
 			map.put("beginYMD", rp.getMOMBeginYmd());
 			map.put("endYMD", rp.getMOMEndYmd());
-			ls=caseReportService.loadCaseTypeReport(map);
+			ls = caseReportService.loadCaseTypeReport(map);
 			mResult.setBeginYmd(rp.getMOMBeginYmd());
 			mResult.setEndYmd(rp.getMOMEndYmd());
 			mResult.setData(ls);
-			results.add(mResult);;
-			
+			results.add(mResult);
+			;
+
 			return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
 					MessageCode.SELECT_SUCCESS, 0, results);
 
@@ -123,69 +128,90 @@ public class CaseReportController {
 			return ReturnResult.MESSAGE(MessageCode.STATUS_FAIL,
 					MessageCode.SELECT_ORGAN_FAIL, 0, null);
 		}
-		
+
 	}
+
 	@RequestMapping(value = "/loadCasePeriodReport.do")
-	public @ResponseBody ReturnResult loadCasePeriodReport(
+	public @ResponseBody
+	ReturnResult loadCasePeriodReport(
 			@RequestParam(value = "query", required = false) String query,
 			HttpServletRequest request) {
 		try {
-			Map<String,Object> map=new HashMap<String,Object>();
-			List<CaseReportResult<CasePeriodAGGR>>  results=new ArrayList<CaseReportResult<CasePeriodAGGR>>();
-			List<CasePeriodAGGR>  ls=null;
-			
-			Integer bd=20140101;
-			Integer ed=20141231;
-			
-			ReportPeriod  rp=new ReportPeriod(bd,ed,1);
-			
-			map.put("orgFullPath", "/510000000000");
-			
-			List<Integer>  levels=new ArrayList<Integer>();
-			levels.add(0);
-			levels.add(1);
-			levels.add(2);
-			
-			List<String>  type2Codes=new ArrayList<String>();
-			type2Codes.add("caseType110011000");
-			
-			map.put("periodType", 1);
-			
-			map.put("type2Codes",type2Codes);
-			map.put("levels",levels );
-			map.put("beginHour", 0);
-			map.put("endHour", 23);
-			
-			//当期
-			CaseReportResult<CasePeriodAGGR> cResult=new CaseReportResult<CasePeriodAGGR>();
+			JSONObject jobj = JSONObject.fromObject(query);
+			Map<String, Class<?>> classMap = new HashMap<String, Class<?>>();
+
+			classMap.put("caseType", String.class);
+			classMap.put("caseTimaSpan", Integer.class);
+			classMap.put("caseLevels", Integer.class);
+			QueryCondition queryCondition = (QueryCondition) JSONObject.toBean(
+					jobj, QueryCondition.class, classMap);
+
+			Map<String, Object> map = new HashMap<String, Object>();
+			List<CaseReportResult<CasePeriodAGGR>> results = new ArrayList<CaseReportResult<CasePeriodAGGR>>();
+			List<CasePeriodAGGR> ls = null;
+			// 组织机构id
+			int organId = queryCondition.getOrganId();
+			User user = (User) request.getAttribute("User");
+			if (organId == 0) {
+				organId = user.getOrgId();
+			}
+			Organ organ = organService.getOrganByPrimaryKey(organId);
+			map.put("orgFullPath", organ.getPath());
+
+			// 查询时间
+			// 查询时间方式，1、月 2、日
+			String startDate = queryCondition.getStartDate();
+			String sDate = startDate.replace("-", "").trim();
+			String endDate = queryCondition.getEndDate();
+			String eDate = endDate.replace("-", "").trim();
+			Integer bd = Integer.parseInt(sDate);
+			Integer ed = Integer.parseInt(eDate);
+			ReportPeriod rp = new ReportPeriod(bd, ed,
+					queryCondition.getPeriodType());
+			// 警情级别 二级节点
+			List<Integer> levels = queryCondition.getCaseLevels();
+			// 时间区间 时间节点
+			List<Integer> hours = queryCondition.getCaseTimaSpan();
+			map.put("levels", levels);
+			map.put("hours", hours);
+
+			map.put("periodType", queryCondition.getPeriodType());
+			// 警情类型 父级节点
+			List<String> type2Codes = queryCondition.getCaseType();
+			map.put("type2Codes", type2Codes);
+
+			// 当期
+			CaseReportResult<CasePeriodAGGR> cResult = new CaseReportResult<CasePeriodAGGR>();
 			map.put("beginYMD", rp.getBeginYmd());
 			map.put("endYMD", rp.getEndYmd());
-			ls=caseReportService.loadCasePeriodReport(map);
+			ls = caseReportService.loadCasePeriodReport(map);
 			cResult.setBeginYmd(rp.getBeginYmd());
 			cResult.setEndYmd(rp.getEndYmd());
 			cResult.setData(ls);
 			results.add(cResult);
-			
-			//同比
-			CaseReportResult<CasePeriodAGGR> yResult=new CaseReportResult<CasePeriodAGGR>();
+
+			// 同比
+			CaseReportResult<CasePeriodAGGR> yResult = new CaseReportResult<CasePeriodAGGR>();
 			map.put("beginYMD", rp.getYOYBeginYmd());
 			map.put("endYMD", rp.getYOYEndYmd());
-			ls=caseReportService.loadCasePeriodReport(map);
+			ls = caseReportService.loadCasePeriodReport(map);
 			yResult.setBeginYmd(rp.getYOYBeginYmd());
 			yResult.setEndYmd(rp.getYOYEndYmd());
 			yResult.setData(ls);
-			results.add(yResult);;
-			
-			//环比
-			CaseReportResult<CasePeriodAGGR> mResult=new CaseReportResult<CasePeriodAGGR>();
+			results.add(yResult);
+			;
+
+			// 环比
+			CaseReportResult<CasePeriodAGGR> mResult = new CaseReportResult<CasePeriodAGGR>();
 			map.put("beginYMD", rp.getMOMBeginYmd());
 			map.put("endYMD", rp.getMOMEndYmd());
-			ls=caseReportService.loadCasePeriodReport(map);
+			ls = caseReportService.loadCasePeriodReport(map);
 			mResult.setBeginYmd(rp.getMOMBeginYmd());
 			mResult.setEndYmd(rp.getMOMEndYmd());
 			mResult.setData(ls);
-			results.add(mResult);;
-			
+			results.add(mResult);
+			;
+
 			return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
 					MessageCode.SELECT_SUCCESS, 0, results);
 
@@ -194,67 +220,88 @@ public class CaseReportController {
 					MessageCode.SELECT_ORGAN_FAIL, 0, null);
 		}
 	}
-	
+
 	@RequestMapping(value = "/loadCaseHourReport.do")
-	public @ResponseBody ReturnResult loadCaseHourReport(
+	public @ResponseBody
+	ReturnResult loadCaseHourReport(
 			@RequestParam(value = "query", required = false) String query,
 			HttpServletRequest request) {
 		try {
-			Map<String,Object> map=new HashMap<String,Object>();
-			List<CaseReportResult<CaseHourAGGR>>  results=new ArrayList<CaseReportResult<CaseHourAGGR>>();
-			List<CaseHourAGGR>  ls=null;
-			
-			Integer bd=20140101;
-			Integer ed=20141231;
-			
-			ReportPeriod  rp=new ReportPeriod(bd,ed,1);
-			
-			map.put("orgFullPath", "/510000000000");
-			
-			List<Integer>  levels=new ArrayList<Integer>();
-			levels.add(0);
-			levels.add(1);
-			levels.add(2);
-			
-			List<String>  type2Codes=new ArrayList<String>();
-			type2Codes.add("caseType110011000");
-			map.put("type2Codes",type2Codes);
-			
-			map.put("periodType", 1);
-			map.put("levels",levels );
-			map.put("beginHour", 0);
-			map.put("endHour", 23);
-			
-			//当期
-			CaseReportResult<CaseHourAGGR> cResult=new CaseReportResult<CaseHourAGGR>();
+			JSONObject jobj = JSONObject.fromObject(query);
+			Map<String, Class<?>> classMap = new HashMap<String, Class<?>>();
+
+			classMap.put("caseType", String.class);
+			classMap.put("caseTimaSpan", Integer.class);
+			classMap.put("caseLevels", Integer.class);
+			QueryCondition queryCondition = (QueryCondition) JSONObject.toBean(
+					jobj, QueryCondition.class, classMap);
+
+			Map<String, Object> map = new HashMap<String, Object>();
+			List<CaseReportResult<CaseHourAGGR>> results = new ArrayList<CaseReportResult<CaseHourAGGR>>();
+			List<CaseHourAGGR> ls = null;
+			// 组织机构id
+			int organId = queryCondition.getOrganId();
+			User user = (User) request.getAttribute("User");
+			if (organId == 0) {
+				organId = user.getOrgId();
+			}
+			Organ organ = organService.getOrganByPrimaryKey(organId);
+			map.put("orgFullPath", organ.getPath());
+
+			// 查询时间
+			// 查询时间方式，1、月 2、日
+			String startDate = queryCondition.getStartDate();
+			String sDate = startDate.replace("-", "").trim();
+			String endDate = queryCondition.getEndDate();
+			String eDate = endDate.replace("-", "").trim();
+			Integer bd = Integer.parseInt(sDate);
+			Integer ed = Integer.parseInt(eDate);
+			ReportPeriod rp = new ReportPeriod(bd, ed,
+					queryCondition.getPeriodType());
+			// 警情级别 二级节点
+			List<Integer> levels = queryCondition.getCaseLevels();
+			// 时间区间 时间节点
+			List<Integer> hours = queryCondition.getCaseTimaSpan();
+			map.put("levels", levels);
+			map.put("hours", hours);
+
+			map.put("periodType", queryCondition.getPeriodType());
+			// 警情类型 父级节点
+			List<String> type2Codes = queryCondition.getCaseType();
+			map.put("type2Codes", type2Codes);
+
+			// 当期
+			CaseReportResult<CaseHourAGGR> cResult = new CaseReportResult<CaseHourAGGR>();
 			map.put("beginYMD", rp.getBeginYmd());
 			map.put("endYMD", rp.getEndYmd());
-			ls=caseReportService.loadCaseHourReport(map);
+			ls = caseReportService.loadCaseHourReport(map);
 			cResult.setBeginYmd(rp.getBeginYmd());
 			cResult.setEndYmd(rp.getEndYmd());
 			cResult.setData(ls);
 			results.add(cResult);
-			
-			//同比
-			CaseReportResult<CaseHourAGGR> yResult=new CaseReportResult<CaseHourAGGR>();
+
+			// 同比
+			CaseReportResult<CaseHourAGGR> yResult = new CaseReportResult<CaseHourAGGR>();
 			map.put("beginYMD", rp.getYOYBeginYmd());
 			map.put("endYMD", rp.getYOYEndYmd());
-			ls=caseReportService.loadCaseHourReport(map);
+			ls = caseReportService.loadCaseHourReport(map);
 			yResult.setBeginYmd(rp.getYOYBeginYmd());
 			yResult.setEndYmd(rp.getYOYEndYmd());
 			yResult.setData(ls);
-			results.add(yResult);;
-			
-			//环比
-			CaseReportResult<CaseHourAGGR> mResult=new CaseReportResult<CaseHourAGGR>();
+			results.add(yResult);
+			;
+
+			// 环比
+			CaseReportResult<CaseHourAGGR> mResult = new CaseReportResult<CaseHourAGGR>();
 			map.put("beginYMD", rp.getMOMBeginYmd());
 			map.put("endYMD", rp.getMOMEndYmd());
-			ls=caseReportService.loadCaseHourReport(map);
+			ls = caseReportService.loadCaseHourReport(map);
 			mResult.setBeginYmd(rp.getMOMBeginYmd());
 			mResult.setEndYmd(rp.getMOMEndYmd());
 			mResult.setData(ls);
-			results.add(mResult);;
-			
+			results.add(mResult);
+			;
+
 			return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
 					MessageCode.SELECT_SUCCESS, 0, results);
 
@@ -262,108 +309,131 @@ public class CaseReportController {
 			return ReturnResult.MESSAGE(MessageCode.STATUS_FAIL,
 					MessageCode.SELECT_ORGAN_FAIL, 0, null);
 		}
-			
-		
+
 	}
-	
+
 	@RequestMapping(value = "/loadCaseOrgReport.do")
-	public @ResponseBody ReturnResult loadCaseOrgReport(
+	public @ResponseBody
+	ReturnResult loadCaseOrgReport(
 			@RequestParam(value = "query", required = false) String query,
 			HttpServletRequest request) {
 		try {
-			Map<String,Object> map=new HashMap<String,Object>();
-			List<CaseReportResult<CaseOrgAGGR>>  results=new ArrayList<CaseReportResult<CaseOrgAGGR>>();
-			List<CaseOrgAGGR>  ls=null;
-			
-			Integer bd=20140101;
-			Integer ed=20141231;
-			
-			ReportPeriod  rp=new ReportPeriod(bd,ed,1);
-			
-			map.put("orgFullPath", "/510000000000");
-			
-			List<Integer>  levels=new ArrayList<Integer>();
-			levels.add(0);
-			levels.add(1);
-			levels.add(2);
-			
-			List<String>  type2Codes=new ArrayList<String>();
-			type2Codes.add("caseType110011000");
-			map.put("type2Codes",type2Codes);
-			
-			map.put("periodType", 1);
-			map.put("levels",levels );
-			map.put("beginHour", 0);
-			map.put("endHour", 23);
-			
-			//当期
-			CaseReportResult<CaseOrgAGGR> cResult=new CaseReportResult<CaseOrgAGGR>();
+			JSONObject jobj = JSONObject.fromObject(query);
+			Map<String, Class<?>> classMap = new HashMap<String, Class<?>>();
+
+			classMap.put("caseType", String.class);
+			classMap.put("caseTimaSpan", Integer.class);
+			classMap.put("caseLevels", Integer.class);
+			QueryCondition queryCondition = (QueryCondition) JSONObject.toBean(
+					jobj, QueryCondition.class, classMap);
+
+			Map<String, Object> map = new HashMap<String, Object>();
+			List<CaseReportResult<CaseOrgAGGR>> results = new ArrayList<CaseReportResult<CaseOrgAGGR>>();
+			List<CaseOrgAGGR> ls = null;
+			// 组织机构id
+			int organId = queryCondition.getOrganId();
+			User user = (User) request.getAttribute("User");
+			if (organId == 0) {
+				organId = user.getOrgId();
+			}
+			Organ organ = organService.getOrganByPrimaryKey(organId);
+			map.put("orgFullPath", organ.getPath());
+
+			// 查询时间
+			// 查询时间方式，1、月 2、日
+			String startDate = queryCondition.getStartDate();
+			String sDate = startDate.replace("-", "").trim();
+			String endDate = queryCondition.getEndDate();
+			String eDate = endDate.replace("-", "").trim();
+			Integer bd = Integer.parseInt(sDate);
+			Integer ed = Integer.parseInt(eDate);
+			ReportPeriod rp = new ReportPeriod(bd, ed,
+					queryCondition.getPeriodType());
+			// 警情级别 二级节点
+			List<Integer> levels = queryCondition.getCaseLevels();
+			// 时间区间 时间节点
+			List<Integer> hours = queryCondition.getCaseTimaSpan();
+			map.put("levels", levels);
+			map.put("hours", hours);
+
+			map.put("periodType", queryCondition.getPeriodType());
+			// 警情类型 父级节点
+			List<String> type2Codes = queryCondition.getCaseType();
+			map.put("type2Codes", type2Codes);
+			// 当期
+			CaseReportResult<CaseOrgAGGR> cResult = new CaseReportResult<CaseOrgAGGR>();
 			map.put("beginYMD", rp.getBeginYmd());
 			map.put("endYMD", rp.getEndYmd());
-			ls=caseReportService.loadCaseOrgReport(map);
+			ls = caseReportService.loadCaseOrgReport(map);
 			cResult.setBeginYmd(rp.getBeginYmd());
 			cResult.setEndYmd(rp.getEndYmd());
 			cResult.setData(ls);
 			results.add(cResult);
-			
+
 			return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
 					MessageCode.SELECT_SUCCESS, 0, results);
 
 		} catch (Exception ex) {
 			return ReturnResult.MESSAGE(MessageCode.STATUS_FAIL,
 					MessageCode.SELECT_ORGAN_FAIL, 0, null);
-		}	
+		}
 	}
-	
+
 	@RequestMapping(value = "/loadWarningReport.do")
-	public @ResponseBody ReturnResult loadWarningReport(
+	public @ResponseBody
+	ReturnResult loadWarningReport(
 			@RequestParam(value = "query", required = false) String query,
-			HttpServletRequest request) { 
-		
-		try{
-			Map<String,Object> map= new HashMap<String,Object>();
-			ReportPeriod rp=new ReportPeriod(20150101,20150430,1);
-			
-			
-			map.put("orgId", 72);
-			map.put("orgPath", "/510000000000/510100000000");
-			List<Integer> caseLevels=new ArrayList<Integer>();
-			caseLevels.add(1);
-			caseLevels.add(2);
-			caseLevels.add(3);
-			
-			List<String> caseTypes=new ArrayList<String>();
-			caseTypes.add("caseType110010901");
-			caseTypes.add("caseType110011600");
-			map.put("type2Codes", caseTypes);
-			
+			HttpServletRequest request) {
+
+		try {
+			JSONObject jobj = JSONObject.fromObject(query);
+			Map<String, Class<?>> classMap = new HashMap<String, Class<?>>();
+
+			classMap.put("caseType", String.class);
+			classMap.put("caseTimaSpan", Integer.class);
+			classMap.put("caseLevels", Integer.class);
+			QueryCondition queryCondition = (QueryCondition) JSONObject.toBean(
+					jobj, QueryCondition.class, classMap);
+
+			Map<String, Object> map = new HashMap<String, Object>();
+
+			int organId = queryCondition.getOrganId();
+			User user = (User) request.getAttribute("User");
+			if (organId == 0) {
+				organId = user.getOrgId();
+			}
+			Organ organ = organService.getOrganByPrimaryKey(organId);
+			map.put("organId", organ.getPath());
+			map.put("orgFullPath", organ.getPath());
+			// 查询时间
+			// 查询时间方式，1、月 2、日
+			String startDate = queryCondition.getStartDate();
+			String sDate = startDate.replace("-", "").trim();
+			String endDate = queryCondition.getEndDate();
+			String eDate = endDate.replace("-", "").trim();
+			Integer bd = Integer.parseInt(sDate);
+			Integer ed = Integer.parseInt(eDate);
+			ReportPeriod rp = new ReportPeriod(bd, ed,
+					queryCondition.getPeriodType());
+			// 警情级别 二级节点
+			List<Integer> levels = queryCondition.getCaseLevels();
+			// 时间区间 时间节点
+			List<Integer> hours = queryCondition.getCaseTimaSpan();
+			map.put("levels", levels);
+			map.put("hours", hours);
+
+			map.put("periodType", queryCondition.getPeriodType());
+			// 警情类型 父级节点
+			List<String> type2Codes = queryCondition.getCaseType();
+			map.put("type2Codes", type2Codes);
+
 			map.put("beginYmd", rp.getBeginYmd());
 			map.put("endYmd", rp.getEndYmd());
-			
-			List<Integer>  hours=new ArrayList<Integer>();
-			hours.add(1);
-			hours.add(2);
-			hours.add(3);
-			hours.add(4);
-			hours.add(5);
-			hours.add(6);
-			hours.add(7);
-			hours.add(8);
-			hours.add(9);
-			hours.add(10);
-			hours.add(11);
-			
-			map.put("hours", hours);
-			
-			
-			
-		}catch(Exception ex){
-			
+
+		} catch (Exception ex) {
+
 		}
-		
-		
-		
-		
+
 		return null;
 	}
 }

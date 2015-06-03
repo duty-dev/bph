@@ -304,7 +304,7 @@
 	  		where
 	  			ymd &gt;=#{beginYmd,jdbcType=INTEGER} and 
 	  			ymd &lt;=#{endYmd,jdbcType=INTEGER} and
-	  			org_path like CONCAT(#{orgPath,jdbcType=VARCHAR},'/','%') and
+	  			org_path like CONCAT(#{orgFullPath,jdbcType=VARCHAR},'/','%') and
 	  			clevel in 
 	  				<foreach item="item" index="index" collection="caseLevels" open="(" separator="," close=")">  
 							#{item}
@@ -318,7 +318,7 @@
 						#{item}
 					</foreach>
 	  		group by
-	  			LEFT(org_path,CHAR_LENGTH(#{orgPath,jdbcType=VARCHAR})+12)
+	  			LEFT(org_path,CHAR_LENGTH(#{orgFullPath,jdbcType=VARCHAR})+12)
 	  		)as t on org.code=t.org_code
   	</select>
 
