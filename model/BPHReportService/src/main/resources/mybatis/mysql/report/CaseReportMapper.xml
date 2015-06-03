@@ -177,7 +177,10 @@
 					#{item}
 				</foreach> AND
 			ymd  &gt;=#{beginYMD,jdbcType=INTEGER} and ymd &lt;=#{endYMD,jdbcType=INTEGER} and
-			chour  &gt;=#{beginHour,jdbcType=INTEGER} and chour &lt;=#{endHour,jdbcType=INTEGER}
+			chour  in
+				<foreach item="item" index="index" collection="hours" open="(" separator="," close=")">  
+					#{item}
+				</foreach>
 		group by 
 			<if test ="periodType==1">
   				cmonth 
@@ -204,7 +207,10 @@
 				<foreach item="item" index="index" collection="type2Codes" open="(" separator="," close=")">  
 					#{item}
 				</foreach> AND
-			chour  &gt;=#{beginHour,jdbcType=INTEGER} and chour &lt;=#{endHour,jdbcType=INTEGER}
+			chour  in
+				<foreach item="item" index="index" collection="hours" open="(" separator="," close=")">  
+					#{item}
+				</foreach> 
 		group by 
 			chour
   	</select>
@@ -238,7 +244,10 @@
 					<foreach item="item" index="index" collection="type2Codes" open="(" separator="," close=")">  
 						#{item}
 					</foreach> AND
-				chour  &gt;=#{beginHour,jdbcType=INTEGER} and chour &lt;=#{endHour,jdbcType=INTEGER}
+				chour  in
+					<foreach item="item" index="index" collection="hours" open="(" separator="," close=")">  
+						#{item}
+					</foreach> 
 			group by
 				org_id,
 				type1
@@ -261,7 +270,10 @@
 					<foreach item="item" index="index" collection="type2Codes" open="(" separator="," close=")">  
 						#{item}
 					</foreach> AND
-				chour  &gt;=#{beginHour,jdbcType=INTEGER} and chour &lt;=#{endHour,jdbcType=INTEGER}
+				chour  in
+					<foreach item="item" index="index" collection="hours" open="(" separator="," close=")">  
+						#{item}
+					</foreach> 
 			group by
 				org_id,
 				type2
@@ -300,6 +312,10 @@
 				type2 in
 					<foreach item="item" index="index" collection="type2Codes" open="(" separator="," close=")">  
 							#{item}
+					</foreach>
+				chour  in
+					<foreach item="item" index="index" collection="hours" open="(" separator="," close=")">  
+						#{item}
 					</foreach>
 	  		group by
 	  			LEFT(org_path,CHAR_LENGTH(#{orgPath,jdbcType=VARCHAR})+12)

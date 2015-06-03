@@ -340,6 +340,21 @@ public class CaseReportController {
 			map.put("beginYmd", rp.getBeginYmd());
 			map.put("endYmd", rp.getEndYmd());
 			
+			List<Integer>  hours=new ArrayList<Integer>();
+			hours.add(1);
+			hours.add(2);
+			hours.add(3);
+			hours.add(4);
+			hours.add(5);
+			hours.add(6);
+			hours.add(7);
+			hours.add(8);
+			hours.add(9);
+			hours.add(10);
+			hours.add(11);
+			
+			map.put("hours", hours);
+			
 			
 			
 		}catch(Exception ex){
