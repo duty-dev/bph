@@ -24,11 +24,11 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <delete id="deleteCaseTypeItemByCaseId" parameterType="java.lang.Integer">
-   	delete from t_warning_color where warning_id = #{caseId,jdbcType=INTEGER}	
+   	delete from t_warning_case_type where warning_id = #{caseId,jdbcType=INTEGER}	
   </delete>
   
   <delete id="deleteColorItemByCaseId" parameterType="java.lang.Integer">
-   	delete from t_warning_case_type where warning_id = #{caseId,jdbcType=INTEGER}	 
+   	delete from t_warning_color where warning_id = #{caseId,jdbcType=INTEGER}	 
   </delete>
   <insert id="insert" parameterType="com.tianyi.bph.domain.report.WarningConfig"  useGeneratedKeys="true" keyProperty="id">
     insert into t_warning_config (id, name, org_id, 

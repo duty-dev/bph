@@ -7,6 +7,12 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Properties;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.web.context.ContextLoader;
+
+import com.alibaba.druid.pool.DruidDataSource;
+
 /**
  * 数据库访问配置文件各参数的获取
  * @author lq
@@ -59,6 +65,12 @@ public class DbConfig {
         try {
             path = DbConfig.class.getClassLoader().getResource("").toURI().getPath();
             fis = new FileInputStream(new File(path + ConfigPath));
+              
+        	//ApplicationContext ctx=new FileSystemXmlApplicationContext(path+"/spring/applicationContext.xml");
+        	
+        	
+        	//Object s =  ctx.getBean("dataSource");
+            
             prop.load(fis);
             dc.db_user=prop.getProperty("db_user"); 
             dc.db_password=prop.getProperty("db_password");  
@@ -69,7 +81,9 @@ public class DbConfig {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }  
+        } catch(Exception e){
+        	e.printStackTrace();
+        }
         
         return dc;
     }
