@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.tianyi.bph.common.MessageCode;
 import com.tianyi.bph.common.PageReturn;
 import com.tianyi.bph.common.ReturnResult; 
+import com.tianyi.bph.domain.report.WarningCaseLevel;
 import com.tianyi.bph.domain.report.WarningCaseType;
 import com.tianyi.bph.domain.report.WarningColor;
 import com.tianyi.bph.domain.system.Organ;
@@ -107,6 +108,7 @@ public class ColorWarningController {
 			
 			classMap.put("colors", WarningColor.class);
 			classMap.put("caseTypes", WarningCaseType.class);
+			classMap.put("caseLevels", WarningCaseLevel.class);
 			WarningCfgVM warningCfg =  (WarningCfgVM) JSONObject.toBean(jobj, WarningCfgVM.class, classMap);
 			int messageCode = 0;
 			if (warningCfg != null) {

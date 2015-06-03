@@ -3,6 +3,7 @@ package com.tianyi.bph.service.report;
 import java.util.List;
 import java.util.Map;
 
+import com.tianyi.bph.domain.report.WarningCaseType;
 import com.tianyi.bph.query.report.WarningCfgVM;
 
 public interface WarningCfgService {
@@ -15,4 +16,6 @@ public interface WarningCfgService {
 	void deleteById(Integer caseId);
 
 	WarningCfgVM loadWarningCfgVMInfoById(Integer caseId);
+
+	WarningCaseType getNodechecked(Map<String, Object> map);
 }

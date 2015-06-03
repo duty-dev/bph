@@ -1,7 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <style> 
-	#alarmCaseInfo td {width:12%;}
-	#alarmTypes li{float:left;list-style:none; padding:25px;}
+	#alarmCaseInfo td {width:12%;} 
+	.a{width:auto;float:left;margin-right:40px;}
 </style>
 <script>
 $(function() {
@@ -12,6 +12,26 @@ function loadData(pageNo){
 	WarningManage.loadalarmList(pageNo);
 } 
 var WarningManage = {
+	loadalarmTypeList:function(wid){
+		$.ajax({
+					url:"<%=basePath%>alarmStatisticWeb/getAlarmTypeList.do?warningId="+wid,
+					type:"post",  
+					dataType:"json",
+					success:function(req){
+							if(req.code == 200){ 
+								req.data.parentId = null;
+								var json_data = JSON.stringify(req.data);
+								$("#alarmtreeview").empty();
+								$("#alarmtreeview").kendoTreeView({ 
+								    checkboxes: true,
+								    dataTextField: "text", 
+								    dataSource: [eval('(' + json_data + ')')]
+								}).data("kendoTreeView");
+								$("input[type='checkbox']").attr("disabled","disabled")
+							}
+						}
+				});
+	},
 	pageNo:1,
 	loadalarmList:function(pageNo){
 		$.ajax({
@@ -55,10 +75,7 @@ var WarningManage = {
 									myGrid.element.on("dblclick","tbody>tr","dblclick",function(e){
 										 var id = $(this).find("td").first().text();
 										 WarningManage.editWarningAction(id);
-									}); 
-									$("#alarmCaseGrid .k-grid-content").mCustomScrollbar( {scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
-       		    					var pg = pagination(pageNo,total,'loadData',10);
-       		   						$("#page").html(pg);
+									});  
        		   						WarningManage.loadFirstData();
                				}
                		} else{
@@ -143,45 +160,38 @@ var WarningManage = {
 	loadFirstData:function(){
 		var caseGrid = $("#alarmCaseGrid").data("kendoGrid");
 		if(caseGrid._data.length>0){ 
-			var row = caseGrid._data[0];
+			var row = caseGrid._data[0]; 
 			WarningManage.showWarningInfo(row);
 		}
 	},
-	showWarningInfo:function(row){ 
+	showWarningInfo:function(row){ 		
 		if(row!=null){
+			WarningManage.loadalarmTypeList(row.id);
 			$("#caseTitle").text("");
 			$("#caseTitle").text(row.name+"   设置详情"); 
 			var colors = row.colors;
 			var caseTypes = row.caseTypes;
-			var level = caseTypes[0].caseTypeLevel;
-			if(level ==1||level =="1"){
-				$("#ckalarmLevel1").removeAttr("disabled");
-				$("#ckalarmLevel2").removeAttr("disabled");
-				$("#ckalarmLevel3").removeAttr("disabled");
-				$("#ckalarmLevel2").removeAttr("checked");
-				$("#ckalarmLevel3").removeAttr("checked");
-				$("#ckalarmLevel1").attr("checked","checked");  
-				$("#ckalarmLevel2").attr("disabled","disabled");
-				$("#ckalarmLevel3").attr("disabled","disabled");
-			}else if(level==2||level =="2"){
-				$("#ckalarmLevel1").removeAttr("disabled");
-				$("#ckalarmLevel2").removeAttr("disabled");
-				$("#ckalarmLevel3").removeAttr("disabled");
-				$("#ckalarmLevel1").removeAttr("checked");
-				$("#ckalarmLevel3").removeAttr("checked");
-				$("#ckalarmLevel2").attr("checked","checked");  
-				$("#ckalarmLevel1").attr("disabled","disabled");
-				$("#ckalarmLevel3").attr("disabled","disabled");
-			}else{
-				$("#ckalarmLevel1").removeAttr("disabled");
-				$("#ckalarmLevel2").removeAttr("disabled");
-				$("#ckalarmLevel3").removeAttr("disabled");
-				$("#ckalarmLevel1").removeAttr("checked");
-				$("#ckalarmLevel2").removeAttr("checked");
-				$("#ckalarmLevel3").attr("checked","checked");  
-				$("#ckalarmLevel1").attr("disabled","disabled");
-				$("#ckalarmLevel2").attr("disabled","disabled");
-			}
+			var levels =row.caseLevels;   
+			$("#lbl_ckalarmLevel1").html("");
+			$("#lbl_ckalarmLevel2").html("");
+			$("#lbl_ckalarmLevel3").html(""); 
+			$.each(levels,function(index,value){ 
+				switch(value.caseLevel){
+					case 1: 
+						var ckhtml = "<input id='ckalarmLevel1' type='checkbox' checked='checked'  /><span>一级警情</span>";
+						$("#lbl_ckalarmLevel1").append(ckhtml);
+						break;
+					case 2: 
+						var ckhtml = "<input id='ckalarmLevel2'  type='checkbox' checked='checked'  /><span>二级警情</span>";
+						$("#lbl_ckalarmLevel2").append(ckhtml);
+						break;
+					case 3: 
+						var ckhtml = "<input id='ckalarmLevel3'  type='checkbox' checked='checked'  /><span>三级警情</span>";
+						$("#lbl_ckalarmLevel3").append(ckhtml);
+						break;
+				}				
+			});
+			 
 			$.each(colors,function(index,cObj){
 				var solorlevel = cObj.level;
 				switch(solorlevel){
@@ -206,15 +216,7 @@ var WarningManage = {
 						$("#greenValue").text(cObj.ge+" %");
 						break;
 				}
-			});
-			var caseTypehtml = "";
-			$.each(caseTypes,function(index,tObj){
-				caseTypehtml +="<li>"+tObj.caseTypeName+"</li>"
-			});
-			if(caseTypehtml.length>0){
-				$("#alarmTypes").html("");
-				$("#alarmTypes").html(caseTypehtml); 
-			}
+			}); 
 		}
 	},
 	onClose:function(){
@@ -230,13 +232,12 @@ var WarningManage = {
         <span id="undo" class="k-button" onclick="WarningManage.deleteWarning()">删除</span>   
     </div> 
 	<div id="alarmCaseGrid" >
-	</div> 
-	<div id="page"></div>
+	</div>  
 </div>
 <div id="dialog"></div>
-<div id="alarmCaseInfo"  style="width:60%;height:700px;float:left;margin-left:10px;">
+<div id="alarmCaseInfo"  style="width:50%;height:580px;float:left;margin-left:10px;">
 	<h2 id="caseTitle" style="width:100%"></h2>
-	<table style="width:100%;heigth:95%">
+	<table style="width:100%;height:350px">
 		<tr>
 			<td colspan="7">
 				<h4>预警规则</h4>
@@ -359,27 +360,17 @@ var WarningManage = {
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2" style="text-align:center">
-				<label class="a"><input id="ckalarmLevel1" name="ckalarmLevel" type="radio"  value="1">一级警情</label>
+			<td colspan="6" style="text-align:center">
+				<label id="lbl_ckalarmLevel1" class="a"></label> 
+				 <label id="lbl_ckalarmLevel2"  class="a"></label> 
+				 <label id="lbl_ckalarmLevel3"  class="a"></label>
 			</td>
-			<td colspan="2" style="text-align:center">
-				 <label class="a"><input id="ckalarmLevel2" name="ckalarmLevel"  type="radio"  value="2">二级警情</label>
-			</td>
-			<td colspan="2" style="text-align:center">
-				 <label class="a"><input id="ckalarmLevel3" name="ckalarmLevel"  type="radio" value="3">三级警情</label>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="7">
-				<h4>警情类别</h4>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="7"> 
-				<ul id="alarmTypes"> 
-				</ul>
-			</td>
-		</tr>
+		</tr> 
 	</table>
+</div>
+<div id="div_alarmType" style="height:550px;overflow-x:hidden;overflow-y:auto;">
+	<h4>警情类别</h4>
+	<div id="alarmtreeview" > 
+	</div>
 </div>
 

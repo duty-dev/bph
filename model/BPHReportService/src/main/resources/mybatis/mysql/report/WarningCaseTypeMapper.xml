@@ -16,6 +16,12 @@
     from t_warning_case_type
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="getObjectByWarningIdAndCaseCode" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_warning_case_type
+    where warning_id = #{warningId,jdbcType=INTEGER} and case_type_code = #{caseTypeCode,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_warning_case_type
     where id = #{id,jdbcType=INTEGER}
