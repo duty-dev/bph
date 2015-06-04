@@ -20,9 +20,9 @@ import com.tianyi.bph.web.controller.reportdata.CaseReportController;
 
 public class CaseReportControllerTest extends BaseTest{
 	
-//	@Autowired
-//	private CaseReportController   caseReportControll;
-//	
+	@Autowired
+	private CaseReportController   caseReportControll;
+	
 	@Autowired
 	private WarningCfgService warningCfgService;
 	
@@ -31,13 +31,12 @@ public class CaseReportControllerTest extends BaseTest{
 	
 	@Test
 	public void test(){
+		caseReportControll.loadWarningReport(null, null);
 		//this.saveWarning();
-		this.loadWarningByOrgId();
+		//this.loadWarningByOrgId();
+		
 	}
-//	@Test
-//	public  void  loadCasePeriodReport(){
-//		caseReportControll.loadCasePeriodReport(null, null);
-//	}
+
 	
 //	@Test
 //	public  void  loadCaseHourReport(){
@@ -61,30 +60,39 @@ public class CaseReportControllerTest extends BaseTest{
 
 	private void saveWarning(){
 		
+		Integer orgId=1;
+		
 		WarningColor color =new WarningColor();
 		color.setWarningId(0);
 		color.setId(0);
 		color.setLevel(2);
-		color.setGe(22F);
-		color.setLt(33f);
+		color.setGe(15F);
+		color.setLt(23.5f);
 		color.setDefaultColor("");
 		List<WarningColor> cs=new ArrayList<WarningColor>();
 		cs.add(color);
 		
+		List<WarningCaseType> cts=new ArrayList<WarningCaseType>();
 		WarningCaseType caseType =new WarningCaseType();
 		caseType.setId(0);
 		caseType.setWarningId(0);
 		caseType.setCaseTypeCode("caseType110010200");
 		caseType.setCaseTypeLevel(2);
-		List<WarningCaseType> cts=new ArrayList<WarningCaseType>();
 		cts.add(caseType);
+		
+		WarningCaseType caseType2 =new WarningCaseType();
+		caseType2.setId(0);
+		caseType2.setWarningId(0);
+		caseType2.setCaseTypeCode("caseType110056000");
+		caseType2.setCaseTypeLevel(2);
+		cts.add(caseType2);
 		
 		WarningCfgVM vm=new WarningCfgVM();
 		vm.setId(0);
 		vm.setCaseTypes(cts);
 		vm.setColors(cs);
-		vm.setName("frist four color warning settings");
-		vm.setOrgId(72);
+		vm.setName("owen");
+		vm.setOrgId(orgId);
 		vm.setShare(false);
 		
 		warningCfgService.saveWarningCfg(vm);

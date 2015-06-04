@@ -30,9 +30,9 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
-import org.apache.poi.ss.usermodel.FormulaEvaluator;
+import org.springframework.web.context.ContextLoader;
 
-import com.tianyi.bph.domain.basicdata.Icons;
+import com.alibaba.druid.pool.DruidDataSource;
 
 @SuppressWarnings("serial")
 public class ExcelImportServlet extends HttpServlet {
@@ -43,6 +43,9 @@ public class ExcelImportServlet extends HttpServlet {
 
 	}
 
+	private final com.alibaba.druid.pool.DruidDataSource dt = ContextLoader
+			.getCurrentWebApplicationContext().getBean(DruidDataSource.class);
+	// private Connection conn = null;
 	private Connection conn = null;
 	private final static String SEPARATOR = "|";
 	private PreparedStatement ps = null;
@@ -51,9 +54,7 @@ public class ExcelImportServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
-		Connection conn = null;
-		PreparedStatement ps = null;
+  
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 		factory.setSizeThreshold(4 * 1024);
 		ServletFileUpload upload = new ServletFileUpload(factory);
@@ -118,12 +119,18 @@ public class ExcelImportServlet extends HttpServlet {
 					boolean isSuccess = false;
 					List<String> retMsgList = new ArrayList<String>();
 					if (dataType.equals("policeData")) {
-						isSuccess = operationPoliceDataToDb(orgId, path,
-								retMsgList);
+						try {
+							isSuccess = operationPoliceDataToDb(orgId, path,
+									retMsgList);
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						if (isSuccess) {
-							if(retMsgList.size()>0){
-								request.setAttribute("uploadError", "部分数据导入成功,详细信息:");
-							}else{
+							if (retMsgList.size() > 0) {
+								request.setAttribute("uploadError",
+										"部分数据导入成功,详细信息:");
+							} else {
 								request.setAttribute("uploadError", "导入成功\n\r");
 							}
 							request.setAttribute("uploadlist", retMsgList);
@@ -139,12 +146,18 @@ public class ExcelImportServlet extends HttpServlet {
 								"/basicdata/police/policeExport.jsp").forward(
 								request, response);
 					} else if (dataType.equals("vehicleData")) {
-						isSuccess = operationVehicleDataToDb(orgId, path,
-								retMsgList);
+						try {
+							isSuccess = operationVehicleDataToDb(orgId, path,
+									retMsgList);
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						if (isSuccess) {
-							if(retMsgList.size()>0){
-								request.setAttribute("uploadError", "部分数据导入成功,详细信息:");
-							}else{
+							if (retMsgList.size() > 0) {
+								request.setAttribute("uploadError",
+										"部分数据导入成功,详细信息:");
+							} else {
 								request.setAttribute("uploadError", "导入成功\n\r");
 							}
 							request.setAttribute("uploadlist", retMsgList);
@@ -160,12 +173,18 @@ public class ExcelImportServlet extends HttpServlet {
 								"/basicdata/vehicle/vehicleExport.jsp")
 								.forward(request, response);
 					} else if (dataType.equals("gpsData")) {
-						isSuccess = operationGpsDataToDb(orgId, path,
-								retMsgList);
+						try {
+							isSuccess = operationGpsDataToDb(orgId, path,
+									retMsgList);
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						if (isSuccess) {
-							if(retMsgList.size()>0){
-								request.setAttribute("uploadError", "部分数据导入成功,详细信息:");
-							}else{
+							if (retMsgList.size() > 0) {
+								request.setAttribute("uploadError",
+										"部分数据导入成功,详细信息:");
+							} else {
 								request.setAttribute("uploadError", "导入成功\n\r");
 							}
 							request.setAttribute("uploadlist", retMsgList);
@@ -181,12 +200,18 @@ public class ExcelImportServlet extends HttpServlet {
 								"/basicdata/gps/gpsExport.jsp").forward(
 								request, response);
 					} else if (dataType.equals("weaponData")) {
-						isSuccess = operationWeaponDataToDb(orgId, path,
-								retMsgList);
+						try {
+							isSuccess = operationWeaponDataToDb(orgId, path,
+									retMsgList);
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						if (isSuccess) {
-							if(retMsgList.size()>0){
-								request.setAttribute("uploadError", "部分数据导入成功,详细信息:");
-							}else{
+							if (retMsgList.size() > 0) {
+								request.setAttribute("uploadError",
+										"部分数据导入成功,详细信息:");
+							} else {
 								request.setAttribute("uploadError", "导入成功\n\r");
 							}
 							request.setAttribute("uploadlist", retMsgList);
@@ -208,11 +233,12 @@ public class ExcelImportServlet extends HttpServlet {
 	}
 
 	private boolean operationWeaponDataToDb(int orgId, String path,
-			List<String> retMsgList) {
+			List<String> retMsgList) throws SQLException {
 		// TODO Auto-generated method stub
 		boolean isSuccess = false;
 		File pc = new File(path);
-		conn = DBClassMysql.getMysql();
+		// conn = DBClassMysql.getMysql();
+		conn = dt.getConnection();
 		if (pc.exists()) {
 			try {
 				HSSFWorkbook wookbook = new HSSFWorkbook(new FileInputStream(
@@ -238,7 +264,7 @@ public class ExcelImportServlet extends HttpServlet {
 							// 行不为空
 							if (row != null) {
 								// 获取到Excel文件中的所有的列?
-								int cells = row.getPhysicalNumberOfCells();
+								// int cells = row.getPhysicalNumberOfCells();
 								String value = "";
 								for (int j = 0; j < 3; j++) {
 									// 获取到列的值?
@@ -362,12 +388,10 @@ public class ExcelImportServlet extends HttpServlet {
 					// TODO Auto-generated catch block
 					return isSuccess;
 				}
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					return isSuccess;
+				if (dt != null) {
+					dt.discardConnection(conn);
 				}
+				// conn.close();
 
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -422,11 +446,12 @@ public class ExcelImportServlet extends HttpServlet {
 	}
 
 	private boolean operationGpsDataToDb(int orgId, String path,
-			List<String> retMsgList) {// TODO
+			List<String> retMsgList) throws SQLException {// TODO
 		// method stub
 		boolean isSuccess = false;
 		File pc = new File(path);
-		conn = DBClassMysql.getMysql();
+		// conn = DBClassMysql.getMysql();
+		conn = dt.getConnection();
 		if (pc.exists()) {
 			try {
 				HSSFWorkbook wookbook = new HSSFWorkbook(new FileInputStream(
@@ -452,7 +477,7 @@ public class ExcelImportServlet extends HttpServlet {
 							// 行不为空
 							if (row != null) {
 								// 获取到Excel文件中的所有的列?
-								int cells = row.getPhysicalNumberOfCells();
+								// int cells = row.getPhysicalNumberOfCells();
 								String value = "";
 								for (int j = 0; j < 3; j++) {
 									// 获取到列的值?
@@ -583,11 +608,8 @@ public class ExcelImportServlet extends HttpServlet {
 					// TODO Auto-generated catch block
 					return isSuccess;
 				}
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					return isSuccess;
+				if (dt != null) {
+					dt.discardConnection(conn);
 				}
 
 			} catch (FileNotFoundException e) {
@@ -604,11 +626,12 @@ public class ExcelImportServlet extends HttpServlet {
 	}
 
 	private boolean operationVehicleDataToDb(int orgId, String path,
-			List<String> retMsgList) {
+			List<String> retMsgList) throws SQLException {
 		// TODO Auto-generated method stub
 		boolean isSuccess = false;
 		File pc = new File(path);
-		conn = DBClassMysql.getMysql();
+		// conn = DBClassMysql.getMysql();
+		conn = dt.getConnection();
 		if (pc.exists()) {
 			try {
 				HSSFWorkbook wookbook = new HSSFWorkbook(new FileInputStream(
@@ -634,7 +657,7 @@ public class ExcelImportServlet extends HttpServlet {
 							// 行不为空
 							if (row != null) {
 								// 获取到Excel文件中的所有的列?
-								int cells = row.getPhysicalNumberOfCells();
+								// int cells = row.getPhysicalNumberOfCells();
 								String value = "";
 								for (int j = 0; j < 7; j++) {
 									// 获取到列的值?
@@ -789,12 +812,10 @@ public class ExcelImportServlet extends HttpServlet {
 					// TODO Auto-generated catch block
 					return isSuccess;
 				}
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					return isSuccess;
+				if (dt != null) {
+					dt.discardConnection(conn);
 				}
+				// conn.close();
 
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -809,11 +830,12 @@ public class ExcelImportServlet extends HttpServlet {
 	}
 
 	private boolean operationPoliceDataToDb(Integer orgId, String path,
-			List<String> retMsgList) {
+			List<String> retMsgList) throws SQLException {
 		// TODO Auto-generated method stub
 		boolean isSuccess = false;
 		File pc = new File(path);
-		conn = DBClassMysql.getMysql();
+		// conn = DBClassMysql.getMysql();
+		conn = dt.getConnection();
 		if (pc.exists()) {
 			try {
 				HSSFWorkbook wookbook = new HSSFWorkbook(new FileInputStream(
@@ -839,7 +861,7 @@ public class ExcelImportServlet extends HttpServlet {
 							// 行不为空
 							if (row != null) {
 								// 获取到Excel文件中的所有的列?
-								int cells = row.getLastCellNum();
+								// int cells = row.getLastCellNum();
 								String value = "";
 								for (int j = 0; j < 9; j++) {
 									// 获取到列的值?
@@ -1001,13 +1023,10 @@ public class ExcelImportServlet extends HttpServlet {
 					// TODO Auto-generated catch block
 					return isSuccess;
 				}
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					return isSuccess;
+				if (dt != null) {
+					dt.discardConnection(conn);
 				}
-
+				// conn.close();
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				return isSuccess;

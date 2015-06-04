@@ -1,5 +1,7 @@
 package com.tianyi.bph.dao.report;
 
+import java.util.Map;
+
 import com.tianyi.bph.dao.MyBatisRepository;
 import com.tianyi.bph.domain.report.WarningCaseType;
 
@@ -16,4 +18,7 @@ public interface WarningCaseTypeMapper {
     int updateByPrimaryKeySelective(WarningCaseType record);
 
     int updateByPrimaryKey(WarningCaseType record);
+    
+    void deleteByWarningId(Integer warningId);
+    WarningCaseType getObjectByWarningIdAndCaseCode(Map<String,Object> map);
 }

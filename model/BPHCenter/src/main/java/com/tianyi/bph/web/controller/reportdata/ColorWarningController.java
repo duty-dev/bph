@@ -1,6 +1,5 @@
 package com.tianyi.bph.web.controller.reportdata;
-
-import java.util.ArrayList;
+ 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,10 +16,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tianyi.bph.common.MessageCode;
 import com.tianyi.bph.common.PageReturn;
-import com.tianyi.bph.common.ReturnResult;
-import com.tianyi.bph.domain.basicdata.Police;
+import com.tianyi.bph.common.ReturnResult; 
+import com.tianyi.bph.domain.report.WarningCaseLevel;
+import com.tianyi.bph.domain.report.WarningCaseType;
+import com.tianyi.bph.domain.report.WarningColor;
 import com.tianyi.bph.domain.system.Organ;
-import com.tianyi.bph.domain.system.User;
+import com.tianyi.bph.domain.system.User;  
 import com.tianyi.bph.query.report.WarningCfgVM;
 import com.tianyi.bph.service.report.WarningCfgService;
 import com.tianyi.bph.service.system.OrganService;
@@ -42,9 +43,7 @@ public class ColorWarningController {
 	@RequestMapping(value = "/getColorWarningList.do")
 	@ResponseBody
 	public PageReturn getColorWarningList(
-			@RequestParam(value = "organId", required = false) Integer organId,
-			@RequestParam(value = "pageStart", required = false) Integer pageStart,
-			@RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "organId", required = false) Integer organId, 
 			HttpServletRequest request) throws Exception {
 		try {
 			User user = (User) request.getAttribute("User");
@@ -58,11 +57,8 @@ public class ColorWarningController {
 				if (organ.getParentId() > 0) {
 					map.put("orgParentId", organ.getParentId());
 				}
-			}
-			int pageBegin = pageSize * (pageStart > 0 ? (pageStart - 1) : 0);
-			map.put("pageStart", pageBegin);
-			// map.put("pageSize", pageSize);
-			map.put("pageSize", 65532);
+			} 
+			// map.put("pageSize", pageSize); 
 			int total = warningService.loadWarningCfgVMCountByOrgId(map);
 			List<WarningCfgVM> list = warningService
 					.loadWarningCfgVMByOrgId(map);
@@ -102,9 +98,18 @@ public class ColorWarningController {
 	 */
 	@RequestMapping(value = "saveWarningConfig.do")
 	@ResponseBody
-	public ReturnResult saveWarningConfig(WarningCfgVM warningCfg)
+	public ReturnResult saveWarningConfig(
+			@RequestParam(value = "colorWarning", required = false) String wcg,
+			HttpServletRequest request)
 			throws Exception {
 		try {
+			JSONObject jobj = JSONObject.fromObject(wcg);
+			Map<String, Class<?>> classMap = new HashMap<String, Class<?>>();
+			
+			classMap.put("colors", WarningColor.class);
+			classMap.put("caseTypes", WarningCaseType.class);
+			classMap.put("caseLevels", WarningCaseLevel.class);
+			WarningCfgVM warningCfg =  (WarningCfgVM) JSONObject.toBean(jobj, WarningCfgVM.class, classMap);
 			int messageCode = 0;
 			if (warningCfg != null) {
 				warningService.saveWarningCfg(warningCfg);

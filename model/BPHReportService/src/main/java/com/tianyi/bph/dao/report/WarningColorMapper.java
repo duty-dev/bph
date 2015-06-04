@@ -16,4 +16,6 @@ public interface WarningColorMapper {
     int updateByPrimaryKeySelective(WarningColor record);
 
     int updateByPrimaryKey(WarningColor record);
+    
+    void deleteByWarningId(Integer warningId);
 }

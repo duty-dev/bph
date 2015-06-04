@@ -24,7 +24,7 @@
 		<!-- 中心服务模块 -->
 		<module>model/BPHCenter</module>
 		<!-- GPS服务模块 -->
-		<module>model/BPHGpsHandle</module>
+		<!--  <module>model/BPHGpsHandle</module>-->
 		<!-- 警情业务模块-->
 		<module>model/BPHAlarmService</module>
 		<!-- 勤务报务业务处理模块 -->
@@ -232,6 +232,7 @@
 	</dependencies>
 
 	<build>
+		<defaultGoal>compile</defaultGoal>
 		<plugins>
 			<!-- test插件,设定內存 -->
 			<plugin>

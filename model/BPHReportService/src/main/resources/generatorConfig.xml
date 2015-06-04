@@ -49,17 +49,7 @@
 		</javaClientGenerator>
 
 		
-		<table schema="" tableName="t_warning_config" domainObjectName="WarningConfig" 
-			enableCountByExample="false" enableUpdateByExample="false"
-            enableDeleteByExample="false" enableSelectByExample="false"
-            selectByExampleQueryId="false"></table>
-
-		<table schema="" tableName="t_warning_color" domainObjectName="WarningColor" 
-			enableCountByExample="false" enableUpdateByExample="false"
-            enableDeleteByExample="false" enableSelectByExample="false"
-            selectByExampleQueryId="false"></table>
-
-		<table schema="" tableName="t_warning_case_type" domainObjectName="WarningCaseType" 
+		<table schema="" tableName="t_warning_case_level" domainObjectName="WarningCaseLevel" 
 			enableCountByExample="false" enableUpdateByExample="false"
             enableDeleteByExample="false" enableSelectByExample="false"
             selectByExampleQueryId="false"></table>

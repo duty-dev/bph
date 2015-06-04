@@ -8,17 +8,27 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.tianyi.bph.dao.report.CaseReportMapper;
+import com.tianyi.bph.dao.report.WarningConfigMapper;
 import com.tianyi.bph.domain.report.CaseHourAGGR;
 import com.tianyi.bph.domain.report.CaseOrgAGGR;
 import com.tianyi.bph.domain.report.CasePeriodAGGR;
 import com.tianyi.bph.domain.report.CaseTypeAGGR;
+import com.tianyi.bph.domain.report.WarningAGGR;
+import com.tianyi.bph.domain.report.WarningOrgAGGR;
+import com.tianyi.bph.domain.system.Organ;
+import com.tianyi.bph.query.report.WarningCfgVM;
 import com.tianyi.bph.service.report.CaseReportService;
+import com.tianyi.bph.service.system.OrganService;
 
 @Service
 public class CaseReportServiceImpl implements  CaseReportService {
 
 	@Autowired
 	private CaseReportMapper caseReportMapper;
+	@Autowired
+	private WarningConfigMapper warningCfgMapper;
+	@Autowired
+	private OrganService orgService;
 	
 	@Override
 	public int loadMaxYMD() {
@@ -67,6 +77,13 @@ public class CaseReportServiceImpl implements  CaseReportService {
 	public List<CaseOrgAGGR> loadCaseOrgReport(Map<String, Object> map) {
 		List<CaseOrgAGGR> ls=caseReportMapper.loadCaseOrgReport(map);
 		return ls;
+	}
+
+	@Override
+	public List<WarningOrgAGGR> loadWarningReport(Map<String, Object> map) {
+		
+		List<WarningOrgAGGR> w=caseReportMapper.loadWarningReport(map);
+		return w;
 	}
 
 

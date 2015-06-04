@@ -103,4 +103,10 @@
       default_color = #{defaultColor,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <delete id="deleteByWarningId" parameterType="java.lang.Integer" >
+  	delete from t_warning_color
+  	where warning_id=#{warningId,jdbcType=INTEGER}
+  </delete>
+  
 </mapper>

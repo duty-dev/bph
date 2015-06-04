@@ -23,6 +23,8 @@ public interface WarningConfigMapper {
     
     List<WarningCfgVM> loadWarningCfgVMByOrgId(Map<String,Object> map);
 
+    WarningCfgVM loadWarningCfgVMById(Integer id);
+    
 	int loadWarningCfgVMCountByOrgId(Map<String, Object> map);
 
 	void deleteCaseTypeItemByCaseId(Integer caseId);
@@ -30,4 +32,7 @@ public interface WarningConfigMapper {
 	void deleteColorItemByCaseId(Integer caseId);
 
 	WarningCfgVM loadWarningCfgVMInfoById(Integer caseId);
+
+	void deleteCaseLevelItemByCaseId(Integer caseId);
+
 }

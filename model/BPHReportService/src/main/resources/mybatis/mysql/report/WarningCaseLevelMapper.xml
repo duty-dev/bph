@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tianyi.bph.dao.report.WarningCaseLevelMapper" >
+  <resultMap id="BaseResultMap" type="com.tianyi.bph.domain.report.WarningCaseLevel" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="warning_id" property="warningId" jdbcType="INTEGER" />
+    <result column="case_level" property="caseLevel" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, warning_id, case_level
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_warning_case_level
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_warning_case_level
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.tianyi.bph.domain.report.WarningCaseLevel" >
+    insert into t_warning_case_level (id, warning_id, case_level
+      )
+    values (#{id,jdbcType=INTEGER}, #{warningId,jdbcType=INTEGER}, #{caseLevel,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.tianyi.bph.domain.report.WarningCaseLevel" >
+    insert into t_warning_case_level
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="warningId != null" >
+        warning_id,
+      </if>
+      <if test="caseLevel != null" >
+        case_level,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="warningId != null" >
+        #{warningId,jdbcType=INTEGER},
+      </if>
+      <if test="caseLevel != null" >
+        #{caseLevel,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tianyi.bph.domain.report.WarningCaseLevel" >
+    update t_warning_case_level
+    <set >
+      <if test="warningId != null" >
+        warning_id = #{warningId,jdbcType=INTEGER},
+      </if>
+      <if test="caseLevel != null" >
+        case_level = #{caseLevel,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tianyi.bph.domain.report.WarningCaseLevel" >
+    update t_warning_case_level
+    set warning_id = #{warningId,jdbcType=INTEGER},
+      case_level = #{caseLevel,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <delete id="deleteByWarningId" parameterType="java.lang.Integer" >
+  	delete from t_warning_case_level
+  	where warning_id=#{warningId,jdbcType=INTEGER}
+  </delete>
+  
+</mapper>
