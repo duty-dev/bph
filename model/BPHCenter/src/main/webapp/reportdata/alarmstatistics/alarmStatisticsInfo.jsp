@@ -73,7 +73,7 @@ var ReportManage ={
                 }
             },
             categoryAxis: {
-                categories: NameArr,
+                categories: XLabel,
                 majorGridLines: {
                     visible: false
                 }
@@ -246,7 +246,7 @@ var ReportManage ={
             }
         });
 	},
-	initAlarmTimeSpanData:function(data){
+	initAlarmTimeSpanData:function(data,title){
 		$("#jqtj").empty(); 
 		var names = [];
 		names[0] = FunctionManage.GetSerieName(data[0]);
@@ -317,7 +317,7 @@ var ReportManage ={
                         columns: gridColumns
                     }); 
 	},
-	initAlarmOrganData:function(data,title,XLabel){
+	initAlarmOrganData:function(data,title,XLabel,alarmTypeName){
 		var seriesArray=[];
 		for(var i = 0;i< alarmTypeName.length;i++)
 		{
