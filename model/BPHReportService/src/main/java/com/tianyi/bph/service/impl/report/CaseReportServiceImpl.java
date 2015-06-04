@@ -82,25 +82,8 @@ public class CaseReportServiceImpl implements  CaseReportService {
 	@Override
 	public List<WarningOrgAGGR> loadWarningReport(Map<String, Object> map) {
 		
-		Integer orgId=(Integer) map.get("orgId");
-		Integer cfgId=(Integer)map.get("cfgId");
-		
-		Organ org=orgService.getOrganByPrimaryKey(orgId);
-		
-		WarningCfgVM wcfgvm=warningCfgMapper.loadWarningCfgVMById(cfgId);
-		
-		Map<String,Object> map1=new HashMap<String,Object>();
-		map1.put("orgId", orgId);
-		map1.put("orgPath", org.getPath());
-		map1.put("beginYmd", map.get("beginYmd"));
-		map1.put("endYmd", map.get("endYmd"));
-		map1.put("type2Codes", map.get("type2Codes"));
-		map1.put("caseLevels", map.get("caseLevels"));
-		
-		List<WarningOrgAGGR> w1=caseReportMapper.loadWarningReport(map);
-		
-		
-		return null;
+		List<WarningOrgAGGR> w=caseReportMapper.loadWarningReport(map);
+		return w;
 	}
 
 

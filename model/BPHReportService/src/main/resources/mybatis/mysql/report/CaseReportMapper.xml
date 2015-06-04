@@ -102,6 +102,37 @@
 			</if>
   	</insert>
   	
+  	<insert id="insertOrganLevel"  >
+  		INSERT INTO t_organ_level (
+			organ_id,
+			parent_id,
+			LEVEL,
+			level1_id,
+			level2_id,
+			level3_id,
+			level4_id,
+			level5_id,
+			level6_id
+		) SELECT
+			t.ORGAN_ID,
+			t.PARENT_ID,
+			t.LEVLE,
+			t1.ORGAN_ID,
+			t2.ORGAN_ID,
+			t3.ORGAN_ID,
+			t4.ORGAN_ID,
+			t5.ORGAN_ID,
+			t6.ORGAN_ID
+		FROM
+			t_organ AS t
+		LEFT JOIN t_organ AS t1 ON SUBSTRING(t.PATH, 2, 12) = t1. CODE
+		LEFT JOIN t_organ AS t2 ON SUBSTRING(t.PATH, 15, 12) = t2. CODE
+		LEFT JOIN t_organ AS t3 ON SUBSTRING(t.PATH, 28, 12) = t3. CODE
+		LEFT JOIN t_organ AS t4 ON SUBSTRING(t.PATH, 41, 12) = t4. CODE
+		LEFT JOIN t_organ AS t5 ON SUBSTRING(t.PATH, 54, 12) = t5. CODE
+		LEFT JOIN t_organ AS t6 ON SUBSTRING(t.PATH, 67, 12) = t6. CODE
+  	</insert>
+  	
   	<select id="loadCaseTypeReport"  parameterType="java.util.Map"  resultMap="caseTypeAGGRMap">
 		select 
 			t.type_code					as type_code,
@@ -217,14 +248,14 @@
   	
   	<select id="loadCaseOrgReport"  parameterType="java.util.Map"  resultMap="caseOrgAGGRMap">
   		select
-  			t.org_id							as org_id,
-  			org.code						as org_code,
-  			org.short_name			as org_name,
-  			t.type_code					as type_code,
-  			bat.type_name 				as type_name,
-  			bat.parent_type_code	as type_parent_code,
-			t.type_level					as type_level,
-			org_type_count			as org_type_count
+  			t.org_id								as org_id,
+  			org.code							as org_code,
+  			org.short_name				as org_name,
+  			t.type_code						as type_code,
+  			bat.type_name 					as type_name,
+  			bat.parent_type_code		as type_parent_code,
+			t.type_level						as type_level,
+			ifnull(org_type_count,0)	as org_type_count
   		from(
 	  		select
 	  			org_id		as org_id,
@@ -312,13 +343,13 @@
 				type2 in
 					<foreach item="item" index="index" collection="type2Codes" open="(" separator="," close=")">  
 							#{item}
-					</foreach>
+					</foreach> and
 				chour  in
 					<foreach item="item" index="index" collection="hours" open="(" separator="," close=")">  
 						#{item}
 					</foreach>
 	  		group by
-	  			LEFT(org_path,CHAR_LENGTH(#{orgPath,jdbcType=VARCHAR})+12)
+	  			LEFT(org_path,CHAR_LENGTH(CONCAT(#{orgPath,jdbcType=VARCHAR},'/'))+12)
 	  		)as t on org.code=t.org_code
   	</select>
 

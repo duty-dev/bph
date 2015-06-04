@@ -31,14 +31,12 @@ public class CaseReportControllerTest extends BaseTest{
 	
 	@Test
 	public void test(){
-		this.saveWarning();
+		caseReportControll.loadWarningReport(null, null);
+		//this.saveWarning();
 		//this.loadWarningByOrgId();
+		
 	}
-	@Test
-	public  void  loadCasePeriodReport(){
-		caseReportControll.loadCasePeriodReport(null, null);
 
-	}
 	
 //	@Test
 //	public  void  loadCaseHourReport(){

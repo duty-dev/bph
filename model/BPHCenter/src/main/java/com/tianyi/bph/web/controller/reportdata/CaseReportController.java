@@ -23,6 +23,7 @@ import com.tianyi.bph.domain.report.CasePeriodAGGR;
 import com.tianyi.bph.domain.report.CaseReportResult;
 import com.tianyi.bph.domain.report.CaseTypeAGGR;
 import com.tianyi.bph.domain.report.ReportPeriod;
+import com.tianyi.bph.domain.report.WarningOrgAGGR;
 import com.tianyi.bph.domain.system.Organ;
 import com.tianyi.bph.domain.system.User;
 import com.tianyi.bph.service.report.CaseReportService;
@@ -325,12 +326,16 @@ public class CaseReportController {
 			ReportPeriod rp=new ReportPeriod(20150101,20150430,1);
 			
 			
-			map.put("orgId", 72);
-			map.put("orgPath", "/510000000000/510100000000");
+			Organ org=organService.getOrganByPrimaryKey(72);
+			
+			map.put("orgId", org.getId());
+			map.put("orgPath",  org.getPath());
+			
 			List<Integer> caseLevels=new ArrayList<Integer>();
 			caseLevels.add(1);
 			caseLevels.add(2);
 			caseLevels.add(3);
+			map.put("caseLevels", caseLevels);
 			
 			List<String> caseTypes=new ArrayList<String>();
 			caseTypes.add("caseType110010901");
@@ -352,18 +357,16 @@ public class CaseReportController {
 			hours.add(9);
 			hours.add(10);
 			hours.add(11);
-			
 			map.put("hours", hours);
 			
+			List<WarningOrgAGGR> woas=caseReportService.loadWarningReport(map);
 			
+			return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
+					MessageCode.SELECT_SUCCESS, 0, woas);
 			
 		}catch(Exception ex){
-			
+			return ReturnResult.MESSAGE(MessageCode.STATUS_FAIL,
+					MessageCode.SELECT_ORGAN_FAIL, 0, null);
 		}
-		
-		
-		
-		
-		return null;
 	}
 }
