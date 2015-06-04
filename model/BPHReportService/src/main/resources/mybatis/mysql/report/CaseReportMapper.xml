@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tianyi.bph.dao.report.CaseReportMapper" >
+	<resultMap id="caseTypeAGGRMap" type="com.tianyi.bph.domain.report.CaseTypeAGGR">
+    	<result column="type_code" property="typeCode"   jdbcType="VARCHAR"/>
+    	<result column="type_name"  property="typeName" jdbcType="VARCHAR"/>
+    	<result column="type_parent_code" property="typeParentCode" jdbcType="VARCHAR" />
+    	<result column="type_level" property="typeLevel" jdbcType="INTEGER" />
+    	<result column="type_count" property="amount" jdbcType="INTEGER" />
+    </resultMap>
+	
+	<resultMap id="casePeriodAGGRMap" type="com.tianyi.bph.domain.report.CasePeriodAGGR">
+    	<result column="period" property="period"   jdbcType="INTEGER"/>
+    	<result column="period_count" property="amount" jdbcType="INTEGER" />
+    </resultMap>
+
+	<resultMap id="caseHourAGGRMap" type="com.tianyi.bph.domain.report.CaseHourAGGR">
+    	<result column="chour" property="hour"   jdbcType="INTEGER"/>
+    	<result column="hour_count" property="amount" jdbcType="INTEGER" />
+    </resultMap>
+
+	<resultMap id="caseOrgAGGRMap" type="com.tianyi.bph.domain.report.CaseHourAGGR">
+    	<result column="org_id" property="orgId"   jdbcType="INTEGER"/>
+    	<result column="org_code" property="orgCode" jdbcType="VARCHAR" />
+    	<result column="org_name" property="orgName" jdbcType="VARCHAR" />
+    	<result column="type_code" property="typeCode" jdbcType="VARCHAR" />
+    	<result column="type_name" property="typeName" jdbcType="VARCHAR" />
+    	<result column="type_parent_code" property="typeParentCode" jdbcType="VARCHAR" />
+    	<result column="type_level" property="typeLevel" jdbcType="INTEGER" />
+    	<result column="org_type_count" property="amount" jdbcType="INTEGER" />
+    </resultMap>
+
+	<select id="loadMaxYMD">
+		select IFNULL(MAX(ymd),0)  from t_case_report
+	</select>
+  	
+  	<select id="loadMaxDate"  resultType="java.util.Date">
+  		select max(cdate) from t_case_report
+  	</select>
+  	
+  	<insert  id="insertCaseInfo">
+  		insert into t_case_report
+  		(
+  			CODE,
+			cdate,
+			cyear,
+			cmonth,
+			cday,
+			chour,
+			ymd,
+			ym,
+			org_id,
+			org_code,
+			org_path,
+			org_full_path,
+			org_parent_id,
+			state,
+			phone,
+			clevel,
+			type1,
+			type2,
+			type3,
+			content,
+			address,
+			gps,
+			operator
+		)
+		SELECT
+			bj.JJDBH,
+			bj.BJSJ,
+			YEAR (bj.BJSJ),
+			MONTH (bj.BJSJ),
+			DAY (bj.BJSJ),
+			HOUR (bj.bjsj),
+			DATE_FORMAT(bj.BJSJ, '%Y%m%d'),
+			DATE_FORMAT(bj.BJSJ, '%Y%m'),
+			org.ORGAN_ID,
+			org.CODE,
+			org.PATH,
+			org.Path,  
+			org.parent_id,
+			bj.AJZT,
+			bj.LXDH,
+			bj.CASE_LEVEL,
+			bj.BJLB,
+			bj.BJLX,
+			bj.BJXL,
+			bj.BJNR,
+			bj.SFDZ,
+			bj.GPS_CONFIG,
+			bj.JJYXM
+		FROM
+			b_jjdb AS bj
+		LEFT JOIN t_organ AS org  ON bj.gxdwbh = org.CODE
+		WHERE
+			1=1
+			<if test="beginTime != null" >
+				and bj.bjsj &gt;=#{beginTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime != null" >
+				and bj.bjsj  &lt; #{endTime,jdbcType=TIMESTAMP}
+			</if>
+  	</insert>
+  	
+  	<insert id="insertOrganLevel"  >
+  		INSERT INTO t_organ_level (
+			organ_id,
+			parent_id,
+			LEVEL,
+			level1_id,
+			level2_id,
+			level3_id,
+			level4_id,
+			level5_id,
+			level6_id
+		) SELECT
+			t.ORGAN_ID,
+			t.PARENT_ID,
+			t.LEVLE,
+			t1.ORGAN_ID,
+			t2.ORGAN_ID,
+			t3.ORGAN_ID,
+			t4.ORGAN_ID,
+			t5.ORGAN_ID,
+			t6.ORGAN_ID
+		FROM
+			t_organ AS t
+		LEFT JOIN t_organ AS t1 ON SUBSTRING(t.PATH, 2, 12) = t1. CODE
+		LEFT JOIN t_organ AS t2 ON SUBSTRING(t.PATH, 15, 12) = t2. CODE
+		LEFT JOIN t_organ AS t3 ON SUBSTRING(t.PATH, 28, 12) = t3. CODE
+		LEFT JOIN t_organ AS t4 ON SUBSTRING(t.PATH, 41, 12) = t4. CODE
+		LEFT JOIN t_organ AS t5 ON SUBSTRING(t.PATH, 54, 12) = t5. CODE
+		LEFT JOIN t_organ AS t6 ON SUBSTRING(t.PATH, 67, 12) = t6. CODE
+  	</insert>
+  	
+  	<select id="loadCaseTypeReport"  parameterType="java.util.Map"  resultMap="caseTypeAGGRMap">
+		select 
+			t.type_code					as type_code,
+			bat.type_name 				as type_name,
+			bat.parent_type_code	as type_parent_code,
+			t.type_level					as type_level,
+			t.type_count					as type_count
+		FROM(
+			select
+				type1 		as type_code,
+				1 				as type_level,
+				count(*) 	as type_count
+			from 
+				t_case_report
+			where 
+				org_full_path like CONCAT(#{orgFullPath,jdbcType=VARCHAR},'%') and 
+				clevel in 
+					<foreach item="item" index="index" collection="levels" open="(" separator="," close=")">  
+						#{item}
+					</foreach> AND
+				ymd  &gt;=#{beginYMD,jdbcType=INTEGER} and ymd &lt;=#{endYMD,jdbcType=INTEGER} and
+				chour in
+					<foreach item="item" index="index" collection="hours" open="(" separator="," close=")">  
+						#{item}
+					</foreach>
+			group by 
+				type1
+			UNION 
+			select
+				type2 		as type_code,
+				2				as	type_level,
+				count(*) 	as type_count
+			from 
+				t_case_report
+			where
+				org_full_path like CONCAT(#{orgFullPath,jdbcType=VARCHAR},'%') and 
+				clevel in 
+					<foreach item="item" index="index" collection="levels" open="(" separator="," close=")">  
+						#{item}
+					</foreach> AND
+				ymd  &gt;=#{beginYMD,jdbcType=INTEGER} and ymd &lt;=#{endYMD,jdbcType=INTEGER} and
+				chour in
+					<foreach item="item" index="index" collection="hours" open="(" separator="," close=")">  
+						#{item}
+					</foreach>
+			group by 
+				type2
+		)as t
+		left join b_alarm_type as bat on t.type_code=bat.TYPE_CODE
+		where 
+			t.type_code is not NULL
+  	</select>
+  	
+  	<select id="loadCasePeriodReport"  parameterType="java.util.Map"  resultMap="casePeriodAGGRMap">
+  		select 
+  			<if test ="periodType==1">
+  				cmonth as period,
+  			</if>
+  			<if test ="periodType==2">
+  				ymd as period,
+  			</if>
+  			count(*)	as period_count
+  		from
+  			t_case_report
+  		where
+  			org_full_path like CONCAT(#{orgFullPath,jdbcType=VARCHAR},'%') and 
+			clevel in 
+				<foreach item="item" index="index" collection="levels" open="(" separator="," close=")">  
+					#{item}
+				</foreach> AND
+			type2 in
+				<foreach item="item" index="index" collection="type2Codes" open="(" separator="," close=")">  
+					#{item}
+				</foreach> AND
+			ymd  &gt;=#{beginYMD,jdbcType=INTEGER} and ymd &lt;=#{endYMD,jdbcType=INTEGER} and
+			chour  in
+				<foreach item="item" index="index" collection="hours" open="(" separator="," close=")">  
+					#{item}
+				</foreach>
+		group by 
+			<if test ="periodType==1">
+  				cmonth 
+  			</if>
+  			<if test ="periodType==2">
+  				ymd
+  			</if>
+  	</select>
+  	
+  	<select id="loadCaseHourReport"  parameterType="java.util.Map"  resultMap="caseHourAGGRMap">
+  		select 
+  			chour 		as chour,
+  			count(*)	as period_count
+  		from
+  			t_case_report
+  		where
+  			ymd  &gt;=#{beginYMD,jdbcType=INTEGER} and ymd &lt;=#{endYMD,jdbcType=INTEGER} and
+  			org_full_path like CONCAT(#{orgFullPath,jdbcType=VARCHAR},'%')	and 
+			clevel in
+				<foreach item="item" index="index" collection="levels" open="(" separator="," close=")">  
+					#{item}
+				</foreach> AND
+			type2 in
+				<foreach item="item" index="index" collection="type2Codes" open="(" separator="," close=")">  
+					#{item}
+				</foreach> AND
+			chour  in
+				<foreach item="item" index="index" collection="hours" open="(" separator="," close=")">  
+					#{item}
+				</foreach> 
+		group by 
+			chour
+  	</select>
+  	
+  	<select id="loadCaseOrgReport"  parameterType="java.util.Map"  resultMap="caseOrgAGGRMap">
+  		select
+  			t.org_id								as org_id,
+  			org.code							as org_code,
+  			org.short_name				as org_name,
+  			t.type_code						as type_code,
+  			bat.type_name 					as type_name,
+  			bat.parent_type_code		as type_parent_code,
+			t.type_level						as type_level,
+			ifnull(org_type_count,0)	as org_type_count
+  		from(
+	  		select
+	  			org_id		as org_id,
+	  			type1		as type_code,
+	  			1				as type_level,
+	  			count(*)	as org_type_count
+	  		from
+	  			t_case_report
+	  		where
+	  			ymd  &gt;=#{beginYMD,jdbcType=INTEGER} and ymd &lt;=#{endYMD,jdbcType=INTEGER} and
+	  			org_parent_id =#{orgParentId,jdbcType=INTEGER} and
+	  			clevel in 
+					<foreach item="item" index="index" collection="levels" open="(" separator="," close=")">  
+						#{item}
+					</foreach> AND
+				type2 in
+					<foreach item="item" index="index" collection="type2Codes" open="(" separator="," close=")">  
+						#{item}
+					</foreach> AND
+				chour  in
+					<foreach item="item" index="index" collection="hours" open="(" separator="," close=")">  
+						#{item}
+					</foreach> 
+			group by
+				org_id,
+				type1
+			UNION
+			select
+	  			org_id		as org_id,
+	  			type2		as type_code,
+	  			2				as type_level,
+	  			count(*)	as org_type_count
+	  		from
+	  			t_case_report
+	  		where
+	  			ymd  &gt;=#{beginYMD,jdbcType=INTEGER} and ymd &lt;=#{endYMD,jdbcType=INTEGER} and
+	  			org_parent_id =#{orgParentId,jdbcType=INTEGER} and
+	  			clevel in 
+					<foreach item="item" index="index" collection="levels" open="(" separator="," close=")">  
+						#{item}
+					</foreach> AND
+				type2 in
+					<foreach item="item" index="index" collection="type2Codes" open="(" separator="," close=")">  
+						#{item}
+					</foreach> AND
+				chour  in
+					<foreach item="item" index="index" collection="hours" open="(" separator="," close=")">  
+						#{item}
+					</foreach> 
+			group by
+				org_id,
+				type2
+		)as t
+		left join t_organ as org on org.organ_id=t.org_id
+		left join b_alarm_type as bat on t.type_code=bat.TYPE_CODE
+  	</select>
+  	
+  	<resultMap id="WarningAGGRMap" type="com.tianyi.bph.domain.report.WarningOrgAGGR">
+    	<result column="org_id" property="orgId"   jdbcType="INTEGER"/>
+    	<result column="org_name" property="orgName"  jdbcType="VARCHAR" />
+    	<result column="org_code" property="orgCode"  jdbcType="VARCHAR" />
+    	<result column="amount" property="amount"  jdbcType="DECIMAL" />
+    </resultMap>
+  	
+  	<select id="loadWarningReport"  parameterType="java.util.Map"  resultMap="WarningAGGRMap">
+  		select
+  			org.organ_id 	as org_id,
+  			org.name			as org_name,
+  			org.code			as org_code,
+  			t.amount			as amount
+  		from t_organ as org
+  		left join(
+	  		select
+	  			right(org_path,12)		as org_code,
+	  			count(*)  					as amount
+	  		from t_case_report
+	  		where
+	  			ymd &gt;=#{beginYmd,jdbcType=INTEGER} and 
+	  			ymd &lt;=#{endYmd,jdbcType=INTEGER} and
+	  			org_path like CONCAT(#{orgFullPath,jdbcType=VARCHAR},'/','%') and
+	  			clevel in 
+	  				<foreach item="item" index="index" collection="caseLevels" open="(" separator="," close=")">  
+							#{item}
+					</foreach> and
+				type2 in
+					<foreach item="item" index="index" collection="type2Codes" open="(" separator="," close=")">  
+							#{item}
+					</foreach> and
+				chour  in
+					<foreach item="item" index="index" collection="hours" open="(" separator="," close=")">  
+						#{item}
+					</foreach>
+	  		group by
+	  			LEFT(org_path,CHAR_LENGTH(CONCAT(#{orgPath,jdbcType=VARCHAR},'/'))+12)
+	  		)as t on org.code=t.org_code
+  	</select>
+
+</mapper>
