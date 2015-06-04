@@ -19,7 +19,7 @@ import com.tianyi.bph.service.system.OrganService;
 
 @Controller
 @RequestMapping("/reportRouteWeb")
-public class reportRouteController {
+public class ReportRouteController {
 	@Autowired
 	private OrganService organService;
 
@@ -42,8 +42,11 @@ public class reportRouteController {
 		if (organId == null) {
 			organId = user.getOrgId();
 		}  
+		Organ organ = new Organ();
+		organ = organService.getOrganByPrimaryKey(organId);
 		mv.addObject("organId", organId);   
-		mv.addObject("num", "300");
+		mv.addObject("organName", organ.getShortName());   
+		mv.addObject("num", "1000");
 		return mv;
 	}  
 
@@ -78,7 +81,7 @@ public class reportRouteController {
 		mv.addObject("organCode", organ.getCode()); 
 		mv.addObject("organPath", organ.getPath()); 
 		mv.addObject("subOrgList", subOrgList); 
-		mv.addObject("num", "300");
+		mv.addObject("num", "1000");
 		return mv;
 	}
 
@@ -103,18 +106,63 @@ public class reportRouteController {
 			organId = user.getOrgId();
 		}
 		Organ organ = new Organ();
-		organ = organService.getOrganByPrimaryKey(organId);
-		List<Organ> subOrgList = new ArrayList<Organ>();
-		OrganQuery organQuery = new OrganQuery();
-		organQuery.setParentId(organId); 
-		subOrgList = organService.getOrganListByParentId(organQuery);
+		organ = organService.getOrganByPrimaryKey(organId);   
 		
 		mv.addObject("organ", organ); 
 		mv.addObject("organName", organ.getShortName()); 
 		mv.addObject("organCode", organ.getCode()); 
-		mv.addObject("organPath", organ.getPath()); 
-		mv.addObject("subOrgList", subOrgList); 
-		mv.addObject("num", "300");
+		mv.addObject("organPath", organ.getPath());  
+		mv.addObject("num", "1000");
+		return mv;
+	}
+	/**
+	 * web跳转到四色预警
+	 * 
+	 * @param request
+	 * @param
+	 * 
+	 * @return
+	 */
+	@RequestMapping({ "/gotoFourColorWarningAdd.do",
+			"/gotoFourColorWarningAdd.action" })
+	@ResponseBody
+	public ModelAndView gotoFourColorWarningAdd(
+			@RequestParam(value = "organId", required = false) Integer organId,
+			HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView(
+				"/reportdata/fourcolorwarning/fourColorwarningAdd.jsp");
+		User user = (User) request.getAttribute("User");
+		if (organId == null) {
+			organId = user.getOrgId();
+		} 
+		mv.addObject("organId", organId);   
+		mv.addObject("num", "1000");
+		return mv;
+	}
+	/**
+	 * web跳转到四色预警
+	 * 
+	 * @param request
+	 * @param
+	 * 
+	 * @return
+	 */
+	@RequestMapping({ "/gotoFourColorWarningEdit.do",
+			"/gotoFourColorWarningEdit.action" })
+	@ResponseBody
+	public ModelAndView gotoFourColorWarningEdit( 
+			@RequestParam(value = "organId", required = false) Integer organId,
+			@RequestParam(value = "caseId", required = false) Integer caseId,
+			HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView(
+				"/reportdata/fourcolorwarning/fourColorwarningEdit.jsp");
+		User user = (User) request.getAttribute("User");
+		if (organId == null) {
+			organId = user.getOrgId();
+		} 
+		mv.addObject("organId", organId);  
+		mv.addObject("caseId", caseId);  
+		mv.addObject("num", "1000");
 		return mv;
 	}
 }

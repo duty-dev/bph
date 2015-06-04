@@ -37,7 +37,9 @@ if(cookie!=null){
             	<h4>1.点线面绘制</h4>
 		    	<input type="button" value="绘点" onclick="draw_point()" style="width:50px;">
 		    	<input type="button" value="绘线" onclick="draw_line()" style="width:50px;">
-		    	<input type="button" value="绘面" onclick="draw_polygon()" style="width:50px;">
+		    	<input type="button" value="绘面" onclick="draw_polygon()" style="width:50px;"><br>
+		    	<input type="button" value="绘矩形" onclick="draw_drawRectangle()" style="width:50px;">
+		    	<input type="button" value="绘圆" onclick="draw_RegularPolygon()" style="width:50px;">
 		    	<input type="button" value="清除" onclick="clearFeatures()" style="width:50px; position: absolute; left: 178px;">
 		    	<h4>2.距离量算&面积量算</h4>
 		    	<input type="button" value="距离量算" onclick="distanceMeasure()" style="width:80px;"/>
@@ -47,6 +49,12 @@ if(cookie!=null){
 		    	<input type="button" value="移动" onclick="moveMarker()" style="width:50px;"/>
 		    	<h4>4.鼠标的坐标及经纬度</h4>
 		    	<span id="mousePositionDiv"></span>
+		    	<h4>5.切换捕捉</h4>
+		    	<input type="button" value="切换捕捉" onclick="switch_snap()" style="width:80px;"/>
+		    	<h4>6.动画控制</h4>
+		    	<input type="button" value="开始监控" onclick="startAnimator()"  style="width:75px;"/>
+	            <input type="button" value="暂停监控" onclick="pauseAnimator()"  style="width:75px;"/>
+	            <input type="button" value="停止监控" onclick="stopAnimator()"  style="width:75px;"/>
 		    </div>
 		</div>
         </div><!----机构树结束---->

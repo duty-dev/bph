@@ -3,6 +3,8 @@ package com.tianyi.bph.service.system;
 import java.util.List;
 
 import com.tianyi.bph.common.Pager;
+import com.tianyi.bph.domain.system.Module;
+import com.tianyi.bph.domain.system.ModuleJson;
 import com.tianyi.bph.domain.system.Role;
 import com.tianyi.bph.query.system.RoleQuery;
 
@@ -19,6 +21,8 @@ public interface RoleService {
 	
 	//查询用户拥有的权限
 	public List<Role> getRolesByUserId(Long id);
+	//获取所有权限
+	public List<ModuleJson> getModuleList();
 	
 	//条件查询
 	public List<Role> getQueryList(RoleQuery query);

@@ -197,7 +197,7 @@ public class GroupManagerAction extends BaseLogController{
 			HttpServletRequest request
 			){
 		try {
-			groupManagerService.deleteByPrimaryKey(groupId);
+			groupManagerService.deleteByPrimaryKey(groupId,groupType);
 		
 		} catch (Exception e) {
 			log.debug("删除收藏信息失败");

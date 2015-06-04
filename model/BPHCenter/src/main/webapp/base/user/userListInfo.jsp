@@ -197,8 +197,9 @@ function onClose(e) {
 							treeview.append(eval('(' + JSON.stringify(this) + ')'), selectedNode);
           				});
 					}
-		  		}); --%>
+		  		}); 
 		  		selectClass();//追加样式
+		  		--%>
 			}
 		});
 }

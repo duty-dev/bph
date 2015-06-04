@@ -28,9 +28,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<ul>
 									<input id="serviceId" value="${service.serviceId}" type="hidden"/>
 									<li class="ty-input"><span class="ty-input-warn ml150">*</span><label for="aServiceName">服务名称:</label>
-									<input type="text" class="k-textbox" value="${service.serviceName}" name="editServiceName" id="editServiceName" style="width:60%" /><em class="ty-input-end"></em>
+									<input type="text" class="k-textbox" value="${service.serviceName}" name="editServiceName" id="editServiceName" />
 									<li class="ty-input"><span class="ty-input-warn ml150">*</span><label for="aServiceIp">服务IP:</label> 
-									<input type="text" class="k-textbox" value="${service.serviceIp}" name="editServiceIp" id="editServiceIp" style="width:60%" /><em class="ty-input-end"></em>
+									<input type="text" class="k-textbox" value="${service.serviceIp}" name="editServiceIp" id="editServiceIp" />
 									<input id="editServiceType" value="${service.serviceType}" type="hidden"/>
 									<li class="ty-input"><span class="ty-input-warn ml150">*</span><label for="aServiceType">服务类型:</label> 
 										<select id="editType" name="editType">
@@ -40,17 +40,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<option value="3">gps</option>
 										</select>
 									<li class="ty-input"><span class="ty-input-warn ml150">*</span><label for="aServicePort">服务端口:</label> 
-									<input type="text" class="k-textbox" name="editServicePort" value="${service.servicePort}" id="editServicePort" style="width:60%" /><em class="ty-input-end"></em>
+									<input type="text" class="k-textbox" name="editServicePort" value="${service.servicePort}" id="editServicePort" />
 									<li class="ty-input"><span class="ty-input-warn ml150">*</span><label for="aServiceAccount">用户名:</label> 
-									<input type="text" class="k-textbox" name="editServiceAccount" value="${service.serviceAccount}" id="editServiceAccount" style="width:60%" /><em class="ty-input-end"></em>
+									<input type="text" class="k-textbox" name="editServiceAccount" value="${service.serviceAccount}" id="editServiceAccount" />
 									<li class="ty-input"><span class="ty-input-warn ml150">*</span><label for="aServicePwd">用户密码:</label> 
-									<input type="password" class="k-textbox" name="editServicePwd" id="editServicePwd" value="${service.servicePwd}" style="width:60%" /><em class="ty-input-end"></em>
+									<input type="password" class="k-textbox" name="editServicePwd" id="editServicePwd" value="${service.servicePwd}" />
 									<li class="ty-input"><span class="ty-input-warn ml150">*</span><label for="aServiceVersion">服务版本:</label> 
-									<input type="text" class="k-textbox" name="editServiceVersion" id="editServiceVersion" value="${service.serviceVersion}" style="width:60%" /><em class="ty-input-end"></em>
+									<input type="text" class="k-textbox" name="editServiceVersion" id="editServiceVersion" value="${service.serviceVersion}" />
 									<li class="ty-input"><span class="ty-input-warn ml150">*</span><label for="aServiceExchange">交换机名:</label> 
-									<input type="text" class="k-textbox" name="editServiceExchange" id="editServiceExchange" value="${service.exchangeName}" style="width:60%" /><em class="ty-input-end"></em>
+									<input type="text" class="k-textbox" name="editServiceExchange" id="editServiceExchange" value="${service.exchangeName}" />
 									<li class="ty-input">
-										<button type="button" data-role="button" onclick="save()" style="margin-left:130px;">提交</button></li>
+										<button type="button" class="ty-button" onclick="save()" style="margin-left:130px;">提交</button></li>
 								</ul>
 							</form>
 						</div>

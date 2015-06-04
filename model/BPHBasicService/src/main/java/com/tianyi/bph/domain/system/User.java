@@ -127,9 +127,17 @@ public class User {
     private List<Role> roles;
     
     //所拥有权限
-    private List<Module> modules;
+    private List<ModuleJson> modules;
     
-    public List<String> getFunctionList() {
+    public List<ModuleJson> getModules() {
+		return modules;
+	}
+
+	public void setModules(List<ModuleJson> modules) {
+		this.modules = modules;
+	}
+
+	public List<String> getFunctionList() {
 		return functionList;
 	}
 
@@ -255,13 +263,5 @@ public class User {
 
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
-	}
-	
-    public List<Module> getModules() {
-		return modules;
-	}
-
-	public void setModules(List<Module> modules) {
-		this.modules = modules;
 	}
 }

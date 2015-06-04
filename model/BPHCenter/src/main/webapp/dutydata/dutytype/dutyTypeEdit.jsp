@@ -298,7 +298,7 @@ var DutyTypeEditManage= {
 						</li> 
 					</ul>
 					<p style="float:left;width:100%;margin-top:10px;">
-						<span id="undo" class="k-button" onclick="DutyTypeEditManage.saveDutyType()">保存</span> 
+						<button id="undo" class="ty-button" onclick="DutyTypeEditManage.saveDutyType()">确定</button> 
 					</p>
 
 

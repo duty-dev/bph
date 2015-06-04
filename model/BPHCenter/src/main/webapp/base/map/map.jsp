@@ -14,7 +14,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <%@ include file="../../emulateIE.jsp" %>	
 </head>
 
-<body onload="initMap()">
+<body>
   <div id="wrapper">
     <div id='main-nav-bg'></div>
     <nav class="" id="main-nav">

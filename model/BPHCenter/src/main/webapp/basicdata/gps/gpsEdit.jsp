@@ -65,14 +65,14 @@ $(function() {
 			}
 	});
 	var rootPath = '<%=basePath%>';
-	$("#gpsIcons").kendoComboBox({ 
-		dataTextField : "name",
-		dataValueField : "id",
-		dataSource : gpsIconData,
-		template: '<span><img width="25px" height="25px" src="'+rootPath+'#: iconUrl #" />#: name #</span>',
-
-        select: GpsEditManage.onSelectIcon  
-	}).prev().find(".k-input").attr("readonly",true);
+//	$("#gpsIcons").kendoComboBox({ 
+//		dataTextField : "name",
+//		dataValueField : "id",
+//		dataSource : gpsIconData,
+//		template: '<span><img width="25px" height="25px" src="'+rootPath+'#: iconUrl #" />#: name #</span>',
+//
+//        select: GpsEditManage.onSelectIcon  
+//	}).prev().find(".k-input").attr("readonly",true);
 	bph_gpsEdit_pkg.iconId = $("#gpsIcons").val();
 	bph_gpsEdit_pkg.iconUrl = $("#txtgpsiconUrl").val();
 });
@@ -87,7 +87,7 @@ var GpsEditManage= {
 			var dataItem = this.dataItem(e.item.index()); 
 			bph_gpsEdit_pkg.iconId = dataItem.id;
 			bph_gpsEdit_pkg.iconUrl = dataItem.iconUrl; 
-			$("#icon_thumb").attr("src","<%=basePath %>"+dataItem.iconUrl);
+			//$("#icon_thumb").attr("src","<%=basePath %>"+dataItem.iconUrl);
 		},
 		isComplete:false,
 		saveGpsWithOut:function(){ 
@@ -241,18 +241,18 @@ var GpsEditManage= {
 										class="k-textbox" name="gpsName" id="gpsName"  value="${gps.gpsName}" /></li>
 									<li style="padding:5px;"><span class="ty-input-warn">*</span><label for="gpsNumber" class="fl mr5">GPS编号:</label><input type="text"
 										class="k-textbox" name="gpsNumber" id="gpsNumber" value="${gps.number}" onblur="GpsEditManage.isExistNumber()" /></li>
-									<li style="padding:5px;"><span class="ty-input-warn"></span><label for="gpsIcons" class="fl mr5">GPS图标:</label><input id="gpsIcons"
+									<!--<li style="padding:5px;"><span class="ty-input-warn"></span><label for="gpsIcons" class="fl mr5">GPS图标:</label><input id="gpsIcons"
 										placeholder="请选择GPS图标..." value="${gps.iconId}"  /><input type="hidden"
-										id="txtgpsiconUrl" value="${gps.iconUrl}" /></li>
+										id="txtgpsiconUrl" value="${gps.iconUrl}" /></li>-->
 								</ul>
 							</td>
 					 		<td> 
-					 		<img id="icon_thumb" alt="" width="100px" height="100px" src="<%=basePath %>${gps.iconUrl}">
+					 		<!--<img id="icon_thumb" alt="" width="100px" height="100px" src="<%=basePath %>${gps.iconUrl}">-->
 					 		</td>
 					 	</tr>
 					 </table>
 					<p class="ty-input-row">
-						<button class="ty-button"  onclick="GpsEditManage.saveGpsWithOut()">保存</button>
+						<button class="ty-button"  onclick="GpsEditManage.saveGpsWithOut()">确定</button>
 					</p>
 
 

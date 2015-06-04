@@ -26,6 +26,7 @@
                						var udata = msg.data.data;
                						var total = msg.data.totalRows;
                						$("#gridListTotal").text(total+"个");
+               						$("#grid").empty();
                						$("#grid").kendoGrid({
                	                        dataSource: {
                	                            data:udata,

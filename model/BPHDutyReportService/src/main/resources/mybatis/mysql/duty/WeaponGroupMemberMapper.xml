@@ -133,10 +133,7 @@
     left join t_weapontype t on p.type_id = t.id 
     left join t_organ as org on p.org_id=org.organ_id
     where group_id = #{groupId,jdbcType=INTEGER}
-    order by m.id
-  		<if test="pageStart != null">
-	    	limit #{pageStart,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
-	  	</if>
+    order by m.id 
     
   </select>
   

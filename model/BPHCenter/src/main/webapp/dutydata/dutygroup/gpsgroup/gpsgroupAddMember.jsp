@@ -224,7 +224,7 @@
 							<div id="dtSelGroupMember"></div>
 					 
 					<p style="float:left;width:100%;margin-top:10px;">
-						<span class="k-button"  onclick="GpsGroupManage.appendMember()">保存</span>
+						<button class="ty-button"  onclick="GpsGroupManage.appendMember()">确定</button>
 					</p>
 					</div>
 				</div>

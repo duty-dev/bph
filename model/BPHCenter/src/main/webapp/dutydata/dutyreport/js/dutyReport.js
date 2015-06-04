@@ -18,8 +18,8 @@
 			$("#dteBeginDate").kendoDatePicker({
     			value: bd
 			});
-			bd.setHours(0, 0);
-			ed.setHours(23,30);
+			bd.setHours(1, 0);
+			ed.setHours(23,59);
 			$("#spnBeginTime").kendoTimePicker();
 			var spnBeginTime = $("#spnBeginTime").data("kendoTimePicker");
 			spnBeginTime.value(bd);
@@ -108,7 +108,7 @@
 						dataTextField: "name",
 		  				dataValueField: "id",
 		  				dataSource : ds
-		             });
+		             }).prev().find(".k-input").attr("readonly",true); ;
 				}
 			});
 		},

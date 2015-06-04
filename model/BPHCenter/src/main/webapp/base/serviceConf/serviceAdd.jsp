@@ -27,9 +27,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								
 								<ul>
 									<li class="ty-input"><span class="ty-input-warn ml150">*</span><label for="aServiceName">服务名称:</label>
-									<input type="text" class="k-textbox" name="addServiceName" id="addServiceName" style="width:60%" /><em class="ty-input-end"></em>
+									<input type="text" class="k-textbox" name="addServiceName" id="addServiceName"  />
 									<li class="ty-input"><span class="ty-input-warn ml150">*</span><label for="aServiceIp">服务IP:</label> 
-									<input type="text" class="k-textbox" name="addServiceIp" id="addServiceIp" style="width:60%" /><em class="ty-input-end"></em>
+									<input type="text" class="k-textbox" name="addServiceIp" id="addServiceIp" />
 									<li class="ty-input"><span class="ty-input-warn ml150">*</span><label for="aServiceType">服务类型:</label> 
 										<select id="addServiceType" name="addServiceType">
 											<option value="">---请选择服务类型---</option>
@@ -38,17 +38,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<option value="3">gps</option>
 										</select>
 									<li class="ty-input"><span class="ty-input-warn ml150">*</span><label for="aServicePort">服务端口:</label> 
-									<input type="text" class="k-textbox" name="addServicePort" id="addServicePort" style="width:60%" /><em class="ty-input-end"></em>
+									<input type="text" class="k-textbox" name="addServicePort" id="addServicePort" />
 									<li class="ty-input"><span class="ty-input-warn ml150">*</span><label for="aServiceAccount">用户名:</label> 
-									<input type="text" class="k-textbox" name="addServiceAccount" id="addServiceAccount" style="width:60%" /><em class="ty-input-end"></em>
+									<input type="text" class="k-textbox" name="addServiceAccount" id="addServiceAccount" />
 									<li class="ty-input"><span class="ty-input-warn ml150">*</span><label for="aServicePwd">用户密码:</label> 
-									<input type="password" class="k-textbox" name="addServicePwd" id="addServicePwd" style="width:60%" /><em class="ty-input-end"></em>
+									<input type="password" class="k-textbox" name="addServicePwd" id="addServicePwd" />
 									<li class="ty-input"><span class="ty-input-warn ml150">*</span><label for="aServiceVersion">服务版本:</label> 
-									<input type="text" class="k-textbox" name="addServiceVersion" id="addServiceVersion" style="width:60%" /><em class="ty-input-end"></em>
+									<input type="text" class="k-textbox" name="addServiceVersion" id="addServiceVersion" />
 									<li class="ty-input"><span class="ty-input-warn ml150">*</span><label for="aServiceExchange">交换机名:</label> 
-									<input type="text" class="k-textbox" name="addServiceExchange" id="addServiceExchange" style="width:60%" /><em class="ty-input-end"></em>
+									<input type="text" class="k-textbox" name="addServiceExchange" id="addServiceExchange" />
 									<li class="ty-input actions">
-										<button type="button" data-role="button" onclick="saveService()">提交</button></li>
+										<button type="button" class="ty-button" onclick="saveService()">提交</button></li>
 								</ul>
 							</form>
 						</div>

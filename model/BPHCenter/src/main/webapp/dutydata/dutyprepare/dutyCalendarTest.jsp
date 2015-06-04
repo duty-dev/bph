@@ -27,10 +27,9 @@
 	            </div>
         	</div>
         	<!-- 日历主界面 -->
-        	<div class="dateBoxMainDate" style="overflow:auto">
-	        	 <table id="dateTable" class="" width="100%" height="100%" style="font-size:12px" >
-	                <thead style="height:15px">
-	                    <tr>
+        	<div id="dateBoxMain" class="dateBoxMain">
+	        	 <table width="100%" height="16px;" cellpadding="0" cellspacing="0">
+                    <tr>
 	                    <th style="text-align:center;color:red"> 日</th>
 	                    <th style="text-align:center;color:black"> 一</th>
 	                    <th style="text-align:center;color:black"> 二</th>
@@ -38,11 +37,14 @@
 	                    <th style="text-align:center;color:black"> 四 </th>
 	                    <th style="text-align:center;color:black"> 五</th>
 	                    <th style="text-align:center;color:red"> 六</th>
-	                    </tr>
-	                </thead>
-	                <tbody id="dateBody"> 
-	                </tbody> 
-	            </table> 
+                    </tr>
+	            </table>
+		        <div class="dateBoxMainDate" id="dateBoxMainDate" style="overflow:auto">
+		            <table id="dateTable" class="" width="100%" height="100%" style="font-size:12px" >
+		                <tbody id="dateBody"> 
+		                </tbody> 
+		            </table>
+		        </div> 
         	</div>
     	</div>
 	</div>
@@ -51,7 +53,7 @@
     <span> #: item.displayName     #</span> 
 </script>
 <div style="display:none"> 
-	<div id="dutyItemTList">  
+	<div id="dutyItemTList" style="height:500px">  
 		<div id="dutyItemTVBox"> 
         	<div id="dutyItemTV"></div>
         </div>

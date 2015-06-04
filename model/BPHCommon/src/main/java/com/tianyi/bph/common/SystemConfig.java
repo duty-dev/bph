@@ -90,10 +90,12 @@ public class SystemConfig {
 	 * 一级菜单配置
 	 */
 	public final static String BASE_MANAGER=getInstance().getProperty("baseManager");//基础数据
-	public final static String SYSTEM_MANAGER=getInstance().getProperty("systemManager");//基础数据
+	public final static String SYSTEM_MANAGER=getInstance().getProperty("systemManager");//系统管理
 	public final static String DUTY_MANAGER=getInstance().getProperty("dutyManager");//勤务报备
 	public final static String POLICE_MANAGER=getInstance().getProperty("policeManager");//接处警
 	public final static String REPORT_GROUP=getInstance().getProperty("reportGroup");//报备分组
+	public final static String ANALYZING_MANAGER=getInstance().getProperty("analyzingManager");//研判分析
+	
 	
 	public final static String AccessServerPort="accessServerPort";
 	public final static String accessServerPortBack="accessServerPort_back";

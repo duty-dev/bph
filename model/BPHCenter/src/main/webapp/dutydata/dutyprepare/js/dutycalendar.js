@@ -33,7 +33,7 @@ $(function() {
 	changeDivHeight(); // 表格自动高度设置
 	getDateData(y + "-" + m + "-" + 1);// 初始化默认月份数据
 });
-function loadData(pageNo){  
+function loadData(pageNo){
 	m_dutyCalendar_Org.id = $("#organId").val();
 	m_dutyCalendar_Org.code =$("#organCode").val();
 	m_dutyCalendar_Org.path =$("#organPath").val(); 
@@ -51,24 +51,9 @@ function loadData(pageNo){
 
 // 设置日历窗体的高度
 function changeDivHeight() {
-
 	var bodyHeight = document.body.clientHeight;
-	var tableContentHeight = bodyHeight - 60;
-	var tdHeight = parseInt(tableContentHeight / 6) - 3;
-	var dateBoxMainDateTDBoxWidht = parseInt($("#dateTable").width() * 0.14 * 0.98);
-	var tdContentHeight = tdHeight - 43;
-	var trObj = $("#dateTable tbody tr");
-	var tdObj = $("#dateTable tbody tr td");
-	for ( var i = 0; i < tdObj.length; i++) {
-		$(tdObj[i]).height(tdHeight);
-		$(tdObj[i]).width(dateBoxMainDateTDBoxWidht);
-		$(tdObj[i]).find(".dateBoxMainDateTDBox").height(tdContentHeight);
-	}
-
-	var dateBoxMainDateTDBoxS = $(".dateBoxMainDateTDBox"); 
-	for ( var i = 0; i < dateBoxMainDateTDBoxS.length; i++) {
-		$(dateBoxMainDateTDBoxS[i]).width(dateBoxMainDateTDBoxWidht);
-	}
+	var tp = $("#dateBoxMainDate").offset().top;
+	$("#dateBoxMainDate").height(bodyHeight-tp);
 }
 // 点击日期上月下月事件
 function getDateClick(action) {
@@ -101,7 +86,6 @@ function getDateData(date) {
 		// async:false,
 		success : function(req) {
 			if (req) {
-				changeDivHeight();
 				setDateData(req);
 			} else { 
 				$("body").popjs({"title":"提示","content":"获取数据失败"});   
@@ -251,7 +235,6 @@ function creatHtml(arr) {
 	}
 	$("#dateBody").empty(); 
 	$("#dateBody").append(html); 
-	changeDivHeight();
 }
 
 var dtime = null;
@@ -263,7 +246,8 @@ function onClickData(date) {
 		dt = dt.substr(0, 4) + "0" + dt.substr(4, 7);
 	}
 	dtime = dt; 
-	window.location.href="/BPHCenter/dutyRouteWeb/gotoDutyItem.action?sessionId="+sessionId+"&organId="+m_dutyCalendar_Org.id+"&ymd="+dtime;
+	//$.post("/BPHCenter/dutyRouteWeb/gotoDutyItem.do?sessionId="+sessionId+"&organId="+m_dutyCalendar_Org.id+"&ymd="+dtime);
+	window.location.href="/BPHCenter/dutyRouteWeb/gotoDutyItem.do?sessionId="+sessionId+"&organId="+m_dutyCalendar_Org.id+"&ymd="+dtime;
 };
 var timeouts;
 var timer = 1500;
@@ -299,7 +283,12 @@ function getDateInfo(date) {
 	var win =$('#dutyItemTList');
 	win.kendoWindow({
 	        width: "450px",
-	        title: "报备明细"
+	        height:"550px",
+	        title: "报备明细",
+	        position:{
+	        	top:'25%',
+	        	left:'40%'
+	        }
 	   });
 	win.data("kendoWindow").open();
 	window.clearInterval(timeouts);

@@ -44,6 +44,7 @@ $(document).ready(function() {
 <div id="template">
  
 	<div class="fl ml30 set-hei48">
+		<input id="organName" type="hidden" value="${requestScope.organName}" />
 		<span id="btnalarmType" class="k-button"  onclick="onChangeReportAction(1);">警情分类</span>
         <span id="btnalarmCircle" class="k-button"  onclick="onChangeReportAction(2);">周期</span> 
         <span id="btnalarmTimeSpan" class="k-button"  onclick="onChangeReportAction(3);">时间段</span>

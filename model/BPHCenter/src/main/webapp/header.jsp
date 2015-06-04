@@ -4,15 +4,20 @@
 var conductFlag= false;
 var baseFlag =false;
 var dutyFlag=false;
+var analyzingFlag=false;
 var num=${num};
 
 var funList=<%=session.getAttribute("funList")%>;
  var baseList=<%=session.getAttribute("baseArray")%>;
 var conductList=<%=session.getAttribute("conductArray")%>;
 var dutyList=<%=session.getAttribute("dutyArray")%>;
+var analyzingList=<%=session.getAttribute("analyzingArray")%>;
 
 
 $(document).ready(function(){
+	$("#nMenu").kendoMenu({
+	    animation: { close: { effects: "slideIn:up" }}
+	});
 	/* 解决ie js 数组不支持indexOf 方法 */
 	if (!conductList.indexOf)
 	{
@@ -34,6 +39,28 @@ $(document).ready(function(){
 	    return -1;
 	  };
 	}
+	
+	if (!analyzingList.indexOf)
+	{
+		analyzingList.indexOf = function(elt /*, from*/)
+	  {
+	    var len = this.length >>> 0;
+	    var from = Number(arguments[1]) || 0;
+	    from = (from < 0)
+	         ? Math.ceil(from)
+	         : Math.floor(from);
+	    if (from < 0)
+	      from += len;
+	    for (; from < len; from++)
+	    {
+	      if (from in this &&
+	          this[from] === elt)
+	        return from;
+	    }
+	    return -1;
+	  };
+	}
+	
 	if (!dutyList.indexOf)
 	{
 		dutyList.indexOf = function(elt /*, from*/)
@@ -82,6 +109,8 @@ $(document).ready(function(){
 			baseFlag=true;
 		}else if(dutyList.indexOf(funList[i]) != -1){//勤务报备
 			dutyFlag=true;
+		}else if(analyzingList.indexOf(funList[i]) != -1){//研判分析
+			analyzingFlag=true;
 		}
 	}
 	if(conductFlag){
@@ -92,6 +121,9 @@ $(document).ready(function(){
 	}
 	if(dutyFlag){
 		$("#navMenu").append("<li><a href='javaScript:void(0)' onclick='show_hide(300)'>勤务报备</a></li>");
+	}
+	if(analyzingFlag){
+		$("#navMenu").append("<li><a href='javaScript:void(0)' onclick='show_hide(1000)'>研判分析</a></li>");
 	}
 	show_hide(num);//初始加载基础数据
 });
@@ -134,7 +166,7 @@ function show_hide(type){
 				"<a href='<%=path %>/role/gotoRoleList.action'>角色管理</a></li>");
 			}
 		}
-	}else if(type=='500'){
+	}<%-- else if(type=='500'){
 		num=500;
 		$("#subMenu_5 li").remove();
 		$("#subMenu_5").append("<li>"+
@@ -143,7 +175,9 @@ function show_hide(type){
 		"<a href='<%=path %>/log/gotoLogList.action'>日志管理</a></li>");
 		$("#subMenu_5").append("<li>"+
 			"<a href='<%=path %>/map/initMap.action'>地图信息</a></li>");
-	}else if(type=='300'){
+		$("#subMenu_5").append("<li>"+
+		"<a href='<%=path %>/map/initCircleMap.action'>圈层信息</a></li>");
+	} --%>else if(type=='300'){
 		num=300;
 		$("#subMenu_5 li").remove();		
 		 for (var i = 0; i < funList.length; i++) {
@@ -170,25 +204,18 @@ function show_hide(type){
 				"<a href='<%=path %>/dutyGroupRouteWeb/gotoWeaponGroup.action'>武器分组</a></li>");
 			}
 		}
-	}<%-- else if(type=='600'){
-		num=600;
+	}else if(type=='1000'){
+		num=1000;
 		$("#subMenu_5 li").remove();		
 		 for (var i = 0; i < funList.length; i++) {
-			if(funList[i]=='600001'){
+			if(funList[i]=='1000001'){
 				$("#subMenu_5").append("<li>"+
-				"<a href='<%=path %>/dutyGroupRouteWeb/gotoPoliceGroup.action'>警员分组</a></li>");
-			}else if(funList[i]=='600002'){
+				"<a href='<%=path %>/reportRouteWeb/gotoAlarmStatistics.action'>警情统计</a></li>");
 				$("#subMenu_5").append("<li>"+
-				"<a href='<%=path %>/dutyGroupRouteWeb/gotoVehicleGroup.action'>警车分组</a></li>");
-			}else if(funList[i]=='600003'){
-				$("#subMenu_5").append("<li>"+
-				"<a href='<%=path %>/dutyGroupRouteWeb/gotoGpsGroup.action'>GPS分组</a></li>");
-			}else if(funList[i]=='600004'){
-				$("#subMenu_5").append("<li>"+
-				"<a href='<%=path %>/dutyGroupRouteWeb/gotoWeaponGroup.action'>武器分组</a></li>");
+				"<a href='<%=path %>/reportRouteWeb/gotoFourColorWarning.action'>四色预警设置</a></li>");
 			}
 		}
-	} --%>
+	}
 }
 
 /**
@@ -221,12 +248,16 @@ function gotoUpdatePassword(){
           <div>
             <div class="lv1"></div>
             <ul class="nav pull-left" id="navMenu"><!----一级菜单---->
-            	<li><a href='javaScript:void(0)' onclick="show_hide(500)">配置管理</a></li>
+            	<!-- <li><a href='javaScript:void(0)' onclick="show_hide(500)">配置管理</a></li> -->
             </ul><!----一级菜单结束---->
-            <ul class='nav pull-right'><!----用户信息---->
-              <li><div class="box">${sessionScope.SESSIN_USERNAME }</div></li>
-              <li><div class="box">授权登录</div></li>
-              <li><a href="javascript: gotoUpdatePassword();">修改密码</a></li>
+            <ul  class="nav pull-right" id="nMenu"><!----用户信息---->
+              <li><div class="box"  style="color: #81C9F0;">${sessionScope.SESSIN_USERNAME }</div></li>
+              <li><div class="box" style="color: #81C9F0;">授权登录</div></li>
+              <li style="color: #81C9F0;">工具
+              		<ul>
+              			<li><a href="javascript: gotoUpdatePassword();">密码修改</a></li>
+              		</ul>
+              </li>
               <li><a href="<%=path %>/admin/logout.do">退出</a></li>
             </ul><!----用户信息结束---->
           </div>

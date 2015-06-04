@@ -7,6 +7,7 @@
     <result column="USER_ID" property="userId" jdbcType="INTEGER" />
     <result column="ORGAN_ID" property="organId" jdbcType="INTEGER" />
     <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+     <result column="GROUP_TYPE" property="groupType" jdbcType="INTEGER" />
     <result column="SHARE_TYPE" property="shareType" jdbcType="INTEGER" />
   </resultMap>
   
@@ -15,12 +16,18 @@
     <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR" />
     <result column="USER_ID" property="userId" jdbcType="INTEGER" />
     <result column="ORGAN_ID" property="organId" jdbcType="INTEGER" />
+    <result column="GROUP_TYPE" property="groupType" jdbcType="INTEGER" />
     <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
     <result column="SHARE_TYPE" property="shareType" jdbcType="INTEGER" />
     <collection property="groupOther" ofType="GroupOther" column="GROUP_ID">
 		 <id column="GROUP_ID" property="groupId" /> 
-		 <id column="LIST_ID" property="listId" />
-		 <id column="TYPE" property="groupType" />
+		 <id column="LIST_ID" property="sourceId" />
+		 <id column="TYPE" property="sourceType" />
+	</collection>
+	<collection property="areaGroup" ofType="AreaGroup" column="GROUP_ID">
+		 <id column="GROUP_ID" property="groupId" /> 
+		 <id column="AREA_GROUP_TYPE" property="areaGroupType" />
+		 <id column="AREA_GROUP_CONTENT" property="areaGroupContent" />
 	</collection>
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -82,7 +89,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    GROUP_ID, GROUP_NAME, USER_ID, ORGAN_ID, CREATE_TIME, SHARE_TYPE
+    GROUP_ID, GROUP_NAME, USER_ID, ORGAN_ID, CREATE_TIME, SHARE_TYPE,GROUP_TYPE
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.tianyi.bph.query.system.GroupManagerExample" >
     select
@@ -111,10 +118,10 @@
   <insert id="insert" parameterType="com.tianyi.bph.domain.system.GroupManager" >
     insert into b_group_manager (GROUP_ID, GROUP_NAME, 
       USER_ID, ORGAN_ID, CREATE_TIME, 
-      SHARE_TYPE)
+      SHARE_TYPE,GROUP_TYPE)
     values (#{groupId,jdbcType=DECIMAL}, #{groupName,jdbcType=VARCHAR},
       #{userId,jdbcType=DECIMAL}, #{organId,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{shareType,jdbcType=DECIMAL})
+      #{shareType,jdbcType=DECIMAL},#{groupType,jdbcType=DECIMAL})
       <selectKey resultType="int" keyProperty="groupId">
 		select LAST_INSERT_ID() as ID
 	  </selectKey>
@@ -253,8 +260,8 @@
   </select>
   
   <select id="getListByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap1">
-  	select  gm.GROUP_ID, gm.GROUP_NAME, gm.USER_ID, gm.ORGAN_ID, gm.CREATE_TIME, gm.SHARE_TYPE,go.list_id ,go.type from b_group_manager gm LEFT JOIN r_group_other go 
-	ON go.group_id =gm.GROUP_ID where gm.USER_ID =#{userId,jdbcType=INTEGER}
+  	select  gm.GROUP_ID, gm.GROUP_NAME, gm.USER_ID, gm.ORGAN_ID, gm.CREATE_TIME, gm.SHARE_TYPE,gm.GROUP_TYPE,go.list_id ,go.type ,ag.AREA_GROUP_CONTENT,ag.AREA_GROUP_TYPE from b_group_manager gm LEFT JOIN r_group_other go 
+	ON go.group_id =gm.GROUP_ID LEFT JOIN b_area_group  ag ON gm.GROUP_ID=ag.GROUP_ID where gm.USER_ID =#{userId,jdbcType=INTEGER}
   </select>
   
 </mapper>

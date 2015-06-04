@@ -3,15 +3,15 @@ package com.tianyi.bph.domain.report;
 /**
  * 从案件类型统计
  * @author xml777
- *
- */
+ * */
+
 public class CaseTypeAGGR {
-	String typeCode;
-	String typeName;
-	Integer typeLevel;
-	Integer  amount;
-	String typeParentCode;
-	
+	private String typeCode;
+	private String typeName;
+	private Integer typeLevel;
+	private Integer  amount;
+	private String typeParentCode;
+
 	public String getTypeParentCode() {
 		return typeParentCode;
 	}

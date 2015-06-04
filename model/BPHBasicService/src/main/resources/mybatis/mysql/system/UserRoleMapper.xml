@@ -45,22 +45,10 @@
   
   <!-- 通过用户Id来获取功能权限 -->
   <select id="getFunctionsByUserId" parameterType="java.lang.Integer" resultType="java.lang.String">
-		SELECT DISTINCT
-			urm.MODULE_ID
-		FROM
-			t_role_module_fuction urm
-		WHERE
-			urm.ROLE_ID IN (
-				SELECT
-					r.ROLE_ID
-				FROM
-					t_user_role ur,
-					t_users u,
-					t_role r
-				WHERE
-					u.USER_ID = ur.USER_ID
-				AND r.ROLE_ID = ur.ROLE_ID
-				AND u.USER_ID = #{userId,jdbcType=DECIMAL}
-			)
+  	select DISTINCT urm.MODULE_ID from t_role_module_fuction urm where urm.ROLE_ID in (
+		
+		select r.ROLE_ID from t_user_role ur,t_users u,t_role r where 
+		u.USER_ID=ur.USER_ID and r.ROLE_ID=ur.ROLE_ID and u.USER_ID=#{userId,jdbcType=DECIMAL}
+	)
   </select>
 </mapper>

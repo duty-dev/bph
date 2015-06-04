@@ -25,8 +25,58 @@ public class Module implements Serializable {
     private Boolean checked;
     
     private Boolean enable;
+    
+    private String url;//功能模块的Url地址
+    
+    private String moduleType;//模块类型（客户端需要，现在写死WebSite）
+    
+    private String moduleOpType;//(同上，客户端需要,现在写死Control)
+    
+    private String assemblyName;//客户端自己写的页面需要（数据库已写死）
+    
+    private String typeName;//同上
 
-    public Boolean getEnable() {
+    public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getModuleType() {
+		return moduleType;
+	}
+
+	public void setModuleType(String moduleType) {
+		this.moduleType = moduleType;
+	}
+
+	public String getModuleOpType() {
+		return moduleOpType;
+	}
+
+	public void setModuleOpType(String moduleOpType) {
+		this.moduleOpType = moduleOpType;
+	}
+
+	public String getAssemblyName() {
+		return assemblyName;
+	}
+
+	public void setAssemblyName(String assemblyName) {
+		this.assemblyName = assemblyName;
+	}
+
+	public String getTypeName() {
+		return typeName;
+	}
+
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+
+	public Boolean getEnable() {
 		return enable;
 	}
 

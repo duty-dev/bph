@@ -352,7 +352,6 @@
 	
 	<!-- 获取全部机构信息-->
 	<select id="findOrganByQuery" parameterType="com.tianyi.bph.query.system.OrganQuery" resultMap="BaseResultMap">
-		
 		SELECT  O.NAME,O.SHORT_NAME,O.ORGAN_ID,O.PARENT_ID,O.ORGAN_TYPE_ID,O.PATH,O.CODE,O.SHORT_NAME as text from t_organ O where 1=1
 		<if test="path !=null">
 			and O.PATH like  CONCAT(#{path,jdbcType=VARCHAR},'%')
@@ -422,21 +421,4 @@
   		</otherwise>
   	</choose>
   </select>
-  
-  <!--  <select id="getOrganListParentIdIsNull" resultMap="BaseResultMap">
-  	SELECT  <include refid="Base_Column_List" />,
-  	(  	
-  	select count(ORGAN_ID) from t_organ where 1=1 and PARENT_ID  = O.ORGAN_ID
-  	) > 0 as
-		hasChild,O.NAME as text from t_organ O		 
-  	where  O.Organ_ID = #{organId,jdbcType=DECIMAL}
-  	<choose>
-	  	<when test="parentId ==null">
-	  		and O.Organ_ID = #{organId,jdbcType=DECIMAL}
-	  	</when>
-	  	<otherwise>
-	  		and O.PARENT_ID =#{parentId,jdbcType=DECIMAL}
-  		</otherwise>
-  	</choose>
-  </select> -->
 </mapper>

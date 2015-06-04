@@ -426,23 +426,30 @@
 		#{id,jdbcType=INTEGER}
 	</update>
 
-
-	<select id="selectByOrganId" resultMap="BaseResultMap"
+	<select id="selectByOrganId" resultMap="BaseResultMap1"
 		parameterType="java.lang.String">
 		select
-		<include refid="Base_Column_List" />
-		from t_area t
+		<include refid="Base_Column_List1" />
+		,o.path as organ_path,o.name as organ_name,r.area_id as
+		area_id,r.user_id as user_id
+		from t_area t left join
+		t_organ o on
+		o.organ_id=t.organ_id left join r_area_relation_user r on r.area_id=
+		t.id
 		<if test="path != null">
-			where organ_id in ( select organ_id from t_organ where
+			where t.organ_id in ( select organ_id from t_organ where
 			path like
-			CONCAT(#{path,jdbcType=VARCHAR},'%') and flag=1 )
+			CONCAT(#{path,jdbcType=VARCHAR},'%') and t.flag=1 )
 		</if>
 	</select>
+
+
 
 	<select id="checkAreaName" resultType="java.lang.Integer"
 		parameterType="java.lang.String">
 		select count(*) from t_area t where
-		t.area_name=#{areaName,jdbcType=VARCHAR} and t.area_type=#{areaType,jdbcType=INTEGER} and t.flag=1 
+		t.area_name=#{areaName,jdbcType=VARCHAR} and
+		t.area_type=#{areaType,jdbcType=INTEGER} and t.flag=1
 	</select>
 
 </mapper>
