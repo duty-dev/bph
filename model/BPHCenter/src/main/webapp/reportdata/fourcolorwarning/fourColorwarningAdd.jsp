@@ -42,7 +42,9 @@ var WarningAddManage= {
 								var json_data = JSON.stringify(req.data);
 								$("#alarmtreeview").empty();
 								$("#alarmtreeview").kendoTreeView({ 
-								    checkboxes: true, 
+								    checkboxes: {
+					      				checkChildren: true//允许复选框多选
+					   				},
 								    dataTextField: "text", 
 								    height:450,
 					    			check : WarningAddManage.onCheck,//check复选框
@@ -66,7 +68,7 @@ var WarningAddManage= {
 	checkedNodeCode : function(nodes, checkedNodes) {
 		for ( var i = 0; i < nodes.length; i++) {
 			if (nodes[i].checked) {
-				if(nodes[i].typeCode!="caseType110000000"){
+				if(nodes[i].typeCode.indexOf("0000")==-1){
 					checkedNodes.push(nodes[i].typeCode);
 				}
 			}

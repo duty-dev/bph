@@ -23,7 +23,9 @@ var WarningManage = {
 								var json_data = JSON.stringify(req.data);
 								$("#alarmtreeview").empty();
 								$("#alarmtreeview").kendoTreeView({ 
-								    checkboxes: true,
+								    checkboxes: {
+					      				checkChildren: true//允许复选框多选
+					   				},
 								    dataTextField: "text", 
 								    dataSource: [eval('(' + json_data + ')')]
 								}).data("kendoTreeView");
