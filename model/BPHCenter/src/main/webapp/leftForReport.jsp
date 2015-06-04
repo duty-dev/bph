@@ -95,10 +95,10 @@
 
 <div id="alarmTypeWindow" style="display:none">
 	<div id="alarmTypeListWin" style="overflow:hidden">
-		<div><span id="undo" class="k-button" onclick="confirmAlarmType();">确定</span></div> 
-		<div style="overflow:auto;height:380px">
-			<table id="tbl_alarmType" >
-			</table> 
+		<div><button id="undo" class="ty-button" onclick="confirmAlarmType();">确定</button></div> 
+		<div style="overflow:auto;">
+			<div id="alarmtreeview" style="overflow:hidden">
+			</div>
 		</div>
     </div> 
 </div>
@@ -143,9 +143,8 @@
     </div> 
 </div>
 <script type="text/javascript">
-var m_organId = 1; 
-var alarmParentTypeArr = []; 
-var alarmSubTypeArr = []; 
+var m_organId = 1;   
+var alarmTypeArr = [];
 var alarmTypeNameArr = [];
 var alarmPeriodXLabel = []; 
 var alarmOrganXLabel = [];
@@ -180,8 +179,29 @@ $(function() {
 		$("#dpSDate").data("kendoDatePicker").enable(false);
 		$("#dpEDate").data("kendoDatePicker").enable(false); 
 	 	searchAction(1);
+	 	loadAlarmTypeList();
 });
-
+function loadAlarmTypeList(){ 
+	$.ajax({
+		url:"<%=basePath%>alarmStatisticWeb/getAlarmTypeList.do?warningId=0",
+		type:"post", 
+		dataType:"json",
+		success:function(req){
+				if(req.code == 200){ 
+					 req.data.parentId = null;
+					var json_data = JSON.stringify(req.data);
+					$("#alarmtreeview").empty();
+					$("#alarmtreeview").kendoTreeView({ 
+					    checkboxes: true, 
+					    width:200,
+					    dataTextField: "text",  
+		    			check : onCheck,//check复选框
+					    dataSource: [eval('(' + json_data + ')')]
+					}).data("kendoTreeView"); 
+				}
+		}
+	});
+}
 function selectTimeSpan(){ 
 	var sObj = $("#div_timaspan input[name='timeArea']:checked");
 	var timet = sObj[0].value;
@@ -260,6 +280,12 @@ function onDpDate(){
 				for(var m = months; m<monthe+1; m++){
 					alarmPeriodXLabel.push(m);
 				} 
+				if(months<10){
+					months = "0"+months;
+				}
+				if(monthe<10){
+					monthe = "0"+monthe;
+				}
 				m_Query_pkg.startDate =  years + "-" + months + "-" + "01";
 				m_Query_pkg.endDate = yeare + "-" + monthe + "-" + "01";
 				m_Query_pkg.periodType = 1;
@@ -281,6 +307,12 @@ function onDpDate(){
 				for(var n = 1; n<monthe+1; n++){
 					alarmPeriodXLabel.push(n);
 				} 
+				if(months<10){
+					months = "0"+months;
+				}
+				if(monthe<10){
+					monthe = "0"+monthe;
+				}
 				m_Query_pkg.startDate =  years + "-" + months + "-" + "01";
 				m_Query_pkg.endDate = yeare + "-" + monthe + "-" + "01";
 				m_Query_pkg.periodType = 1;
@@ -345,6 +377,18 @@ function onDpDay(){
 						alarmPeriodXLabel.push(n);
 					} 
 				}
+				if(months<10){
+					months = "0"+months;
+				}
+				if(monthe<10){
+					monthe = "0"+monthe;
+				}
+				if(days<10){
+					days = "0"+days;
+				}
+				if(daye<10){
+					daye = "0"+daye;
+				}
 				m_Query_pkg.startDate = years + "-" + months + "-" + days;
 				m_Query_pkg.endDate = yeare + "-" + monthe + "-" + daye;
 				m_Query_pkg.periodType = 2;
@@ -353,8 +397,10 @@ function onDpDay(){
 	}
 } 
 	 var cf = true;
-	 
+	 var m_checkedNodes_code = "";
+	 var m_checkedNodes_name = ""
 	 		function parentNodeClick(parentId){
+	 			alarmOrganXLabel.length = 0;
 	 			m_organId = parentId;
 	 			$.ajax({
 					url:"<%=basePath%>organManageWeb/getOrgAndSubOrgList.do",
@@ -393,137 +439,91 @@ function onDpDay(){
 	 		function loadData(orgId,orgName){
 	 			m_organId = orgId;
 	 			m_orgName = orgName;
+	 			alarmOrganXLabel.length = 0;
 	 			//alert("加载数据");
 	 			searchAction(1);
 	 		}
-	 		function addAlarmTypeList(){
-	 			$.ajax({
-					url:"<%=basePath%>alarmStatisticWeb/getAlarmTypeList.do",
-					type:"post", 
-					dataType:"json",
-					success:function(req){
-							if(req.code == 200){ 
-								var html = "";  
-								
-								for(var j = 0; j< req.data.length; j++){
-									  html += "<tr><td style='width:100px'>";
-									  html += "<input id='ipt_"+req.data[j].alarmType.typeCode+"' name='parentAlarmType' type='checkbox' value='"+req.data[j].alarmType.typeCode+"' /><span id='sp_"+req.data[j].alarmType.typeCode+"'>"+ req.data[j].alarmType.typeName+ "</span></td><td><ul>";  
-									  for(var m =0; m<req.data[j].alarmTypeList.length;m++){
-									  	html += "<li><input  id='ipt_"+req.data[j].alarmTypeList[m].typeCode+"'  name='subAlarmType' type='checkbox' value='"+req.data[j].alarmTypeList[m].typeCode+"' /><span id='sp_"+req.data[j].alarmTypeList[m].typeCode+"'>"+req.data[j].alarmTypeList[m].typeName+"</span></li>"; 
-									  } 
-									  html += "<ul></td></tr>";
-								} 
-								$("#tbl_alarmType").empty();
-								$("#tbl_alarmType").html(html);
-								
-	 							for(var i = 0; i<alarmParentTypeArr.length;i++){
-	 								$("#ipt_"+alarmParentTypeArr[i]).attr("checked","checked"); 
-	 							}
-	 		
-	 							for(var i = 0; i<alarmSubTypeArr.length;i++){
-	 								$("#ipt_"+alarmSubTypeArr[i]).attr("checked","checked"); 
-	 							}
-							}
-					}
-				});
-	 		
+	 		function addAlarmTypeList(){ 
 	 			var win =$('#alarmTypeListWin');
 				win.kendoWindow({
-	                        width: "900px",
-	                        height:"450px",
-	                        title: "警情选择"
+	                        width: "225px",
+	                        height:"570px",
+	                        title: "警情选择",
+	                        position:{
+	                        	top:"25%",
+	                        	left:"20%"
+	                        }
 	                    });
 				win.data("kendoWindow").open();
 	 		}
-	 		function confirmAlarmType(){
-	 			alarmParentTypeArr.length = 0;
-	 			alarmSubTypeArr.length = 0;
+	 		function onCheck(e) {
+					var checkedNodes = [],checkNodesName=[], treeView = $("#alarmtreeview").data("kendoTreeView"), message,nameStr; 
+		
+					checkedNodeCode(treeView.dataSource.view(),checkedNodes,checkNodesName);
+					if (checkedNodes.length > 0) {
+						message = checkedNodes.join(",");
+						nameStr = checkNodesName.join(",");
+						m_checkedNodes_code = message;
+						m_checkedNodes_name = nameStr;
+					} else {
+						message = "";
+						nameStr = "";
+					}
+			}
+			function checkedNodeCode(nodes, checkedNodes,checkNodesName) {
+				for ( var i = 0; i < nodes.length; i++) {
+					if (nodes[i].checked) {
+						if(nodes[i].typeCode!="caseType110000000"){
+							checkedNodes.push(nodes[i].typeCode);
+							checkNodesName.push(nodes[i].typeName+"|"+nodes[i].typeCode+"|"+nodes[i].id);
+						} 
+					}
+					if (nodes[i].hasChildren) {
+						checkedNodeCode(nodes[i].children.view(),
+							checkedNodes,checkNodesName); 
+						}
+				}
+			}
+	 		function confirmAlarmType(){ 
 	 			alarmTypeNameArr.length = 0;
-	 			var parentcount = $("#tbl_alarmType input[name='parentAlarmType']:checkbox:checked").length;
-	 			var totalhtml = "";
-	 			if(parentcount > 0){
-	 				var parenttypeHtml = "";
-	 				var parentalarmTypeObj = $("#tbl_alarmType input[name='parentAlarmType']:checkbox:checked");
-	 				$.each(parentalarmTypeObj, function(index, pobj){
-	 					var tpcode = pobj.value;
-	 					var tpName = pobj.parentElement.innerText;
-	 					alarmParentTypeArr.push(tpcode);
-	 					alarmTypeNameArr.push(tpName);
-	 					var tpName = $("#sp_"+tpcode).html();
-	 					parenttypeHtml += "<li id='li_"+tpcode+"'>";
-	 					parenttypeHtml += tpName + "<button type='button' class='ty-delete-btn' title='删除' onclick=deleteParentNode('"+tpcode+"','"+tpName+"')></button> ";
-	 					parenttypeHtml += "</li>";
-	 				}); 
-	 				
-	 				totalhtml +=parenttypeHtml; 
-	 				
-	 			}else{ 
-	 				alarmParentTypeArr = [];  
-	 			}
-	 			
-	 			var subcount = $("#tbl_alarmType input[name='subAlarmType']:checkbox:checked").length;
-	 			if(subcount > 0){
-	 				var subtypeHtml = "";
-	 				var subalarmTypeObj = $("#tbl_alarmType input[name='subAlarmType']:checkbox:checked");
-	 				$.each(subalarmTypeObj, function(index, sobj){
-	 					var spcode = sobj.value;
-	 					var spName = sobj.parentElement.innerText;
-	 					alarmSubTypeArr.push(spcode);
-	 					alarmTypeNameArr.push(spName);
-	 					var tpName = $("#sp_"+spcode).html();
-	 					subtypeHtml += "<li id='li_"+spcode+"'>";
-	 					subtypeHtml += tpName + "<button type='button' class='ty-delete-btn' title='删除' onclick=deleteSubNode('"+spcode+"','"+tpName+"')></button> ";
-	 					subtypeHtml += "</li>";
-	 				}); 
-	 				totalhtml += subtypeHtml
-	 				
-	 			}else{
-	 				
-	 				alarmSubTypeArr = [];
-	 			} 
- 				$("#ul_alarmTypeList").empty();
- 				if(totalhtml.length>0){
- 					$("#ul_alarmTypeList").html(totalhtml);
+	 		 	alarmTypeArr = m_checkedNodes_code.split(","); 
+	 		 	var namecodeArr = m_checkedNodes_name.split(",");
+	 		 	var tyhtml = "";
+	 		 	for(var i = 0;i<namecodeArr.length;i++){
+	 		 		var namecode = namecodeArr[i];
+	 		 		var s = namecode.split("|"); 
+	 		 		alarmTypeNameArr.push(s[0]);
+	 		 		tyhtml +="<li id='li_"+s[1]+"'>";
+	 		 		tyhtml += s[0] + "<button type='button' class='ty-delete-btn' title='删除' onclick=deleteTypeNode('"+s[1]+"','"+s[0]+"',"+s[2]+")></button> ";
+	 		 		tyhtml += "</li>";
+	 		 	}
+	 		 	$("#ul_alarmTypeList").empty();
+	 		 	if(tyhtml.length>0){
+ 					$("#ul_alarmTypeList").html(tyhtml);
  				}else{ 
  					$("#ul_alarmTypeList").html("<li>无相关警情类型</li>")
  				}
 				var win= $("#alarmTypeListWin").data("kendoWindow");
 				win.close();
-	 		}
-	 		function deleteParentNode(code,tName){
-	 		
-	 			$("#li_"+code).hide();
-	 			$.each(alarmParentTypeArr,function(index,value){
-	 				if(code == value){
-	 					alarmParentTypeArr.splice(index,1);
-	 				}
-	 			}); 
+	 		} 
+	 		function deleteTypeNode(typeCode,typeName,typeid){
 	 			$.each(alarmTypeNameArr,function(index,value){
-	 				if(tName == value){
+	 				if(value == typeName){
 	 					alarmTypeNameArr.splice(index,1);
 	 				}
-	 			}); 
-	 			if(alarmParentTypeArr.length==0&&alarmSubTypeArr.length==0){
-	 				$("#ul_alarmTypeList").html("<li>无相关警情类型</li>")
-	 			}
-	 		}
-
-	 		function deleteSubNode(code,tName){
-	 		
-	 			$("#li_"+code).hide();
-	 			$.each(alarmSubTypeArr,function(index,value){
-	 				if(code == value){
-	 					alarmSubTypeArr.splice(index,1);
+	 			});
+	 			$.each(alarmTypeArr,function(index,value){
+	 				if(value == typeCode){
+	 					alarmTypeArr.splice(index,1);
 	 				}
-	 			}); 
-	 			$.each(alarmTypeNameArr,function(index,value){
-	 				if(tName == value){
-	 					alarmTypeNameArr.splice(index,1);
-	 				}
-	 			}); 
-	 			if(alarmSubTypeArr.length==0&&alarmParentTypeArr.length==0){
-	 				$("#ul_alarmTypeList").html("<li>无相关警情类型</li>")
-	 			}
+	 			});
+	 			$("#li_"+typeCode).hide(); 
+	 			//var treeview = $("#alarmtreeview").data("kendoTreeView");
+	 			//var dataSource = treeview.dataSource;
+	 			//var dataItem = dataSource.get(typeid);
+	 			//dataItem.checked = false;
+	 			//var uid = dataItem.uid;
+	 			//$("#alarmtreeview li[data-uid='"+uid+"']:input[type='checkbox']")[0].children[0].children[0].children[0].removeAttr("checked"); 
 	 		}
 	 		function addOtherTimeSpan(){ 
 				$("#dpSDay").data("kendoDatePicker").value("");
@@ -534,7 +534,11 @@ function onDpDay(){
 				win.kendoWindow({
 	                        width: "500px",
 	                        height:"350px",
-	                        title: "小时选择"
+	                        title: "小时选择",
+	                        position:{
+	                        	top:"50%",
+	                        	left:"20%"
+	                        }
 	                    });
 				win.data("kendoWindow").open();
 	 		}
@@ -624,22 +628,34 @@ function onDpDay(){
 	        
 	       function packageQuery(){ 
 	       		 m_Query_pkg.organId = m_organId; 
-	       		 m_Query_pkg.alarmParentType = alarmParentTypeArr;
-	       		 m_Query_pkg.alarmSubType = alarmSubTypeArr;
-	       		 if(m_Query_pkg.alarmParentType.length==0&&m_Query_pkg.alarmSubType.length==0){
+	       		 m_Query_pkg.caseType = alarmTypeArr;
+	       		 if(m_Query_pkg.caseType.length==0&&m_Query_pkg.caseType.length==0){
 	       			$("body").popjs({"title":"提示","content":"请选择警情类型，至少选取一个警情类别！","callback":function(){
 					 		return;
 						}});   
 	       			return;
 	       		 }
-	       		 m_Query_pkg.alarmTimeSpan = alarmTimeSpanArr;
-	       		 m_Query_pkg.alarmLevel = []
+	       		 m_Query_pkg.caseTimaSpan = alarmTimeSpanArr;
+	       		 m_Query_pkg.caseLevels = []
 	       		 var alrlel = $("#div_alarmLevel input:checkbox:checked");
 	       		 $.each(alrlel,function(index,s){
-	       		 	m_Query_pkg.alarmLevel.push(s.value);
+	       		 	m_Query_pkg.caseLevels.push(s.value);
 	       		 });  
-	       		 if(m_Query_pkg.alarmLevel.length==0){
+	       		 if(m_Query_pkg.caseLevels.length==0){
 	       			$("body").popjs({"title":"提示","content":"请选择警情级别，至少选取一个等级警情！","callback":function(){
+					 		return;
+						}});   
+	       			return;
+	       		 }
+	       		 
+	       		 if(m_Query_pkg.startDate ==undefined||m_Query_pkg.startDate ==""){
+	       		 	$("body").popjs({"title":"提示","content":"请选择日期查询方式，并选择相应开始日期！","callback":function(){
+					 		return;
+						}});   
+	       			return;
+	       		 }
+	       		 if(m_Query_pkg.endDate ==undefined||m_Query_pkg.endDate ==""){
+	       		 	$("body").popjs({"title":"提示","content":"请选择截止日期！","callback":function(){
 					 		return;
 						}});   
 	       			return;

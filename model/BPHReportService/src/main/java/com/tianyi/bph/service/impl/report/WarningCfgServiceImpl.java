@@ -88,6 +88,7 @@ public class WarningCfgServiceImpl implements WarningCfgService{
 	public void deleteById(Integer caseId) {
 		// TODO Auto-generated method stub
 		warningConfigMapper.deleteCaseTypeItemByCaseId(caseId);
+		warningCaseLevelMapper.deleteByWarningId(caseId);
 		warningConfigMapper.deleteColorItemByCaseId(caseId);
 		warningConfigMapper.deleteByPrimaryKey(caseId);
 	}
@@ -96,6 +97,12 @@ public class WarningCfgServiceImpl implements WarningCfgService{
 	public WarningCfgVM loadWarningCfgVMInfoById(Integer caseId) {
 		// TODO Auto-generated method stub
 		return warningConfigMapper.loadWarningCfgVMInfoById(caseId);
+	}
+
+	@Override
+	public WarningCaseType getNodechecked(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return warningCaseTypeMapper.getObjectByWarningIdAndCaseCode(map);
 	}
 	
 }

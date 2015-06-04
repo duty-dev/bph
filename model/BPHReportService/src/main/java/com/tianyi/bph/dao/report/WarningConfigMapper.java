@@ -33,4 +33,6 @@ public interface WarningConfigMapper {
 
 	WarningCfgVM loadWarningCfgVMInfoById(Integer caseId);
 
+	void deleteCaseLevelItemByCaseId(Integer caseId);
+
 }

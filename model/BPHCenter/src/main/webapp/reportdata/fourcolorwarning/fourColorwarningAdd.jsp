@@ -20,139 +20,63 @@
 <%@ include file="../../emulateIE.jsp" %>
 <style type="text/css"> 
 	#CasealarmInfo td {width:14%;}
-	#ul_alarmTypeList li{float:left;list-style:none; padding:3px;width:150px;}
-	#tbl_alarmType li{float:left;list-style:none;width:130px;}
- 	#tbl_alarmType {border:1px solid #fff;margin-top:5px;}
- 	#tbl_alarmType td{border:1px solid #fff;}
- 	#tbl_alarmType tr{border:1px solid #fff;}  
+	#ul_alarmTypeList li{float:left;list-style:none; padding:3px;width:150px;} 
 </style>
 <script type="text/javascript"> 
 $(function() {
 	$("#ckalarmLevel1").attr("checked","checked");
+	WarningAddManage.loadalarmTypeList();
 });
-var bph_warningAdd_pkg={};  
-var alarmParentTypeArr = []; 
-var alarmSubTypeArr = []; 
-var alarmTypeNameArr = [];
+var bph_warningAdd_pkg={};   
+var m_checkedNodes_code ="";
 var isPackage_complete = false;
 var WarningAddManage= {
-	addAlarmType:function(){
+	loadalarmTypeList:function(){
 		$.ajax({
-					url:"<%=basePath%>alarmStatisticWeb/getAlarmTypeList.do",
-					type:"post", 
+					url:"<%=basePath%>alarmStatisticWeb/getAlarmTypeList.do?warningId=0",
+					type:"post",  
 					dataType:"json",
 					success:function(req){
 							if(req.code == 200){ 
-								var html = "";  
-								
-								for(var j = 0; j< req.data.length; j++){
-									  html += "<tr><td style='width:100px'>";
-									  html += "<input id='ipt_"+req.data[j].alarmType.typeCode+"' name='parentAlarmType' type='checkbox' value='"+req.data[j].alarmType.typeCode+"' /><span id='sp_"+req.data[j].alarmType.typeCode+"'>"+ req.data[j].alarmType.typeName+ "</span></td><td><ul>";  
-									  for(var m =0; m<req.data[j].alarmTypeList.length;m++){
-									  	html += "<li><input  id='ipt_"+req.data[j].alarmTypeList[m].typeCode+"'  name='subAlarmType' type='checkbox' value='"+req.data[j].alarmTypeList[m].typeCode+"' /><span id='sp_"+req.data[j].alarmTypeList[m].typeCode+"'>"+req.data[j].alarmTypeList[m].typeName+"</span></li>"; 
-									  } 
-									  html += "<ul></td></tr>";
-								} 
-								$("#tbl_alarmType").empty();
-								$("#tbl_alarmType").html(html);
-								
-	 							for(var i = 0; i<alarmParentTypeArr.length;i++){
-	 								$("#ipt_"+alarmParentTypeArr[i]).attr("checked","checked"); 
-	 							}
-	 		
-	 							for(var i = 0; i<alarmSubTypeArr.length;i++){
-	 								$("#ipt_"+alarmSubTypeArr[i]).attr("checked","checked"); 
-	 							}
+								req.data.parentId = null;
+								var json_data = JSON.stringify(req.data);
+								$("#alarmtreeview").empty();
+								$("#alarmtreeview").kendoTreeView({ 
+								    checkboxes: {
+					      				checkChildren: true//允许复选框多选
+					   				},
+								    dataTextField: "text", 
+								    height:450,
+					    			check : WarningAddManage.onCheck,//check复选框
+								    dataSource: [eval('(' + json_data + ')')]
+								}).data("kendoTreeView"); 
 							}
-					}
+						}
 				});
-	 		
-	 			var win =$('#alarmTypeListWin');
-				win.kendoWindow({
-	                        width: "750px",
-	                        height:"450px",
-	                        title: "警情选择"
-	                    });
-				win.data("kendoWindow").open();
 	},
-	confirmAlarmType:function(){
-		alarmParentTypeArr.length = 0;
-		alarmSubTypeArr.length = 0;
-		alarmTypeNameArr.length = 0;
-		var parentcount = $("#tbl_alarmType input[name='parentAlarmType']:checkbox:checked").length;
-		var totalhtml = "";
-		if(parentcount > 0){
-			var parenttypeHtml = "";
-			var parentalarmTypeObj = $("#tbl_alarmType input[name='parentAlarmType']:checkbox:checked");
-			$.each(parentalarmTypeObj, function(index, pobj){
-				var tpcode = pobj.value;
-				var tpName = pobj.parentElement.innerText;
-				alarmParentTypeArr.push(tpcode);
-				alarmTypeNameArr.push(tpName);
-				var tpName = $("#sp_"+tpcode).html();
-				parenttypeHtml += "<li id='li_"+tpcode+"'>";
-				parenttypeHtml += tpName + "<button type='button' class='ty-delete-btn' title='删除' onclick=WarningAddManage.deleteParentNode('"+tpcode+"','"+tpName+"')></button> ";
-				parenttypeHtml += "</li>";
-			}); 
-			
-			totalhtml +=parenttypeHtml; 
-			
-		}else{ 
-			alarmParentTypeArr = [];  
-		}
+	onCheck : function(e) {
+		var checkedNodes = [], treeView = $("#alarmtreeview").data("kendoTreeView"), message; 
 		
-		var subcount = $("#tbl_alarmType input[name='subAlarmType']:checkbox:checked").length;
-		if(subcount > 0){
-			var subtypeHtml = "";
-			var subalarmTypeObj = $("#tbl_alarmType input[name='subAlarmType']:checkbox:checked");
-			$.each(subalarmTypeObj, function(index, sobj){
-				var spcode = sobj.value;
-				var spName = sobj.parentElement.innerText;
-				alarmSubTypeArr.push(spcode);
-				alarmTypeNameArr.push(spName);
-				var tpName = $("#sp_"+spcode).html();
-				subtypeHtml += "<li id='li_"+spcode+"'>";
-				subtypeHtml += tpName + "<button type='button' class='ty-delete-btn' title='删除' onclick=WarningAddManage.deleteSubNode('"+spcode+"','"+tpName+"')></button> ";
-				subtypeHtml += "</li>";
-			}); 
-			totalhtml += subtypeHtml
-			
-		}else{
-			
-			alarmSubTypeArr = [];
-		} 
-		$("#ul_alarmTypeList").empty();
-		if(totalhtml.length>0){
-			$("#ul_alarmTypeList").html(totalhtml);
+		WarningAddManage.checkedNodeCode(treeView.dataSource.view(),checkedNodes);
+		if (checkedNodes.length > 0) {
+			message = checkedNodes.join(",");
+			m_checkedNodes_code = message;
+		} else {
+			message = "";
 		}
-		var win= $("#alarmTypeListWin").data("kendoWindow");
-		win.close();
 	},
-	deleteParentNode:function(code,tName){ 
-		$("#li_"+code).hide();
-		$.each(alarmParentTypeArr,function(index,value){
-			if(code == value){
-				alarmParentTypeArr.splice(index,1);
+	checkedNodeCode : function(nodes, checkedNodes) {
+		for ( var i = 0; i < nodes.length; i++) {
+			if (nodes[i].checked) {
+				if(nodes[i].typeCode.indexOf("0000")==-1){
+					checkedNodes.push(nodes[i].typeCode);
+				}
 			}
-		}); 
-		$.each(alarmTypeNameArr,function(index,value){
-			if(tName == value){
-				alarmTypeNameArr.splice(index,1);
+			if (nodes[i].hasChildren) {
+				WarningAddManage.checkedNodeCode(nodes[i].children.view(),
+						checkedNodes);
 			}
-		});  
-	 },
-	 deleteSubNode:function(code,tName){ 
-		$("#li_"+code).hide();
-		$.each(alarmSubTypeArr,function(index,value){
-			if(code == value){
-				alarmSubTypeArr.splice(index,1);
-			}
-		}); 
-		$.each(alarmTypeNameArr,function(index,value){
-			if(tName == value){
-				alarmTypeNameArr.splice(index,1);
-			}
-		});  
+		}
 	},
 	saveWarningAction:function(){
 		WarningAddManage.packageData();
@@ -165,7 +89,7 @@ var WarningAddManage= {
 				}, 
 				dataType : "json",
 				success : function(req) { 
-					$("body").popjs({"title":"提示","content":"修改预警信息成功！","callback":function(){ 
+					$("body").popjs({"title":"提示","content":"新增预警信息成功！","callback":function(){ 
 							window.parent.window.parent.WarningManage.onClose();
 							window.parent.$("#dialog").tyWindow.close();
 						}});   
@@ -244,14 +168,14 @@ var WarningAddManage= {
 		yellowObj.level = 2;
 		var yellowGe = $.trim($("#yellowvaluea").val());
 		if(yellowGe.length == 0){
-			$("body").popjs({"title":"提示","content":"黄色预警增幅上线值，不能为空！","callback":function(){
+			$("body").popjs({"title":"提示","content":"黄色预警增幅下限值，不能为空！","callback":function(){
 						$("#yellowvaluea").focus();
 								return;
 					}});  
 				return;
 		}
 		if(rehod.test(yellowGe)){
-			$("body").popjs({"title":"提示","content":"红色预警增幅上线值，只能为数字！","callback":function(){
+			$("body").popjs({"title":"提示","content":"黄色预警增幅下限值，只能为数字！","callback":function(){
 						$("#yellowvaluea").focus();
 								return;
 					}});  
@@ -259,7 +183,7 @@ var WarningAddManage= {
 		}
 		var yra=parseInt(yellowGe);
 		if(yra>100){
-			$("body").popjs({"title":"提示","content":"黄色预警增幅上线值，不能超过100%！","callback":function(){
+			$("body").popjs({"title":"提示","content":"黄色预警增幅下限值，不能超过100%！","callback":function(){
 						$("#yellowvaluea").focus();
 								return;
 					}});  
@@ -269,14 +193,14 @@ var WarningAddManage= {
 		
 		var yellowLt = $.trim($("#yellowvalueb").val());
 		if(yellowLt.length == 0){
-			$("body").popjs({"title":"提示","content":"黄色预警增幅下线值，不能为空！","callback":function(){
+			$("body").popjs({"title":"提示","content":"黄色预警增幅上限值，不能为空！","callback":function(){
 						$("#yellowvalueb").focus();
 								return;
 					}});  
 				return;
 		}
 		if(rehod.test(yellowLt)){
-			$("body").popjs({"title":"提示","content":"红色预警增幅下线值，只能为数字！","callback":function(){
+			$("body").popjs({"title":"提示","content":"黄色预警增幅上限值，只能为数字！","callback":function(){
 						$("#yellowvalueb").focus();
 								return;
 					}});  
@@ -284,12 +208,27 @@ var WarningAddManage= {
 		}
 		var yrb=parseInt(yellowLt);
 		if(yrb>100){
-			$("body").popjs({"title":"提示","content":"黄色预警增幅下线值，不能超过100%！","callback":function(){
+			$("body").popjs({"title":"提示","content":"黄色预警增幅上限值，不能超过100%！","callback":function(){
 						$("#yellowvalueb").focus();
 								return;
 					}});  
 				return;
 		}
+		if(yra > yrb || yrb == yra){
+			$("body").popjs({"title":"提示","content":"黄色预警下限值，不能超过上限值！","callback":function(){
+						$("#yellowvalueb").focus();
+								return;
+					}});  
+				return; 
+		}
+		if(yrb > xr || yrb == xr){
+			$("body").popjs({"title":"提示","content":"黄色预警上限值，不能超过红色预警增幅值！","callback":function(){
+						$("#yellowvalueb").focus();
+								return;
+					}});  
+				return; 
+		}
+		
 		yellowObj.lt = yellowLt;
 		yellowObj.defaultColor = "yellow";
 		bph_warningAdd_pkg.colors.push(yellowObj);
@@ -299,14 +238,14 @@ var WarningAddManage= {
 		blueObj.level = 3;
 		var blueGe = $.trim($("#bluevaluea").val());
 		if(blueGe.length == 0){
-			$("body").popjs({"title":"提示","content":"黄色预警增幅上线值，不能为空！","callback":function(){
+			$("body").popjs({"title":"提示","content":"蓝色预警增幅下限值，不能为空！","callback":function(){
 						$("#bluevaluea").focus();
 								return;
 					}});  
 				return;
 		}
 		if(rehod.test(blueGe)){
-			$("body").popjs({"title":"提示","content":"红色预警增幅上线值，只能为数字！","callback":function(){
+			$("body").popjs({"title":"提示","content":"蓝色预警增幅下限值，只能为数字！","callback":function(){
 						$("#bluevaluea").focus();
 								return;
 					}});  
@@ -314,7 +253,7 @@ var WarningAddManage= {
 		}
 		var bra=parseInt(blueGe);
 		if(bra>100){
-			$("body").popjs({"title":"提示","content":"黄色预警增幅上线值，不能超过100%！","callback":function(){
+			$("body").popjs({"title":"提示","content":"蓝色预警增幅下限值，不能超过100%！","callback":function(){
 						$("#bluevaluea").focus();
 								return;
 					}});  
@@ -324,14 +263,14 @@ var WarningAddManage= {
 		
 		var blueLt = $.trim($("#bluevalueb").val());
 		if(blueLt.length == 0){
-			$("body").popjs({"title":"提示","content":"黄色预警增幅下线值，不能为空！","callback":function(){
+			$("body").popjs({"title":"提示","content":"蓝色预警增幅上限值，不能为空！","callback":function(){
 						$("#bluevalueb").focus();
 								return;
 					}});  
 				return;
 		}
 		if(rehod.test(blueLt)){
-			$("body").popjs({"title":"提示","content":"红色预警增幅下线值，只能为数字！","callback":function(){
+			$("body").popjs({"title":"提示","content":"蓝色预警增幅上限值，只能为数字！","callback":function(){
 						$("#bluevalueb").focus();
 								return;
 					}});  
@@ -339,12 +278,29 @@ var WarningAddManage= {
 		}
 		var brb=parseInt(blueLt);
 		if(brb>100){
-			$("body").popjs({"title":"提示","content":"黄色预警增幅下线值，不能超过100%！","callback":function(){
+			$("body").popjs({"title":"提示","content":"蓝色预警增幅上限值，不能超过100%！","callback":function(){
 						$("#bluevalueb").focus();
 								return;
 					}});  
 				return;
 		}
+		
+		if(bra > brb || bra == brb){
+			$("body").popjs({"title":"提示","content":"蓝色预警下限值，不能超过上限值！","callback":function(){
+						$("#yellowvalueb").focus();
+								return;
+					}});  
+				return; 
+		}
+		if(brb > yra || brb == yra){
+			$("body").popjs({"title":"提示","content":"蓝色预警上限值，不能超过黄色预警下限值！","callback":function(){
+						$("#yellowvalueb").focus();
+								return;
+					}});  
+				return; 
+		}
+		
+		
 		blueObj.lt = blueLt;
 		blueObj.defaultColor = "blue";
 		bph_warningAdd_pkg.colors.push(blueObj);
@@ -354,14 +310,14 @@ var WarningAddManage= {
 		greenObj.level = 4;
 		var greenGe = $.trim($("#greenvalue").val());
 		if(greenGe.length == 0){
-			$("body").popjs({"title":"提示","content":"红色预警增幅值，不能为空！","callback":function(){
+			$("body").popjs({"title":"提示","content":"绿色预警增幅值，不能为空！","callback":function(){
 						$("#greenvalue").focus();
 								return;
 					}});  
 				return;
 		}
 		if(rehod.test(greenGe)){
-			$("body").popjs({"title":"提示","content":"红色预警增幅值，只能为数字！","callback":function(){
+			$("body").popjs({"title":"提示","content":"绿色预警增幅值，只能为数字！","callback":function(){
 						$("#greenvalue").focus();
 								return;
 					}});  
@@ -369,39 +325,57 @@ var WarningAddManage= {
 		}
 		var gr=parseInt(greenGe);
 		if(gr>100){
-			$("body").popjs({"title":"提示","content":"红色预警增幅值，不能超过100%！","callback":function(){
+			$("body").popjs({"title":"提示","content":"绿色预警增幅值，不能超过100%！","callback":function(){
 						$("#greenvalue").focus();
 								return;
 					}});  
 				return;
 		}
+		
+		
+		if(gr > bra || gr == bra){
+			$("body").popjs({"title":"提示","content":"绿色预警增幅值，不能超过蓝色色预警下限值！","callback":function(){
+						$("#yellowvalueb").focus();
+								return;
+					}});  
+				return; 
+		}
+		
 		greenObj.ge = greenGe;
 		greenObj.defaultColor = "green";
 		bph_warningAdd_pkg.colors.push(greenObj);
 		bph_warningAdd_pkg.caseTypes = [];
-		var alarmLevel = $("input[name='alarmLevel']:checked")[0].value
-		if(alarmParentTypeArr.length==0&&alarmSubTypeArr.length==0){
-			$("body").popjs({"title":"提示","content":"请选择相关警情类型！","callback":function(){
-						return;
-					}});  
-				return;
-		} 
-		$.each(alarmParentTypeArr,function(index,value){
-			var palarmType = {};
-	 		palarmType.id = 0;
-	 		palarmType.warningId = 0;
-	 		palarmType.caseTypeCode = value;
-	 		palarmType.caseTypeLevel = alarmLevel;
-	 		bph_warningAdd_pkg.caseTypes.push(palarmType);
-	 	});  
-		$.each(alarmSubTypeArr,function(index,value){
-			var salarmType = {};
-	 		salarmType.id = 0;
-	 		salarmType.warningId = 0;
-	 		salarmType.caseTypeCode = value;
-	 		salarmType.caseTypeLevel = alarmLevel;
-	 		bph_warningAdd_pkg.caseTypes.push(salarmType);
-	 	}); 
+		if(m_checkedNodes_code.length==0){ 
+			$("body").popjs({"title":"提示","content":"请选择警情类别！"});
+			return;
+		}
+		var typeList = m_checkedNodes_code.split(",");
+		for(var n = 0;n<typeList.length;n++){
+			var typeObj = {};
+			typeObj.warningId = 0;
+			typeObj.id=0;
+			typeObj.caseTypeCode = typeList[n];
+			if(typeList[n].indexOf("0000")==-1){
+				typeObj.caseTypeLevel = 2; 
+			}else{
+				typeObj.caseTypeLevel = 1; 
+			}
+			bph_warningAdd_pkg.caseTypes.push(typeObj);
+		}
+		
+		bph_warningAdd_pkg.caseLevels = [];
+		var alarmLevel = $("input[name='alarmLevel']:checked");
+		if(alarmLevel.length == 0){
+			$("body").popjs({"title":"提示","content":"请选择警情级别！"});
+			return;
+		}
+		$.each(alarmLevel,function(index,obj){
+			var clevel = {};
+			clevel.id = 0;
+			clevel.warningId = 0;
+			clevel.caseLevel = obj.value;
+			bph_warningAdd_pkg.caseLevels.push(clevel);
+		});
 	 	isPackage_complete = true;
 	},
 	cancelAdd:function(){
@@ -412,12 +386,13 @@ var WarningAddManage= {
 </script>
 </head>
 <body class="ty-body">
-	<div id="vertical" style="overflow-x:hidden;">
-		<div id="horizontal" style="height: 300px; width: 780px;">
+	<div id="vertical">
+		<div id="horizontal" style="width: 780px;">
 			<div class="pane-content">
 				<!-- 左开始 -->
 				<div id="CasealarmInfo" class="demo-section k-header"> 
-					<table style="width:100%;heigth:680px">
+					<div style="width:70%;float:left;height:470px">
+					<table style="width:100%;height:470px">
 						<tr>
 							<td colspan="7">
 								<h4>名称</h4>
@@ -549,30 +524,22 @@ var WarningAddManage= {
 						</tr>
 						<tr>
 							<td colspan="2" style="text-align:center"> 
-								<input id="ckalarmLevel1" type="radio" name="alarmLevel" value="1" />一级警情
+								<input id="ckalarmLevel1" type="checkbox" name="alarmLevel" value="1" />一级警情
 							</td>
 							<td colspan="2" style="text-align:center">
-								<input id="ckalarmLevel2" type="radio" name="alarmLevel" value="2" />二级警情
+								<input id="ckalarmLevel2" type="checkbox" name="alarmLevel" value="2" />二级警情
 							</td>
 							<td colspan="2" style="text-align:center">
-								<input id="ckalarmLevel3" type="radio" name="alarmLevel" value="3" />三级警情
+								<input id="ckalarmLevel3" type="checkbox" name="alarmLevel" value="3" />三级警情
 							</td>
-						</tr>
-						<tr>
-							<td colspan="7">
-								<h4>警情类别</h4>
-							</td>
-							<td>
-								<span id="undo" class="k-button" onclick="WarningAddManage.addAlarmType()">添加</span>  
-							</td>
-						</tr>
-						<tr>
-							<td colspan="10"> 
-								<ul id="ul_alarmTypeList">  
-								</ul>
-							</td>
-						</tr>
+						</tr> 
 					</table>
+					</div>
+					<div style="width:25%;height:470px;float:left;overflow:auto">
+						<h4>警情类别</h4>
+						<div id="alarmtreeview"> 
+						</div>
+					</div>
 					<p class="ty-input-row"> 
 						<button id="undo" class="ty-button" onclick="WarningAddManage.saveWarningAction()">保存</button>
 						<button id="undo" class="ty-button" onclick="WarningAddManage.cancelAdd()">取消</button>
@@ -580,15 +547,6 @@ var WarningAddManage= {
 				</div>
 			</div>
 		</div>
-	</div>
-<div id="alarmTypeWindow" style="display:none">
-	<div id="alarmTypeListWin" style="overflow:hidden">
-		<div><button id="undo" class="ty-button" onclick="WarningAddManage.confirmAlarmType();">确定</button></div> 
-		<div style="overflow:auto;height:380px">
-			<table id="tbl_alarmType" >
-			</table> 
-		</div>
-    </div> 
-</div>
+	</div> 
 </body> 
 </html>
