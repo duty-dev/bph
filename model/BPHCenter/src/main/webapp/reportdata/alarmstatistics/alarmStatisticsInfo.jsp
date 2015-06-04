@@ -309,7 +309,7 @@ var ReportManage ={
             var gridColumns = [];
             gridColumns[0] = {field:"timeCircle",title:"时间段",width:"250px",attributes:{"class": "table-cell",style:"text-align: left"}};
             for(var s = 1;s<25;s++){
-            gridColumns[s] = {field:"T_"+s.toString(),title:s.toString(),width:"40px"};
+            	gridColumns[s] = {field:"T_"+s.toString(),title:s.toString(),width:"40px"};
             } 
             $("#grid").empty();
             $("#grid").kendoGrid({
