@@ -15,8 +15,8 @@ public class QueryCondition {
 	private String endDate;
 	/**
 	 ** 查询日期类型
-	 ** 1：周
-	 ** 2：天
+	 ** 1：天
+	 ** 2：周
 	 ** 3：月
 	 ** 4：年
 	 **/
@@ -29,7 +29,7 @@ public class QueryCondition {
 	 ** 预警规则Id
 	 ** 用于提供四色预警查询计算
 	 **/
-	private int caseId;
+	private int warningCfgId;
 	
 	/**
 	 ** 警情类型
@@ -45,11 +45,11 @@ public class QueryCondition {
 	 ** [1,2,3]
 	 **/
 	private List<Integer> caseLevels;
-	public int getCaseId() {
-		return caseId;
+	public int getWarningCfgId() {
+		return warningCfgId;
 	}
-	public void setCaseId(int caseId) {
-		this.caseId = caseId;
+	public void setWarningCfgId(int warningCfgId) {
+		this.warningCfgId = warningCfgId;
 	}
 	public String getStartDate() {
 		return startDate;

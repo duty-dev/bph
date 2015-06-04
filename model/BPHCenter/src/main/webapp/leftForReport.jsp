@@ -280,6 +280,12 @@ function onDpDate(){
 				for(var m = months; m<monthe+1; m++){
 					alarmPeriodXLabel.push(m);
 				} 
+				if(months<10){
+					months = "0"+months;
+				}
+				if(monthe<10){
+					monthe = "0"+monthe;
+				}
 				m_Query_pkg.startDate =  years + "-" + months + "-" + "01";
 				m_Query_pkg.endDate = yeare + "-" + monthe + "-" + "01";
 				m_Query_pkg.periodType = 1;
@@ -301,6 +307,12 @@ function onDpDate(){
 				for(var n = 1; n<monthe+1; n++){
 					alarmPeriodXLabel.push(n);
 				} 
+				if(months<10){
+					months = "0"+months;
+				}
+				if(monthe<10){
+					monthe = "0"+monthe;
+				}
 				m_Query_pkg.startDate =  years + "-" + months + "-" + "01";
 				m_Query_pkg.endDate = yeare + "-" + monthe + "-" + "01";
 				m_Query_pkg.periodType = 1;
@@ -364,6 +376,18 @@ function onDpDay(){
 					for(var n = days; n<daye+1; n++){
 						alarmPeriodXLabel.push(n);
 					} 
+				}
+				if(months<10){
+					months = "0"+months;
+				}
+				if(monthe<10){
+					monthe = "0"+monthe;
+				}
+				if(days<10){
+					days = "0"+days;
+				}
+				if(daye<10){
+					daye = "0"+daye;
 				}
 				m_Query_pkg.startDate = years + "-" + months + "-" + days;
 				m_Query_pkg.endDate = yeare + "-" + monthe + "-" + daye;
@@ -494,13 +518,12 @@ function onDpDay(){
 	 				}
 	 			});
 	 			$("#li_"+typeCode).hide(); 
-	 			var treeview = $("#alarmtreeview").data("kendoTreeView");
-	 			var dataSource = treeview.dataSource;
-	 			var dataItem = dataSource.get(typeid);
-	 			dataItem.checked = false;
-	 			var uid = dataItem.uid;
-	 			$("li[data-uid='"+uid+"']:input[type='checkbox']").attr("checked",false);
-	 			$("li[data-uid='"+uid+"']:input[type='checkbox']").attr("disabled","disabled");
+	 			//var treeview = $("#alarmtreeview").data("kendoTreeView");
+	 			//var dataSource = treeview.dataSource;
+	 			//var dataItem = dataSource.get(typeid);
+	 			//dataItem.checked = false;
+	 			//var uid = dataItem.uid;
+	 			//$("#alarmtreeview li[data-uid='"+uid+"']:input[type='checkbox']")[0].children[0].children[0].children[0].removeAttr("checked"); 
 	 		}
 	 		function addOtherTimeSpan(){ 
 				$("#dpSDay").data("kendoDatePicker").value("");
@@ -511,7 +534,11 @@ function onDpDay(){
 				win.kendoWindow({
 	                        width: "500px",
 	                        height:"350px",
-	                        title: "小时选择"
+	                        title: "小时选择",
+	                        position:{
+	                        	top:"50%",
+	                        	left:"20%"
+	                        }
 	                    });
 				win.data("kendoWindow").open();
 	 		}
@@ -601,21 +628,34 @@ function onDpDay(){
 	        
 	       function packageQuery(){ 
 	       		 m_Query_pkg.organId = m_organId; 
-	       		 m_Query_pkg.alarmTypeArr = alarmTypeArr;
-	       		 if(m_Query_pkg.alarmTypeArr.length==0&&m_Query_pkg.alarmTypeArr.length==0){
+	       		 m_Query_pkg.caseType = alarmTypeArr;
+	       		 if(m_Query_pkg.caseType.length==0&&m_Query_pkg.caseType.length==0){
 	       			$("body").popjs({"title":"提示","content":"请选择警情类型，至少选取一个警情类别！","callback":function(){
 					 		return;
 						}});   
 	       			return;
 	       		 }
-	       		 m_Query_pkg.alarmTimeSpan = alarmTimeSpanArr;
-	       		 m_Query_pkg.alarmLevel = []
+	       		 m_Query_pkg.caseTimaSpan = alarmTimeSpanArr;
+	       		 m_Query_pkg.caseLevels = []
 	       		 var alrlel = $("#div_alarmLevel input:checkbox:checked");
 	       		 $.each(alrlel,function(index,s){
-	       		 	m_Query_pkg.alarmLevel.push(s.value);
+	       		 	m_Query_pkg.caseLevels.push(s.value);
 	       		 });  
-	       		 if(m_Query_pkg.alarmLevel.length==0){
+	       		 if(m_Query_pkg.caseLevels.length==0){
 	       			$("body").popjs({"title":"提示","content":"请选择警情级别，至少选取一个等级警情！","callback":function(){
+					 		return;
+						}});   
+	       			return;
+	       		 }
+	       		 
+	       		 if(m_Query_pkg.startDate ==undefined||m_Query_pkg.startDate ==""){
+	       		 	$("body").popjs({"title":"提示","content":"请选择日期查询方式，并选择相应开始日期！","callback":function(){
+					 		return;
+						}});   
+	       			return;
+	       		 }
+	       		 if(m_Query_pkg.endDate ==undefined||m_Query_pkg.endDate ==""){
+	       		 	$("body").popjs({"title":"提示","content":"请选择截止日期！","callback":function(){
 					 		return;
 						}});   
 	       			return;

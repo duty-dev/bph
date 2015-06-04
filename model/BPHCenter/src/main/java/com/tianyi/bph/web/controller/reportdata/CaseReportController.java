@@ -81,7 +81,7 @@ public class CaseReportController {
 					queryCondition.getPeriodType());
 			// 警情类型 父级节点
 			List<String> caseTypes = queryCondition.getCaseType();
-
+			
 			// 警情级别 二级节点
 			List<Integer> levels = queryCondition.getCaseLevels();
 			// 时间区间 时间节点
@@ -94,6 +94,7 @@ public class CaseReportController {
 			map.put("beginYMD", rp.getBeginYmd());
 			map.put("endYMD", rp.getEndYmd());
 			ls = caseReportService.loadCaseTypeReport(map);
+			ls = getSelectCaseTypeList(ls,caseTypes);
 			cResult.setBeginYmd(rp.getBeginYmd());
 			cResult.setEndYmd(rp.getEndYmd());
 			cResult.setData(ls);
@@ -104,6 +105,7 @@ public class CaseReportController {
 			map.put("beginYMD", rp.getYOYBeginYmd());
 			map.put("endYMD", rp.getYOYEndYmd());
 			ls = caseReportService.loadCaseTypeReport(map);
+			ls = getSelectCaseTypeList(ls,caseTypes);
 			yResult.setBeginYmd(rp.getYOYBeginYmd());
 			yResult.setEndYmd(rp.getYOYEndYmd());
 			yResult.setData(ls);
@@ -115,12 +117,12 @@ public class CaseReportController {
 			map.put("beginYMD", rp.getMOMBeginYmd());
 			map.put("endYMD", rp.getMOMEndYmd());
 			ls = caseReportService.loadCaseTypeReport(map);
+			ls = getSelectCaseTypeList(ls,caseTypes);
 			mResult.setBeginYmd(rp.getMOMBeginYmd());
 			mResult.setEndYmd(rp.getMOMEndYmd());
 			mResult.setData(ls);
-			results.add(mResult);
-			;
-
+			results.add(mResult); 
+			
 			return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
 					MessageCode.SELECT_SUCCESS, 0, results);
 
@@ -129,6 +131,19 @@ public class CaseReportController {
 					MessageCode.SELECT_ORGAN_FAIL, 0, null);
 		}
 
+	}
+
+	private List<CaseTypeAGGR> getSelectCaseTypeList(List<CaseTypeAGGR> ls,
+			List<String> caseTypes) {
+		// TODO Auto-generated method stub
+		for(String code :caseTypes){
+			for(CaseTypeAGGR cta:ls){
+				if(cta.getTypeCode().equals(code)){
+					ls.remove(cta);
+				}
+			}
+		} 
+		return ls;
 	}
 
 	@RequestMapping(value = "/loadCasePeriodReport.do")
@@ -338,6 +353,7 @@ public class CaseReportController {
 			}
 			Organ organ = organService.getOrganByPrimaryKey(organId);
 			map.put("orgFullPath", organ.getPath());
+			map.put("orgParentId", organId);
 
 			// 查询时间
 			// 查询时间方式，1、月 2、日

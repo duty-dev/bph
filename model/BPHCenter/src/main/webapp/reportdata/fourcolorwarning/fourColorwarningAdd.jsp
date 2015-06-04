@@ -353,7 +353,11 @@ var WarningAddManage= {
 			typeObj.warningId = 0;
 			typeObj.id=0;
 			typeObj.caseTypeCode = typeList[n];
-			typeObj.caseTypeLevel = 2; 
+			if(typeList[n].indexOf("0000")==-1){
+				typeObj.caseTypeLevel = 2; 
+			}else{
+				typeObj.caseTypeLevel = 1; 
+			}
 			bph_warningAdd_pkg.caseTypes.push(typeObj);
 		}
 		

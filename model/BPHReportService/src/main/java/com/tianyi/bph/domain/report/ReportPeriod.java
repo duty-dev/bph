@@ -22,7 +22,12 @@ public class ReportPeriod {
 	 * 
 	 * @param beginYMD
 	 * @param endYMD
-	 * @param periodType  周期类型： 1 表示月， 2 表示 天 
+	 * @param periodType  
+	 ** 查询日期类型
+	 ** 1：天
+	 ** 2：周
+	 ** 3：月
+	 ** 4：年 
 	 * @throws Exception
 	 */
 	public ReportPeriod(Integer beginYMD,Integer endYMD,int periodType) throws Exception{
