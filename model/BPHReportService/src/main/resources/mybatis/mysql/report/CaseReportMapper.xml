@@ -19,7 +19,7 @@
     	<result column="hour_count" property="amount" jdbcType="INTEGER" />
     </resultMap>
 
-	<resultMap id="caseOrgAGGRMap" type="com.tianyi.bph.domain.report.CaseHourAGGR">
+	<resultMap id="caseOrgAGGRMap" type="com.tianyi.bph.domain.report.CaseOrgAGGR">
     	<result column="org_id" property="orgId"   jdbcType="INTEGER"/>
     	<result column="org_code" property="orgCode" jdbcType="VARCHAR" />
     	<result column="org_name" property="orgName" jdbcType="VARCHAR" />

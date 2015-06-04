@@ -617,7 +617,7 @@ function onDpDay(){
 									$.each(orglist,function(index,s){
 	       		 						alarmOrganXLabel.push(s.text);
 	       		 					});
-									ReportManage.initAlarmOrganData(req.data,m_orgName,alarmOrganXLabel);
+									ReportManage.initAlarmOrganData(req.data,m_orgName,alarmOrganXLabel,alarmTypeNameArr);
 								}
 							}else{
 								$("body").popjs({"title":"提示","content":"查询统计数据失败！"});

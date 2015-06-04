@@ -48,6 +48,8 @@ var ReportManage ={
 		dataSource.push(normal);
 		$("#jqtj").empty();
 		$("#jqtj").kendoChart({
+			width:1500,
+			height:800,
             title: {
                 text: title
             },
@@ -326,6 +328,8 @@ var ReportManage ={
 		var maxValue = FunctionManage.GetMaxValue(data);
 		$("#jqtj").empty(); 
 		$("#jqtj").kendoChart({
+			width:1500,
+			height:800,
                 title: {
                     text: title
                 },
