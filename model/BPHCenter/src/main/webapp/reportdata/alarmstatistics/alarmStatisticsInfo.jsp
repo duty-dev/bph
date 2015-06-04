@@ -320,7 +320,26 @@ var ReportManage ={
                     }); 
 	},
 	initAlarmOrganData:function(data,title,XLabel,alarmTypeName){
-		var seriesArray=[];
+		var seriesArray=[]; 
+		var rows=data[0].data;  
+		var types={};
+		
+		$.each(alarmTypeName,function(index,item){
+			var t={};
+			t.name=item;
+			t.data = [];
+			t.data.length=XLabel.length;
+			types[item]=t;
+		});  
+		
+		$.each(rows,function(index,item){
+			if(item.typeName != undefined){  
+				var t=types[item.typeName]; 
+				var orgIndex=XLabel.indexOf(t.orgName);
+				t.data[orgIndex]=item.amount;
+			} 
+		});
+		
 		for(var i = 0;i< alarmTypeName.length;i++)
 		{
 			seriesArray[i]=FunctionManage.GetSeriesObjectOfOrgan(data,alarmTypeName[i]);

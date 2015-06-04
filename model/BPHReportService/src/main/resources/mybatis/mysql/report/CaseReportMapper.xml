@@ -256,7 +256,9 @@
   			bat.parent_type_code		as type_parent_code,
 			t.type_level						as type_level,
 			ifnull(org_type_count,0)	as org_type_count
-  		from(
+  		from t_organ as org
+  		left join 
+  		(
 	  		select
 	  			org_id		as org_id,
 	  			type1		as type_code,
@@ -308,9 +310,9 @@
 			group by
 				org_id,
 				type2
-		)as t
-		left join t_organ as org on org.organ_id=t.org_id
+		)as t on org.organ_id=t.org_id
 		left join b_alarm_type as bat on t.type_code=bat.TYPE_CODE
+		where org.parent_id=#{orgParentId,jdbcType=INTEGER}
   	</select>
   	
   	<resultMap id="WarningAGGRMap" type="com.tianyi.bph.domain.report.WarningOrgAGGR">
