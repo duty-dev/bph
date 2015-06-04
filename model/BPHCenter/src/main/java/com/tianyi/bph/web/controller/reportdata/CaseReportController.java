@@ -80,16 +80,10 @@ public class CaseReportController {
 					queryCondition.getPeriodType());
 			// 警情类型 父级节点
 			List<String> caseTypes = queryCondition.getCaseType();
-			
-			// 警情级别 二级节点
-			List<Integer> levels = queryCondition.getCaseLevels();
-			// 时间区间 时间节点
-			List<Integer> hours = queryCondition.getCaseTimaSpan();
-			map.put("levels", levels);
-			map.put("hours", hours);
-
+			 
 			// 当期
 			CaseReportResult<CaseTypeAGGR> cResult = new CaseReportResult<CaseTypeAGGR>();
+ 
 			map.put("beginYMD", rp.getBeginYmd());
 			map.put("endYMD", rp.getEndYmd());
 			ls = caseReportService.loadCaseTypeReport(map);

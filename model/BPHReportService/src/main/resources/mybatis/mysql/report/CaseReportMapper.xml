@@ -16,7 +16,7 @@
 
 	<resultMap id="caseHourAGGRMap" type="com.tianyi.bph.domain.report.CaseHourAGGR">
     	<result column="chour" property="hour"   jdbcType="INTEGER"/>
-    	<result column="hour_count" property="amount" jdbcType="INTEGER" />
+    	<result column="period_count" property="amount" jdbcType="INTEGER" />
     </resultMap>
 
 	<resultMap id="caseOrgAGGRMap" type="com.tianyi.bph.domain.report.CaseOrgAGGR">
