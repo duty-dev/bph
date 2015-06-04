@@ -256,7 +256,7 @@ function searchByDay(){
 	$("#dpEDay").data("kendoDatePicker").value("");
 	$("#dpSDate").data("kendoDatePicker").value("");
 	$("#dpEDate").data("kendoDatePicker").value(""); 
-	m_Query_pkg.periodType = 2;
+	m_Query_pkg.periodType = 3;
 }
 function onDpDate(){
 	var dates = $("#dpSDate").data("kendoDatePicker").value();
@@ -391,7 +391,7 @@ function onDpDay(){
 				}
 				m_Query_pkg.startDate = years + "-" + months + "-" + days;
 				m_Query_pkg.endDate = yeare + "-" + monthe + "-" + daye;
-				m_Query_pkg.periodType = 2;
+				m_Query_pkg.periodType = 3;
 			}
 		}
 	}
