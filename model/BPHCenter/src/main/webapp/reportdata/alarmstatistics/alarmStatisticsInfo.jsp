@@ -300,6 +300,7 @@ var ReportManage ={
                     template: "#= series.name #: #= value #"
                 }
             });
+            
             var gridDataSource =[];
             for(var count = 0;count <seriesArray.length;count++){
             	var newData = {timeCircle:names[count]};
@@ -311,14 +312,16 @@ var ReportManage ={
             var gridColumns = [];
             gridColumns[0] = {field:"timeCircle",title:"时间段",width:"250px",attributes:{"class": "table-cell",style:"text-align: left"}};
             for(var s = 1;s<25;s++){
-            	gridColumns[s] = {field:"T_"+s.toString(),title:s.toString(),width:"40px"};
+            	gridColumns[s] = {field:"T_"+s.toString(),title:s.toString(),width:"50px"};
             } 
             $("#grid").empty();
             $("#grid").kendoGrid({
                         dataSource: gridDataSource,
-                        columns: gridColumns
+                        columns: gridColumns,
+                        resizable: true
                     }); 
 	},
+	
 	initAlarmOrganData:function(data,title,XLabel,alarmTypeName){
 		var seriesArray=[]; 
 		var rows=data[0].data;  
@@ -335,20 +338,17 @@ var ReportManage ={
 		$.each(rows,function(index,item){
 			if(item.typeName != undefined){  
 				var t=types[item.typeName]; 
-				var orgIndex=XLabel.indexOf(t.orgName);
+				var orgIndex=XLabel.indexOf(item.orgName);
 				t.data[orgIndex]=item.amount;
 			} 
 		});
 		
-		for(var i = 0;i< alarmTypeName.length;i++)
-		{
-			seriesArray[i]=FunctionManage.GetSeriesObjectOfOrgan(data,alarmTypeName[i]);
-		}
-		var maxValue = FunctionManage.GetMaxValue(data);
+		$.each(types,function(index,item){
+			seriesArray.push(item);
+		})
+
 		$("#jqtj").empty(); 
 		$("#jqtj").kendoChart({
-			width:1500,
-			height:800,
                 title: {
                     text: title
                 },
@@ -368,6 +368,7 @@ var ReportManage ={
                     }
                 },
                 categoryAxis: {
+                	baseUnitStep :"auto",
                     categories: XLabel,
                     majorGridLines: {
                         visible: false
@@ -379,162 +380,106 @@ var ReportManage ={
                 }
             });
         //添加表格
-        var gridColumns = gridManage.GetGridColumns(data[0]);
-        var gridDataSource = gridManage.GetGridDataSource(data,XLabel,gridColumns);
+        var gridColumns = {};
+        gridColumns['alarmType']=({field:"alarmType",title:"警情分类"});
+        var gridDataSource ={};
+        $.each(XLabel,function(index,item){
+        	var t = {};
+        	t.alarmType = item;
+        	gridDataSource[item] = t;
+        });
+        
+        var alarmTypeObject = {};
+        $.each(alarmTypeName,function(index,item){
+        	var t = {};
+        	t.name = item;
+        	t.data = [];
+        	t.data.length = 3;//0是类型，1是typeCode，2是parentCode
+        	alarmTypeObject[item] = t;
+        	
+        });
+
+        $.each(data[0].data,function(index,item){
+        	if(item.typeName!=undefined)
+        	{
+        	 var t = alarmTypeObject[item.typeName];
+        	 t.data[0] = item.typeLevel;
+        	 t.data[1] = item.typeCode;
+        	 t.data[2] = item.typeParentCode;
+        	}
+        });
+        
+         $.each(alarmTypeObject,function(index,item){
+         	var newColumn = {};
+         	if(item.data[0]==undefined){
+         		newColumn = {title:item.name,field:"none"+index};
+         		gridColumns["none"+index] = newColumn;
+        	}else
+        	{
+        		if(item.data[0]==1){
+        			var childColumn = [];
+        			childColumn.push({field:"other"+item.data[1],title:"-"});
+        			newColumn ={field:item.data[1],title:item.name,columns:childColumn};
+          			gridColumns[item.data[1]] = newColumn;
+        		}else if(item.data[0]==2){
+        			//如果是小类，则判断是否存在大类是它的父类；存在，放到其对应的下面；不存在，则建立一个column;
+        			$.each(alarmTypeObject,function(index,item1){
+        				if(item1.data[0]!=undefined&&item.data[2] ==item1.data[1]){
+        					gridColumns[item1.data[1]].columns.push({field:item.data[1],title:item.name});
+        					return false;
+        				}else if(item1.data[0]!=undefined&&index ==(alarmTypeName.length -1)){
+        					newColumn = {title:item.name,field:item.data[1]};
+         					gridColumns[item.data[1]] = newColumn;
+        				}
+        			});
+        		}
+        	}
+        });
+        
+        $.each(data[0].data,function(index,item){
+        	if(item.typeName!=undefined){
+        		if(item.typeLevel ==2){
+        		gridDataSource[item.orgName][item.typeCode] = item.amount;
+        		}else if(item.typeLevel==1){
+        		gridDataSource[item.orgName]["other"+item.typeCode] = item.amount;
+        		}
+        	}
+        });
+        
+        $.each(alarmTypeObject,function(index,item){
+        	if(item.data[0]==1){
+        		$.each(gridDataSource,function(index1,item1){
+        			if(item1[item.name]!=undefined){
+        				$.each(gridColumns[item.name].columns,function(index2,item2){
+        					if(("other"+item.name) !=item2.field)
+        					item1["other"+item.typeCode]-=item1[item2.field];
+        				});
+        			}
+        			
+        		});
+        	}
+        });
+        
+        
+        //转换
+        var columns = [];
+        $.each(gridColumns,function(index,item){
+        	columns.push(item);
+        });
+        var dataSource = [];
+        $.each(gridDataSource,function(index,item){
+        	dataSource.push(item);
+        });
+        
         $("#grid").empty();
         $("#grid").kendoGrid({
-            dataSource: gridDataSource,
-            columns: gridColumns
+            dataSource: dataSource,
+            columns: columns,
         });
-	}
-};
-var gridManage = {
-	GetOtherTypeAmount:function(data,typeCode,amount){
-		if(data ==null||data.data ==null)
-		{
-			return -1;
-		}	
-		for(var i = 0;i< data.data.length;i++){
-			if(data.data[i]==null)
-				return -1;
-			if(data.data[i].typeLevel !=1&&data.data[i].parentTypeCode == typeCode)
-				amount = amount-data.data[i].amount;
-		}
-		return amount;
-	},
-	
-	GetGridDataSource:function(data,XLabel,gridColumns){
-		dataSource = [];
-		if(data ==null||XLabel ==null||gridColumns==null)
-			return null;
-			
-		for(var count =0;count<XLabel.length;count++){
-			var newObject = {};
-			newObject['alarmTypeName'] = XLabel[count];
-			dataSource[count] = newObject;
-		}
-		var bigNum = gridManage.GetBigClassAmount(data[0]);
-		
-		if(bigNum ==-1)
-			return null;
-			
-		if(bigNum !=0)//有大类
-		{
-			for(var i = 0;i<data.length;i++){
-				for(var j = 0;j<data[i].data.length;j++){
-					if(data[i].data[j].typeLevel ==1){
-						dataSource[i]["other"+data[i].data[j].typeCode] = GetOtherTypeAmount(data[i],data[i].data[j].typeCode,data[i].data[j].amount);
-					}else {
-					dataSource[i][data[i].data[j].typeCode] = data[i].data[j].amount;
-					}
-				}
-			}
-		}else
-		{
-			for(var i = 0;i<data.length;i++){
-				for(var j = 0;j<data[i].data.length;j++){
-					dataSource[i][data[i].data[j].typeCode] = data[i].data[j].amount;
-				}
-			}
-		}
-		
-	
-	},
-	
-	//查询数据中大类的数量
-	GetBigClassAmount(data){
-		if(data==null)
-			return -1;
-			
-		var count = 0;
-		for(var i = 0;i<data.data.length;i++){
-			if(data.data[i].typeLevel ==1){
-				count++;
-			}
-		}
-		return count;
-	},
-	
-	GetGridColumns:function(data){
-		if(data==null)
-		return null;
-	
-		var gridColumns = [];
-		gridColumns[0] = {field:"alarmTypeName",title:"警情类型"};
-		var columnsCount = 1;
-		var bigNum = gridManage.GetBigClassAmount(data);//大类计数
-		if(bigNum ==-1)
-		{
-			return gridColumns;
-		}
-		if(bigNum ==0){
-			//将全部小类添加到columns
-			for(var i = 0;i <data.data.length;i++)
-			{
-				gridColumns[i+1] = {field:data.data[i].typeName};
-			}
-			return gridColumns;
-		}
-	
-		for(var i = 0;i<data.data.length;i++){
-			//判斷是否是大类
-			if(data.data[i].typeLevel ==1)
-			{
-				var parentTypeColumn = {};
-				parentTypeColumn.title = data.data[i].typeName;
-				parentTypeColumn.field = data.data[i].typeCode;
-				var columns = []; 
-				var count = 0;
-				//继续判断是否存在其小类
-				for(var j = 0;j<data.data.length;j++)
-				{
-					//如果是小类，并且它的父节点是大类的code
-					if(data.data[i].typeLevel ==2&&data.data[i].parentTypeCode ==data.data[i].typeCode)
-					{
-						var childTypeColumn = {field:data.data[i].typeCode,title:data.data[i].typeName};
-						columns[count++] = childTypeColumn;
-					}
-				}
-				var childOtherTypeColumn = {field:"other"+data.data[i].typeCode,title:"-"};
-				columns[count] = childOtherTypeColumn;
-				parentTypeColumn.columns = columns;
-				gridColumns[columnsCount++] = parentTypeColumn;
-			}else{
-				var tempCount = 0;
-				for(var s = 0;s<data.data.length;s++){
-					if(data.data[i].parentTypeCode ==data.data[s].typeCode)
-					{
-						tempCount++;
-						break;
-					}
-				}
-				if(tempCount ==0){
-					var newColumn = {field:"-",title:"-",columns:[{field:data.data[i].typeCode,title:data.data[i].typeName}]};
-					gridColumns[columnsCount++] = newColumn;
-				}
-				
-			}
-
-		}
-		return gridColumns;
 	}
 };
 
 var FunctionManage ={
-	//获取Y轴的最大显示值(当期)
-	GetMaxValue:function(data){
-		var max = 0;
-		for(var s = 0;s<data.length;s++){
-		for(var i =0;i<data[s].data.length;i++)
-		{
-			if(max<data[s].data[i].amount)
-			{
-			max = data[s].data[i].amount;
-			}
-		}
-		}
-		return max;
-	},
 	
 	GetSeriesObjectOfTimeSpan:function(data,name){
 		var array = [];
@@ -542,22 +487,6 @@ var FunctionManage ={
 			{
 			array[i] = data.data[i].amount;
 			}
-		return {name:name,data:array};
-	},
-	
-	GetSeriesObjectOfOrgan:function(data,name){
-		var array = [];
-		
-		for(var i=0;i<data.length;i++)
-		{
-			for(var j = 0;j<data[i].data.length;j++)
-			{
-				if(data[i].data[j].typeName ==name){
-					array[i] = data[i].data[j].amount;
-				}
-			}
-			
-		}
 		return {name:name,data:array};
 	},
 	
@@ -571,6 +500,12 @@ var FunctionManage ={
 	}
 };
 </script>
-<div id="jqtj"></div>   
-<br><br>
-<div id="grid"></div>
+<div style="width:1000px;overflow:auto;height:430px">
+
+<div id="jqtj" style="width:4000px;"></div>
+</div>
+<br>
+<br>
+<div style="width:1000px;overflow:auto;">
+<div id="grid" style="width:4000px;height:500px;"></div>
+</div>
