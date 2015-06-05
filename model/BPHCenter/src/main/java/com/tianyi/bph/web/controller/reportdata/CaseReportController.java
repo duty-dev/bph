@@ -102,8 +102,7 @@ public class CaseReportController {
 			yResult.setBeginYmd(rp.getYOYBeginYmd());
 			yResult.setEndYmd(rp.getYOYEndYmd());
 			yResult.setData(ls);
-			results.add(yResult);
-			;
+			results.add(yResult); 
 
 			// 环比
 			CaseReportResult<CaseTypeAGGR> mResult = new CaseReportResult<CaseTypeAGGR>();
@@ -206,8 +205,7 @@ public class CaseReportController {
 			yResult.setBeginYmd(rp.getYOYBeginYmd());
 			yResult.setEndYmd(rp.getYOYEndYmd());
 			yResult.setData(ls);
-			results.add(yResult);
-			;
+			results.add(yResult); 
 
 			// 环比
 			CaseReportResult<CasePeriodAGGR> mResult = new CaseReportResult<CasePeriodAGGR>();
@@ -217,8 +215,7 @@ public class CaseReportController {
 			mResult.setBeginYmd(rp.getMOMBeginYmd());
 			mResult.setEndYmd(rp.getMOMEndYmd());
 			mResult.setData(ls);
-			results.add(mResult);
-			;
+			results.add(mResult); 
 
 			return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
 					MessageCode.SELECT_SUCCESS, 0, results);
@@ -296,8 +293,7 @@ public class CaseReportController {
 			yResult.setBeginYmd(rp.getYOYBeginYmd());
 			yResult.setEndYmd(rp.getYOYEndYmd());
 			yResult.setData(ls);
-			results.add(yResult);
-			;
+			results.add(yResult); 
 
 			// 环比
 			CaseReportResult<CaseHourAGGR> mResult = new CaseReportResult<CaseHourAGGR>();
@@ -307,8 +303,7 @@ public class CaseReportController {
 			mResult.setBeginYmd(rp.getMOMBeginYmd());
 			mResult.setEndYmd(rp.getMOMEndYmd());
 			mResult.setData(ls);
-			results.add(mResult);
-			;
+			results.add(mResult); 
 
 			return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
 					MessageCode.SELECT_SUCCESS, 0, results);
