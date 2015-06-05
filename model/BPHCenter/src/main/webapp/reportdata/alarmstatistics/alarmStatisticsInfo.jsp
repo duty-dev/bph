@@ -149,6 +149,7 @@ var ReportManage ={
                 numeric: false
             }
         });
+        $("#grid th[data-role='droptarget']").attr("style","text-align:center");
 	},
 	initAlarmCircleData:function(data,title,XLabel){
 		//遍历数组，构建对象
@@ -269,7 +270,6 @@ var ReportManage ={
         });
 	},
 	initAlarmTimeSpanData:function(data,title){
-		$("#jqtj").empty(); 
 		var names = [];
 		names[0] = FunctionManage.GetSerieName(data[0]);
 		names[1] = FunctionManage.GetSerieName(data[1]);
@@ -340,6 +340,7 @@ var ReportManage ={
                         columns: gridColumns,
                         resizable: true
                     }); 
+                    $("#grid th[data-role='droptarget']").attr("style","text-align:center");
 	},
 	
 	initAlarmOrganData:function(data,title,XLabel,alarmTypeName){
@@ -432,8 +433,8 @@ var ReportManage ={
          $.each(alarmTypeObject,function(index,item){
          	var newColumn = {};
          	if(item.data[0]==undefined){
-         		newColumn = {title:item.name,field:"none"+index};
-         		gridColumns["none"+index] = newColumn;
+         		newColumn = {field:"NoTypeName"+index,title:item.name};
+         		gridColumns["NoTypeName"+index] = newColumn;
         	}else
         	{
         		if(item.data[0]==1){
@@ -496,6 +497,7 @@ var ReportManage ={
             dataSource: dataSource,
             columns: columns,
         });
+        $("#grid th[data-role='droptarget']").attr("style","text-align:center");
 	}
 };
 
