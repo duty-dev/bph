@@ -56,11 +56,28 @@ public class ReportPeriod {
 			bc.setTime(bd);
 			ec.setTime(ed);
 			
-			if(periodType==1){
-				
-			}else{
+			int bm=bc.get(Calendar.MONTH);
+			int em=ec.get(Calendar.MONTH);
+			
+			
+			switch(periodType){
+			case 1:
 				bc.add(Calendar.MONTH, -1);
 				ec.add(Calendar.MONTH, -1);
+				break;
+			case 2:
+				bc.add(Calendar.WEEK_OF_YEAR, -1);
+				ec.add(Calendar.WEEK_OF_YEAR, -1);
+				break;
+			case 3:
+				int m=this.diffMonth(bc, ec)+1;
+				bc.add(Calendar.MONTH, -m);
+				ec.add(Calendar.MONTH, -m);
+				break;
+			case 4:
+				bc.add(Calendar.YEAR, -1);
+				ec.add(Calendar.YEAR, -1);
+				break;
 			}
 			
 			Date mbd=bc.getTime();
@@ -76,6 +93,15 @@ public class ReportPeriod {
 //		String beginTmp=beginYMD.toString();
 //		String beginDayStr=beginTmp.substring(0,4) +"-" + beginTmp.substring(4,2) + "-" + beginTmp.substring(6);
 //		beginDay=beginDay
+	}
+	
+	private int diffMonth(Calendar c1,Calendar c2){
+		int y1=c1.get(Calendar.YEAR);
+		int y2=c2.get(Calendar.YEAR);
+		int m1=c1.get(Calendar.MONTH);
+		int m2=c2.get(Calendar.MONTH);
+		
+		return  (y2-y1)*12+ m2 -m1;
 	}
 	
 	public Integer getBeginYmd() {
