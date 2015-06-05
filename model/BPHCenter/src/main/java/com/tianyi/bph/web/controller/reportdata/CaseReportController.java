@@ -67,7 +67,7 @@ public class CaseReportController {
 			}
 			Organ organ = organService.getOrganByPrimaryKey(organId);
 			map.put("orgFullPath", organ.getPath());
-
+			
 			// 查询时间
 			// 查询时间方式，1、月 2、日
 			String startDate = queryCondition.getStartDate();
@@ -102,8 +102,7 @@ public class CaseReportController {
 			yResult.setBeginYmd(rp.getYOYBeginYmd());
 			yResult.setEndYmd(rp.getYOYEndYmd());
 			yResult.setData(ls);
-			results.add(yResult);
-			;
+			results.add(yResult); 
 
 			// 环比
 			CaseReportResult<CaseTypeAGGR> mResult = new CaseReportResult<CaseTypeAGGR>();
@@ -123,7 +122,6 @@ public class CaseReportController {
 			return ReturnResult.MESSAGE(MessageCode.STATUS_FAIL,
 					MessageCode.SELECT_ORGAN_FAIL, 0, null);
 		}
-
 	}
 
 	private List<CaseTypeAGGR> getSelectCaseTypeList(List<CaseTypeAGGR> ls,
@@ -206,8 +204,7 @@ public class CaseReportController {
 			yResult.setBeginYmd(rp.getYOYBeginYmd());
 			yResult.setEndYmd(rp.getYOYEndYmd());
 			yResult.setData(ls);
-			results.add(yResult);
-			;
+			results.add(yResult); 
 
 			// 环比
 			CaseReportResult<CasePeriodAGGR> mResult = new CaseReportResult<CasePeriodAGGR>();
@@ -217,8 +214,7 @@ public class CaseReportController {
 			mResult.setBeginYmd(rp.getMOMBeginYmd());
 			mResult.setEndYmd(rp.getMOMEndYmd());
 			mResult.setData(ls);
-			results.add(mResult);
-			;
+			results.add(mResult); 
 
 			return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
 					MessageCode.SELECT_SUCCESS, 0, results);
@@ -296,8 +292,7 @@ public class CaseReportController {
 			yResult.setBeginYmd(rp.getYOYBeginYmd());
 			yResult.setEndYmd(rp.getYOYEndYmd());
 			yResult.setData(ls);
-			results.add(yResult);
-			;
+			results.add(yResult); 
 
 			// 环比
 			CaseReportResult<CaseHourAGGR> mResult = new CaseReportResult<CaseHourAGGR>();
@@ -306,10 +301,9 @@ public class CaseReportController {
 			ls = caseReportService.loadCaseHourReport(map);
 			mResult.setBeginYmd(rp.getMOMBeginYmd());
 			mResult.setEndYmd(rp.getMOMEndYmd());
-			mResult.setData(ls);
+			mResult.setData(ls); 
 			results.add(mResult);
-			;
-
+			 
 			return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
 					MessageCode.SELECT_SUCCESS, 0, results);
 

@@ -3,6 +3,10 @@
 
 var ReportManage ={
 	initAlarmTypeData:function(data,title,XLabel){ 
+		for(var i = 0;i<data.length;i++){//删除格式错误的几个数据
+				data[i].data.shift();
+				data[i].data.splice(8,2);
+		}
 		//遍历数组，构建对象
 		var dataSource = [];
 		var l = data[2].data.length;
@@ -48,8 +52,6 @@ var ReportManage ={
 		dataSource.push(normal);
 		$("#jqtj").empty();
 		$("#jqtj").kendoChart({
-			width:1500,
-			height:800,
             title: {
                 text: title
             },
@@ -86,38 +88,56 @@ var ReportManage ={
             }
         });
 		var firstColumns=[];
-		var secondColumns=[];
-		var columns=[];
 		var firstLevel=[];
 		var secondLevel=[];
-		var fLevel=0;
-		var sLevel=0;
+		var noPColumns=[];
 		//分别取出一级、二级警情
 		for(var i=0;i<l;i++){
 			if(data[0].data[i].typeLevel==1){
 				firstLevel.push(data[0].data[i]);
-			    fLevel++;
 			}else if(data[0].data[i].typeLevel==2){
 				secondLevel.push(data[0].data[i]);
-				sLevel++;
 			}
 		}
-		for(var m=0;m<fLevel;m++){
-			for(var n=0;n<sLevel;n++){
-				var fCode=firstLevel[m].typeCode;
+		for(var m=0;m<firstLevel.length;m++){
+			var secondColumns=[];
+			var k=0;
+			var fCode=firstLevel[m].typeCode;
+			for(var n=0;n<secondLevel.length;n++){
 				var sCode=secondLevel[n].typeParentCode;
 				if(fCode==sCode){
-					secondColumns[n]={field:secondLevel[n].typeName};
-					columns[m]=secondColumns;
+					secondColumns[k++]={title:secondLevel[n].typeName,field:secondLevel[n].typeCode};//小类放到对应的大类中
+					secondLevel.splice(n,1);//删掉在大类下的小类，剩下的就是无大类的小类
+					n--;
 				}
 			}
-			firstColumns[m]={field:firstLevel[m].typeName,columns:columns[m]};
+			secondColumns.push({title:"-",field:"sOther"+firstLevel[m].typeCode});//小类末尾“-”
+			firstColumns[m]={title:firstLevel[m].typeName,field:firstLevel[m].typeCode,columns:secondColumns};
 		}
-		
+		for(var j=0;j<secondLevel.length;j++){
+			noPColumns.push({title:secondLevel[j].typeName,field:secondLevel[j].typeCode});//无大类的小类放到一起
+		}
+		firstColumns.push({title:"其他",field:"fOther",columns:noPColumns}); //无大类的小类列
+		firstColumns.unshift({title:" ",field:"nothing",columns:[]});//表头第一列空
+		firstColumns.push({title:"合计",field:"totals",columns:[{title:"-",field:"total"}]});//表头最后一列“合计”
+		//dataSource
+		var gridData=[];
+		var Tb={};
+		tb.field=[];
+		for(var j=0;j<l;j++){
+			if(data[0].data[j].typeLevel==2){
+				Tb[data[0].data[j].typeCode] = data[0].data[j].amount;
+			}else{
+				Tb["sOther"+data[0].data[j].typeCode]=ReportManage.getOtherAmount(data[0],data[0].data[j].typeCode,data[0].data[j].amount);
+			}
+		}
+		Tb["nothing"]=data[0].beginYmd+"-"+data[0].endYmd;
+		Tb["total"]=ReportManage.getTotalAmount(data[0],secondLevel);
+		gridData.push(Tb);
 		$("#grid").empty();
 		$("#grid").kendoGrid({
-            dataSource:[],
-            columns:firstColumns,
+            dataSource:gridData, 
+            columns:firstColumns, 
             height: 550,
             scrollable: true,
             sortable: true,

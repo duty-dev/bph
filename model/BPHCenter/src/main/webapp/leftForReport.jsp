@@ -614,6 +614,7 @@ function onDpDay(){
 									ReportManage.initAlarmTimeSpanData(req.data,m_orgName);
 								}else if(repType == 4){
 									var orglist = $("#div_suborgList a[name='a_orgName']");
+									alarmOrganXLabel = [];
 									$.each(orglist,function(index,s){
 	       		 						alarmOrganXLabel.push(s.text);
 	       		 					});
