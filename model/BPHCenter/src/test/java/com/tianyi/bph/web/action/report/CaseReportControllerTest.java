@@ -1,6 +1,9 @@
 package com.tianyi.bph.web.action.report;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +12,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tianyi.bph.BaseTest;
+import com.tianyi.bph.domain.report.ReportPeriod;
 import com.tianyi.bph.domain.report.WarningCaseType;
 import com.tianyi.bph.domain.report.WarningColor;
 import com.tianyi.bph.domain.system.Organ;
@@ -31,12 +35,46 @@ public class CaseReportControllerTest extends BaseTest{
 	
 	@Test
 	public void test(){
-		caseReportControll.loadWarningReport(null, null);
+		//caseReportControll.loadWarningReport(null, null);
 		//this.saveWarning();
 		//this.loadWarningByOrgId();
-		
+		//int x =testCalendar("2014-12-01","2015-02-01");
+		this.testReportPeriod();
 	}
 
+	private void  testReportPeriod(){
+		try {
+			ReportPeriod rp=new ReportPeriod(20141201,20150201,3);
+			
+			Integer momb=rp.getMOMBeginYmd();
+			Integer mome=rp.getMOMEndYmd();
+			
+			Integer x=rp.getBeginYmd();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private int testCalendar(String date1, String date2){
+		int result = 0;
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+		Calendar c1 = Calendar.getInstance();
+		Calendar c2 = Calendar.getInstance();
+
+		
+		try {
+			c1.setTime(sdf.parse(date1));
+			c2.setTime(sdf.parse(date2));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		result = c2.get(Calendar.MONDAY) - c1.get(Calendar.MONTH);
+		return result == 0 ? 1 : Math.abs(result);
+	}
 	
 //	@Test
 //	public  void  loadCaseHourReport(){

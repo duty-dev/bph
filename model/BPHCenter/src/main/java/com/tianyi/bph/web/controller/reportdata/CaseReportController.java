@@ -67,7 +67,7 @@ public class CaseReportController {
 			}
 			Organ organ = organService.getOrganByPrimaryKey(organId);
 			map.put("orgFullPath", organ.getPath());
-
+			
 			// 查询时间
 			// 查询时间方式，1、月 2、日
 			String startDate = queryCondition.getStartDate();
@@ -129,7 +129,6 @@ public class CaseReportController {
 			return ReturnResult.MESSAGE(MessageCode.STATUS_FAIL,
 					MessageCode.SELECT_ORGAN_FAIL, 0, null);
 		}
-
 	}
 
 	private List<CaseTypeAGGR> getSelectCaseTypeList(List<CaseTypeAGGR> ls,
@@ -314,7 +313,7 @@ public class CaseReportController {
 			mResult.setEndYmd(rp.getMOMEndYmd());
 			mResult.setData(ls);
 			results.add(mResult);
-			;
+			
 
 			return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
 					MessageCode.SELECT_SUCCESS, 0, results);
