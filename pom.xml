@@ -8,7 +8,7 @@
 	<packaging>pom</packaging>
 	<description>公安扁平化系统</description>
 	<organization>
-		<name>四川天翼网络</name>
+		<name>四川天翼网络</name> 
 	</organization>
 	<developers>
 		<developer>
@@ -119,7 +119,7 @@
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis</artifactId>
-			<version>3.2.2</version>
+			<version>3.2.2</version> 
 		</dependency>
 
 		<!-- SQL日志 -->

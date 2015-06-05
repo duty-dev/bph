@@ -422,7 +422,7 @@ function onDpDay(){
 										if(req.data[i].hasChild){
 											subListHtml += " onclick='parentNodeClick("+req.data[i].id+")'";
 										}else{
-											subListHtml += " onclick='loadData("+req.data[i].id+",'"+req.data[i].shortName+"')'";
+											subListHtml += " onclick=loadData("+req.data[i].id+",'"+req.data[i].shortName+"')";
 										}
 										subListHtml += ">"+req.data[i].shortName+"</a>";
 									}
