@@ -80,6 +80,12 @@ public class CaseReportController {
 					queryCondition.getPeriodType());
 			// 警情类型 父级节点
 			List<String> caseTypes = queryCondition.getCaseType();
+			// 警情级别 二级节点
+			List<Integer> levels = queryCondition.getCaseLevels();
+			// 时间区间 时间节点
+			List<Integer> hours = queryCondition.getCaseTimaSpan();
+			map.put("levels", levels);
+			map.put("hours", hours);
 			 
 			// 当期
 			CaseReportResult<CaseTypeAGGR> cResult = new CaseReportResult<CaseTypeAGGR>();
@@ -102,8 +108,7 @@ public class CaseReportController {
 			yResult.setBeginYmd(rp.getYOYBeginYmd());
 			yResult.setEndYmd(rp.getYOYEndYmd());
 			yResult.setData(ls);
-			results.add(yResult);
-			;
+			results.add(yResult); 
 
 			// 环比
 			CaseReportResult<CaseTypeAGGR> mResult = new CaseReportResult<CaseTypeAGGR>();
@@ -128,14 +133,15 @@ public class CaseReportController {
 	private List<CaseTypeAGGR> getSelectCaseTypeList(List<CaseTypeAGGR> ls,
 			List<String> caseTypes) {
 		// TODO Auto-generated method stub
+		List<CaseTypeAGGR> list = new ArrayList<CaseTypeAGGR>();
 		for(String code :caseTypes){
 			for(CaseTypeAGGR cta:ls){
 				if(cta.getTypeCode().equals(code)){
-					ls.remove(cta);
+					list.add(cta);
 				}
 			}
 		} 
-		return ls;
+		return list;
 	}
 
 	@RequestMapping(value = "/loadCasePeriodReport.do")
@@ -205,8 +211,7 @@ public class CaseReportController {
 			yResult.setBeginYmd(rp.getYOYBeginYmd());
 			yResult.setEndYmd(rp.getYOYEndYmd());
 			yResult.setData(ls);
-			results.add(yResult);
-			;
+			results.add(yResult); 
 
 			// 环比
 			CaseReportResult<CasePeriodAGGR> mResult = new CaseReportResult<CasePeriodAGGR>();
@@ -216,8 +221,7 @@ public class CaseReportController {
 			mResult.setBeginYmd(rp.getMOMBeginYmd());
 			mResult.setEndYmd(rp.getMOMEndYmd());
 			mResult.setData(ls);
-			results.add(mResult);
-			;
+			results.add(mResult); 
 
 			return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
 					MessageCode.SELECT_SUCCESS, 0, results);
@@ -295,8 +299,7 @@ public class CaseReportController {
 			yResult.setBeginYmd(rp.getYOYBeginYmd());
 			yResult.setEndYmd(rp.getYOYEndYmd());
 			yResult.setData(ls);
-			results.add(yResult);
-			;
+			results.add(yResult); 
 
 			// 环比
 			CaseReportResult<CaseHourAGGR> mResult = new CaseReportResult<CaseHourAGGR>();
@@ -305,10 +308,9 @@ public class CaseReportController {
 			ls = caseReportService.loadCaseHourReport(map);
 			mResult.setBeginYmd(rp.getMOMBeginYmd());
 			mResult.setEndYmd(rp.getMOMEndYmd());
-			mResult.setData(ls);
+			mResult.setData(ls); 
 			results.add(mResult);
-			
-
+			 
 			return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
 					MessageCode.SELECT_SUCCESS, 0, results);
 
