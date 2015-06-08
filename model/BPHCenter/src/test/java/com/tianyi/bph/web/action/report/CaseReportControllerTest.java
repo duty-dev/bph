@@ -15,9 +15,11 @@ import com.tianyi.bph.BaseTest;
 import com.tianyi.bph.domain.report.ReportPeriod;
 import com.tianyi.bph.domain.report.WarningCaseType;
 import com.tianyi.bph.domain.report.WarningColor;
+import com.tianyi.bph.domain.report.WarningOrgAGGR;
 import com.tianyi.bph.domain.system.Organ;
 import com.tianyi.bph.query.report.WarningCfgVM;
 import com.tianyi.bph.query.system.OrganQuery;
+import com.tianyi.bph.service.report.CaseReportService;
 import com.tianyi.bph.service.report.WarningCfgService;
 import com.tianyi.bph.service.system.OrganService;
 import com.tianyi.bph.web.controller.reportdata.CaseReportController;
@@ -33,13 +35,17 @@ public class CaseReportControllerTest extends BaseTest{
 	@Autowired
 	private OrganService  organService;
 	
+	@Autowired
+	private  CaseReportService caseReportService;
+	
 	@Test
 	public void test(){
 		//caseReportControll.loadWarningReport(null, null);
 		//this.saveWarning();
 		//this.loadWarningByOrgId();
 		//int x =testCalendar("2014-12-01","2015-02-01");
-		this.testReportPeriod();
+		//this.testReportPeriod();
+		testLoadWarningOrgAGGR();
 	}
 
 	private void  testReportPeriod(){
@@ -53,6 +59,64 @@ public class CaseReportControllerTest extends BaseTest{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+	}
+	
+	private  void testLoadWarningOrgAGGR(){
+		Map<String,Object> map=new HashMap<String,Object>();
+		map.put("beginYmd", 20140101);
+		map.put("endYmd", "20141231");
+		
+		Organ org= organService.getOrganByPrimaryKey(72);
+		
+		String[] a=org.getPath().split("/");
+		int orgLevel=a.length -1;
+		
+		map.put("orgId", org.getId());
+		map.put("orgLevel", orgLevel);
+		List<Integer> caseLevels=new ArrayList<Integer>();
+		caseLevels.add(1);
+		caseLevels.add(2);
+		caseLevels.add(3);
+		map.put("caseLevels", caseLevels);
+		
+		List<String> type2Codes  =new ArrayList<String>();
+		type2Codes.add("caseType110010800");
+		type2Codes.add("caseType110010900");
+		type2Codes.add("caseType110010800");
+		type2Codes.add("caseType110011000");
+		type2Codes.add("caseType110011100");
+		type2Codes.add("caseType110011200");
+		type2Codes.add("caseType110011600");
+		type2Codes.add("caseType110011700");
+		type2Codes.add("caseType110011800");
+		type2Codes.add("caseType110011900");
+		map.put("type2Codes", type2Codes);
+		
+		
+		List<Integer> hours  =new ArrayList<Integer>();
+ 		hours.add(0);
+ 		hours.add(1);
+ 		hours.add(2);
+ 		hours.add(3);
+ 		hours.add(4);
+ 		hours.add(5);
+ 		hours.add(6);
+ 		hours.add(7);
+ 		hours.add(8);
+ 		hours.add(9);
+ 		hours.add(10);
+ 		hours.add(11);
+ 		hours.add(12);
+ 		hours.add(13);
+ 		hours.add(14);
+ 		hours.add(15);
+ 		map.put("hours", hours);
+ 		
+ 		
+		List<WarningOrgAGGR> woas=caseReportService.loadWarningReport(map);
+		
+		List<WarningOrgAGGR> woas2=woas;
 		
 	}
 	
