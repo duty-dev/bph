@@ -144,6 +144,4 @@ public class ReportPeriod {
 	public void setMOMEndYmd	(Integer mOMEndYmd) {
 		MOMEndYmd = mOMEndYmd;
 	}
-	
-	
 }
