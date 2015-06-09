@@ -2,7 +2,7 @@ package com.tianyi.bph.query.report;
 
 import java.util.List;
 
-public class ResultList {
+public class AlarmMapResultList {
 	/**
 	 ** 查询警情类型编码
 	 ** 父级节点编码
@@ -25,7 +25,7 @@ public class ResultList {
 	/**
 	 * 子节点信息
 	 **/
-	private List<ResultList> resultList;
+	private List<AlarmMapResultList> resultList;
 	public String getTypeCode() {
 		return typeCode;
 	}
@@ -50,10 +50,10 @@ public class ResultList {
 	public void setCaseList(List<CaseInfo> caseList) {
 		this.caseList = caseList;
 	}
-	public List<ResultList> getResultList() {
+	public List<AlarmMapResultList> getResultList() {
 		return resultList;
 	}
-	public void setResultList(List<ResultList> resultList) {
+	public void setResultList(List<AlarmMapResultList> resultList) {
 		this.resultList = resultList;
 	}
 }
