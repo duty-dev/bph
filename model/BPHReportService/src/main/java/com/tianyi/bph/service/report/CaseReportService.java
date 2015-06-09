@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.tianyi.bph.domain.report.CaseGps;
 import com.tianyi.bph.domain.report.CaseHourAGGR;
 import com.tianyi.bph.domain.report.CaseOrgAGGR;
 import com.tianyi.bph.domain.report.CasePeriodAGGR;
@@ -28,4 +29,6 @@ public interface CaseReportService {
 	List<CaseOrgAGGR> loadCaseOrgReport(Map<String, Object>  map);
 	
 	List<WarningOrgAGGR> loadWarningReport(Map<String, Object>  map);
+	
+	List<CaseGps> loadCaseGps(Map<String, Object>  map);
 }

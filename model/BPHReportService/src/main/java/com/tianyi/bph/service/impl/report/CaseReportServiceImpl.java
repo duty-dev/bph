@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.tianyi.bph.dao.report.CaseReportMapper;
 import com.tianyi.bph.dao.report.WarningConfigMapper;
+import com.tianyi.bph.domain.report.CaseGps;
 import com.tianyi.bph.domain.report.CaseHourAGGR;
 import com.tianyi.bph.domain.report.CaseOrgAGGR;
 import com.tianyi.bph.domain.report.CasePeriodAGGR;
@@ -86,6 +87,10 @@ public class CaseReportServiceImpl implements  CaseReportService {
 		return w;
 	}
 
-
+	@Override
+	public List<CaseGps> loadCaseGps(Map<String, Object> map) {
+		List<CaseGps> ls=caseReportMapper.loadCaseGps(map);
+		return ls;
+	}
 
 }

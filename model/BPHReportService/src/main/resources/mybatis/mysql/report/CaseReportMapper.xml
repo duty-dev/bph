@@ -407,6 +407,38 @@
 		where org.PARENT_ID= #{orgId,jdbcType=INTEGER}
   	</select>
 
+		<resultMap id="CaseGpsResult"  type="com.tianyi.bph.domain.report.CaseGps">
+    	<result column="org_id" property="orgId"   jdbcType="INTEGER"/>
+    	<result column="type1" property="type1"  jdbcType="VARCHAR" />
+    	<result column="type1" property="type2"  jdbcType="VARCHAR" />
+    	<result column="case_level" property="caseLevel"  jdbcType="INTEGER" />
+    </resultMap>
+
+	<select id="loadCaseGps" parameterType="java.util.Map"  resultMap="CaseGpsResult">
+		SELECT
+			 cp.org_id as org_id,
+			 cp.type1 as type1,
+			 cp.type2 as type2,
+			 cp.
+		from t_case_report as cp
+		where 
+			ymd &gt;=#{beginYmd,jdbcType=INTEGER} and 
+	  		ymd &lt;=#{endYmd,jdbcType=INTEGER} and
+	  		cp.clevel in 
+	  			<foreach item="item" index="index" collection="caseLevels" open="(" separator="," close=")">  
+					#{item}
+				</foreach> and
+			cp.type2 in
+				<foreach item="item" index="index" collection="type2Codes" open="(" separator="," close=")">  
+					#{item}
+				</foreach> and
+			cp.chour  in
+				<foreach item="item" index="index" collection="hours" open="(" separator="," close=")">  
+					#{item}
+				</foreach> and
+			cp.org_path like CONCAT(#{orgPath,jdbcType=VARCHAR},'%')
+	</select>
+
 
 
 </mapper>
