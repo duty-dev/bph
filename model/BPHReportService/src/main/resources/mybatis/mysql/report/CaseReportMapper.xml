@@ -12,6 +12,10 @@
 	<resultMap id="casePeriodAGGRMap" type="com.tianyi.bph.domain.report.CasePeriodAGGR">
     	<result column="period" property="period"   jdbcType="INTEGER"/>
     	<result column="period_count" property="amount" jdbcType="INTEGER" />
+    	
+    	<result column="years" property="years"   jdbcType="INTEGER"/>
+    	<result column="months" property="months"   jdbcType="INTEGER"/>
+    	<result column="days" property="days"   jdbcType="INTEGER"/>
     </resultMap>
 
 	<resultMap id="caseHourAGGRMap" type="com.tianyi.bph.domain.report.CaseHourAGGR">
@@ -188,12 +192,15 @@
   	
   	<select id="loadCasePeriodReport"  parameterType="java.util.Map"  resultMap="casePeriodAGGRMap">
   		select 
-  			<if test ="periodType==1">
+  			<if test ="periodType==3">
   				cmonth as period,
   			</if>
-  			<if test ="periodType==2">
-  				ymd as period,
+  			<if test ="periodType==1">
+  				cday as period,
   			</if>
+  			cyear as years , 
+  			cmonth as months,
+  			cday as days,
   			count(*)	as period_count
   		from
   			t_case_report
@@ -214,10 +221,10 @@
 				</foreach>
 		group by 
 			<if test ="periodType==1">
-  				cmonth 
+  				cday 
   			</if>
-  			<if test ="periodType==2">
-  				ymd
+			<if test ="periodType==3">
+  				cmonth 
   			</if>
   	</select>
   	
