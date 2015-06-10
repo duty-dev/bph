@@ -321,6 +321,7 @@ public class DutyResourceController {
 					gids[i] = Integer.parseInt(String.valueOf(gs[i]));
 				}
 				map.put("gids", gids);
+				map.put("orgparentPath", organ.getPath().replace("/"+organ.getCode(), ""));
 			}
 			if (typeId != null && !typeId.equals("")) {
 				String[] s = {};
@@ -420,6 +421,7 @@ public class DutyResourceController {
 					gids[i] = Integer.parseInt(String.valueOf(gs[i]));
 				}
 				map.put("gids", gids);
+				map.put("orgparentPath", organ.getPath().replace("/"+organ.getCode(), ""));
 			}
 			if (typeId != null && !typeId.equals("")) {
 				String[] s = {};

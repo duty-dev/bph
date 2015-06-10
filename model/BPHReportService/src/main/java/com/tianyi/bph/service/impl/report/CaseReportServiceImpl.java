@@ -1,4 +1,4 @@
-package com.tianyi.bph.service.impl.report;
+﻿package com.tianyi.bph.service.impl.report;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -108,23 +108,13 @@ public class CaseReportServiceImpl implements CaseReportService {
 	}
 
 	@Override
-	public List<ColorWarningResultList> getWarningReport(String query) {
+	public List<ColorWarningResultList> getWarningReport(QueryCondition queryCondition) {
 		// TODO Auto-generated method stub
 		List<ColorWarningResultList> list = new ArrayList<ColorWarningResultList>();
 		try {
-			if (query == null) {
-				return list;
-			} else if (query.trim().length() == 0) {
-				return list;
-			} else {
-				JSONObject jobj = JSONObject.fromObject(query);
-				Map<String, Class<?>> classMap = new HashMap<String, Class<?>>();
-
-				classMap.put("caseType", String.class);
-				classMap.put("caseTimaSpan", Integer.class);
-				classMap.put("caseLevels", Integer.class);
-				QueryCondition queryCondition = (QueryCondition) JSONObject
-						.toBean(jobj, QueryCondition.class, classMap);
+			if (queryCondition == null) {
+				return list; 
+			} else { 
 				Map<String, Object> map = new HashMap<String, Object>();
 				// 选择的预警Id
 				int colorWarnId = queryCondition.getWarningCfgId();

@@ -2,6 +2,7 @@ package com.tianyi.bph.dao.system;
 
 import com.tianyi.bph.dao.MyBatisRepository;
 import com.tianyi.bph.domain.system.OrganGBOrganKey;
+import com.tianyi.bph.domain.system.OrganGbOrgan;
 import com.tianyi.bph.query.system.OrganGBOrganExample;
 
 import java.util.List;
@@ -27,6 +28,8 @@ public interface OrganGBOrganMapper {
 
 	List<Integer> selectGBOrganIdByOrganId(Integer organId);
 
-	List<OrganGBOrganKey> selectByOrganId(@Param("path") String path);
+	List<OrganGbOrgan> selectByOrganId(@Param("path") String path);
+
+	List<Integer> queryExistGbId(@Param("path") String path);
 
 }

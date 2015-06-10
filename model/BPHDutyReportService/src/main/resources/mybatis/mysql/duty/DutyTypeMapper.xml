@@ -247,7 +247,22 @@
       platform_id = #{platformId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  
+  <update id="updateDutyItemTypeName"  parameterType="java.util.Map">
+    update t_duty_item
+    set name = #{itemName,jdbcType=VARCHAR}
+      
+    where item_type_id = 100 and  item_id = #{itemId,jdbcType=INTEGER}
+  </update>
+  <select id="findByName" parameterType="String" resultType="com.tianyi.bph.domain.duty.DutyType">  
+       		select *
+			from t_duty_type d  
+       		 where d.name = #{typeName,jdbcType=VARCHAR}  
+    	 </select>
+ <select id="findByNameAndId" parameterType="java.util.Map" resultType="com.tianyi.bph.domain.duty.DutyType">  
+  select *
+			from t_duty_type d  
+       		 where d.name = #{typeName,jdbcType=VARCHAR}   and d.id !=#{id,jdbcType=INTEGER}
+    	 </select>
   <!--自定义-->
   <select id="loadProperties"  parameterType="java.lang.Boolean" resultMap="PropertyResultMap">
   		select id,name

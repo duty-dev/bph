@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.tianyi.bph.common.ReturnResult;
 import com.tianyi.bph.domain.basicdata.Icons;
-import com.tianyi.bph.service.basicdata.IconsService;
+import com.tianyi.bph.service.admin.IconsService;
 
 @Controller
 @RequestMapping("/icons")

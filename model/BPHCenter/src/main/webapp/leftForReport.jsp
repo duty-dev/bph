@@ -390,8 +390,8 @@ function onDpDay(){
 					daye = "0"+daye;
 				}
 				m_Query_pkg.startDate = years + "-" + months + "-" + days;
-				m_Query_pkg.endDate = yeare + "-" + monthe + "-" + daye;
-				m_Query_pkg.periodType = 1;
+				m_Query_pkg.endDate = yeare + "-" + monthe + "-" + daye; 
+				m_Query_pkg.periodType =1; 
 			}
 		}
 	}

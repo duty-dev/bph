@@ -23,6 +23,7 @@ import com.tianyi.bph.domain.alarm.AlarmType;
 import com.tianyi.bph.domain.alarm.JJDBState;
 import com.tianyi.bph.domain.alarm.Jjdb110;
 import com.tianyi.bph.domain.alarm.PJPolice;
+import com.tianyi.bph.query.alarm.JJDBQuery;
 import com.tianyi.bph.query.alarm.JJDBView;
 import com.tianyi.bph.service.alarm.AlarmDispatchService;
 import com.tianyi.bph.vo.ALarmVO;
@@ -66,7 +67,7 @@ public class AlarmAction extends BaseLogController{
 		ALarmVO alarmvo = JsonUtils.toObj(body, ALarmVO.class);
 		System.out.println("***alarmLocation="+alarmvo.getAlarmLocation());
 		List<JJDBView> alarmList = alarmDispatchService.getJjdbListByQuery(alarmvo.ctrate());
-		return ReturnResult.SUCCESS("警情详情", alarmList);
+		return ReturnResult.SUCCESS("警情简要信息列表", alarmList);
 	}
 	
 	/**
@@ -247,5 +248,22 @@ public class AlarmAction extends BaseLogController{
 		}
 	}
 	
+	/**
+	 * 通过同一参数分多个条件获取警情简要列表
+	 * @param request
+	 * @param 
+	 * @return
+	 * @throws ParseException 
+	 */
+	@RequestMapping(value = "/getAlarmListMixed.do")
+	@ResponseBody
+	public ReturnResult getAlarmListMixed(
+			@RequestParam(value = "mixedKey", required = false) String mixedKey,
+			HttpServletRequest request) throws ParseException {
+		JJDBQuery jjdbQuery = new JJDBQuery();
+		if(!StringUtils.isEmpty(mixedKey)){jjdbQuery.setKeyWord(mixedKey);}
+		List<JJDBView> alarmList = alarmDispatchService.getJjdbListMixed(jjdbQuery);
+		return ReturnResult.SUCCESS("警情简要信息列表", alarmList);
+	}
 
 }

@@ -267,13 +267,13 @@
 				t.parent_id = #{gbId,jdbcType=INTEGER}
 			</when>
 			<otherwise>
-				t.parent_id is null
+				t.parent_id is null 
 			</otherwise>
 		</choose>
 	</select>
 	<sql id="Base_Column_List1">
-		t.id, t.name, t.path, t.gb_platform_id, t.parent_id,
-		t.type, t.std_id
+			t.id, t.name, t.path, t.gb_platform_id, t.parent_id,
+			t.type, t.std_id
 	</sql>
 
 </mapper>

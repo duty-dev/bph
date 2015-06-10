@@ -8,6 +8,11 @@ import com.tianyi.bph.domain.basicdata.Police;
  *
  */
 public class PoliceVM extends Police {
+	
+	/**
+	 * 组呼号对应编号
+	 */
+	private String intercomGroupNumber;
 	/**
 	 * 警员类型名称
 	 */
@@ -33,6 +38,14 @@ public class PoliceVM extends Police {
 	 */
 	private String iconUrl;
 	
+	public String getIntercomGroupNumber() {
+		return intercomGroupNumber;
+	}
+
+	public void setIntercomGroupNumber(String intercomGroupNumber) {
+		this.intercomGroupNumber = intercomGroupNumber;
+	}
+
 	public String getTypeName() {
 		return typeName;
 	}

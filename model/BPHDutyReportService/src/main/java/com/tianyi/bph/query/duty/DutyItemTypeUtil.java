@@ -17,7 +17,7 @@ public class DutyItemTypeUtil {
 		
 		typeNames.put(100, "备勤类型");
 		typeNames.put(101, "班次");
-		typeNames.put(200, "自定义");
+		typeNames.put(200, "自定义编组");
 		
 	}
 	

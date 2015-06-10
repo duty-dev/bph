@@ -6,6 +6,7 @@ public class CaseReportResult<T> {
 	private Integer beginYmd;
 	private Integer endYmd;
 	
+
 	List<T> data;
 
 	public Integer getBeginYmd() {

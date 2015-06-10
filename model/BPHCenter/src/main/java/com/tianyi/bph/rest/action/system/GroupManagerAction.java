@@ -55,7 +55,8 @@ public class GroupManagerAction extends BaseLogController{
 		int id;
 		try {
 			GroupManager groupManager=new GroupManager();
-			groupManager.setGroupName(groupName);
+			String groupNameString = new String(groupName.getBytes("ISO-8859-1"), "UTF-8");
+			groupManager.setGroupName(groupNameString);
 			groupManager.setUserId(userId);
 			groupManager.setOrganId(organId);
 			groupManager.setShareType(shareType);

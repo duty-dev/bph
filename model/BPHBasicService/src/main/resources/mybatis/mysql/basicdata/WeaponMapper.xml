@@ -311,9 +311,13 @@
   		 	left join t_duty_weapon_group pg on pg.id = gm.group_id
   		 </if> 
   		 where 
-  	 
+  		 where 1=1 and 
+  		 (
   		 o.organ_id = #{orgId,jdbcType=INTEGER}
-  		  
+  		 	<if test="orgparentPath!=null">
+  		 		or o.path = #{orgparentPath,jdbcType=VARCHAR}
+  		 	</if>
+  		 )
   		<if test ="number !=null">
   			and w.number like CONCAT('%','${number}','%' )  
   		</if>

@@ -12,6 +12,7 @@ import com.tianyi.bph.domain.report.CaseTypeAGGR;
 import com.tianyi.bph.domain.report.WarningAGGR;
 import com.tianyi.bph.domain.report.WarningOrgAGGR;
 import com.tianyi.bph.query.report.ColorWarningResultList;
+import com.tianyi.bph.query.report.QueryCondition;
 
 public interface CaseReportService {
 
@@ -33,5 +34,5 @@ public interface CaseReportService {
 	
 	List<CaseGps> loadCaseGps(Map<String, Object>  map);
 
-	List<ColorWarningResultList> getWarningReport(String query);
+	List<ColorWarningResultList> getWarningReport(QueryCondition queryCondition);
 }

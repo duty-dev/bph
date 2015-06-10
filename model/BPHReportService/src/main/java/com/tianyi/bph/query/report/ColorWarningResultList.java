@@ -1,11 +1,11 @@
 package com.tianyi.bph.query.report;
 
 public class ColorWarningResultList {
-	private Integer organId;
-	private String organName;
-	private int previouscount;
-	private int currentcount;
-	private double  increase;
+	private Integer organId;  //机构id
+	private String organName; //机构名称
+	private int previouscount;  //往期数量
+	private int currentcount;  //当期数量
+	private double  increase;  //增幅
 	public Integer getOrganId() {
 		return organId;
 	}

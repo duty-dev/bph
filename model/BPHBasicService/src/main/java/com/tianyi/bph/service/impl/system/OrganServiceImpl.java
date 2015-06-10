@@ -60,7 +60,7 @@ public class OrganServiceImpl implements OrganService{
 		
 		String path=organDao.selectByPrimaryKey(organ.getParentId()).getPath();
 		Integer levle=organDao.selectByPrimaryKey(organ.getParentId()).getLevle();
-		organ.setPath(path+"/"+organ.getId());
+		organ.setPath(path+"/"+organ.getCode());
 		organ.setLevle(levle+1);
 		organDao.updateByPrimaryKey(organ);
 		
@@ -419,6 +419,35 @@ public class OrganServiceImpl implements OrganService{
 	public List<Organ> findOrganById(OrganQuery query) {
 		// TODO Auto-generated method stub
 		return organDao.findOrganById(query);
+	}
+	@Override
+	public List<Organ> getOrganListByParentId1(OrganQuery query) {
+		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
+				List<String> expandedList=null;
+				if(!StringUtils.isEmpty(query.getExpandeds())){//获取展开集合
+					String[] strList=query.getExpandeds().split(",");
+					expandedList=Arrays.asList(strList);
+					expandedMap.put("expandedList", expandedList);
+				}else{
+					expandedMap.clear();
+				}
+				List<Organ> organList=organDao.getOrganListByParentId(query.getId(),query.getParentId());
+				for (Organ organ : organList) {
+					if(organ.getId()==query.getId()){
+						organ.setExpanded(true);
+					}
+					if(expandedMap.get("expandedList") != null && 
+							expandedMap.get("expandedList").contains(organ.getId()+"")){
+						organ.setExpanded(true);
+					}
+					if(query.getCurrentOrganId() != null &&!StringUtils.isEmpty(query.getCurrentOrganId()+"")){
+						if(organ.getId()==query.getCurrentOrganId()){
+							organ.setSelected(true);
+						}
+					}
+				}
+				return organList;
 	}
 
 }
