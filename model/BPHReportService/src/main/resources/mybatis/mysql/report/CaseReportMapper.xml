@@ -286,7 +286,7 @@
 					<foreach item="item" index="index" collection="levels" open="(" separator="," close=")">  
 						#{item}
 					</foreach> AND
-				type2 in
+				type1 in
 					<foreach item="item" index="index" collection="type2Codes" open="(" separator="," close=")">  
 						#{item}
 					</foreach> AND
@@ -336,36 +336,123 @@
     </resultMap>
   	
   	<select id="loadWarningReport"  parameterType="java.util.Map"  resultMap="WarningAGGRMap">
-  		select
-  			org.organ_id 	as org_id,
-  			org.name			as org_name,
-  			org.code			as org_code,
-  			t.amount			as amount
-  		from t_organ as org
-  		left join(
-	  		select
-	  			right(org_path,12)		as org_code,
-	  			count(*)  					as amount
-	  		from t_case_report
-	  		where
-	  			ymd &gt;=#{beginYmd,jdbcType=INTEGER} and 
+  		SELECT
+			org.ORGAN_ID,
+			org.name,
+			IFNULL(t.amount,0) as amount
+		FROM t_organ AS org
+		LEFT JOIN (
+			SELECT
+				<if test ="orgLevel==1">
+  					ole.level2_id as org_id,
+  				</if>
+				<if test ="orgLevel==2">
+  					ole.level3_id as org_id,
+  				</if>
+  				<if test ="orgLevel ==3">
+  					ole.level4_id as org_id,
+  				</if>
+  				<if test ="orgLevel ==4">
+  					ole.level5_id as org_id,
+  				</if>
+  				<if test ="orgLevel ==5">
+  					ole.level6_id as org_id,
+  				</if>
+  				<if test ="orgLevel ==6">
+  					ole.level7_id as org_id,
+  				</if>
+				ifnull(count(*) ,0) AS amount
+			FROM t_case_report AS cp
+			LEFT JOIN t_organ_level AS ole ON cp.org_id = ole.organ_id
+			WHERE
+				<if test ="orgLevel==1">
+  					ole.level1_id = #{orgId,jdbcType=INTEGER} and
+  				</if>
+				<if test ="orgLevel==2">
+  					ole.level2_id = #{orgId,jdbcType=INTEGER} and
+  				</if>
+  				<if test ="orgLevel ==3">
+  					ole.level3_id = #{orgId,jdbcType=INTEGER} and
+  				</if>
+  				<if test ="orgLevel ==4">
+  					ole.level4_id = #{orgId,jdbcType=INTEGER} and
+  				</if>
+  				<if test ="orgLevel ==5">
+  					ole.level5_id = #{orgId,jdbcType=INTEGER} and
+  				</if>
+  				<if test ="orgLevel ==6">
+  					ole.level6_id = #{orgId,jdbcType=INTEGER} and
+  				</if>
+				ymd &gt;=#{beginYmd,jdbcType=INTEGER} and 
 	  			ymd &lt;=#{endYmd,jdbcType=INTEGER} and
-	  			org_path like CONCAT(#{orgFullPath,jdbcType=VARCHAR},'/','%') and
-	  			clevel in 
+	  			cp.clevel in 
 	  				<foreach item="item" index="index" collection="caseLevels" open="(" separator="," close=")">  
 							#{item}
 					</foreach> and
-				type2 in
+				cp.type2 in
 					<foreach item="item" index="index" collection="type2Codes" open="(" separator="," close=")">  
 							#{item}
 					</foreach> and
-				chour  in
+				cp.chour  in
 					<foreach item="item" index="index" collection="hours" open="(" separator="," close=")">  
 						#{item}
 					</foreach>
-	  		group by
-	  			LEFT(org_path,CHAR_LENGTH(CONCAT(#{orgPath,jdbcType=VARCHAR},'/'))+12)
-	  		)as t on org.code=t.org_code
+			GROUP BY
+				<if test ="level==1">
+  					ole.level2_id
+  				</if>
+				<if test ="orgLevel==2">
+  					ole.level3_id
+  				</if>
+  				<if test ="orgLevel ==3">
+  					ole.level4_id
+  				</if>
+  				<if test ="orgLevel ==4">
+  					ole.level5_id
+  				</if>
+  				<if test ="orgLevel ==5">
+  					ole.level6_id
+  				</if>
+  				<if test ="orgLevel ==6">
+  					ole.level7_id
+  				</if>
+		) AS t ON t.org_id = org.organ_id
+		where org.PARENT_ID= #{orgId,jdbcType=INTEGER}
   	</select>
 
+		<resultMap id="CaseGpsResult"  type="com.tianyi.bph.domain.report.CaseGps">
+    	<result column="org_id" property="orgId"   jdbcType="INTEGER"/>
+    	<result column="type1" property="type1"  jdbcType="VARCHAR" />
+    	<result column="type2" property="type2"  jdbcType="VARCHAR" />
+    	<result column="case_level" property="caseLevel"  jdbcType="INTEGER" />
+    </resultMap>
+
+	<select id="loadCaseGps" parameterType="java.util.Map"  resultMap="CaseGpsResult">
+		SELECT
+			 cp.org_id as org_id,
+			 cp.type1 	as type1,
+			 cp.type2 	as type2,
+			 cp.clevel	as case_level,
+			 cp.gps		as gps
+		from t_case_report as cp
+		where 
+			ymd &gt;=#{beginYmd,jdbcType=INTEGER} and 
+	  		ymd &lt;=#{endYmd,jdbcType=INTEGER} and
+	  		cp.clevel in 
+	  			<foreach item="item" index="index" collection="caseLevels" open="(" separator="," close=")">  
+					#{item}
+				</foreach> and
+			cp.type2 in
+				<foreach item="item" index="index" collection="type2Codes" open="(" separator="," close=")">  
+					#{item}
+				</foreach> and
+			cp.chour  in
+				<foreach item="item" index="index" collection="hours" open="(" separator="," close=")">  
+					#{item}
+				</foreach> and
+			cp.org_path like CONCAT(#{orgPath,jdbcType=VARCHAR},'%')
+		order by
+			type1,type2
+	</select>
+	
 </mapper>

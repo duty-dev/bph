@@ -435,8 +435,9 @@ public class CaseReportController {
 				organId = user.getOrgId();
 			}
 			Organ organ = organService.getOrganByPrimaryKey(organId);
-			map.put("organId", organ.getPath());
-			map.put("orgFullPath", organ.getPath());
+			map.put("orgId", organ.getId());
+			map.put("orgLevel", this.getOrgLevel(organ.getPath()));
+			
 			// 查询时间
 			// 查询时间方式，1、月 2、日
 			String startDate = queryCondition.getStartDate();
@@ -445,16 +446,14 @@ public class CaseReportController {
 			String eDate = endDate.replace("-", "").trim();
 			Integer bd = Integer.parseInt(sDate);
 			Integer ed = Integer.parseInt(eDate);
-			ReportPeriod rp = new ReportPeriod(bd, ed,
-					queryCondition.getPeriodType());
+			ReportPeriod rp = new ReportPeriod(bd, ed,	queryCondition.getPeriodType());
 			// 警情级别 二级节点
-			List<Integer> levels = queryCondition.getCaseLevels();
+			List<Integer> caseLevels = queryCondition.getCaseLevels();
 			// 时间区间 时间节点
 			List<Integer> hours = queryCondition.getCaseTimaSpan();
-			map.put("levels", levels);
+			map.put("caseLevels", caseLevels);
 			map.put("hours", hours);
 
-			map.put("periodType", queryCondition.getPeriodType());
 			// 警情类型 父级节点
 			List<String> type2Codes = queryCondition.getCaseType();
 			map.put("type2Codes", type2Codes);
@@ -463,15 +462,32 @@ public class CaseReportController {
 			map.put("beginYmd", rp.getBeginYmd());
 			map.put("endYmd", rp.getEndYmd());
 			
+			//当前
+			List<WarningOrgAGGR> w1=caseReportService.loadWarningReport(map);
 			
-			List<WarningOrgAGGR> woas=caseReportService.loadWarningReport(map);
+			map.put("beginYmd", rp.getMOMBeginYmd());
+			map.put("endYmd", rp.getMOMEndYmd());
+			//环比
+			List<WarningOrgAGGR> w2=caseReportService.loadWarningReport(map);
 			
 			return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
-					MessageCode.SELECT_SUCCESS, 0, woas);
+					MessageCode.SELECT_SUCCESS, 0, w1);
 			
 		}catch(Exception ex){
 			return ReturnResult.MESSAGE(MessageCode.STATUS_FAIL,
 					MessageCode.SELECT_ORGAN_FAIL, 0, null);
 		} 
 	}
+	
+	private int  getOrgLevel(String orgPath){
+
+		String[] a=orgPath.split("/");
+		if(a==null){
+			return 0;
+		}else{
+			return a.length -1;
+		}
+	}
+	
+	
 }
