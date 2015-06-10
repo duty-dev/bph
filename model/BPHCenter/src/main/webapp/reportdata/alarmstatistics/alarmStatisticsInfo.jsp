@@ -81,6 +81,11 @@
  
 	var ReportManage = {
 		initAlarmTypeData : function(data, title, XLabel) {
+		
+			var len = XLabel.length;
+			if(len>8){
+				$("#jqtj").css("width",1000+(len-8)*80);
+			}
 			var series = [];
 			var sameSerie = chartManage.GetSerie(data[0], XLabel, "同比");
 			var circleSerie = chartManage.GetSerie(data[1], XLabel, "环比");
@@ -151,16 +156,17 @@
 				count++;
 			});
 
+			var numOfNotype  = 0;//对那些没有数据，无法获得其typeCode和parentCode的警情类型
 			$.each(XLabel,function(index, item) {
 								var column = {};
-								var c  = 0;
+								
 								if (alarmTypeObjects[item] == undefined) {
 									column = {
-										field : "none" + c,
+										field : "none" + numOfNotype,
 										title : item
 									};
-									columns["none" + c] = column;
-									c++;
+									columns["none" + numOfNotype] = column;
+									numOfNotype++;
 								} else {
 									if (alarmTypeObjects[item].typeLevel == 1) {
 										var childColumns = [];
@@ -179,7 +185,9 @@
 										columns[alarmTypeObjects[item].typeCode] = column;
 									} else if (alarmTypeObjects[item].typeLevel == 2) {
 										//检查是否存在大类
+										var num = 0;
 										$.each(alarmTypeObjects,function(index1, item1) {
+															num++;
 															if (alarmTypeObjects[item].typeParentCode == item1.typeCode) {
 																var childColumn = {
 																	field : alarmTypeObjects[item].typeCode,
@@ -190,7 +198,7 @@
 																		.push(childColumn);
 																return false;
 															} else {
-																if (index1 == count-1) {
+																if (num == count) {
 																	column = {
 																		field : alarmTypeObjects[item].typeCode,
 																		title : alarmTypeObjects[item].typeName
@@ -211,6 +219,8 @@
 				title : "合计"
 			});
 			var dataSource = [];
+			var totalRow = {};
+			totalRow['tjTime']  = "小计";
 			$.each(data, function(index, item) {
 				var row = {};
 
@@ -222,8 +232,10 @@
 								row["other" + item1.typeCode] -= item2.amount;
 							}
 						});
+						totalRow["other" + item1.typeCode] = (totalRow["other" + item1.typeCode]==undefined?row["other" + item1.typeCode]:totalRow["other" + item1.typeCode]+row["other" + item1.typeCode]);
 					} else if (item1.typeLevel == 2) {
 						row[item1.typeCode] = item1.amount;
+						totalRow[item1.typeCode] = (totalRow[item1.typeCode] ==undefined ?item1.amount:totalRow[item1.typeCode]+item1.amount);
 					}
 
 				});
@@ -232,10 +244,15 @@
 					total += row[d];
 				}
 				row['count'] = total;
+				if(index ==0)
+					totalRow['count'] =total;
+				else
+					totalRow['count'] +=total;
 				row['tjTime'] = FunctionManage.GetStandardYM(item.beginYmd)
 						+ "-" + FunctionManage.GetStandardYM(item.endYmd);
 				dataSource[index] = row;
 			});
+			dataSource[3] = totalRow;
 			$("#grid").empty();
 			$("#grid").kendoGrid({
 				dataSource : dataSource,
@@ -319,6 +336,7 @@
 				columns : gridColumns,
 				scrollable : true,
 			}); 
+			$(".k-header").hide();
 		},
 		initAlarmTimeSpanData : function(data, title) {
 			var names = [];
@@ -415,6 +433,10 @@
 		},
 
 		initAlarmOrganData : function(data, title, XLabel, alarmTypeName) {
+			var len = XLabel.length;
+			if(len>8){
+				$("#jqtj").css("width",1000+(len-8)*80);
+			}
 			var seriesArray = [];
 			var rows = data[0].data;
 			var types = {};
@@ -503,14 +525,16 @@
 				}
 			});
 
+			var countNoTypeName = 0;
 			$.each(alarmTypeObject, function(index, item) {
 				var newColumn = {};
 				if (item.data[0] == undefined) {
 					newColumn = {
-						field : "NoTypeName" + index,
+						field : "NoTypeName" + countNoTypeName,
 						title : item.name
 					};
-					gridColumns["NoTypeName" + index] = newColumn;
+					gridColumns["NoTypeName" + countNoTypeName] = newColumn;
+					countNoTypeName++;
 				} else {
 					if (item.data[0] == 1) {
 						var childColumn = [];
@@ -526,7 +550,7 @@
 						gridColumns[item.data[1]] = newColumn;
 					} else if (item.data[0] == 2) {
 						//如果是小类，则判断是否存在大类是它的父类；存在，放到其对应的下面；不存在，则建立一个column;
-						$.each(alarmTypeObject, function(index, item1) {
+						$.each(alarmTypeObject, function(index1, item1) {
 							if (item1.data[0] != undefined
 									&& item.data[2] == item1.data[1]) {
 								gridColumns[item1.data[1]].columns.push({
@@ -713,10 +737,10 @@
 </style>  
 <div style="width:1000px;overflow:auto;height:430px">
 
-	<div id="jqtj" style="width:4000px;"></div>
+	<div id="jqtj"></div>
 </div>
 <br>
 <br>
 <div style="width:1000px;overflow:auto;"> 
-	<div id="grid" style="width:4000px;height:500px;"></div>
-</div>  
+	<div id="grid" style="width:3000px;height:300px;"></div>
+</div>
