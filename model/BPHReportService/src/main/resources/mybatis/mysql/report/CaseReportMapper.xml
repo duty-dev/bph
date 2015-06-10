@@ -273,7 +273,7 @@
 					<foreach item="item" index="index" collection="levels" open="(" separator="," close=")">  
 						#{item}
 					</foreach> AND
-				type2 in
+				type1 in
 					<foreach item="item" index="index" collection="type2Codes" open="(" separator="," close=")">  
 						#{item}
 					</foreach> AND
