@@ -381,6 +381,7 @@ public class CaseReportController {
 			map.put("beginYMD", rp.getBeginYmd());
 			map.put("endYMD", rp.getEndYmd());
 			ls = caseReportService.loadCaseOrgReport(map);
+			ls = getSelectCaseTypeOrgList(ls,type2Codes);
 			cResult.setBeginYmd(rp.getBeginYmd());
 			cResult.setEndYmd(rp.getEndYmd());
 			cResult.setData(ls);
@@ -395,6 +396,21 @@ public class CaseReportController {
 		}
 	}
 
+	private List<CaseOrgAGGR> getSelectCaseTypeOrgList(List<CaseOrgAGGR> ls,
+			List<String> caseTypes) {
+		// TODO Auto-generated method stub
+		List<CaseOrgAGGR> list = new ArrayList<CaseOrgAGGR>();
+		for(String code :caseTypes){
+			for(CaseOrgAGGR cta:ls){
+				if(cta.getTypeCode()==null){
+					list.add(cta);
+				}else if(cta.getTypeCode().equals(code)){
+					list.add(cta);
+				}
+			}
+		} 
+		return list; 
+	}
 	@RequestMapping(value = "/loadWarningReport.do")
 	public @ResponseBody
 	ReturnResult loadWarningReport(

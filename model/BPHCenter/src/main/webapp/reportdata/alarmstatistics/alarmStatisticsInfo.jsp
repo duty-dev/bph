@@ -742,5 +742,5 @@
 <br>
 <br>
 <div style="width:1000px;overflow:auto;"> 
-	<div id="grid" style="width:3000px;height:300px;"></div>
+	<div id="grid" style="width:3000px;overflow:auto;height:300px;"></div>
 </div>

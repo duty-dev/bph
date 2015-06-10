@@ -197,6 +197,7 @@
   			</if> 
   			<if test ="periodType==1">
   				cday as period, 
+  				</if>
   			<if test ="periodType==4">
   				ymd as period, 
   			</if>
@@ -227,6 +228,7 @@
   			</if> 
 			<if test ="periodType==3">
   				cmonth  
+  				</if>
   			<if test ="periodType==4">
   				ymd 
   			</if>
