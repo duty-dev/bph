@@ -324,8 +324,8 @@
   	
   	<select id="loadWarningReport"  parameterType="java.util.Map"  resultMap="WarningAGGRMap">
   		SELECT
-			org.ORGAN_ID,
-			org.name,
+			org.ORGAN_ID as org_id,
+			org.name     as org_name,
 			IFNULL(t.amount,0) as amount
 		FROM t_organ AS org
 		LEFT JOIN (
@@ -371,21 +371,22 @@
   					ole.level6_id = #{orgId,jdbcType=INTEGER} and
   				</if>
 				ymd &gt;=#{beginYmd,jdbcType=INTEGER} and 
-	  			ymd &lt;=#{endYmd,jdbcType=INTEGER} and
-	  			cp.clevel in 
-	  				<foreach item="item" index="index" collection="caseLevels" open="(" separator="," close=")">  
-							#{item}
-					</foreach> and
-				cp.type2 in
-					<foreach item="item" index="index" collection="type2Codes" open="(" separator="," close=")">  
-							#{item}
-					</foreach> and
-				cp.chour  in
-					<foreach item="item" index="index" collection="hours" open="(" separator="," close=")">  
-						#{item}
-					</foreach>
+	  			ymd &lt;=#{endYmd,jdbcType=INTEGER}
+	  			<if test="caseLevels != null"> 
+	  			 	and cp.clevel in 
+	  					<foreach item="item" index="index" collection="caseLevels" open="(" separator="," close=")">  
+								#{item}
+						</foreach>
+				</if> 
+				
+				<if test="type2Codes !=null">
+				 	and cp.type2 in
+						<foreach item="item" index="index" collection="type2Codes" open="(" separator="," close=")">  
+								#{item}
+						</foreach>
+				</if>
 			GROUP BY
-				<if test ="level==1">
+				<if test ="orgLevel==1">
   					ole.level2_id
   				</if>
 				<if test ="orgLevel==2">
@@ -418,8 +419,7 @@
 		SELECT
 			 cp.org_id as org_id,
 			 cp.type1 as type1,
-			 cp.type2 as type2,
-			 cp.
+			 cp.type2 as type2 
 		from t_case_report as cp
 		where 
 			ymd &gt;=#{beginYmd,jdbcType=INTEGER} and 

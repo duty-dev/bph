@@ -223,6 +223,27 @@ var WarningManage = {
 	},
 	onClose:function(){
 		loadData(WarningManage.pageNo);
+	},
+	testInterface:function(){
+		var obj ={};
+		obj.organId = 72;
+		obj.warningCfgId = 3;
+		obj.startDate = '2014-10-01';
+		obj.endDate = '2014-10-31';
+		obj.periodType= 3;
+		$.ajax({
+					url : "<%=basePath%>caseReportWeb/loadWarningReport.do",
+					type : "post", 
+					dataType : "json",
+					data : {"query":JSON.stringify(obj)},
+					success : function(req) {
+						if(req.code==200){
+						 	$("body").popjs({"title":"提示","content":"耶，数据接口调用成功"});
+						}else{
+						 	$("body").popjs({"title":"提示","content":"耶，数据接口调用失败"});
+						}
+					}
+			});
 	}
 };
 </script>
@@ -231,7 +252,8 @@ var WarningManage = {
 	<div id="alarmCaseGridtoolbar" style="padding:5px"> 
         <span id="undo" class="k-button" onclick="WarningManage.addWarning()">添加</span> 
         <span id="undo" class="k-button" onclick="WarningManage.editWarning()">修改</span> 
-        <span id="undo" class="k-button" onclick="WarningManage.deleteWarning()">删除</span>   
+        <span id="undo" class="k-button" onclick="WarningManage.deleteWarning()">删除</span>  
+        <span id="undo" class="k-button" onclick="WarningManage.testInterface()">接口调用测试</span>    
     </div> 
 	<div id="alarmCaseGrid" >
 	</div>  

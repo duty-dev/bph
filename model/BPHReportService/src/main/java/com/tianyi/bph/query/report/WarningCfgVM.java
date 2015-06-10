@@ -9,9 +9,8 @@ import com.tianyi.bph.domain.report.WarningConfig;
 
 public class WarningCfgVM extends WarningConfig {
 	private List<WarningColor> colors;
-	private List<WarningCaseType> caseTypes;
-	private List<WarningCaseLevel> caseLevels;
-	
+	private List<WarningCaseType> caseTypes; 
+	private List<WarningCaseLevel> caseLevels; 
 	public List<WarningCaseLevel> getCaseLevels() {
 		return caseLevels;
 	}
@@ -29,7 +28,6 @@ public class WarningCfgVM extends WarningConfig {
 	}
 	public void setCaseTypes(List<WarningCaseType> caseTypes) {
 		this.caseTypes = caseTypes;
-	}
-	
+	} 
 	
 }

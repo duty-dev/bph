@@ -160,7 +160,7 @@
   	left join t_warning_case_level	as cl			on cfg.id=cl.warning_id
   	left join b_alarm_type          		as t            on ct.case_type_code = t.TYPE_CODE
   	where
-  		cfg.org_id = #{orgId,jdbcType=INTEGER}	
+  		cfg.org_id = #{organId,jdbcType=INTEGER}	
   		<if test="orgParentId!=null"> 
   			or(
   				cfg.org_id= 	#{orgParentId,jdbcType=INTEGER} and cfg.share =1
