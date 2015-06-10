@@ -410,16 +410,17 @@
 		<resultMap id="CaseGpsResult"  type="com.tianyi.bph.domain.report.CaseGps">
     	<result column="org_id" property="orgId"   jdbcType="INTEGER"/>
     	<result column="type1" property="type1"  jdbcType="VARCHAR" />
-    	<result column="type1" property="type2"  jdbcType="VARCHAR" />
+    	<result column="type2" property="type2"  jdbcType="VARCHAR" />
     	<result column="case_level" property="caseLevel"  jdbcType="INTEGER" />
     </resultMap>
 
 	<select id="loadCaseGps" parameterType="java.util.Map"  resultMap="CaseGpsResult">
 		SELECT
 			 cp.org_id as org_id,
-			 cp.type1 as type1,
-			 cp.type2 as type2,
-			 cp.
+			 cp.type1 	as type1,
+			 cp.type2 	as type2,
+			 cp.clevel	as case_level,
+			 cp.gps		as gps
 		from t_case_report as cp
 		where 
 			ymd &gt;=#{beginYmd,jdbcType=INTEGER} and 
@@ -437,8 +438,8 @@
 					#{item}
 				</foreach> and
 			cp.org_path like CONCAT(#{orgPath,jdbcType=VARCHAR},'%')
+		order by
+			type1,type2
 	</select>
-
-
-
+	
 </mapper>

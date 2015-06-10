@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tianyi.bph.BaseTest;
+import com.tianyi.bph.domain.report.CaseGps;
 import com.tianyi.bph.domain.report.ReportPeriod;
 import com.tianyi.bph.domain.report.WarningCaseType;
 import com.tianyi.bph.domain.report.WarningColor;
@@ -40,12 +41,18 @@ public class CaseReportControllerTest extends BaseTest{
 	
 	@Test
 	public void test(){
+		try{
+			testLoadCaseGps();
+		}catch(Exception ex){
+			System.console().printf(ex.getMessage());
+		}
 		//caseReportControll.loadWarningReport(null, null);
 		//this.saveWarning();
 		//this.loadWarningByOrgId();
 		//int x =testCalendar("2014-12-01","2015-02-01");
 		//this.testReportPeriod();
-		testLoadWarningOrgAGGR();
+		//testLoadWarningOrgAGGR();
+		
 	}
 
 	private void  testReportPeriod(){
@@ -56,10 +63,74 @@ public class CaseReportControllerTest extends BaseTest{
 			Integer mome=rp.getMOMEndYmd();
 			
 			Integer x=rp.getBeginYmd();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	private void testLoadCaseGps(){
+		Map<String,Object> map=new HashMap<String,Object>();
+		map.put("beginYmd", 20140101);
+		map.put("endYmd", 20141231);
+		
+		Organ org= organService.getOrganByPrimaryKey(72);
+		
+		String[] a=org.getPath().split("/");
+		int orgLevel=a.length -1;
+		
+		map.put("orgId", org.getId());
+		///map.put("orgLevel", orgLevel);
+		map.put("orgPath", org.getPath());
+		
+		List<Integer> caseLevels=new ArrayList<Integer>();
+		caseLevels.add(1);
+		caseLevels.add(2);
+		caseLevels.add(3);
+		map.put("caseLevels", caseLevels);
+		
+		List<String> type2Codes  =new ArrayList<String>();
+		type2Codes.add("caseType110010800");
+		type2Codes.add("caseType110010900");
+		type2Codes.add("caseType110010800");
+		type2Codes.add("caseType110011000");
+		type2Codes.add("caseType110011100");
+		type2Codes.add("caseType110011200");
+		type2Codes.add("caseType110011600");
+		type2Codes.add("caseType110011700");
+		type2Codes.add("caseType110011800");
+		type2Codes.add("caseType110011900");
+		map.put("type2Codes", type2Codes);
+		
+		List<Integer> hours  =new ArrayList<Integer>();
+ 		hours.add(0);
+ 		hours.add(1);
+ 		hours.add(2);
+ 		hours.add(3);
+ 		hours.add(4);
+ 		hours.add(5);
+ 		hours.add(6);
+ 		hours.add(7);
+ 		hours.add(8);
+ 		hours.add(9);
+ 		hours.add(10);
+ 		hours.add(11);
+ 		hours.add(12);
+ 		hours.add(13);
+ 		hours.add(14);
+ 		hours.add(15);
+ 		map.put("hours", hours);
+ 		
+ 		
+ 		
+		List<CaseGps> woas=caseReportService.loadCaseGps(map);
+		
+		CaseGps cg=woas.get(0);
+		
+		
+		
+		List<CaseGps> woas2=woas;
 	}
 	
 	private  void testLoadWarningOrgAGGR(){
