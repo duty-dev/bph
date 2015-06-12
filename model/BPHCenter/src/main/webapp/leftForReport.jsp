@@ -1,6 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
  <style>
- 	li{ float:left;list-style:none; padding:5px;} 
+ 	li{ float:left;list-style:none; padding:5px;width:130px;} 
  	#tbl_alarmType {border:1px solid #fff;margin-top:5px;}
  	#tbl_alarmType td{border:1px solid #fff;}
  	#tbl_alarmType tr{border:1px solid #fff;} 
@@ -30,7 +30,7 @@
           		 <div id="div_orgPath"> 
           		 
           		 </div>
-          		 <div id="div_suborgList" style="margin-top:5px;width:200px;" > 
+          		 <div id="div_suborgList" style="margin-top:5px;width:450px;" > 
           		 
           		 </div>
           		</div>
