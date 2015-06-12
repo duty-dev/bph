@@ -253,6 +253,9 @@
 				dataSource[index] = row;
 			});
 			dataSource[3] = totalRow;
+			
+			//设置grid的长宽
+			FunctionManage.setGridWidthAndHeight(XLabel+1,dataSource.length);
 			$("#grid").empty();
 			$("#grid").kendoGrid({
 				dataSource : dataSource,
@@ -262,6 +265,10 @@
 					"text-align:center");
 		},
 		initAlarmCircleData : function(data, title, XLabel) {
+			var len = XLabel.length;
+			if(len>8){
+				$("#jqtj").css("width",1000+(len-8)*80);
+			}
 			var series = [];
 			var name;
 			for(var i = 0;i<3;i++){
@@ -330,6 +337,9 @@
 				dataSource.push(dateShow);
 				dataSource.push(dataShow);
 			}); 
+			
+			//设置grid的长宽
+			FunctionManage.setGridWidthAndHeight(gridColumns.length,dataSource.length);
  			$("#grid").empty();
 			$("#grid").kendoGrid({
 				dataSource : dataSource,
@@ -422,6 +432,9 @@
 					width : "50px"
 				};
 			}
+			
+			//设置grid的长宽
+			FunctionManage.setGridWidthAndHeight(gridColumns,gridDataSource.length);
 			$("#grid").empty();
 			$("#grid").kendoGrid({
 				dataSource : gridDataSource,
@@ -621,6 +634,8 @@
 				dataSource.push(item);
 			});
 
+			//设置grid的长宽
+			FunctionManage.setGridWidthAndHeight(alarmTypeName+1,dataSource.length);
 			$("#grid").empty();
 			$("#grid").kendoGrid({
 				dataSource : dataSource,
@@ -716,6 +731,11 @@
 			var name = FunctionManage.GetStandardYM(data.beginYmd) + "-"
 					+ FunctionManage.GetStandardYM(data.endYmd);
 			return name;
+		},
+		
+		setGridWidthAndHeight:function(columns,rows){
+			$("#grid").css("width",1000+(columns-8)*80);
+			$("#grid").css("height",rows*50);
 		}
 	};
 </script>  
@@ -742,5 +762,5 @@
 <br>
 <br>
 <div style="width:1000px;overflow:auto;"> 
-	<div id="grid" style="width:3000px;overflow:auto;height:300px;"></div>
+	<div id="grid"></div>
 </div>
