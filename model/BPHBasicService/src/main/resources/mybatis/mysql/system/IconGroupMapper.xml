@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tianyi.bph.dao.system.IconGroupMapper" >
+  <resultMap id="BaseResultMap" type="com.tianyi.bph.domain.system.IconGroup" >
+    <result column="GROUP_ID" property="groupId" jdbcType="INTEGER" />
+    <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR" />
+    <result column="ICON_TYPE" property="iconType" jdbcType="INTEGER" />
+    <result column="NOMAL_URL" property="nomalUrl" jdbcType="VARCHAR" />
+    <result column="SELECTED_URL" property="selectedUrl" jdbcType="VARCHAR" />
+    <result column="INTO_ENCLOSURE_URL" property="intoEnclosureUrl" jdbcType="VARCHAR" />
+    <result column="DISPATCH_URL" property="dispatchUrl" jdbcType="VARCHAR" />
+    <result column="ARRIVE_URL" property="arriveUrl" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    GROUP_ID, GROUP_NAME, ICON_TYPE, NOMAL_URL, SELECTED_URL, INTO_ENCLOSURE_URL, DISPATCH_URL, ARRIVE_URL
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.tianyi.bph.query.admin.IconsQuery" >
+    select
+    <include refid="Base_Column_List" />
+    from t_icon_group
+    where 1=1
+    <if test="iconType != null">
+        AND ICON_TYPE = #{iconType,jdbcType=INTEGER}
+    </if>
+    limit #{pageStart,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+  </select>
+  <insert id="insert" parameterType="com.tianyi.bph.domain.system.IconGroup" >
+    insert into t_icon_group (GROUP_ID, GROUP_NAME, ICON_TYPE, NOMAL_URL, SELECTED_URL, INTO_ENCLOSURE_URL, DISPATCH_URL, ARRIVE_URL
+      )
+    values (#{groupId,jdbcType=INTEGER}, #{groupName,jdbcType=VARCHAR}, #{iconType,jdbcType=INTEGER}, #{nomalUrl,jdbcType=VARCHAR},
+    #{selectedUrl,jdbcType=VARCHAR}, #{intoEnclosureUrl,jdbcType=VARCHAR}, #{dispatchUrl,jdbcType=VARCHAR}, #{arriveUrl,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.tianyi.bph.domain.system.IconGroup" >
+    insert into t_icon_group
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="groupId != null" >
+        GROUP_ID,
+      </if>
+      <if test="groupName != null" >
+        GROUP_NAME,
+      </if>
+      <if test="iconType != null" >
+        ICON_TYPE,
+      </if>
+      <if test="nomalUrl != null" >
+        NOMAL_URL,
+      </if>
+      <if test="selectedUrl != null" >
+        SELECTED_URL,
+      </if>
+      <if test="intoEnclosureUrl != null" >
+        INTO_ENCLOSURE_URL,
+      </if>
+      <if test="dispatchUrl != null" >
+        DISPATCH_URL,
+      </if>
+      <if test="arriveUrl != null" >
+        ARRIVE_URL,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="groupId != null" >
+        #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="groupName != null" >
+        #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="iconType != null" >
+        #{iconType,jdbcType=INTEGER},
+      </if>
+      <if test="nomalUrl != null" >
+        #{nomalUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="selectedUrl != null" >
+        #{selectedUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="intoEnclosureUrl != null" >
+        #{intoEnclosureUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="dispatchUrl != null" >
+        #{dispatchUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="arriveUrl != null" >
+        #{arriveUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_icon_group
+    <set >
+      <if test="record.groupId != null" >
+        GROUP_ID = #{record.groupId,jdbcType=INTEGER},
+      </if>
+      <if test="record.groupName != null" >
+        GROUP_NAME = #{record.groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.iconType != null" >
+        ICON_TYPE = #{record.iconType,jdbcType=INTEGER},
+      </if>
+      <if test="record.nomalUrl != null" >
+        NOMAL_URL = #{record.nomalUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.selectedUrl != null" >
+        SELECTED_URL = #{record.selectedUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.intoEnclosureUrl != null" >
+        INTO_ENCLOSURE_URL = #{record.intoEnclosureUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dispatchUrl != null" >
+        DISPATCH_URL = #{record.dispatchUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.arriveUrl != null" >
+        ARRIVE_URL = #{record.arriveUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_icon_group
+    set GROUP_ID = #{record.groupId,jdbcType=INTEGER},
+      GROUP_NAME = #{record.groupName,jdbcType=VARCHAR},
+      ICON_TYPE = #{record.iconType,jdbcType=INTEGER}
+      NOMAL_URL = #{record.nomalUrl,jdbcType=VARCHAR},
+      SELECTED_URL = #{record.selectedUrl,jdbcType=VARCHAR}, 
+      INTO_ENCLOSURE_URL = #{record.intoEnclosureUrl,jdbcType=VARCHAR},
+      DISPATCH_URL = #{record.dispatchUrl,jdbcType=VARCHAR},
+      ARRIVE_URL = #{record.arriveUrl,jdbcType=VARCHAR},
+  </update>
+</mapper>

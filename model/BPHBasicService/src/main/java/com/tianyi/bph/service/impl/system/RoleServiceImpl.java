@@ -235,6 +235,7 @@ public class RoleServiceImpl implements RoleService{
 		strList.add(SystemConfig.BASE_MANAGER);
 		strList.add(SystemConfig.DUTY_MANAGER);
 		strList.add(SystemConfig.POLICE_MANAGER);
+		strList.add(SystemConfig.ANALYZING_MANAGER);
 		for (String string : strList) {
 			ModuleJson moduleJson=moduleDao.selectModuleJsonByPrimaryKey(Integer.parseInt(string));
 			List<ModuleJson> moduleList=moduleDao.findModuleList();

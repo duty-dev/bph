@@ -246,6 +246,33 @@ public class OrganController extends BaseLogController{
 		return s;
 	}
 	
+	@RequestMapping(value = "/lazyOrganList1.do", produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String lazyOrganList1(
+			@RequestParam(value = "id", required = false) Integer hybrid_id,
+			HttpServletRequest request) {
+		List<Organ> list = null;
+		try {
+			User user=(User) request.getAttribute("User");
+			String expandeds=(String) request.getAttribute("expandeds");
+			String organId=(String) request.getAttribute("organId");
+			OrganQuery query=new OrganQuery();
+			query.setId(user.getOrgId());
+			query.setParentId(hybrid_id);
+			query.setExpandeds(expandeds);
+			if(!StringUtils.isEmpty(organId)){
+				query.setCurrentOrganId(Integer.parseInt(organId));
+			}else{
+				query.setCurrentOrganId(user.getOrgId());
+			}
+			list=organService.getOrganListByParentId1(query);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		String s =  JSONArray.fromObject(list).toString();
+		return s;
+	}
+	
 	/**
 	 * 跨机构树选择
 	 * @param name

@@ -109,5 +109,11 @@ public interface DutyTypeMapper {
 	int updateDutyType(DutyType dutytype);
 
 	List<DutyType> loadDutyTypeByParentId(Integer pid);
+
+	List<DutyType> findByNameAndId(Map<String, Object> map);
+
+	List<DutyType> findByName(String typeName);
+
+	void updateDutyItemTypeName(Map<String, Object> map);
  
 }

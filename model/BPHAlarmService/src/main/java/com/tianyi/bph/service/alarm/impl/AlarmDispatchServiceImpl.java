@@ -123,7 +123,7 @@ public class AlarmDispatchServiceImpl implements AlarmDispatchService {
 		Organ organ = organDAO.selectByCode(jjdb.getGxdwbh());
 		if (organ != null) {
 			String organPath = organ.getPath();
-			sendMessage.asyncJsonData(deleteDispatchPoliceBeseRouteKey
+			sendMessage.asyncJsonData(markGpsBeseRouteKey
 					+ organPath.replace("/", "."), JsonUtils.toJson(Jjdb110));
 		}
 	}
@@ -247,6 +247,12 @@ public class AlarmDispatchServiceImpl implements AlarmDispatchService {
 					+ organPath.replace("/", "."), JsonUtils.toJson(record));
 		}
 		return temp;
+	}
+
+	@Override
+	public List<JJDBView> getJjdbListMixed(JJDBQuery JjdbQuery) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

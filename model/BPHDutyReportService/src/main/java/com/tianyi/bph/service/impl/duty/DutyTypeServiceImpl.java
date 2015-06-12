@@ -85,6 +85,10 @@ public class DutyTypeServiceImpl implements DutyTypeService {
 			vm.setId(target.getId());
 		} else {
 			dutyTypeMapper.updateByPrimaryKey(target);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("itemId", target.getId());
+			map.put("itemName", target.getName());
+			dutyTypeMapper.updateDutyItemTypeName(map);
 		}
 
 		// 修改父节点的isLeaf=false!
@@ -171,6 +175,18 @@ public class DutyTypeServiceImpl implements DutyTypeService {
 	public List<DutyType> loadDutyTypeByParentId(Integer pid) {
 		// TODO Auto-generated method stub
 		return dutyTypeMapper.loadDutyTypeByParentId(pid);
+	}
+
+	@Override
+	public List<DutyType> findByNameAndId(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return dutyTypeMapper.findByNameAndId(map);
+	}
+
+	@Override
+	public List<DutyType> findByName(String typeName) {
+		// TODO Auto-generated method stub
+		return dutyTypeMapper.findByName(typeName);
 	}
 
 }

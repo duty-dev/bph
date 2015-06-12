@@ -97,12 +97,12 @@ public class UserAction {
 			List<String> funListStr=userRoleService.getFunctionsByUserId(user.getUserId());
 			user.setFunctionList(funListStr);
 			
-			//List<ModuleJson> moduleList=roleService.getModuleList();
-			//user.setModules(moduleList);
+			List<ModuleJson> moduleList=roleService.getModuleList();
+			user.setModules(moduleList);
 			/**
 			 * 服务配置信息
 			 */
-			//user=serviceConfService.getServcieList(user);
+			user=serviceConfService.getServcieList(user);
 			
 			/**
 			 * session 缓存管理

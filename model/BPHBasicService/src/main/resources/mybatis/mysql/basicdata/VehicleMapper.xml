@@ -23,6 +23,7 @@
     <result column="org_id" jdbcType="INTEGER" property="orgId" />
     <result column="number" jdbcType="VARCHAR" property="number" />
     <result column="intercom_group" jdbcType="VARCHAR" property="intercomGroup" />
+    <result column="intercom_groupNumber" jdbcType="VARCHAR" property="intercomgroupNumber" />
     <result column="intercom_person" jdbcType="VARCHAR" property="intercomPerson" />
     <result column="gps_id" jdbcType="INTEGER" property="gpsId" />
     <result column="gps_name" jdbcType="VARCHAR" property="gpsName" />
@@ -313,7 +314,7 @@
   			v.org_id, 
   			v.number, 
   			v.intercom_group, 
-  			v.intercom_person,
+  			v.intercom_person, 
   			v.gps_id, 
   			v.gps_name, 
   			v.purpose, 
@@ -326,12 +327,14 @@
 			org.path 				as 	orgPath,
 			gps.number 				as 	gpsnumber,
 			vt.name 				as 	typename ,
-			tg.icon_url             as  iconUrl
+			tg.icon_url             as  iconUrl,
+			ig.name                 as  intercom_groupNumber
 		from t_vehicle as v
 			left join t_organ as org on v.org_id=org.organ_id 
 			left join t_gps as gps on v.gps_id=gps.id 
 			left join t_vehicletype as vt on v.vehicle_type_id=vt.id
   			left join t_gps tg on v.gps_id = tg.id
+  			left join t_intercom_group as ig on v.intercom_group = ig.id
 		where 
   			(
   		 org.organ_id = #{orgId,jdbcType=INTEGER}
@@ -357,7 +360,7 @@
  				</foreach>
  				
   			</if>
-  			order by  ${sort} ${order}
+  			order by  CONVERT(v.number USING gbk) asc
   			<if test="pageStart != null">
 	          	limit #{pageStart,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
 	  		</if>

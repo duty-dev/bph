@@ -185,8 +185,8 @@ public class VehicleController {
 			//int pageEnd = pageSize + pageBegin;
 			map.put("isSubOrg", isSubOrg);
 			map.put("number", number);
-			map.put("sort", "v.id");
-			map.put("order", "desc");
+			map.put("sort", "v.number");
+			map.put("order", "asc");
 			map.put("orgId", orgId);
 			map.put("orgPath", orgPath);
 			map.put("pageStart", pageBegin);

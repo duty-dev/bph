@@ -93,5 +93,13 @@ public interface AlarmDispatchService {
 	 * @return
 	 */
 	int deletePJByPrimaryKey(PJPolice record);
+	/**
+	 * 获取警情简要信息列表
+	 * 
+	 * @param JJDBQuery
+	 * @return
+	 */
+	public List<JJDBView> getJjdbListMixed(JJDBQuery JjdbQuery);
+	
 
 }

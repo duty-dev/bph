@@ -36,6 +36,8 @@
 		<result column="mobile_short" property="mobileShort" jdbcType="VARCHAR" />
 		<result column="intercom_group" property="intercomGroup"
 			jdbcType="VARCHAR" />
+		<result column="intercom_groupNumber" property="intercomGroupNumber"
+			jdbcType="VARCHAR" />
 		<result column="intercom_person" property="intercomPerson"
 			jdbcType="VARCHAR" />
 		<result column="gps_icon" property="iconUrl" jdbcType="VARCHAR" />
@@ -57,7 +59,7 @@
 		p.mobile, p.mobile_short as mobileShort,
 		p.intercom_group as intercomGroup, p.intercom_person, p.gps_id as gpsId, p.gps_name as
 		gpsName,org.code as orgCode,org.path as orgPath,tg.icon_url as
-		iconUrl,CONCAT(pt.name,":",p.name) as display_name
+		iconUrl,CONCAT(pt.name,":",p.name) as display_name,ig.name as intercom_groupNumber
 	</sql>
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
 		parameterType="java.lang.Integer">
@@ -422,6 +424,7 @@
 		left join t_policetype pt on pt.id = p.type_id
 		left join t_organ org on org.organ_id = p.org_id
 		left join t_gps tg on p.gps_id = tg.id
+		left join t_intercom_group ig on p.intercom_group = ig.id
 		<include refid="Where_Sql" />
 
 		order by id
@@ -488,6 +491,7 @@
 		left join t_policetype pt on pt.id = p.type_id
 		left join t_organ org on org.organ_id = p.org_id
 		left join t_gps tg on p.gps_id = tg.id 
+		left join t_intercom_group ig on p.intercom_group = ig.id
 		where
 		( 
 		org.organ_id = #{orgId,jdbcType=INTEGER}
@@ -514,7 +518,7 @@
 
 		</if>
 
- 		order by p.id desc
+ 		order by CONVERT(p.name USING gbk) asc
 		<if test="pageStart !=null">
 			limit #{pageStart,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
 		</if>
@@ -566,6 +570,7 @@
 		left join t_policetype pt on pt.id = p.type_id
 
 		left join t_gps tg on p.gps_id = tg.id
+		left join t_intercom_group ig on p.intercom_group = ig.id
 		where
 
 		p.isUsed = 1 and

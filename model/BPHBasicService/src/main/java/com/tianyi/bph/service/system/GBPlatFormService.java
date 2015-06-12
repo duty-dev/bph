@@ -5,6 +5,7 @@ import java.util.List;
 import com.tianyi.bph.domain.system.GBDevice;
 import com.tianyi.bph.domain.system.GBOrgan;
 import com.tianyi.bph.domain.system.OrganGBOrganKey;
+import com.tianyi.bph.domain.system.OrganGbOrgan;
 
 /**
  * 国标平台业务层
@@ -22,11 +23,11 @@ public interface GBPlatFormService {
 	 */
 	public GBOrgan getOrganTree(int organId);
 
-	public void addGBPermission(Integer organId, List<OrganGBOrganKey> list);
+	public void addGBPermission(Integer organId, List<Integer> list);
 
 	public List<GBDevice> getGBDeviceListByOrganId(Integer organId);
 
-	public List<OrganGBOrganKey> queryOrganGBOrganKey(Integer OrganId);
+	public OrganGbOrgan queryOrganGBOrganKey(Integer organId);
 
 	public List<GBDevice> queryAllGbDevice();
 

@@ -33,6 +33,10 @@ public class VehicleVM extends Vehicle {
 	 */
 	private String gpsName;
 	/**
+	 * groupNumber
+	 */
+	private String intercomgroupNumber;
+	/**
 	 * 关联gps图标路径
 	 */
 	private String iconUrl;
@@ -90,6 +94,14 @@ public class VehicleVM extends Vehicle {
 
 	public void setIconUrl(String iconUrl) {
 		this.iconUrl = iconUrl;
+	}
+
+	public String getIntercomgroupNumber() {
+		return intercomgroupNumber;
+	}
+
+	public void setIntercomgroupNumber(String intercomgroupNumber) {
+		this.intercomgroupNumber = intercomgroupNumber;
 	}
 
 	

@@ -1,5 +1,7 @@
 package com.tianyi.bph.service.impl.report;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,74 +16,112 @@ import com.tianyi.bph.dao.report.WarningConfigMapper;
 import com.tianyi.bph.domain.report.WarningCaseLevel;
 import com.tianyi.bph.domain.report.WarningCaseType;
 import com.tianyi.bph.domain.report.WarningColor;
+import com.tianyi.bph.query.report.ColorWarningList;
 import com.tianyi.bph.query.report.WarningCfgVM;
 import com.tianyi.bph.service.report.WarningCfgService;
 
 @Service
-public class WarningCfgServiceImpl implements WarningCfgService{
+public class WarningCfgServiceImpl implements WarningCfgService {
 
 	@Autowired
 	private WarningConfigMapper warningConfigMapper;
 	@Autowired
-	private WarningColorMapper  warningColorMapper;
+	private WarningColorMapper warningColorMapper;
 	@Autowired
 	private WarningCaseTypeMapper warningCaseTypeMapper;
 	@Autowired
 	private WarningCaseLevelMapper warningCaseLevelMapper;
-	
+
 	@Override
 	@Transactional
-	public void saveWarningCfg(WarningCfgVM vm)  {
-		try{
-			if(vm.getId()==0){
+	public void saveWarningCfg(WarningCfgVM vm) {
+		try {
+			if (vm.getId() == 0) {
 				warningConfigMapper.insert(vm);
-			}else{
+			} else {
 				warningConfigMapper.updateByPrimaryKey(vm);
 			}
-			
-			Integer warningId=vm.getId();
-			
+
+			Integer warningId = vm.getId();
+
 			warningCaseLevelMapper.deleteByWarningId(warningId);
-			List<WarningCaseLevel> caseLevels=vm.getCaseLevels();
-			for(WarningCaseLevel caseLevel : caseLevels){
+			List<WarningCaseLevel> caseLevels = vm.getCaseLevels();
+			for (WarningCaseLevel caseLevel : caseLevels) {
 				caseLevel.setWarningId(vm.getId());
 				warningCaseLevelMapper.insert(caseLevel);
 			}
-			
+
 			warningCaseTypeMapper.deleteByWarningId(warningId);
-			List<WarningCaseType> caseTypes =vm.getCaseTypes();
-			for(WarningCaseType caseType : caseTypes){
+			List<WarningCaseType> caseTypes = vm.getCaseTypes();
+			for (WarningCaseType caseType : caseTypes) {
 				caseType.setWarningId(vm.getId());
-					warningCaseTypeMapper.insert(caseType);	
+				warningCaseTypeMapper.insert(caseType);
 			}
-			
-			List<WarningColor> colors=vm.getColors();
-			for(WarningColor color : colors){
+
+			List<WarningColor> colors = vm.getColors();
+			for (WarningColor color : colors) {
 				color.setWarningId(vm.getId());
-				if(color.getId()==0){
+				if (color.getId() == 0) {
 					warningColorMapper.insert(color);
-				}else
-				{
+				} else {
 					warningColorMapper.updateByPrimaryKey(color);
 				}
 			}
-			
-		}catch(Exception ex){
-			int x=100;
+
+		} catch (Exception ex) {
+			int x = 100;
 		}
-		
+
 	}
 
 	@Override
-	public List<WarningCfgVM> loadWarningCfgVMByOrgId(Map<String, Object> map) {
-		List<WarningCfgVM> ls=warningConfigMapper.loadWarningCfgVMByOrgId(map);
-		return ls;
+	public List<ColorWarningList> getWarningCfgList(Integer organId) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("organId", organId);
+		List<WarningCfgVM> ls = warningConfigMapper
+				.loadWarningCfgVMByOrgId(map);
+		
+		List<ColorWarningList> list = new ArrayList<ColorWarningList>();
+		for (WarningCfgVM wcg : ls) {
+			ColorWarningList cw = new ColorWarningList();
+			cw.setId(wcg.getId());
+			cw.setName(wcg.getName());
+
+			List<String> lels = new ArrayList<String>();
+			for(WarningCaseLevel s :wcg.getCaseLevels()){
+				lels.add(s.getCaseLevel().toString());
+			}
+			cw.setLevelList(lels);
+
+			List<String> colors = new ArrayList<String>();
+			for(WarningColor s :wcg.getColors()){
+				colors.add(s.getGe()+"");
+			}
+			cw.setColors(colors);
+
+			List<String> typecodes = new ArrayList<String>();
+			for(WarningCaseType s :wcg.getCaseTypes()){
+				typecodes.add(s.getCaseTypeCode());
+			}
+			cw.setLevelList(typecodes);
+		}
+		return list;
+	}
+	
+	
+	@Override
+	public List<WarningCfgVM> loadWarningCfgVMByOrgId(Integer organId) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("organId", organId);
+		List<WarningCfgVM> list = warningConfigMapper
+				.loadWarningCfgVMByOrgId(map); 
+		return list;
 	}
 
 	@Override
 	public int loadWarningCfgVMCountByOrgId(Map<String, Object> map) {
 		return warningConfigMapper.loadWarningCfgVMCountByOrgId(map);
-		
+
 	}
 
 	@Override
@@ -104,5 +144,5 @@ public class WarningCfgServiceImpl implements WarningCfgService{
 		// TODO Auto-generated method stub
 		return warningCaseTypeMapper.getObjectByWarningIdAndCaseCode(map);
 	}
-	
+
 }

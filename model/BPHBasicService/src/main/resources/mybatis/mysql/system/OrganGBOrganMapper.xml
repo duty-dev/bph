@@ -160,16 +160,30 @@
 
 
 
-	<select id="selectByOrganId" resultMap="BaseResultMap"
+	<resultMap id="BaseResultMap1" type="com.tianyi.bph.domain.system.OrganGbOrgan">
+		<id column="organ_id" property="organId" jdbcType="INTEGER" />
+		<id column="parent_id" property="parentId" jdbcType="INTEGER" />
+		<collection property="gbOrganIds" ofType="INTEGER" column="organ_id">
+			<result column="gb_organ_id" />
+		</collection>
+	</resultMap>
+	<select id="selectByOrganId" resultMap="BaseResultMap1"
 		parameterType="java.lang.String">
-		select organ_id,gb_organ_id from r_organ_gb_organ
+		select g.gb_organ_id ,g.organ_id,o.parent_id from r_organ_gb_organ g
+		left join t_organ o on g.organ_id= o.organ_id
 		<if test="path!=null">
-			where organ_id in ( select organ_id from t_organ where
-			path like
-			CONCAT(#{path,jdbcType=VARCHAR},'%') )
+			where o.path like CONCAT(#{path,jdbcType=VARCHAR},'%');
 		</if>
 	</select>
 
-
+	<select id="queryExistGbId" resultType="Integer"
+		parameterType="Integer">
+		select g.gb_organ_id from r_organ_gb_organ g
+		left join t_organ o on
+		g.organ_id= o.organ_id
+		<if test="path!=null">
+			where o.path like CONCAT(#{path,jdbcType=VARCHAR},'%');
+		</if>
+	</select>
 
 </mapper>

@@ -78,5 +78,7 @@ public interface DutyTypeService {
 	 */
 	List<DutyItemCountVM> loadDutyItemCount(Map<String, Object> map);
 	List<DutyType> loadDutyTypeByParentId(Integer pid);
+	List<DutyType> findByNameAndId(Map<String, Object> map);
+	List<DutyType> findByName(String typeName);
  
 }

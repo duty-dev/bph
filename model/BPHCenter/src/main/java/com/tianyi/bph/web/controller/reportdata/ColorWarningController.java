@@ -19,8 +19,7 @@ import com.tianyi.bph.common.PageReturn;
 import com.tianyi.bph.common.ReturnResult; 
 import com.tianyi.bph.domain.report.WarningCaseLevel;
 import com.tianyi.bph.domain.report.WarningCaseType;
-import com.tianyi.bph.domain.report.WarningColor;
-import com.tianyi.bph.domain.system.Organ;
+import com.tianyi.bph.domain.report.WarningColor; 
 import com.tianyi.bph.domain.system.User;  
 import com.tianyi.bph.query.report.WarningCfgVM;
 import com.tianyi.bph.service.report.WarningCfgService;
@@ -51,17 +50,11 @@ public class ColorWarningController {
 			if (organId == null) {
 				organId = user.getOrgId();
 			}
-			map.put("orgId", organId);
-			Organ organ = organService.getOrganByPrimaryKey(organId);
-			if (organ != null) {
-				if (organ.getParentId() > 0) {
-					map.put("orgParentId", organ.getParentId());
-				}
-			} 
+			map.put("orgId", organId); 
 			// map.put("pageSize", pageSize); 
 			int total = warningService.loadWarningCfgVMCountByOrgId(map);
 			List<WarningCfgVM> list = warningService
-					.loadWarningCfgVMByOrgId(map);
+					.loadWarningCfgVMByOrgId(organId);
 			return PageReturn.MESSAGE(MessageCode.STATUS_SUCESS,
 					MessageCode.SELECT_SUCCESS, total, list);
 		} catch (Exception ex) {

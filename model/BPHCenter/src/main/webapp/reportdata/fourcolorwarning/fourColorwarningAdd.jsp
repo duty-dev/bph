@@ -30,6 +30,7 @@ $(function() {
 var bph_warningAdd_pkg={};   
 var m_checkedNodes_code ="";
 var isPackage_complete = false;
+var rehod = /\D/ig;
 var WarningAddManage= {
 	loadalarmTypeList:function(){
 		$.ajax({
@@ -80,6 +81,7 @@ var WarningAddManage= {
 	},
 	saveWarningAction:function(){
 		WarningAddManage.packageData();
+		
 		if(isPackage_complete){
 			$.ajax({
 				url : "<%=basePath%>colorWarningWeb/saveWarningConfig.do",
@@ -129,8 +131,7 @@ var WarningAddManage= {
 		}
 		bph_warningAdd_pkg.name = caseName;
 		bph_warningAdd_pkg.share = false;
-		bph_warningAdd_pkg.colors = [];
-		var rehod = /\D/ig;
+		bph_warningAdd_pkg.colors = []; 
 		var redObj = {};
 		redObj.id = 0; 
 		redObj.warningId = 0;
@@ -142,22 +143,8 @@ var WarningAddManage= {
 								return;
 					}});  
 				return;
-		}
-		if(rehod.test(redGe)){
-			$("body").popjs({"title":"提示","content":"红色预警增幅值，只能为数字！","callback":function(){
-						$("#redvalue").focus();
-								return;
-					}});  
-				return;
-		}
+		} 
 		var xr=parseInt(redGe);
-		if(xr>100){
-			$("body").popjs({"title":"提示","content":"红色预警增幅值，不能超过100%！","callback":function(){
-						$("#redvalue").focus();
-								return;
-					}});  
-				return;
-		}
 		redObj.ge = redGe;
 		redObj.defaultColor = "red";
 		bph_warningAdd_pkg.colors.push(redObj);
@@ -173,22 +160,8 @@ var WarningAddManage= {
 								return;
 					}});  
 				return;
-		}
-		if(rehod.test(yellowGe)){
-			$("body").popjs({"title":"提示","content":"黄色预警增幅下限值，只能为数字！","callback":function(){
-						$("#yellowvaluea").focus();
-								return;
-					}});  
-				return;
-		}
-		var yra=parseInt(yellowGe);
-		if(yra>100){
-			$("body").popjs({"title":"提示","content":"黄色预警增幅下限值，不能超过100%！","callback":function(){
-						$("#yellowvaluea").focus();
-								return;
-					}});  
-				return;
-		}
+		} 
+		var yra=parseInt(yellowGe); 
 		yellowObj.ge = yellowGe;
 		
 		var yellowLt = $.trim($("#yellowvalueb").val());
@@ -198,36 +171,15 @@ var WarningAddManage= {
 								return;
 					}});  
 				return;
-		}
-		if(rehod.test(yellowLt)){
-			$("body").popjs({"title":"提示","content":"黄色预警增幅上限值，只能为数字！","callback":function(){
-						$("#yellowvalueb").focus();
-								return;
-					}});  
-				return;
-		}
-		var yrb=parseInt(yellowLt);
-		if(yrb>100){
-			$("body").popjs({"title":"提示","content":"黄色预警增幅上限值，不能超过100%！","callback":function(){
-						$("#yellowvalueb").focus();
-								return;
-					}});  
-				return;
-		}
+		} 
+		var yrb=parseInt(yellowLt); 
 		if(yra > yrb || yrb == yra){
 			$("body").popjs({"title":"提示","content":"黄色预警下限值，不能超过上限值！","callback":function(){
 						$("#yellowvalueb").focus();
 								return;
 					}});  
 				return; 
-		}
-		if(yrb > xr || yrb == xr){
-			$("body").popjs({"title":"提示","content":"黄色预警上限值，不能超过红色预警增幅值！","callback":function(){
-						$("#yellowvalueb").focus();
-								return;
-					}});  
-				return; 
-		}
+		} 
 		
 		yellowObj.lt = yellowLt;
 		yellowObj.defaultColor = "yellow";
@@ -243,22 +195,8 @@ var WarningAddManage= {
 								return;
 					}});  
 				return;
-		}
-		if(rehod.test(blueGe)){
-			$("body").popjs({"title":"提示","content":"蓝色预警增幅下限值，只能为数字！","callback":function(){
-						$("#bluevaluea").focus();
-								return;
-					}});  
-				return;
-		}
-		var bra=parseInt(blueGe);
-		if(bra>100){
-			$("body").popjs({"title":"提示","content":"蓝色预警增幅下限值，不能超过100%！","callback":function(){
-						$("#bluevaluea").focus();
-								return;
-					}});  
-				return;
-		}
+		} 
+		var bra=parseInt(blueGe); 
 		blueObj.ge = blueGe;
 		
 		var blueLt = $.trim($("#bluevalueb").val());
@@ -268,22 +206,8 @@ var WarningAddManage= {
 								return;
 					}});  
 				return;
-		}
-		if(rehod.test(blueLt)){
-			$("body").popjs({"title":"提示","content":"蓝色预警增幅上限值，只能为数字！","callback":function(){
-						$("#bluevalueb").focus();
-								return;
-					}});  
-				return;
-		}
-		var brb=parseInt(blueLt);
-		if(brb>100){
-			$("body").popjs({"title":"提示","content":"蓝色预警增幅上限值，不能超过100%！","callback":function(){
-						$("#bluevalueb").focus();
-								return;
-					}});  
-				return;
-		}
+		} 
+		var brb=parseInt(blueLt); 
 		
 		if(bra > brb || bra == brb){
 			$("body").popjs({"title":"提示","content":"蓝色预警下限值，不能超过上限值！","callback":function(){
@@ -291,14 +215,7 @@ var WarningAddManage= {
 								return;
 					}});  
 				return; 
-		}
-		if(brb > yra || brb == yra){
-			$("body").popjs({"title":"提示","content":"蓝色预警上限值，不能超过黄色预警下限值！","callback":function(){
-						$("#yellowvalueb").focus();
-								return;
-					}});  
-				return; 
-		}
+		} 
 		
 		
 		blueObj.lt = blueLt;
@@ -315,31 +232,8 @@ var WarningAddManage= {
 								return;
 					}});  
 				return;
-		}
-		if(rehod.test(greenGe)){
-			$("body").popjs({"title":"提示","content":"绿色预警增幅值，只能为数字！","callback":function(){
-						$("#greenvalue").focus();
-								return;
-					}});  
-				return;
-		}
-		var gr=parseInt(greenGe);
-		if(gr>100){
-			$("body").popjs({"title":"提示","content":"绿色预警增幅值，不能超过100%！","callback":function(){
-						$("#greenvalue").focus();
-								return;
-					}});  
-				return;
-		}
-		
-		
-		if(gr > bra || gr == bra){
-			$("body").popjs({"title":"提示","content":"绿色预警增幅值，不能超过蓝色色预警下限值！","callback":function(){
-						$("#yellowvalueb").focus();
-								return;
-					}});  
-				return; 
-		}
+		} 
+		var gr=parseInt(greenGe); 
 		
 		greenObj.ge = greenGe;
 		greenObj.defaultColor = "green";
@@ -381,6 +275,70 @@ var WarningAddManage= {
 	cancelAdd:function(){
 		window.parent.window.parent.WarningManage.onClose();
 		window.parent.$("#dialog").tyWindow.close();
+	},
+	onFillinYellowB:function(){
+		var redGe = $.trim($("#redvalue").val());
+		 if(redGe.length>0){
+			if(rehod.test(redGe)){
+				$("body").popjs({"title":"提示","content":"红色预警增幅值，只能为数字！","callback":function(){
+							$("#redvalue").focus();
+								return;
+						}});  
+					return;
+			}
+			var xr=parseInt(redGe);
+			if(xr>100){
+				$("body").popjs({"title":"提示","content":"红色预警增幅值，不能超过100%！","callback":function(){
+							$("#redvalue").focus();
+								return;
+						}});  
+					return;
+			} 
+			$("#yellowvalueb").val(redGe);
+		} 
+	},
+	onFillinblueB:function(){
+		var yellowGe = $.trim($("#yellowvaluea").val());
+		if(yellowGe.length > 0){ 
+			if(rehod.test(yellowGe)){
+				$("body").popjs({"title":"提示","content":"黄色预警增幅下限值，只能为数字！","callback":function(){
+						$("#yellowvaluea").focus();
+								return;
+					}});  
+				return;
+			}
+			var yra=parseInt(yellowGe);
+			if(yra>100){
+				$("body").popjs({"title":"提示","content":"黄色预警增幅下限值，不能超过100%！","callback":function(){
+						$("#yellowvaluea").focus();
+								return;
+					}});  
+				return;
+			}
+			
+			$("#bluevalueb").val(yellowGe);
+		}
+	},
+	onFillingreen:function(){
+		var blueGe = $.trim($("#bluevaluea").val());
+		if(blueGe.length > 0){ 
+			if(rehod.test(blueGe)){
+				$("body").popjs({"title":"提示","content":"蓝色预警增幅下限值，只能为数字！","callback":function(){
+						$("#bluevaluea").focus();
+								return;
+					}});  
+				return;
+			}
+			var bra=parseInt(blueGe);
+			if(bra>100){
+				$("body").popjs({"title":"提示","content":"蓝色预警增幅下限值，不能超过100%！","callback":function(){
+						$("#bluevaluea").focus();
+								return;
+					}});  
+				return;
+			}
+			$("#greenvalue").val(blueGe);
+		}
 	}
 };
 </script>
@@ -447,7 +405,7 @@ var WarningAddManage= {
 								<label>≥</label>
 							</td>
 						 	<td colspan="3">
-								<input type="text" style="width:20px"  name="redvalue" id="redvalue" required="required" />%
+								<input type="text" style="width:20px" onblur="WarningAddManage.onFillinYellowB();" name="redvalue" id="redvalue" required="required" />%
 							</td> 
 						</tr>
 						<tr> 
@@ -464,7 +422,7 @@ var WarningAddManage= {
 								<label>≥</label>
 							</td>
 							<td>
-								<input type="text"  style="width:20px"  name="yellowvaluea" id="yellowvaluea" required="required" />%
+								<input type="text"  style="width:20px"  onblur="WarningAddManage.onFillinblueB();"   name="yellowvaluea" id="yellowvaluea" required="required" />%
 							</td>
 							<td>
 								<label style="margin-left:20px">,增幅 </label>
@@ -473,7 +431,7 @@ var WarningAddManage= {
 								<label style="margin-left:20px"><</label>
 							</td> 
 							<td>
-								<input type="text"  style="width:20px"   name="yellowvalueb" id="yellowvalueb" required="required" />%
+								<input type="text"  style="width:20px" readonly="readonly"  name="yellowvalueb" id="yellowvalueb" required="required" />%
 							</td>
 						</tr>
 						<tr>
@@ -490,7 +448,7 @@ var WarningAddManage= {
 								<label>≥</label>
 							</td>
 							<td>
-								<input type="text"  style="width:20px"   name="bluevaluea" id="bluevaluea" required="required" />%
+								<input type="text"  style="width:20px"   onblur="WarningAddManage.onFillingreen();"    name="bluevaluea" id="bluevaluea" required="required" />%
 							</td>
 							<td>
 								<label style="margin-left:20px">,增幅 </label>
@@ -499,7 +457,7 @@ var WarningAddManage= {
 								<label style="margin-left:20px">< </label>
 							</td> 
 							<td>
-								<input type="text"  style="width:20px"   name="bluevalueb" id="bluevalueb" required="required" />%
+								<input type="text"  style="width:20px"   readonly="readonly"  name="bluevalueb" id="bluevalueb" required="required" />%
 							</td>
 						</tr>
 							<td> 
@@ -515,7 +473,7 @@ var WarningAddManage= {
 								<label><</label>
 							</td>
 							<td>
-								<input type="text"  style="width:20px"  name="greenvalue" id="greenvalue" required="required" />%
+								<input type="text"  style="width:20px"   readonly="readonly"   name="greenvalue" id="greenvalue" required="required" />%
 							</td> 
 						<tr>
 							<td colspan="7">

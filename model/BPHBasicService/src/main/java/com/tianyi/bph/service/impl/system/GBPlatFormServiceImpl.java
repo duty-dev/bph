@@ -1,13 +1,16 @@
 package com.tianyi.bph.service.impl.system;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.googlecode.ehcache.annotations.Cacheable;
+import com.googlecode.ehcache.annotations.TriggersRemove;
 import com.tianyi.bph.dao.system.GBDeviceMapper;
 import com.tianyi.bph.dao.system.GBOrganMapper;
 import com.tianyi.bph.dao.system.OrganDAO;
@@ -16,6 +19,7 @@ import com.tianyi.bph.domain.system.GBDevice;
 import com.tianyi.bph.domain.system.GBOrgan;
 import com.tianyi.bph.domain.system.Organ;
 import com.tianyi.bph.domain.system.OrganGBOrganKey;
+import com.tianyi.bph.domain.system.OrganGbOrgan;
 import com.tianyi.bph.exception.RestException;
 import com.tianyi.bph.query.system.GBDeviceExample;
 import com.tianyi.bph.query.system.GBOrganExample;
@@ -107,12 +111,37 @@ public class GBPlatFormServiceImpl implements GBPlatFormService {
 	}
 
 	@Override
-	public void addGBPermission(Integer organId, List<OrganGBOrganKey> list) {
+	@TriggersRemove(cacheName = cacheName, removeAll = true)
+	@Transactional(readOnly = false)
+	public void addGBPermission(Integer organId, List<Integer> list) {
+		List<Integer> deleteIds = new ArrayList<Integer>();
+
+		Organ organ = organDao.selectByPrimaryKey(organId);
+		if (organ == null) {
+			throw new RestException("机构不存在!");
+		}
+		deleteIds.add(organId);
+		while (organ.getParentId() != null) {
+			organ = organDao.selectByPrimaryKey(organ.getParentId());
+			if (organ != null) {
+				deleteIds.add(organ.getId());
+			}
+		}
+		// 重新授权
 		OrganGBOrganExample example = new OrganGBOrganExample();
-		example.createCriteria().andOrganIdEqualTo(organId);
+		example.createCriteria().andOrganIdIn(deleteIds);
 		organGBOrganMapper.deleteByExample(example);
-		for (OrganGBOrganKey key : list) {
-			organGBOrganMapper.insert(key);
+
+		// 机构作为上级 删除 下级中存在的授权机构
+		List<Integer> exist = organGBOrganMapper
+				.queryExistGbId(organ.getPath());
+		list.removeAll(exist);
+
+		for (Integer key : list) {
+			OrganGBOrganKey bean = new OrganGBOrganKey();
+			bean.setGbOrganId(key);
+			bean.setOrganId(organId);
+			organGBOrganMapper.insert(bean);
 		}
 	}
 
@@ -135,12 +164,15 @@ public class GBPlatFormServiceImpl implements GBPlatFormService {
 	final private static String cacheName = "GB_BASE_DATA";// 国标缓存对象名
 
 	@Override
-	public List<OrganGBOrganKey> queryOrganGBOrganKey(Integer organId) {
+	public OrganGbOrgan queryOrganGBOrganKey(Integer organId) {
 		Organ organ = organDao.selectByPrimaryKey(organId);
 		if (organ == null) {
 			throw new RestException("机构不存在!");
 		}
-		return organGBOrganMapper.selectByOrganId(organ.getPath());
+
+		List<OrganGbOrgan> list = organGBOrganMapper.selectByOrganId(organ
+				.getPath());
+		return new TreeGB(list).buildTree(organId);
 	}
 
 	@Override
@@ -157,6 +189,9 @@ public class GBPlatFormServiceImpl implements GBPlatFormService {
 	public List<GBOrgan> loadGbOrgan(Integer organId, Integer parentId) {
 		List<GBOrgan> list = organMapper.selectByGBOrganId(parentId);
 		if (!list.isEmpty()) {
+			if (parentId == null) {
+				list.get(0).setExpanded(true);
+			}
 			List<Integer> keys = organGBOrganMapper
 					.selectGBOrganIdByOrganId(organId);
 			if (!keys.isEmpty()) {
@@ -178,4 +213,51 @@ public class GBPlatFormServiceImpl implements GBPlatFormService {
 		example.createCriteria().andGbOrganIdEqualTo(gbOrganId);
 		return deviceMapper.selectByExample(example);
 	}
+
+	class TreeGB {
+		private Iterator<OrganGbOrgan> it;
+		final private List<OrganGbOrgan> nodes;
+
+		public TreeGB(List<OrganGbOrgan> nodes) {
+			this.nodes = nodes;
+		}
+
+		public OrganGbOrgan buildTree(Integer parentID) {
+			OrganGbOrgan parent = null;
+			it = nodes.iterator();
+			while (it.hasNext()) {
+				OrganGbOrgan node = it.next();
+				if (node.getOrganId() == parentID) {
+					parent = node;
+					it.remove();
+					build(node);
+				}
+			}
+			return parent;
+		}
+
+		private void build(OrganGbOrgan node) {
+			List<OrganGbOrgan> children = getChildren(node);
+			if (children != null && !children.isEmpty()) {
+				for (OrganGbOrgan child : children) {
+					build(child);
+				}
+			}
+		}
+
+		private List<OrganGbOrgan> getChildren(OrganGbOrgan node) {
+			Integer id = node.getOrganId();
+			it = nodes.iterator();
+			while (it.hasNext()) {
+				OrganGbOrgan child = it.next();
+				if (id.equals(child.getParentId())) {
+					node.getGbOrganIds().removeAll(child.getGbOrganIds());
+					node.addChild(child);
+					it.remove();
+				}
+			}
+			return node.getItems();
+		}
+	}
+
 }

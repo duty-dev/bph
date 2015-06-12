@@ -114,15 +114,12 @@ public class GBPlatFormController {
 			@RequestParam(value = "gbOrganIds", required = true) String GBOrganIds) {
 		try {
 			String[] ids = GBOrganIds.split(",");
-			List<OrganGBOrganKey> list = null;
+			List<Integer> list = null;
 			if (ids.length > 0) {
-				list = new ArrayList<OrganGBOrganKey>(ids.length);
+				list = new ArrayList<Integer>(ids.length);
 				OrganGBOrganKey key = null;
 				for (String id : ids) {
-					key = new OrganGBOrganKey();
-					key.setOrganId(organId);
-					key.setGbOrganId(Integer.valueOf(id));
-					list.add(key);
+					list.add(Integer.valueOf(id));
 				}
 				service.addGBPermission(organId, list);
 			}
@@ -214,4 +211,18 @@ public class GBPlatFormController {
 		return JSONArray.fromObject(list).toString();
 	}
 
+	
+	
+	@RequestMapping({ "/toMQ.action", "/toMQ.do" })
+	public ModelAndView toMQ(HttpServletRequest request,
+			HttpSession session,
+			@RequestParam(value = "organId", required = false) Integer organId) {
+		ModelAndView view = new ModelAndView("/base/gb/rabbit.jsp");
+		if (organId != null && organId != 0) {
+			view.addObject("organId", organId);
+		}
+		view.addObject("num", SystemConfig.BASE_MANAGER);
+		return view;
+	}
+	
 }

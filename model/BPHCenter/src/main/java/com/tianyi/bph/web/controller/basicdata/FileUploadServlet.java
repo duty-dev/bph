@@ -22,8 +22,11 @@ import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload; 
+import org.springframework.web.context.ContextLoader;
 
+import com.alibaba.druid.pool.DruidDataSource;
 import com.tianyi.bph.domain.basicdata.Icons;
+import com.tianyi.bph.domain.system.IconGroup;
 
 @SuppressWarnings("serial") 
 public class FileUploadServlet extends HttpServlet {
@@ -34,15 +37,25 @@ public class FileUploadServlet extends HttpServlet {
 		super.init(config);
 
 	}
+	private final com.alibaba.druid.pool.DruidDataSource dt = ContextLoader
+			.getCurrentWebApplicationContext().getBean(DruidDataSource.class);
+	// private Connection conn = null;
+	private Connection conn = null;
 
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		Connection conn = null;
 
 		PreparedStatement ps = null;
 		int iconId = 0;
+		Integer icomTemp = 0;
+		String nomalUrl = null;
+	    String selectedUrl = null;
+	    String intoEnclosureUrl = null;
+	    String dispatchUrl = null;
+	    String arriveUrl = null;
+	    
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 		factory.setSizeThreshold(4 * 1024);
 		ServletFileUpload upload = new ServletFileUpload(factory);
@@ -54,87 +67,102 @@ public class FileUploadServlet extends HttpServlet {
 			// 请求数据的size超出了规定的大小.
 			e.printStackTrace();
 			request.setAttribute("uploadError", "请求数据的size超出了规定的大小");
-			request.getRequestDispatcher("/basicdata/icons/iconsAdd.jsp?optType=0").forward(request,
+			request.getRequestDispatcher("/admin/icons/iconsAdd.jsp?optType=0").forward(request,
 					response);
 			return;
 		} catch (FileUploadBase.InvalidContentTypeException e) {
 			// 无效的请求类型,即请求类型enctype != "multipart/form-data"
 			request.setAttribute("uploadError",
 					"请求类型enctype != multipart/form-data");
-			request.getRequestDispatcher("/basicdata/icons/iconsAdd.jsp?optType=1").forward(request,
+			request.getRequestDispatcher("/admin/icons/iconsAdd.jsp?optType=1").forward(request,
 					response);
 			return;
 		} catch (FileUploadException e) {
 			// 如果都不是以上子异常,则抛出此总的异常,出现此异常原因无法说明.
 			request.setAttribute("uploadError", "上传过程异常，导致其原因可能是磁盘已满或者其它原因");
-			request.getRequestDispatcher("/basicdata/icons/iconsAdd.jsp?optType=2").forward(request,
+			request.getRequestDispatcher("/admin/icons/iconsAdd.jsp?optType=2").forward(request,
 					response);
 			return;
 		}
 		if (itemList != null) {
 			Iterator it = itemList.iterator();
-			Icons icons = new Icons();
+			IconGroup iconGroup = new IconGroup();
 			while (it.hasNext()) {
 				FileItem item = (FileItem) it.next();
 				if (item.isFormField()) {
 					// 非文件流
 					String value = item.getString();
-					value = new String(value.getBytes("ISO-8859-1"), "UTF-8");
+					//value = new String(value.getBytes("ISO-8859-1"), "UTF-8");
 
-					if (item.getFieldName().equals("iconsType")) {
+					if (item.getFieldName().equals("iconType")) {
 						if (value.isEmpty() || value.equals("")
 								|| value.equals("0")) {
 							request.setAttribute("uploadError", "请选择图片类型");
 							request.getRequestDispatcher
 
-							("/basicdata/icons/iconsAdd.jsp?optType=3").forward(request, response);
+							("/admin/icons/iconsAdd.jsp?optType=3").forward(request, response);
 							return;
 						} else {
-							icons.setTypeId(Integer.parseInt(value));
+							iconGroup.setIconType(Integer.parseInt(value));
 						}
 					}
 
-					if (item.getFieldName().equals("iconsName")) {
-						if (value.isEmpty() || value.equals("")
-								|| value.equals("0")) {
+					if (item.getFieldName().equals("groupName")) {
+						if (value.isEmpty() || value.equals("")) {
 							request.setAttribute("uploadError", "请输入图标名称");
 							request.getRequestDispatcher
 
-							("/basicdata/icons/iconsAdd.jsp?optType=4").forward(request, response);
+							("/admin/icons/iconsAdd.jsp?optType=4").forward(request, response);
 							return;
 						} else {
-							icons.setName(value);
+							iconGroup.setGroupName(value);
 						}
 					}
 
-					icons.setSyncState(true);
-					icons.setPlatformId(1);
-
-					if (item.getFieldName().equals("iconsId")) {
-						if (value.equals("0")) {
-							icons.setId(0);
-						} else {
-							icons.setId(Integer.parseInt(value));
-						}
-					}
+//					if (item.getFieldName().equals("iconsId")) {
+//						if (value.equals("0")) {
+//							icons.setId(0);
+//						} else {
+//							icons.setId(Integer.parseInt(value));
+//						}
+//					}
 					// System.out.println(value);
 					// System.out.println(value);
 				} else {
 					String uploadPath = request.getRealPath("uploadIcon");
 					String totalName = item.getName();
-					String name = "temp";
+					System.out.println("totalName="+totalName);
 					if (totalName != "") {
-						int index = totalName.lastIndexOf("\\");
-						name = totalName.substring(index + 1);
-						name = new String(name.getBytes("ISO-8859-1"), "UTF-8");
-
-						// System.out.println(name);
+//						int index = totalName.lastIndexOf("\\");
+//						name = totalName.substring(index + 1);
+//						name = new String(name.getBytes("ISO-8859-1"), "UTF-8");	
+						if(icomTemp == 0){
+							nomalUrl = totalName;
+							System.out.println(nomalUrl);
+						}
+						if(icomTemp == 1){
+							selectedUrl = totalName;
+							System.out.println(selectedUrl);
+						}
+						if(icomTemp == 2){
+							intoEnclosureUrl = totalName;
+							System.out.println(intoEnclosureUrl);
+						}
+						if(icomTemp == 3){
+							dispatchUrl = totalName;
+							System.out.println(dispatchUrl);
+						}
+						if(icomTemp == 4){
+							arriveUrl = totalName;
+							System.out.println(arriveUrl);
+						}
 					} else {
-						name = "temp";
+						totalName = "temp";
 					}
 
-					String path = uploadPath + "/" + name; 
-					String sql = "insert into t_icon (type_id,name,icon_url,sync_state, platform_id) values (?,?,?,?,?)";	
+					String path = uploadPath + "/" + totalName; 
+					//String sql = "insert into t_icon (type_id,name,icon_url,sync_state, platform_id) values (?,?,?,?,?)";	
+					
 					try {
 						item.write(new File(path));
 						BufferedImage bi = ImageIO.read(new File(path));
@@ -142,36 +170,17 @@ public class FileUploadServlet extends HttpServlet {
 							request.setAttribute("uploadError", "上传文件格式出错，不是png格式的图片文件，请重新选择文件上传");
 							request.getRequestDispatcher
 
-							("/basicdata/icons/iconsAdd.jsp?optType=5").forward(request, response);
+							("/admin/icons/iconsAdd.jsp?optType=5").forward(request, response);
 							return;
 						}else{
 
-							List<String> s = new ArrayList<String>();
-							s.add("zhangsan");
-							s.add("zhangsan");
-							s.add("zhangsan");
-							s.add("zhangsan");
+//							List<String> s = new ArrayList<String>();
+//							s.add("zhangsan");
+//							s.add("zhangsan");
+//							s.add("zhangsan");
+//							s.add("zhangsan");
 							request.setAttribute("uploadError", "图片上传成功"); 
-							
-							try {
-								conn = DBClassMysql.getMysql(); 
-								ps = conn.prepareStatement(sql);
-								ps.setInt(1, icons.getTypeId());
-								ps.setString(2, icons.getName());
-								ps.setString(3, "uploadIcon/" + name);
-								ps.setBoolean(4, true);
-								ps.setInt(5, 1);
-
-								iconId = ps.executeUpdate();
-							} catch (SQLException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-								request.setAttribute("uploadError", "写入数据库出错");
-								request.getRequestDispatcher
-
-								("/basicdata/icons/iconsAdd.jsp?optType=5").forward(request, response);
-								return;
-							}
+							icomTemp = icomTemp+1;	
 						}
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
@@ -179,39 +188,46 @@ public class FileUploadServlet extends HttpServlet {
 						request.setAttribute("uploadError", "写入磁盘错误");
 						request.getRequestDispatcher
 
-						("/basicdata/icons/iconsAdd.jsp?optType=5").forward(request, response);
+						("/admin/icons/iconsAdd.jsp?optType=5").forward(request, response);
 						return;
 					}	
 				}
 			}
+			try {
+				System.out.println("");
+				String sql = "insert into t_icon_group ( GROUP_ID, GROUP_NAME, ICON_TYPE, NOMAL_URL, SELECTED_URL, INTO_ENCLOSURE_URL, DISPATCH_URL, ARRIVE_URL) values (?,?,?,?,?,?,?,?)";	
+				conn = dt.getConnection();
+				ps = conn.prepareStatement(sql);
+				ps.setInt(1, 0);
+				ps.setString(2, iconGroup.getGroupName());
+				ps.setInt(3, iconGroup.getIconType());
+				ps.setString(4, "uploadIcon/" + nomalUrl);
+				ps.setString(5, "uploadIcon/" + selectedUrl);
+				ps.setString(6, "uploadIcon/" + intoEnclosureUrl);
+				ps.setString(7, "uploadIcon/" + dispatchUrl);
+				ps.setString(8, "uploadIcon/" + arriveUrl);
+				iconId = ps.executeUpdate();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				request.setAttribute("uploadError", "写入数据库出错");
+				request.getRequestDispatcher
+
+				("/admin/icons/iconsAdd.jsp?optType=5").forward(request, response);
+				return;
+			}
+			if (dt != null) {
+				dt.discardConnection(conn);
+			}
 		} else {
 			request.setAttribute("uploadError", "请选择要上传的图标！");
-			request.getRequestDispatcher("/basicdata/icons/iconsAdd.jsp?optType=6").forward(request,
+			request.getRequestDispatcher("/admin/icons/iconsAdd.jsp?optType=6").forward(request,
 					response);
 			return;
 		} 
-		request.getRequestDispatcher("/basicdata/icons/iconsAdd.jsp").forward(request,
+		request.getRequestDispatcher("/admin/icons/iconsAdd.jsp").forward(request,
 				response);
 	}
-//	public void save(final Icons icons,final String name ) {
-//		String sql = "insert into t_icon (type_id,name,icon_url,sync_state, platform_id) values (?,?,?,?,?)";  
-//		// 插入日志信息
-//		try {
-//			jdbcTemplate.update(sql, new PreparedStatementSetter() {
-//				public void setValues(PreparedStatement ps) throws SQLException { 
-//					ps.setInt(1, icons.getTypeId());
-//					ps.setString(2, icons.getName());
-//					ps.setString(3, "uploadIcon/" + name);
-//					ps.setBoolean(4, true);
-//					ps.setInt(5, 1);
-//				}
-//			});
-//		} catch (UncategorizedSQLException e) {
-//			SQLException sqle = e.getSQLException();
-//			String tableNotExist = "Table has no partition for value"; 
-//				throw e; 
-//		}
-//	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)

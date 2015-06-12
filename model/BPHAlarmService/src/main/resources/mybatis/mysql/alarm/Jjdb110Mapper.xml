@@ -968,7 +968,7 @@
 	<select id="getJjdbListByQuery" resultMap="resultMap"
 		parameterType="com.tianyi.bph.query.alarm.JJDBQuery">
 		select jj.JJDBH, jj.AJZT, jj.BJDH, jj.SFDZ, jj.BJDHYHXM, jj.BJFSBH,jj.CASE_LEVEL,jj.GXDWBH,
-		jj.BJNR,jj.BJSJ,jj.BJLB,jj.BJLX,jj.MARK,atb.TYPE_NAME as BJLBMC,atX.TYPE_NAME as BJLXMC
+		jj.BJNR,jj.BJSJ,jj.BJLB,jj.BJLX,jj.MARK,atb.TYPE_NAME as BJLBMC,atx.TYPE_NAME as BJLXMC
 		from b_jjdb jj
 		left join b_alarm_type atb on jj.BJLB = atb.TYPE_CODE
 		left join b_alarm_type atx on jj.BJLX = atx.TYPE_CODE
@@ -1026,6 +1026,23 @@
 		</if>
 		<if test="keyWord != null">
 			AND jj.BJNR LIKE CONCAT ('%',#{keyWord,jdbcType=VARCHAR},'%' )
+		</if>
+		order by jj.BJSJ desc
+	</select>
+	
+	<select id="getJjdbListMixed" resultMap="resultMap"
+		parameterType="com.tianyi.bph.query.alarm.JJDBQuery">
+		select jj.JJDBH, jj.AJZT, jj.BJDH, jj.SFDZ, jj.BJDHYHXM, jj.BJFSBH,jj.CASE_LEVEL,jj.GXDWBH,
+		jj.BJNR,jj.BJSJ,jj.BJLB,jj.BJLX,jj.MARK,atb.TYPE_NAME as BJLBMC,atx.TYPE_NAME as BJLXMC
+		from b_jjdb jj
+		left join b_alarm_type atb on jj.BJLB = atb.TYPE_CODE
+		left join b_alarm_type atx on jj.BJLX = atx.TYPE_CODE
+		where 1=1 
+		<if test="keyWord != null">
+			AND jj.BJNR LIKE CONCAT ('%',#{keyWord,jdbcType=VARCHAR},'%' )
+			OR jj.BJDH LIKE CONCAT ('%',#{keyWord,jdbcType=VARCHAR},'%' )
+			OR JJDBH LIKE CONCAT ('%',#{keyWord,jdbcType=VARCHAR},'%' )
+			OR jj.SFDZ LIKE CONCAT ('%',#{keyWord,jdbcType=VARCHAR},'%' )
 		</if>
 		order by jj.BJSJ desc
 	</select>

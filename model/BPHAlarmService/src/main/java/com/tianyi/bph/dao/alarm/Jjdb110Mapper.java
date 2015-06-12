@@ -28,6 +28,7 @@ public interface Jjdb110Mapper {
 	int updateByPrimaryKeySelective(Jjdb110 record);
 
 	int updateByPrimaryKey(Jjdb110 record);
-	 void updateJjdbInfo(Jjdb110 Jjdb110);
-	 List<JJDBView> getJjdbListByQuery(JJDBQuery JjdbQuery);
+	void updateJjdbInfo(Jjdb110 Jjdb110);
+	List<JJDBView> getJjdbListByQuery(JJDBQuery JjdbQuery);
+	List<JJDBView> getJjdbListMixed(JJDBQuery JjdbQuery);
 }

@@ -54,7 +54,9 @@ public class ExcelImportServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-  
+
+		Connection conn = null;
+		PreparedStatement ps = null;
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 		factory.setSizeThreshold(4 * 1024);
 		ServletFileUpload upload = new ServletFileUpload(factory);

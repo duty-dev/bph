@@ -556,7 +556,7 @@ public class CardPointController {
 	@ResponseBody
 	public ReturnResult getCameraList(@RequestParam(value="organId",required=true)Integer organId){
 		
-		List<GBDevice> cameraList = gBPlatFormService.getGBDeviceListByGBOrganId(organId);
+		List<GBDevice> cameraList = gBPlatFormService.getGBDeviceListByOrganId(organId);
 		
 		return ReturnResult.MESSAGE(200,"获取成功",cameraList);
 	}

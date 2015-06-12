@@ -255,7 +255,7 @@
   			when	4		then gpst.name
   			when	100	then	dt.name
   			when	101	then	"班次"
-  			when	999	then	"自定义"
+  			when	999	then	"自定义编组"
   		end as item_inner_type_name,		
   		dpt.id					as target_id,
   		dpt.duty_id			as target_duty_id,

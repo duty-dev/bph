@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.tianyi.bph.common.MessageCode;
 import com.tianyi.bph.common.ReturnResult;
 import com.tianyi.bph.domain.duty.DutyType;
+import com.tianyi.bph.query.basicdata.VehicleVM;
 import com.tianyi.bph.query.duty.DutyTypeListVM;
 import com.tianyi.bph.query.duty.DutyTypePropertyVM;
 import com.tianyi.bph.query.duty.DutyTypeVM;
@@ -205,6 +206,45 @@ public class DutyTypeController {
 			dutyTypeService.updateUseStateByFullPath(did, dIsUsed);
 			return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,MessageCode.SELECT_SUCCESS, 0,
 					null);
+		} catch (Exception ex) {
+			return ReturnResult.MESSAGE(MessageCode.STATUS_FAIL,
+					MessageCode.SELECT_SUCCESS, 0, null);
+		}
+	}
+	/**
+	 * 修改勤务类型的启用与锁定状态
+	 * 
+	 * @param id
+	 * @param isUsed
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/isExistDutyType.do")
+	public @ResponseBody
+	ReturnResult isExistDutyType(
+			@RequestParam(value = "id", required = false) Integer id,
+			@RequestParam(value = "typeName", required = false) String typeName,
+			@RequestParam(value = "optType", required = false) Integer optType,
+			HttpServletRequest request) {
+		try{ 
+			List<DutyType> dType = new ArrayList<DutyType>();  
+			
+			if (optType > 0) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("typeName", typeName);
+				map.put("id", id);
+				dType = dutyTypeService.findByNameAndId(map);
+			}else{
+				dType = dutyTypeService.findByName(typeName);
+			}
+			
+			if (dType.size() > 0) {
+				return ReturnResult.MESSAGE(MessageCode.STATUS_FAIL,"" ,
+						0, null);
+			} else {
+				return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS, "UnExits",
+						0, null);
+			}
 		} catch (Exception ex) {
 			return ReturnResult.MESSAGE(MessageCode.STATUS_FAIL,
 					MessageCode.SELECT_SUCCESS, 0, null);

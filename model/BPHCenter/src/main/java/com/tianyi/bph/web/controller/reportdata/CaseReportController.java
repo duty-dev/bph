@@ -1,5 +1,5 @@
 package com.tianyi.bph.web.controller.reportdata;
-
+ 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,15 +21,17 @@ import com.tianyi.bph.domain.report.CaseHourAGGR;
 import com.tianyi.bph.domain.report.CaseOrgAGGR;
 import com.tianyi.bph.domain.report.CasePeriodAGGR;
 import com.tianyi.bph.domain.report.CaseReportResult;
-import com.tianyi.bph.domain.report.CaseTypeAGGR;
+import com.tianyi.bph.domain.report.CaseTypeAGGR; 
 import com.tianyi.bph.domain.report.ReportPeriod;
 
-import com.tianyi.bph.domain.report.WarningOrgAGGR;
+import com.tianyi.bph.domain.report.WarningOrgAGGR; 
 
 import com.tianyi.bph.domain.system.Organ;
 import com.tianyi.bph.domain.system.User;
-import com.tianyi.bph.query.report.QueryCondition;
+import com.tianyi.bph.query.report.ColorWarningResultList;
+import com.tianyi.bph.query.report.QueryCondition; 
 import com.tianyi.bph.service.report.CaseReportService;
+import com.tianyi.bph.service.report.WarningCfgService;
 import com.tianyi.bph.service.system.OrganService;
 
 @Controller
@@ -40,6 +42,8 @@ public class CaseReportController {
 	private OrganService organService;
 	@Autowired
 	private CaseReportService caseReportService;
+	@Autowired
+	WarningCfgService warningService;
 
 	@RequestMapping(value = "/loadCaseTypeReport.do")
 	public @ResponseBody
@@ -65,11 +69,11 @@ public class CaseReportController {
 			if (organId == 0) {
 				organId = user.getOrgId();
 			}
-			Organ organ = organService.getOrganByPrimaryKey(organId);
+			Organ organ = organService.getOrganByPrimaryKey(organId); 
 			map.put("orgFullPath", organ.getPath());  
 			 
 			//当期
-			CaseReportResult<CaseTypeAGGR> cResult=new CaseReportResult<CaseTypeAGGR>(); 
+			CaseReportResult<CaseTypeAGGR> cResult=new CaseReportResult<CaseTypeAGGR>();  
 			// 查询时间
 			// 查询时间方式，1、月 2、日
 			String startDate = queryCondition.getStartDate();
@@ -87,14 +91,11 @@ public class CaseReportController {
 			// 时间区间 时间节点
 			List<Integer> hours = queryCondition.getCaseTimaSpan();
 			map.put("levels", levels);
-			map.put("hours", hours);
-			 
-			// 当期 
-  
+			map.put("hours", hours); 
 			map.put("beginYMD", rp.getBeginYmd());
 			map.put("endYMD", rp.getEndYmd());
 			ls = caseReportService.loadCaseTypeReport(map);
-			ls = getSelectCaseTypeList(ls,caseTypes);
+			ls = getSelectCaseTypeList(ls, caseTypes);
 			cResult.setBeginYmd(rp.getBeginYmd());
 			cResult.setEndYmd(rp.getEndYmd());
 			cResult.setData(ls);
@@ -105,23 +106,23 @@ public class CaseReportController {
 			map.put("beginYMD", rp.getYOYBeginYmd());
 			map.put("endYMD", rp.getYOYEndYmd());
 			ls = caseReportService.loadCaseTypeReport(map);
-			ls = getSelectCaseTypeList(ls,caseTypes);
+			ls = getSelectCaseTypeList(ls, caseTypes);
 			yResult.setBeginYmd(rp.getYOYBeginYmd());
 			yResult.setEndYmd(rp.getYOYEndYmd());
 			yResult.setData(ls);
-			results.add(yResult); 
+			results.add(yResult);
 
 			// 环比
 			CaseReportResult<CaseTypeAGGR> mResult = new CaseReportResult<CaseTypeAGGR>();
 			map.put("beginYMD", rp.getMOMBeginYmd());
 			map.put("endYMD", rp.getMOMEndYmd());
 			ls = caseReportService.loadCaseTypeReport(map);
-			ls = getSelectCaseTypeList(ls,caseTypes);
+			ls = getSelectCaseTypeList(ls, caseTypes);
 			mResult.setBeginYmd(rp.getMOMBeginYmd());
-			mResult.setEndYmd(rp.getMOMEndYmd());
-			mResult.setData(ls); 
-			results.add(mResult);  
-			
+			mResult.setEndYmd(rp.getMOMEndYmd()); 
+			mResult.setData(ls);
+			results.add(mResult);
+ 
 			return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
 					MessageCode.SELECT_SUCCESS, 0, results);
 
@@ -135,13 +136,13 @@ public class CaseReportController {
 			List<String> caseTypes) {
 		// TODO Auto-generated method stub
 		List<CaseTypeAGGR> list = new ArrayList<CaseTypeAGGR>();
-		for(String code :caseTypes){
-			for(CaseTypeAGGR cta:ls){
-				if(cta.getTypeCode().equals(code)){
+		for (String code : caseTypes) {
+			for (CaseTypeAGGR cta : ls) {
+				if (cta.getTypeCode().equals(code)) {
 					list.add(cta);
 				}
-			}
-		} 
+			} 
+		}
 		return list; 
 	}
 
@@ -216,7 +217,7 @@ public class CaseReportController {
 			yResult.setEndYmd(rp.getYOYEndYmd());
 			
 			yResult.setData(ls);
-			results.add(yResult); 
+			results.add(yResult);
 
 			// 环比
 			CaseReportResult<CasePeriodAGGR> mResult = new CaseReportResult<CasePeriodAGGR>();
@@ -227,7 +228,7 @@ public class CaseReportController {
 			mResult.setEndYmd(rp.getMOMEndYmd());
 			
 			mResult.setData(ls);
-			results.add(mResult); 
+			results.add(mResult);
 
 			return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
 					MessageCode.SELECT_SUCCESS, 0, results);
@@ -305,7 +306,7 @@ public class CaseReportController {
 			yResult.setBeginYmd(rp.getYOYBeginYmd());
 			yResult.setEndYmd(rp.getYOYEndYmd());
 			yResult.setData(ls);
-			results.add(yResult); 
+			results.add(yResult);
 
 			// 环比
 			CaseReportResult<CaseHourAGGR> mResult = new CaseReportResult<CaseHourAGGR>();
@@ -313,10 +314,10 @@ public class CaseReportController {
 			map.put("endYMD", rp.getMOMEndYmd());
 			ls = caseReportService.loadCaseHourReport(map);
 			mResult.setBeginYmd(rp.getMOMBeginYmd());
-			mResult.setEndYmd(rp.getMOMEndYmd());
+			mResult.setEndYmd(rp.getMOMEndYmd()); 
 			mResult.setData(ls); 
 			results.add(mResult);
-			 
+
 			return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
 					MessageCode.SELECT_SUCCESS, 0, results);
 
@@ -414,9 +415,9 @@ public class CaseReportController {
 	@RequestMapping(value = "/loadWarningReport.do")
 	public @ResponseBody
 	ReturnResult loadWarningReport(
-			@RequestParam(value = "query", required = false) String query,
-			HttpServletRequest request) { 
-		
+			@RequestParam(value = "query", required = false) String query, 
+			HttpServletRequest request) {
+	 
 		try{
 			JSONObject jobj = JSONObject.fromObject(query);
 			Map<String, Class<?>> classMap = new HashMap<String, Class<?>>();
@@ -432,50 +433,15 @@ public class CaseReportController {
 			int organId = queryCondition.getOrganId();
 			User user = (User) request.getAttribute("User");
 			if (organId == 0) {
-				organId = user.getOrgId();
+				organId = user.getOrgId(); 
 			}
-			Organ organ = organService.getOrganByPrimaryKey(organId);
-			map.put("orgId", organ.getId());
-			map.put("orgLevel", this.getOrgLevel(organ.getPath()));
-			
-			// 查询时间
-			// 查询时间方式，1、月 2、日
-			String startDate = queryCondition.getStartDate();
-			String sDate = startDate.replace("-", "").trim();
-			String endDate = queryCondition.getEndDate();
-			String eDate = endDate.replace("-", "").trim();
-			Integer bd = Integer.parseInt(sDate);
-			Integer ed = Integer.parseInt(eDate);
-			ReportPeriod rp = new ReportPeriod(bd, ed,	queryCondition.getPeriodType());
-			// 警情级别 二级节点
-			List<Integer> caseLevels = queryCondition.getCaseLevels();
-			// 时间区间 时间节点
-			List<Integer> hours = queryCondition.getCaseTimaSpan();
-			map.put("caseLevels", caseLevels);
-			map.put("hours", hours);
-
-			// 警情类型 父级节点
-			List<String> type2Codes = queryCondition.getCaseType();
-			map.put("type2Codes", type2Codes);
-
-
-			map.put("beginYmd", rp.getBeginYmd());
-			map.put("endYmd", rp.getEndYmd());
-			
-			//当前
-			List<WarningOrgAGGR> w1=caseReportService.loadWarningReport(map);
-			
-			map.put("beginYmd", rp.getMOMBeginYmd());
-			map.put("endYmd", rp.getMOMEndYmd());
-			//环比
-			List<WarningOrgAGGR> w2=caseReportService.loadWarningReport(map);
-			
+			  
 			return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
-					MessageCode.SELECT_SUCCESS, 0, w1);
+					MessageCode.SELECT_SUCCESS, 0, null);
 			
-		}catch(Exception ex){
+		}catch(Exception ex){ 
 			return ReturnResult.MESSAGE(MessageCode.STATUS_FAIL,
-					MessageCode.SELECT_ORGAN_FAIL, 0, null);
+					MessageCode.SELECT_ORGAN_FAIL, 0, null); 
 		} 
 	}
 	
@@ -485,9 +451,7 @@ public class CaseReportController {
 		if(a==null){
 			return 0;
 		}else{
-			return a.length -1;
+			return a.length -1; 
 		}
-	}
-	
-	
+	} 
 }

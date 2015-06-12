@@ -225,7 +225,7 @@ public class CaseReportControllerTest extends BaseTest{
 		map.put("orgId", 72);
 		map.put("orgParentId", org.getParentId());
 		
-		List<WarningCfgVM> ls= warningCfgService.loadWarningCfgVMByOrgId(map);
+		List<WarningCfgVM> ls= warningCfgService.loadWarningCfgVMByOrgId(72);
 		
 		WarningCfgVM wcv=ls.get(0);
 		double ge=wcv.getColors().get(0).getGe();
