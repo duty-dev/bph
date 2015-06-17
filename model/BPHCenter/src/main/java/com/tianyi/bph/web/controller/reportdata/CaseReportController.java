@@ -70,7 +70,7 @@ public class CaseReportController {
 				organId = user.getOrgId();
 			}
 			Organ organ = organService.getOrganByPrimaryKey(organId); 
-			map.put("orgFullPath", organ.getPath());  
+			map.put("orgPath", organ.getPath());  
 			 
 			//当期
 			CaseReportResult<CaseTypeAGGR> cResult=new CaseReportResult<CaseTypeAGGR>();  
@@ -172,7 +172,7 @@ public class CaseReportController {
 				organId = user.getOrgId();
 			}
 			Organ organ = organService.getOrganByPrimaryKey(organId);
-			map.put("orgFullPath", organ.getPath());
+			map.put("orgPath", organ.getPath());
 
 			// 查询时间
 			// 查询时间方式，1、月 2、日
@@ -264,7 +264,7 @@ public class CaseReportController {
 				organId = user.getOrgId();
 			}
 			Organ organ = organService.getOrganByPrimaryKey(organId);
-			map.put("orgFullPath", organ.getPath());
+			map.put("orgPath", organ.getPath());
 
 			// 查询时间
 			// 查询时间方式，1、月 2、日
@@ -353,7 +353,7 @@ public class CaseReportController {
 				organId = user.getOrgId();
 			}
 			Organ organ = organService.getOrganByPrimaryKey(organId);
-			map.put("orgFullPath", organ.getPath());
+			map.put("orgPath", organ.getPath());
 			map.put("orgParentId", organId);
 
 			// 查询时间

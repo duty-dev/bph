@@ -58,22 +58,25 @@
 		<constructor-arg ref="dataSource" />
 	</bean>
 	<!-- 事物配置结束 -->
+	
+	
 
 	<!-- mysql 数据库 -->
 	<beans profile="development">
 		<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
 			init-method="init" destroy-method="close">
 
-			<property name="url"
-				value="jdbc:log4jdbc:mysql://localhost:3306/bph?allowMultiQueries=true&amp;autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8" />
-
+			<property name="url"	value="jdbc:log4jdbc:mysql://localhost:3306/bph?allowMultiQueries=true&amp;autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8" />
 			<property name="driverClassName" value="net.sf.log4jdbc.DriverSpy" />
 			<property name="username" value="root" />
-			<property name="password" value="root" />
+			<property name="password" value="5233750" />
 			<!-- <property name="maxActive" value="30" />
 			<property name="maxIdle" value="20" /> -->
 		</bean>
 	</beans>
+	
+	
+	
 	<beans profile="test">
 		<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
 			init-method="init" destroy-method="close">
@@ -83,9 +86,10 @@
 
 			<property name="driverClassName" value="net.sf.log4jdbc.DriverSpy" />
 			<property name="username" value="root" />
-			<property name="password" value="root" />
+			<property name="password" value="5233750" />
 		</bean>
 	</beans>
 
-
+	
+     
 </beans>

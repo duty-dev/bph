@@ -20,7 +20,11 @@ public interface CaseReportService {
 	
 	Date loadMaxDate();
 	
-	void insertCaseInfo(Date beginTime,Date endTime);
+	void importCaseInfo(Date beginTime,Date endTime);
+	
+	//void insertCaseInfo(Date beginTime,Date endTime);
+	
+	//void updateCaseInfo(Date beginTime,Date endTime);
 	
 	List<CaseTypeAGGR> loadCaseTypeReport(Map<String,Object> map);
 	

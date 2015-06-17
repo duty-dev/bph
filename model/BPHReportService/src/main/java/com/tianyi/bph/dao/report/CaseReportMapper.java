@@ -22,6 +22,8 @@ public interface CaseReportMapper {
 	
 	void insertCaseInfo(Map<String, Object>  map );
 	
+	void updateCaseInfo(Map<String, Object>  map );
+	
 	void insertOrganLevel();
 	
 	List<CaseTypeAGGR> loadCaseTypeReport(Map<String, Object>  map);

@@ -39,7 +39,7 @@
 	</select>
   	
   	<select id="loadMaxDate"  resultType="java.util.Date">
-  		select max(cdate) from t_case_report
+  		select max(update_time) from t_case_report
   	</select>
   	
   	<insert  id="insertCaseInfo">
@@ -56,7 +56,6 @@
 			org_id,
 			org_code,
 			org_path,
-			org_full_path,
 			org_parent_id,
 			state,
 			phone,
@@ -67,7 +66,8 @@
 			content,
 			address,
 			gps,
-			operator
+			operator,
+			update_time
 		)
 		SELECT
 			bj.JJDBH,
@@ -92,19 +92,80 @@
 			bj.BJNR,
 			bj.SFDZ,
 			bj.GPS_CONFIG,
-			bj.JJYXM
+			bj.JJYXM,
+			bj.update_time
 		FROM
 			b_jjdb AS bj
 		LEFT JOIN t_organ AS org  ON bj.gxdwbh = org.CODE
 		WHERE
-			1=1
+			not exists(select 1 from t_case_report  as cr where  cr.code=bj.jjdbh )
 			<if test="beginTime != null" >
-				and bj.bjsj &gt;=#{beginTime,jdbcType=TIMESTAMP}
+				and bj.update_time &gt;=#{beginTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="endTime != null" >
-				and bj.bjsj  &lt; #{endTime,jdbcType=TIMESTAMP}
+				and bj.update_time  &lt; #{endTime,jdbcType=TIMESTAMP}
 			</if>
+			
   	</insert>
+  	
+  	<update id="updateCaseInfo">
+		update t_case_report as cr
+		INNER JOIN
+		(
+			select
+				bj.JJDBH,
+				bj.BJSJ,
+				bj.AJZT,
+				bj.LXDH,
+				bj.CASE_LEVEL,
+				bj.BJLB,
+				bj.BJLX,
+				bj.BJXL,
+				bj.BJNR,
+				bj.SFDZ,
+				bj.GPS_CONFIG,
+				bj.JJYXM,
+				bj.update_time,
+				org.organ_id,
+				org.code,
+				org.parent_id,
+				org.path
+			FROM b_jjdb as bj
+			INNER JOIN t_organ as org on bj.gxdwbh=org.code
+			where
+				EXISTS (select 1 from t_case_report as c where c.code =bj.jjdbh) 
+				<if test="beginTime != null" >
+					and bj.update_time &gt;=#{beginTime,jdbcType=TIMESTAMP}
+				</if>
+				<if test="endTime != null" >
+					and bj.update_time  &lt; #{endTime,jdbcType=TIMESTAMP}
+				</if>
+		) as t on t.jjdbh=cr.code
+		SET
+			cr.code				=t.JJDBH,
+			cdate				=t.BJSJ,
+			cyear				=YEAR (t.BJSJ),
+			cmonth			=MONTH (t.BJSJ),
+			cday					=DAY (t.BJSJ),
+			chour				=HOUR (t.bjsj),
+			ymd					=DATE_FORMAT(t.BJSJ, '%Y%m%d'),
+			ym					=DATE_FORMAT(t.BJSJ, '%Y%m'),
+			org_id				=t.ORGAN_ID,
+			org_code			=t.CODE,
+			org_path			=t.PATH,
+			org_parent_id	=t.parent_id,
+			state					=t.AJZT,
+			phone				=t.LXDH,
+			clevel 				=t.CASE_LEVEL,
+			type1				=t.BJLB,
+			type2				=t.BJLX,
+			type3				=t.BJXL,
+			content			=t.BJNR,
+			address				=t.SFDZ,
+			gps					=t.GPS_CONFIG,
+			operator			=t.JJYXM,
+			cr.update_time	=t.update_time
+  	</update>
   	
   	<insert id="insertOrganLevel"  >
   		INSERT INTO t_organ_level (
@@ -152,7 +213,7 @@
 			from 
 				t_case_report
 			where 
-				org_full_path like CONCAT(#{orgFullPath,jdbcType=VARCHAR},'%') and 
+				org_path like CONCAT(#{orgPath,jdbcType=VARCHAR},'%') and 
 				clevel in 
 					<foreach item="item" index="index" collection="levels" open="(" separator="," close=")">  
 						#{item}
@@ -172,7 +233,7 @@
 			from 
 				t_case_report
 			where
-				org_full_path like CONCAT(#{orgFullPath,jdbcType=VARCHAR},'%') and 
+				org_path like CONCAT(#{orgPath,jdbcType=VARCHAR},'%') and 
 				clevel in 
 					<foreach item="item" index="index" collection="levels" open="(" separator="," close=")">  
 						#{item}
@@ -208,7 +269,7 @@
   		from
   			t_case_report
   		where
-  			org_full_path like CONCAT(#{orgFullPath,jdbcType=VARCHAR},'%') and 
+  			org_path like CONCAT(#{orgPath,jdbcType=VARCHAR},'%') and 
 			clevel in 
 				<foreach item="item" index="index" collection="levels" open="(" separator="," close=")">  
 					#{item}
@@ -242,7 +303,7 @@
   			t_case_report
   		where
   			ymd  &gt;=#{beginYMD,jdbcType=INTEGER} and ymd &lt;=#{endYMD,jdbcType=INTEGER} and
-  			org_full_path like CONCAT(#{orgFullPath,jdbcType=VARCHAR},'%')	and 
+  			org_path like CONCAT(#{orgPath,jdbcType=VARCHAR},'%')	and 
 			clevel in
 				<foreach item="item" index="index" collection="levels" open="(" separator="," close=")">  
 					#{item}

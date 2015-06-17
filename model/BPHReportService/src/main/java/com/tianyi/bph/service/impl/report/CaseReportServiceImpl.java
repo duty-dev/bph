@@ -62,12 +62,13 @@ public class CaseReportServiceImpl implements CaseReportService {
 	}
 
 	@Override
-	public void insertCaseInfo(Date beginTime, Date endTime) {
+	public void importCaseInfo(Date beginTime, Date endTime) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("beginTime", beginTime);
 		map.put("endTime", endTime);
 
 		caseReportMapper.insertCaseInfo(map);
+		caseReportMapper.updateCaseInfo(map);
 	}
 
 	@Override
@@ -209,4 +210,6 @@ public class CaseReportServiceImpl implements CaseReportService {
 			return a.length - 1;
 		}
 	}
+
+
 }

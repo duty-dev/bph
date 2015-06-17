@@ -28,12 +28,13 @@
 		<param-value>
 			classpath*:spring/applicationContext*.xml
 		</param-value>
+
 	</context-param>
 	<context-param>
 		<param-name>spring.profiles.active</param-name>
 		<param-value>development</param-value>
 	</context-param>
-	
+
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 		<listener> <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class> </listener>
@@ -51,6 +52,8 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	
+
 	
 	<servlet-mapping>
 		<servlet-name>dispatcher</servlet-name>

@@ -128,8 +128,6 @@ public class CaseReportControllerTest extends BaseTest{
 		
 		CaseGps cg=woas.get(0);
 		
-		
-		
 		List<CaseGps> woas2=woas;
 	}
 	
