@@ -81,7 +81,6 @@
 			org.ORGAN_ID,
 			org.CODE,
 			org.PATH,
-			org.Path,  
 			org.parent_id,
 			bj.AJZT,
 			bj.LXDH,
@@ -105,7 +104,7 @@
 			<if test="endTime != null" >
 				and bj.update_time  &lt; #{endTime,jdbcType=TIMESTAMP}
 			</if>
-			
+		order by  bj.JJDBH
   	</insert>
   	
   	<update id="updateCaseInfo">
@@ -133,7 +132,7 @@
 			FROM b_jjdb as bj
 			INNER JOIN t_organ as org on bj.gxdwbh=org.code
 			where
-				EXISTS (select 1 from t_case_report as c where c.code =bj.jjdbh) 
+				EXISTS (select 1 from t_case_report as c where c.code =bj.jjdbh and c.update_time < bj.update_time) 
 				<if test="beginTime != null" >
 					and bj.update_time &gt;=#{beginTime,jdbcType=TIMESTAMP}
 				</if>
