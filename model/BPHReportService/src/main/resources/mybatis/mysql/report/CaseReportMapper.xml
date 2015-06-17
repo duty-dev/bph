@@ -132,7 +132,7 @@
 			FROM b_jjdb as bj
 			INNER JOIN t_organ as org on bj.gxdwbh=org.code
 			where
-				EXISTS (select 1 from t_case_report as c where c.code =bj.jjdbh and c.update_time < bj.update_time) 
+				EXISTS (select 1 from t_case_report as c where c.code =bj.jjdbh and c.update_time  &lt; bj.update_time) 
 				<if test="beginTime != null" >
 					and bj.update_time &gt;=#{beginTime,jdbcType=TIMESTAMP}
 				</if>
