@@ -225,7 +225,13 @@
 			//给grid数据赋初始值
 			$.each(columns,function(index,item){
 				if (index !="tjTime") {
-					totalRow[index] = 0;
+					if (item.columns!=undefined) {
+						$.each(item.columns,function(indexOfChildColumns,itemOfChildColumns){
+							totalRow[itemOfChildColumns.field] = 0;
+						});
+					}else{
+						totalRow[index] = 0;
+					}
 				}
 			});
 			$.each(data, function(index, item) {
@@ -233,7 +239,13 @@
 				//给grid数据赋初始值
 				$.each(columns,function(index2,item2){
 				if (index2 !="tjTime") {
-					row[index2] = 0;
+					if (item2.columns!=undefined) {
+						$.each(item2.columns,function(indexOfChildColumns,itemOfChildColumns){
+							row[itemOfChildColumns.field] = 0;
+						});
+					}else{
+						row[index2] = 0;
+					}
 				}
 				});	
 				$.each(item.data, function(index1, item1) {
@@ -596,14 +608,16 @@
 				var t = {};
 				t.alarmType = item;
 				$.each(gridColumns,function(indexOfColumns,itemOfColumns){
-					if (itemOfColumns.columns ==undefined) {
-						t[itemOfColumns.field] = 0;
-					}else
-					{
-						$.each(itemOfColumns.columns,function(indexOfChildColumn,itemOfChildColumns){
-							t[itemOfChildColumns.field] =0;
-						});
-					}
+					if(indexOfColumns !="alarmType"){
+						if (itemOfColumns.columns ==undefined) {
+							t[itemOfColumns.field] = 0;
+						}else
+						{
+							$.each(itemOfColumns.columns,function(indexOfChildColumn,itemOfChildColumns){
+								t[itemOfChildColumns.field] =0;
+							});
+						}
+					}	
 				});
 				gridDataSource[item] = t;
 			});
@@ -740,7 +754,7 @@
 		GetSeriesObjectOfTimeSpan : function(data, name) {
 			var array = [];
 			for (var i = 0; i <24; i++) {
-				arraypi] = 0;	
+				array[i] = 0;	
 			}
 			if (data!=undefined||data.data!=undefined) {
 				for ( var i = 0; i < data.data.length; i++) {
