@@ -218,12 +218,24 @@
 				field : "count",
 				title : "合计"
 			});
+
 			var dataSource = [];
 			var totalRow = {};
 			totalRow['tjTime']  = "小计";
+			//给grid数据赋初始值
+			$.each(columns,function(index,item){
+				if (index !="tjTime") {
+					totalRow[index] = 0;
+				}
+			});
 			$.each(data, function(index, item) {
 				var row = {};
-
+				//给grid数据赋初始值
+				$.each(columns,function(index2,item2){
+				if (index2 !="tjTime") {
+					row[index2] = 0;
+				}
+				});	
 				$.each(item.data, function(index1, item1) {
 					if (item1.typeLevel == 1) {
 						row["other" + item1.typeCode] = item1.amount;
@@ -333,7 +345,7 @@
 				}
 				//针对单个数据
 				var dateShow = FunctionManage.GetDateShowOfCircle(item,XLabel);
-				var dataShow = FunctionManage.GetDataShowOfCircle(series[index].data);
+				var dataShow = FunctionManage.GetDataShowOfCircle(series[index].data,XLabel);
 				dataSource.push(dateShow);
 				dataSource.push(dataShow);
 			}); 
@@ -348,6 +360,7 @@
 			}); 
 			$(".k-header").hide();
 		},
+
 		initAlarmTimeSpanData : function(data, title) {
 			var names = [];
 			names[0] = FunctionManage.GetSerieName(data[0]);
@@ -512,12 +525,6 @@
 				field : "alarmType",
 				title : "警情分类"
 			});
-			var gridDataSource = {};
-			$.each(XLabel, function(index, item) {
-				var t = {};
-				t.alarmType = item;
-				gridDataSource[item] = t;
-			});
 
 			var alarmTypeObject = {};
 			$.each(alarmTypeName, function(index, item) {
@@ -584,6 +591,22 @@
 				}
 			});
 
+			var gridDataSource = {};
+			$.each(XLabel, function(index, item) {
+				var t = {};
+				t.alarmType = item;
+				$.each(gridColumns,function(indexOfColumns,itemOfColumns){
+					if (itemOfColumns.columns ==undefined) {
+						t[itemOfColumns.field] = 0;
+					}else
+					{
+						$.each(itemOfColumns.columns,function(indexOfChildColumn,itemOfChildColumns){
+							t[itemOfChildColumns.field] =0;
+						});
+					}
+				});
+				gridDataSource[item] = t;
+			});
 			$
 					.each(
 							data[0].data,
@@ -647,9 +670,13 @@
 	};
 
 	var FunctionManage = {
-		GetDataShowOfCircle:function(data){
+		GetDataShowOfCircle:function(data,xlabel){
 			var dataShow = {};
+			//初始化
 			dataShow["alarmCirlce"] ="警情数量(件)";
+			$.each(xlabel,function(index,item){
+				dataShow["date"+index] = "0";
+			});
 			if(data == undefined)
 			return dataShow;
 			$.each(data,function(index,item){
@@ -712,9 +739,15 @@
 
 		GetSeriesObjectOfTimeSpan : function(data, name) {
 			var array = [];
-			for ( var i = 0; i < data.data.length; i++) {
+			for (var i = 0; i <24; i++) {
+				arraypi] = 0;	
+			}
+			if (data!=undefined||data.data!=undefined) {
+				for ( var i = 0; i < data.data.length; i++) {
 				array[i] = data.data[i].amount;
 			}
+			};
+			
 			return {
 				name : name,
 				data : array
