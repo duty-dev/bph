@@ -53,7 +53,7 @@ public class CaseTask {
 		c2.set(Calendar.MINUTE, 0);
 		c2.set(Calendar.SECOND, 0);
 		c2.set(Calendar.MILLISECOND, 0);
-		c2.add(Calendar.DATE, 2);
+		//c2.add(Calendar.DATE, 2);
 		
 		endTime = c2.getTime();
 		
