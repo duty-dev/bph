@@ -70,6 +70,8 @@
     <logger name="jdbc.connection"  level="WARN" /> 
     
     
+    <logger name="org.quartz"  level="WARN" /> 
+    
     <logger name="org.apache.mina"  level="WARN" /> 
     <logger name="org.apache.http"  level="WARN" /> 
    

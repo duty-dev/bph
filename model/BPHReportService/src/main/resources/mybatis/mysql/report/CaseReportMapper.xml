@@ -78,16 +78,16 @@
 			HOUR (bj.bjsj),
 			DATE_FORMAT(bj.BJSJ, '%Y%m%d'),
 			DATE_FORMAT(bj.BJSJ, '%Y%m'),
-			org.ORGAN_ID,
-			org.CODE,
-			org.PATH,
-			org.parent_id,
+			ifnull(org.ORGAN_ID,0),
+			ifnull(org.CODE,''),
+			ifnull(org.PATH,''),
+			ifnull(org.parent_id,0),
 			bj.AJZT,
 			bj.LXDH,
-			bj.CASE_LEVEL,
-			bj.BJLB,
-			bj.BJLX,
-			bj.BJXL,
+			ifnull(bj.CASE_LEVEL,''),
+			ifnull(bj.BJLB,''),
+			ifnull(bj.BJLX,''),
+			ifnull(bj.BJXL,''),
 			bj.BJNR,
 			bj.SFDZ,
 			bj.GPS_CONFIG,
@@ -149,16 +149,16 @@
 			chour				=HOUR (t.bjsj),
 			ymd					=DATE_FORMAT(t.BJSJ, '%Y%m%d'),
 			ym					=DATE_FORMAT(t.BJSJ, '%Y%m'),
-			org_id				=t.ORGAN_ID,
-			org_code			=t.CODE,
-			org_path			=t.PATH,
-			org_parent_id	=t.parent_id,
+			org_id				=ifnull(t.ORGAN_ID,0),
+			org_code			=ifnull(t.CODE,''),
+			org_path			=ifnull(t.PATH,''),
+			org_parent_id	=ifnull(t.parent_id,0),
 			state					=t.AJZT,
 			phone				=t.LXDH,
-			clevel 				=t.CASE_LEVEL,
-			type1				=t.BJLB,
-			type2				=t.BJLX,
-			type3				=t.BJXL,
+			clevel 				=ifnull(t.CASE_LEVEL,''),
+			type1				=ifnull(t.BJLB,''),
+			type2				=ifnull(t.BJLX,''),
+			type3				=ifnull(t.BJXL,''),
 			content			=t.BJNR,
 			address				=t.SFDZ,
 			gps					=t.GPS_CONFIG,
@@ -208,7 +208,7 @@
 			select
 				type1 		as type_code,
 				1 				as type_level,
-				count(*) 	as type_count
+				count(1) 	as type_count
 			from 
 				t_case_report
 			where 
@@ -228,7 +228,7 @@
 			select
 				type2 		as type_code,
 				2				as	type_level,
-				count(*) 	as type_count
+				count(1) 	as type_count
 			from 
 				t_case_report
 			where
@@ -336,7 +336,7 @@
 	  			org_id		as org_id,
 	  			type1		as type_code,
 	  			1				as type_level,
-	  			count(*)	as org_type_count
+	  			count(1)	as org_type_count
 	  		from
 	  			t_case_report
 	  		where
@@ -362,7 +362,7 @@
 	  			org_id		as org_id,
 	  			type2		as type_code,
 	  			2				as type_level,
-	  			count(*)	as org_type_count
+	  			count(1)	as org_type_count
 	  		from
 	  			t_case_report
 	  		where
@@ -421,7 +421,7 @@
   				<if test ="orgLevel ==6">
   					ole.level7_id as org_id,
   				</if>
-				ifnull(count(*) ,0) AS amount
+				ifnull(count(1) ,0) AS amount
 			FROM t_case_report AS cp
 			LEFT JOIN t_organ_level AS ole ON cp.org_id = ole.organ_id
 			WHERE
