@@ -2,23 +2,36 @@
 <script type="text/javascript"> 
 	var chartManage = {
 		GetSerie : function(data, xlabel, name) {
+			//初始化serie
 			var serie = {};
 			serie.name = name;
 			serie.data = [];
+			//初始化serie的数组长度和初始值赋为0
 			serie.data.length = xlabel.length;
-			$.each(data.data, function(index, item) {
+			$.each(serie.data,function(index,item){
+				serie.data[index] = 0;
+			});
+			//从data获取响应值赋予serie对象内的数组
+			if (data!=undefined&&data.data !=undefined) {
+				$.each(data.data, function(index, item) {
 				var alarmNum = xlabel.indexOf(item.typeName);
 				serie.data[alarmNum] = item.amount;
-			});
+				});
+			}
 			return serie;
 		},
 		
 		GetSerieOfPeroid : function(data, xlabel, name) {
+			//初始化serie
 			var serie = {};
 			serie.name = name;
 			serie.data = [];
+			//初始化serie的数组长度和初始值赋为0
 			serie.data.length = xlabel.length;
-			if(data.data ==undefined)
+			$.each(serie.data,function(index,item){
+				serie.data[index] = 0;
+			});
+			if(data.data ==undefined||data ==undefined)
 			{
 				return serie;
 			}
@@ -278,6 +291,7 @@
 			});
 			dataSource[3] = totalRow;
 			
+
 			//设置grid的长宽
 			FunctionManage.setGridWidthAndHeight(XLabel+1,dataSource.length);
 			$("#grid").empty();
@@ -471,6 +485,7 @@
 		},
 
 		initAlarmOrganData : function(data, title, XLabel, alarmTypeName) {
+
 			var len = XLabel.length;
 			if(len>8){
 				$("#jqtj").css("width",1000+(len-8)*80);
@@ -484,6 +499,9 @@
 				t.name = item;
 				t.data = [];
 				t.data.length = XLabel.length;
+				$.each(t.data,function(index1,item1){
+					t.data[index1] = 0;
+				});
 				types[item] = t;
 			});
 
