@@ -22,12 +22,12 @@ import com.tianyi.bph.query.duty.DutyItemCountVM;
 import com.tianyi.bph.query.duty.DutyItemVM;
 import com.tianyi.bph.query.duty.DutyVM;
 import com.tianyi.bph.service.duty.DutyService;
- 
 
 /**
  * 勤务报备服务接口实现
+ * 
  * @author lq
- *
+ * 
  */
 @Service("dutyService")
 public class DutyServiceImpl implements DutyService {
@@ -84,16 +84,16 @@ public class DutyServiceImpl implements DutyService {
 		return dvm;
 	}
 
-
 	/**
 	 * 根据id，获取勤务报备信息
 	 */
-	public Duty loadTempById(Integer param) { 
+	public Duty loadTempById(Integer param) {
 		return dutyMapper.loadTempById(param);
 	}
-	
+
 	/**
 	 * 将报备数据明细构建为树状结构列表
+	 * 
 	 * @param dvms
 	 */
 	private void itemToTreeOfList(List<DutyVM> dvms) {
@@ -130,31 +130,40 @@ public class DutyServiceImpl implements DutyService {
 	@Transactional
 	public void save(DutyVM vm) {
 		vm.setCreateTime(new Date());
-		Map<String, Object> map = new HashMap<String, Object>(); 
-		map.put("ymd", vm.getYmd());
-		map.put("organId",vm.getOrgId());
-		if (vm.getId() == 0) {
-			Duty duty = dutyMapper.getdutyIdByYmd(map);
-			if(duty!=null){
-				dutyItemsMapper.deleteByDutyId(duty.getId());
-				policeTargetMapper.deleteByDutyId(duty.getId());
-			}
-			dutyMapper.deleteByYMD(map);
+		if (vm.getIsTemplate()) {
 			dutyMapper.insert(vm);
+
+			for (DutyItemVM ivm : vm.getItems()) {
+				saveItem(ivm, null, vm);
+			}
 		} else {
-			dutyMapper.updateByPrimaryKey(vm);
-		}
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("ymd", vm.getYmd());
+			map.put("organId", vm.getOrgId());
+			if (vm.getId() == 0) {
+				Duty duty = dutyMapper.getdutyIdByYmd(map);
+				if (duty != null) {
+					dutyItemsMapper.deleteByDutyId(duty.getId());
+					policeTargetMapper.deleteByDutyId(duty.getId());
+				}
+				dutyMapper.deleteByYMD(map);
+				dutyMapper.insert(vm);
+			} else {
+				dutyMapper.updateByPrimaryKey(vm);
+			}
 
-		dutyItemsMapper.deleteByDutyId(vm.getId());
-		policeTargetMapper.deleteByDutyId(vm.getId());
+			dutyItemsMapper.deleteByDutyId(vm.getId());
+			policeTargetMapper.deleteByDutyId(vm.getId());
 
-		for (DutyItemVM ivm : vm.getItems()) {
-			saveItem(ivm, null, vm);
+			for (DutyItemVM ivm : vm.getItems()) {
+				saveItem(ivm, null, vm);
+			}
 		}
 	}
 
 	/**
 	 * 保存勤务报备数据明细
+	 * 
 	 * @param ivm
 	 * @param pivm
 	 * @param vm
@@ -192,8 +201,8 @@ public class DutyServiceImpl implements DutyService {
 		}
 
 		dutyItemsMapper.insert(ivm);
-		ivm.setFullIdPath(ivm.getPathLevel() == 1 ? ivm.getId().toString() : pivm
-				.getFullIdPath() + "." + ivm.getId());
+		ivm.setFullIdPath(ivm.getPathLevel() == 1 ? ivm.getId().toString()
+				: pivm.getFullIdPath() + "." + ivm.getId());
 		dutyItemsMapper.updateByPrimaryKey(ivm);
 
 		if (ivm.getItemTypeId() == 2) {
@@ -305,6 +314,6 @@ public class DutyServiceImpl implements DutyService {
 
 	public void deleteTempById(Integer param) {
 		dutyMapper.deleteTempById(param);
-		
+
 	}
 }

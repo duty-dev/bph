@@ -18,4 +18,6 @@ public interface IconGroupMapper {
     int updateByExampleSelective(@Param("record") IconGroup record);
 
     int updateByExample(@Param("record") IconGroup record);
+    
+    void deleteByPrimaryKey(int groupId);
 }

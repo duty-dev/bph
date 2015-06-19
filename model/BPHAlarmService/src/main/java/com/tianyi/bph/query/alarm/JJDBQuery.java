@@ -15,7 +15,7 @@ public class JJDBQuery {
 	private Date startTime; //开始时间
 	private Date endTime; //结束时间
 	private String keyWord; //关键字
-	private String alarmLocation; //是否警情定位
+	private Integer alarmLocation; //是否警情定位
 
 	public String getJjdbh() {
 		return jjdbh;
@@ -89,11 +89,15 @@ public class JJDBQuery {
 	public void setKeyWord(String keyWord) {
 		this.keyWord = keyWord;
 	}
-	public String getAlarmLocation() {
+	public Integer getAlarmLocation() {
 		return alarmLocation;
 	}
-	public void setAlarmLocation(String alarmLocation) {
-		this.alarmLocation = alarmLocation;
+	public void setAlarmLocation(Integer alarmLocation) {
+		if(alarmLocation == -1){
+			this.alarmLocation = null;
+		}else{
+			this.alarmLocation = alarmLocation;
+		}
 	}
 
 

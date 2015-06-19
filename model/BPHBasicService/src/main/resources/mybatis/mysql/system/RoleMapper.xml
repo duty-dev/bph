@@ -158,8 +158,8 @@
 		</if>
 	</sql> -->
 	<sql id="find">
-		select <include refid="Base_Column_List" /> 
-		FROM t_role R ,t_user_role ur where R.ROLE_ID=ur.ROLE_ID and ur.USER_ID=#{userId,jdbcType=DECIMAL}
+		select distinct <include refid="Base_Column_List" /> 
+		FROM t_role R ,t_user_role ur where R.ROLE_ID=ur.ROLE_ID
 		and R.ROLE_ID != 1
 		<if test="name != null and name !=''">
 			AND R.NAME LIKE CONCAT('%',#{name,jdbcType=VARCHAR},'%')

@@ -21,7 +21,7 @@ public class ResultList {
 	 ** 查询案情信息对象
 	 ** 
 	 **/
-	private List<CaseInfo> caseList;
+	private List<JJCaseInfo> caseList;
 	/**
 	 * 子节点信息
 	 **/
@@ -44,10 +44,10 @@ public class ResultList {
 	public void setTotalCount(int totalCount) {
 		this.totalCount = totalCount;
 	}
-	public List<CaseInfo> getCaseList() {
+	public List<JJCaseInfo> getCaseList() {
 		return caseList;
 	}
-	public void setCaseList(List<CaseInfo> caseList) {
+	public void setCaseList(List<JJCaseInfo> caseList) {
 		this.caseList = caseList;
 	}
 	public List<ResultList> getResultList() {

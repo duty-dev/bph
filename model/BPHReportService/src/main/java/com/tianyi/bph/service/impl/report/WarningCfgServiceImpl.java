@@ -103,7 +103,8 @@ public class WarningCfgServiceImpl implements WarningCfgService {
 			for(WarningCaseType s :wcg.getCaseTypes()){
 				typecodes.add(s.getCaseTypeCode());
 			}
-			cw.setLevelList(typecodes);
+			cw.setTypeCodes(typecodes);
+			list.add(cw);
 		}
 		return list;
 	}

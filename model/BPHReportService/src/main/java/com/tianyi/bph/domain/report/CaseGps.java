@@ -1,12 +1,27 @@
 package com.tianyi.bph.domain.report;
 
-public class CaseGps {
+public class CaseGps implements Comparable<CaseGps>{
 	private Integer orgId;
 	private String type1;
 	private String type2;
 	private Integer caseLevel;
 	private String gps;
+	private String jjcode;
+	private String parTypeName;
+	private String subTypeName;
 	
+	public String getParTypeName() {
+		return parTypeName;
+	}
+	public void setParTypeName(String parTypeName) {
+		this.parTypeName = parTypeName;
+	}
+	public String getSubTypeName() {
+		return subTypeName;
+	}
+	public void setSubTypeName(String subTypeName) {
+		this.subTypeName = subTypeName;
+	}
 	public Integer getOrgId() {
 		return orgId;
 	}
@@ -37,5 +52,20 @@ public class CaseGps {
 	public void setGps(String gps) {
 		this.gps = gps;
 	}
+	public String getJjcode() {
+		return jjcode;
+	}
+	public void setJjcode(String jjcode) {
+		this.jjcode = jjcode;
+	}
+	@Override
+	public int compareTo(CaseGps o) {
+		if(o != null && o.getType2() !=null){
+			return this.getType2().compareTo(o.getType2());
+		}else{
+			return 0;
+		}
+		
+	} 
 	
 }

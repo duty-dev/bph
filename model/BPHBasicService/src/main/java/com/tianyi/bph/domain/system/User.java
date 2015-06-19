@@ -67,7 +67,17 @@ public class User {
     
     private Integer policeUserId;
     
-    public Integer getPoliceUserId() {
+    private String phone;
+    
+    public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public Integer getPoliceUserId() {
 		return policeUserId;
 	}
 

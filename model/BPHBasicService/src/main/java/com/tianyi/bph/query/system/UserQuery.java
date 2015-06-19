@@ -18,7 +18,16 @@ public class UserQuery extends BaseQuery{
 	private List<Role> roleList;
 	private Organ organ;
 	private Integer policeUserId;
+	private String phone;
 	
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
 	public Integer getPoliceUserId() {
 		return policeUserId;
 	}

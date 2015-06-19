@@ -330,7 +330,7 @@
   </select>
   
     <select id="loadDutyItemCount"  parameterType="java.util.Map"  resultType="com.tianyi.bph.query.duty.DutyItemCountVM">
-  		select count(di.id) as orgName ,dit.name as itemTypeName
+  		select d.ymd as ymd,count(di.id) as itemCount ,dit.name as itemTypeName
   		
   		from t_duty_item di
   		
@@ -339,9 +339,11 @@
 		left join t_duty_item_type dit on dit.type_id = di.item_type_id
 			
   		where d.org_id = #{orgId,jdbcType=INTEGER}
-  			  and d.ymd = #{ymd,jdbcType=INTEGER}
+  			  and d.ymd &gt;=#{beginYmd,jdbcType=INTEGER} 
+  			  and ymd &lt;=#{endYmd,jdbcType=INTEGER}
+  			  and di.item_type_id in( 1,2,3,4)
 			  and d.is_template = 0 
-  			  group by di.item_type_id
+  			  group by  ymd,di.item_type_id
 			 
   </select>
   <select id="loadDutyTypeByParentId"  resultMap="BaseResultMap" parameterType="java.lang.Integer">

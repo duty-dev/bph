@@ -53,6 +53,16 @@ public class DutyItemCountVM {
 	 */
 	private String patrolareaPoliceCount; 
 	
+	/**
+	 * 节点数量
+	 */
+	private String itemCount;
+	
+	/**
+	 * 日期
+	 */
+	private Integer ymd;
+	
 	public String getorgName() {
 		return orgName;
 	}
@@ -125,5 +135,17 @@ public class DutyItemCountVM {
 	}
 	public void setChiefLeaderCount(String chiefLeaderCount) {
 		this.chiefLeaderCount = chiefLeaderCount;
+	}
+	public String getItemCount() {
+		return itemCount;
+	}
+	public void setItemCount(String itemCount) {
+		this.itemCount = itemCount;
+	}
+	public Integer getYmd() {
+		return ymd;
+	}
+	public void setYmd(Integer ymd) {
+		this.ymd = ymd;
 	}
 }

@@ -95,6 +95,7 @@ public class SystemConfig {
 	public final static String POLICE_MANAGER=getInstance().getProperty("policeManager");//接处警
 	public final static String REPORT_GROUP=getInstance().getProperty("reportGroup");//报备分组
 	public final static String ANALYZING_MANAGER=getInstance().getProperty("analyzingManager");//研判分析
+	public final static String SET_MANAGER=getInstance().getProperty("setManager");//配置管理
 	
 	
 	public final static String AccessServerPort="accessServerPort";

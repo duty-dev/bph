@@ -21,6 +21,10 @@ public class IconGroupServiceImpl implements IconGroupService{
 		IconGroup iconGroup = new IconGroup();
 		return iconGroupMapper.selectByExample(iconsQuery);
 	}
-	
 
+	@Override
+	public void deleteIconGroupById(int groupId) {
+		// TODO Auto-generated method stub
+		iconGroupMapper.deleteByPrimaryKey(groupId);
+	}
 }

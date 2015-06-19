@@ -26,6 +26,10 @@ public class QueryCondition {
 	 **/
 	private int organId;
 	/**
+	 * 组织机构路径
+	 */
+	private String organPath;
+	/**
 	 ** 预警规则Id
 	 ** 用于提供四色预警查询计算
 	 **/
@@ -92,5 +96,11 @@ public class QueryCondition {
 	}
 	public void setCaseLevels(List<Integer> caseLevels) {
 		this.caseLevels = caseLevels;
+	}
+	public String getOrganPath() {
+		return organPath;
+	}
+	public void setOrganPath(String organPath) {
+		this.organPath = organPath;
 	}
 }

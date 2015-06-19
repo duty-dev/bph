@@ -112,7 +112,7 @@ public class ALarmVO {
 		if(this.alarmState != null){
 			query.setAjzt(alarmState);
 		}
-		if(this.alarmLocation != null){query.setAlarmLocation(this.alarmLocation);}
+		//if(this.alarmLocation != null){query.setAlarmLocation(this.alarmLocation);}
 		if(!StringUtils.isEmpty(this.alarmPhone)){query.setBjdh(this.alarmPhone);}
 		//if(this.alarmTypeOne != null){query.setBjlb(this.alarmTypeOne);}
 		if(this.alarmTypeTwo != null){

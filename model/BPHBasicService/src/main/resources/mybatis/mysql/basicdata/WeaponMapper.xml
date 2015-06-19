@@ -309,8 +309,7 @@
   		 <if test ="gids !=null">
   		 	left join t_duty_weapon_group_member gm on gm.weapon_id = w.id
   		 	left join t_duty_weapon_group pg on pg.id = gm.group_id
-  		 </if> 
-  		 where 
+  		 </if>  
   		 where 1=1 and 
   		 (
   		 o.organ_id = #{orgId,jdbcType=INTEGER}

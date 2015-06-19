@@ -66,7 +66,7 @@ public class GBPlatFormServiceImpl implements GBPlatFormService {
 			this.nodes = nodes;
 		}
 
-		@Cacheable(cacheName = cacheName)
+//		@Cacheable(cacheName = cacheName)
 		public GBOrgan buildTree() {
 			GBOrgan parent = null;
 			it = nodes.iterator();
@@ -111,8 +111,8 @@ public class GBPlatFormServiceImpl implements GBPlatFormService {
 	}
 
 	@Override
-	@TriggersRemove(cacheName = cacheName, removeAll = true)
-	@Transactional(readOnly = false)
+//	@TriggersRemove(cacheName = cacheName, removeAll = true)
+//	@Transactional(readOnly = false)
 	public void addGBPermission(Integer organId, List<Integer> list) {
 		List<Integer> deleteIds = new ArrayList<Integer>();
 
@@ -120,6 +120,7 @@ public class GBPlatFormServiceImpl implements GBPlatFormService {
 		if (organ == null) {
 			throw new RestException("机构不存在!");
 		}
+		String loclPath=organ.getPath();
 		deleteIds.add(organId);
 		while (organ.getParentId() != null) {
 			organ = organDao.selectByPrimaryKey(organ.getParentId());
@@ -131,10 +132,9 @@ public class GBPlatFormServiceImpl implements GBPlatFormService {
 		OrganGBOrganExample example = new OrganGBOrganExample();
 		example.createCriteria().andOrganIdIn(deleteIds);
 		organGBOrganMapper.deleteByExample(example);
-
 		// 机构作为上级 删除 下级中存在的授权机构
 		List<Integer> exist = organGBOrganMapper
-				.queryExistGbId(organ.getPath());
+				.queryExistGbId(loclPath);
 		list.removeAll(exist);
 
 		for (Integer key : list) {
@@ -146,7 +146,7 @@ public class GBPlatFormServiceImpl implements GBPlatFormService {
 	}
 
 	@Override
-	@Cacheable(cacheName = cacheName)
+//	@Cacheable(cacheName = cacheName)
 	public List<GBDevice> getGBDeviceListByOrganId(Integer organId) {
 		List<GBDevice> list = null;
 		if (organId != null) {

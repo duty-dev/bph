@@ -21,6 +21,7 @@ import com.tianyi.bph.domain.system.JsonPoint;
 import com.tianyi.bph.domain.system.JsonPointVO;
 import com.tianyi.bph.exception.RestException;
 import com.tianyi.bph.query.system.GroupManagerExample;
+import com.tianyi.bph.query.system.GroupQuery;
 import com.tianyi.bph.service.system.GroupManagerService;
 
 @Service
@@ -55,6 +56,19 @@ public class GroupManagerServiceImpl implements GroupManagerService {
 		// TODO Auto-generated method stub
 		if (record == null) {
 			throw new RestException("对象不能为空");
+		}
+		try{
+			
+		}catch(Exception e)
+		{
+			
+		}
+		GroupQuery query =new GroupQuery();
+		query.setName(record.getGroupName());
+		int a=groupDao.selectByGroupQuery(query);
+		if(a>0)
+		{
+			return 2;
 		}
 		groupDao.insert(record);
 		if(record.getGroupType()==1){//资源收藏

@@ -16,6 +16,7 @@
     <result column="PATH" jdbcType="VARCHAR" property="organPath" />
     <result column="ORGAN_NAME" jdbcType="VARCHAR" property="organName" />
     <result column="POLICE_USER_ID" jdbcType="DECIMAL" property="policeUserId" />
+    <result column="PHONE" jdbcType="VARCHAR" property="phone" />
   </resultMap>
   
   <resultMap id="OrganResultMap" type="com.tianyi.bph.domain.system.Organ">
@@ -76,7 +77,7 @@
   
   <sql id="Base_Column_List">
     U.USER_ID, U.LOGIN_NAME, U.USER_NAME, U.PASSWORD, U.ORGAN_ID, U.CREATE_TIME, U.UPDATE_TIME, U.PRESET, U.STATE, 
-    U.LOGIN_TIME, U.NOTE,U.POLICE_USER_ID
+    U.LOGIN_TIME, U.NOTE,U.POLICE_USER_ID,U.PHONE
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -93,11 +94,11 @@
     insert into T_USERS (LOGIN_NAME, USER_NAME, 
       PASSWORD, ORGAN_ID, CREATE_TIME, 
       UPDATE_TIME, PRESET, STATE, 
-      LOGIN_TIME, NOTE,POLICE_USER_ID)
+      LOGIN_TIME, NOTE,POLICE_USER_ID,PHONE)
     values (#{loginName,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
       #{password,jdbcType=VARCHAR}, #{orgId,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{preset,jdbcType=DECIMAL}, #{state,jdbcType=DECIMAL}, 
-      #{loginTime,jdbcType=TIMESTAMP}, #{note,jdbcType=VARCHAR},#{policeUserId,jdbcType=DECIMAL})
+      #{loginTime,jdbcType=TIMESTAMP}, #{note,jdbcType=VARCHAR},#{policeUserId,jdbcType=DECIMAL},#{phone,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.tianyi.bph.domain.system.User">
     insert into T_USERS
@@ -138,6 +139,9 @@
       <if test="policeUserId != null">
         POLICE_USER_ID,
       </if>
+      <if test="phone != null">
+        PHONE
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="userId != null">
@@ -174,7 +178,10 @@
         #{note,jdbcType=VARCHAR},
       </if>
       <if test="policeUserId != null">
-        #{policeUserId,jdbcType=DECIMAL}
+        #{policeUserId,jdbcType=DECIMAL},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR}
       </if>
     </trim>
   </insert>
@@ -209,7 +216,10 @@
         NOTE = #{note,jdbcType=VARCHAR},
       </if>
       <if test="policeUserId != null">
-        POLICE_USER_ID = #{policeUserId,jdbcType=DECIMAL}
+        POLICE_USER_ID = #{policeUserId,jdbcType=DECIMAL},
+      </if>
+      <if test="phone != null">
+        PHONE = #{phone,jdbcType=VARCHAR}
       </if>
     </set>
     where USER_ID = #{userId,jdbcType=DECIMAL}
@@ -226,7 +236,8 @@
       STATE = #{state,jdbcType=DECIMAL},
       LOGIN_TIME = #{loginTime,jdbcType=TIMESTAMP},
       NOTE = #{note,jdbcType=VARCHAR},
-      POLICE_USER_ID = #{policeUserId,jdbcType=DECIMAL}
+      POLICE_USER_ID = #{policeUserId,jdbcType=DECIMAL},
+      PHONE = #{phone,jdbcType=VARCHAR}
     where USER_ID = #{userId,jdbcType=DECIMAL}
   </update>
 
@@ -275,7 +286,7 @@
 		<if test="userName != null">
 			AND (U.USER_NAME LIKE CONCAT ('%',#{userName,jdbcType=VARCHAR},'%' ) or U.LOGIN_NAME LIKE CONCAT ('%',#{userName,jdbcType=VARCHAR},'%' ))
 		</if>
-		GROUP BY U.USER_ID
+		    GROUP BY U.USER_ID
 	</sql>
 	
 	<select id="findByPage" parameterType="com.tianyi.bph.query.system.UserQuery"  resultMap="AllResultMap" >	    	

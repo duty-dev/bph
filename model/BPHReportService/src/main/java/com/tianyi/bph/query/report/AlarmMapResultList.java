@@ -21,7 +21,7 @@ public class AlarmMapResultList {
 	 ** 查询案情信息对象
 	 ** 
 	 **/
-	private List<CaseInfo> caseList;
+	private List<JJCaseInfo> caseInfo;
 	/**
 	 * 子节点信息
 	 **/
@@ -43,17 +43,17 @@ public class AlarmMapResultList {
 	}
 	public void setTotalCount(int totalCount) {
 		this.totalCount = totalCount;
-	}
-	public List<CaseInfo> getCaseList() {
-		return caseList;
-	}
-	public void setCaseList(List<CaseInfo> caseList) {
-		this.caseList = caseList;
-	}
+	} 
 	public List<AlarmMapResultList> getResultList() {
 		return resultList;
 	}
 	public void setResultList(List<AlarmMapResultList> resultList) {
 		this.resultList = resultList;
+	}
+	public List<JJCaseInfo> getCaseInfo() {
+		return caseInfo;
+	}
+	public void setCaseInfo(List<JJCaseInfo> caseInfo) {
+		this.caseInfo = caseInfo;
 	}
 }

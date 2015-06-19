@@ -1,358 +1,370 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.tianyi.bph.dao.system.GBDeviceServerMapper" >
-  <resultMap id="BaseResultMap" type="com.tianyi.bph.domain.system.GBDeviceServer" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="type" property="type" jdbcType="VARCHAR" />
-    <result column="std_id" property="stdId" jdbcType="VARCHAR" />
-    <result column="secrecy" property="secrecy" jdbcType="INTEGER" />
-    <result column="status" property="status" jdbcType="VARCHAR" />
-    <result column="manufacturer" property="manufacturer" jdbcType="VARCHAR" />
-    <result column="model" property="model" jdbcType="VARCHAR" />
-    <result column="address" property="address" jdbcType="VARCHAR" />
-    <result column="longitude" property="longitude" jdbcType="VARCHAR" />
-    <result column="latitude" property="latitude" jdbcType="VARCHAR" />
-    <result column="owner" property="owner" jdbcType="VARCHAR" />
-    <result column="register_way" property="registerWay" jdbcType="VARCHAR" />
-    <result column="gb_organ_id" property="gbOrganId" jdbcType="INTEGER" />
-    <result column="civil_code" property="civilCode" jdbcType="VARCHAR" />
-  </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List" >
-    id, name, type, std_id, secrecy, status, manufacturer, model, address, longitude, 
-    latitude, owner, register_way, gb_organ_id, civil_code
-  </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.tianyi.bph.query.system.GBDeviceServerExample" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from t_gb_device_server
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from t_gb_device_server
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from t_gb_device_server
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.tianyi.bph.domain.system.GBDeviceServer" >
-    insert into t_gb_device_server (id, name, type, 
-      std_id, secrecy, status, 
-      manufacturer, model, address, 
-      longitude, latitude, owner, 
-      register_way, gb_organ_id, civil_code
-      )
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
-      #{stdId,jdbcType=VARCHAR}, #{secrecy,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, 
-      #{manufacturer,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
-      #{longitude,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR}, #{owner,jdbcType=VARCHAR}, 
-      #{registerWay,jdbcType=VARCHAR}, #{gbOrganId,jdbcType=INTEGER}, #{civilCode,jdbcType=VARCHAR}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.tianyi.bph.domain.system.GBDeviceServer" >
-    insert into t_gb_device_server
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="name != null" >
-        name,
-      </if>
-      <if test="type != null" >
-        type,
-      </if>
-      <if test="stdId != null" >
-        std_id,
-      </if>
-      <if test="secrecy != null" >
-        secrecy,
-      </if>
-      <if test="status != null" >
-        status,
-      </if>
-      <if test="manufacturer != null" >
-        manufacturer,
-      </if>
-      <if test="model != null" >
-        model,
-      </if>
-      <if test="address != null" >
-        address,
-      </if>
-      <if test="longitude != null" >
-        longitude,
-      </if>
-      <if test="latitude != null" >
-        latitude,
-      </if>
-      <if test="owner != null" >
-        owner,
-      </if>
-      <if test="registerWay != null" >
-        register_way,
-      </if>
-      <if test="gbOrganId != null" >
-        gb_organ_id,
-      </if>
-      <if test="civilCode != null" >
-        civil_code,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null" >
-        #{type,jdbcType=VARCHAR},
-      </if>
-      <if test="stdId != null" >
-        #{stdId,jdbcType=VARCHAR},
-      </if>
-      <if test="secrecy != null" >
-        #{secrecy,jdbcType=INTEGER},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="manufacturer != null" >
-        #{manufacturer,jdbcType=VARCHAR},
-      </if>
-      <if test="model != null" >
-        #{model,jdbcType=VARCHAR},
-      </if>
-      <if test="address != null" >
-        #{address,jdbcType=VARCHAR},
-      </if>
-      <if test="longitude != null" >
-        #{longitude,jdbcType=VARCHAR},
-      </if>
-      <if test="latitude != null" >
-        #{latitude,jdbcType=VARCHAR},
-      </if>
-      <if test="owner != null" >
-        #{owner,jdbcType=VARCHAR},
-      </if>
-      <if test="registerWay != null" >
-        #{registerWay,jdbcType=VARCHAR},
-      </if>
-      <if test="gbOrganId != null" >
-        #{gbOrganId,jdbcType=INTEGER},
-      </if>
-      <if test="civilCode != null" >
-        #{civilCode,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByExampleSelective" parameterType="map" >
-    update t_gb_device_server
-    <set >
-      <if test="record.id != null" >
-        id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.name != null" >
-        name = #{record.name,jdbcType=VARCHAR},
-      </if>
-      <if test="record.type != null" >
-        type = #{record.type,jdbcType=VARCHAR},
-      </if>
-      <if test="record.stdId != null" >
-        std_id = #{record.stdId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.secrecy != null" >
-        secrecy = #{record.secrecy,jdbcType=INTEGER},
-      </if>
-      <if test="record.status != null" >
-        status = #{record.status,jdbcType=VARCHAR},
-      </if>
-      <if test="record.manufacturer != null" >
-        manufacturer = #{record.manufacturer,jdbcType=VARCHAR},
-      </if>
-      <if test="record.model != null" >
-        model = #{record.model,jdbcType=VARCHAR},
-      </if>
-      <if test="record.address != null" >
-        address = #{record.address,jdbcType=VARCHAR},
-      </if>
-      <if test="record.longitude != null" >
-        longitude = #{record.longitude,jdbcType=VARCHAR},
-      </if>
-      <if test="record.latitude != null" >
-        latitude = #{record.latitude,jdbcType=VARCHAR},
-      </if>
-      <if test="record.owner != null" >
-        owner = #{record.owner,jdbcType=VARCHAR},
-      </if>
-      <if test="record.registerWay != null" >
-        register_way = #{record.registerWay,jdbcType=VARCHAR},
-      </if>
-      <if test="record.gbOrganId != null" >
-        gb_organ_id = #{record.gbOrganId,jdbcType=INTEGER},
-      </if>
-      <if test="record.civilCode != null" >
-        civil_code = #{record.civilCode,jdbcType=VARCHAR},
-      </if>
-    </set>
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map" >
-    update t_gb_device_server
-    set id = #{record.id,jdbcType=INTEGER},
-      name = #{record.name,jdbcType=VARCHAR},
-      type = #{record.type,jdbcType=VARCHAR},
-      std_id = #{record.stdId,jdbcType=VARCHAR},
-      secrecy = #{record.secrecy,jdbcType=INTEGER},
-      status = #{record.status,jdbcType=VARCHAR},
-      manufacturer = #{record.manufacturer,jdbcType=VARCHAR},
-      model = #{record.model,jdbcType=VARCHAR},
-      address = #{record.address,jdbcType=VARCHAR},
-      longitude = #{record.longitude,jdbcType=VARCHAR},
-      latitude = #{record.latitude,jdbcType=VARCHAR},
-      owner = #{record.owner,jdbcType=VARCHAR},
-      register_way = #{record.registerWay,jdbcType=VARCHAR},
-      gb_organ_id = #{record.gbOrganId,jdbcType=INTEGER},
-      civil_code = #{record.civilCode,jdbcType=VARCHAR}
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.tianyi.bph.domain.system.GBDeviceServer" >
-    update t_gb_device_server
-    <set >
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=VARCHAR},
-      </if>
-      <if test="stdId != null" >
-        std_id = #{stdId,jdbcType=VARCHAR},
-      </if>
-      <if test="secrecy != null" >
-        secrecy = #{secrecy,jdbcType=INTEGER},
-      </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="manufacturer != null" >
-        manufacturer = #{manufacturer,jdbcType=VARCHAR},
-      </if>
-      <if test="model != null" >
-        model = #{model,jdbcType=VARCHAR},
-      </if>
-      <if test="address != null" >
-        address = #{address,jdbcType=VARCHAR},
-      </if>
-      <if test="longitude != null" >
-        longitude = #{longitude,jdbcType=VARCHAR},
-      </if>
-      <if test="latitude != null" >
-        latitude = #{latitude,jdbcType=VARCHAR},
-      </if>
-      <if test="owner != null" >
-        owner = #{owner,jdbcType=VARCHAR},
-      </if>
-      <if test="registerWay != null" >
-        register_way = #{registerWay,jdbcType=VARCHAR},
-      </if>
-      <if test="gbOrganId != null" >
-        gb_organ_id = #{gbOrganId,jdbcType=INTEGER},
-      </if>
-      <if test="civilCode != null" >
-        civil_code = #{civilCode,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.tianyi.bph.domain.system.GBDeviceServer" >
-    update t_gb_device_server
-    set name = #{name,jdbcType=VARCHAR},
-      type = #{type,jdbcType=VARCHAR},
-      std_id = #{stdId,jdbcType=VARCHAR},
-      secrecy = #{secrecy,jdbcType=INTEGER},
-      status = #{status,jdbcType=VARCHAR},
-      manufacturer = #{manufacturer,jdbcType=VARCHAR},
-      model = #{model,jdbcType=VARCHAR},
-      address = #{address,jdbcType=VARCHAR},
-      longitude = #{longitude,jdbcType=VARCHAR},
-      latitude = #{latitude,jdbcType=VARCHAR},
-      owner = #{owner,jdbcType=VARCHAR},
-      register_way = #{registerWay,jdbcType=VARCHAR},
-      gb_organ_id = #{gbOrganId,jdbcType=INTEGER},
-      civil_code = #{civilCode,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+<mapper namespace="com.tianyi.bph.dao.system.GBDeviceServerMapper">
+	<resultMap id="BaseResultMap" type="com.tianyi.bph.domain.system.GBDeviceServer">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="VARCHAR" />
+		<result column="std_id" property="stdId" jdbcType="VARCHAR" />
+		<result column="secrecy" property="secrecy" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="manufacturer" property="manufacturer" jdbcType="VARCHAR" />
+		<result column="model" property="model" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="longitude" property="longitude" jdbcType="VARCHAR" />
+		<result column="latitude" property="latitude" jdbcType="VARCHAR" />
+		<result column="owner" property="owner" jdbcType="VARCHAR" />
+		<result column="register_way" property="registerWay" jdbcType="VARCHAR" />
+		<result column="gb_organ_id" property="gbOrganId" jdbcType="INTEGER" />
+		<result column="civil_code" property="civilCode" jdbcType="VARCHAR" />
+		<result column="naming" property="naming" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		id, name, type, std_id, secrecy, status, manufacturer, model, address,
+		longitude,
+		latitude, owner, register_way, gb_organ_id, civil_code,naming
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.tianyi.bph.query.system.GBDeviceServerExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from t_gb_device_server
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from t_gb_device_server
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from t_gb_device_server
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.tianyi.bph.domain.system.GBDeviceServer">
+		insert into t_gb_device_server (id, name, type,
+		std_id, secrecy, status,
+		manufacturer, model, address,
+		longitude, latitude, owner,
+		register_way, gb_organ_id, civil_code
+		)
+		values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+		#{type,jdbcType=VARCHAR},
+		#{stdId,jdbcType=VARCHAR}, #{secrecy,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR},
+		#{manufacturer,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR},
+		#{address,jdbcType=VARCHAR},
+		#{longitude,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR}, #{owner,jdbcType=VARCHAR},
+		#{registerWay,jdbcType=VARCHAR}, #{gbOrganId,jdbcType=INTEGER},
+		#{civilCode,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.tianyi.bph.domain.system.GBDeviceServer">
+		insert into t_gb_device_server
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="stdId != null">
+				std_id,
+			</if>
+			<if test="secrecy != null">
+				secrecy,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="manufacturer != null">
+				manufacturer,
+			</if>
+			<if test="model != null">
+				model,
+			</if>
+			<if test="address != null">
+				address,
+			</if>
+			<if test="longitude != null">
+				longitude,
+			</if>
+			<if test="latitude != null">
+				latitude,
+			</if>
+			<if test="owner != null">
+				owner,
+			</if>
+			<if test="registerWay != null">
+				register_way,
+			</if>
+			<if test="gbOrganId != null">
+				gb_organ_id,
+			</if>
+			<if test="civilCode != null">
+				civil_code,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=VARCHAR},
+			</if>
+			<if test="stdId != null">
+				#{stdId,jdbcType=VARCHAR},
+			</if>
+			<if test="secrecy != null">
+				#{secrecy,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="manufacturer != null">
+				#{manufacturer,jdbcType=VARCHAR},
+			</if>
+			<if test="model != null">
+				#{model,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				#{address,jdbcType=VARCHAR},
+			</if>
+			<if test="longitude != null">
+				#{longitude,jdbcType=VARCHAR},
+			</if>
+			<if test="latitude != null">
+				#{latitude,jdbcType=VARCHAR},
+			</if>
+			<if test="owner != null">
+				#{owner,jdbcType=VARCHAR},
+			</if>
+			<if test="registerWay != null">
+				#{registerWay,jdbcType=VARCHAR},
+			</if>
+			<if test="gbOrganId != null">
+				#{gbOrganId,jdbcType=INTEGER},
+			</if>
+			<if test="civilCode != null">
+				#{civilCode,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByExampleSelective" parameterType="map">
+		update t_gb_device_server
+		<set>
+			<if test="record.id != null">
+				id = #{record.id,jdbcType=INTEGER},
+			</if>
+			<if test="record.name != null">
+				name = #{record.name,jdbcType=VARCHAR},
+			</if>
+			<if test="record.type != null">
+				type = #{record.type,jdbcType=VARCHAR},
+			</if>
+			<if test="record.stdId != null">
+				std_id = #{record.stdId,jdbcType=VARCHAR},
+			</if>
+			<if test="record.secrecy != null">
+				secrecy = #{record.secrecy,jdbcType=INTEGER},
+			</if>
+			<if test="record.status != null">
+				status = #{record.status,jdbcType=VARCHAR},
+			</if>
+			<if test="record.manufacturer != null">
+				manufacturer = #{record.manufacturer,jdbcType=VARCHAR},
+			</if>
+			<if test="record.model != null">
+				model = #{record.model,jdbcType=VARCHAR},
+			</if>
+			<if test="record.address != null">
+				address = #{record.address,jdbcType=VARCHAR},
+			</if>
+			<if test="record.longitude != null">
+				longitude = #{record.longitude,jdbcType=VARCHAR},
+			</if>
+			<if test="record.latitude != null">
+				latitude = #{record.latitude,jdbcType=VARCHAR},
+			</if>
+			<if test="record.owner != null">
+				owner = #{record.owner,jdbcType=VARCHAR},
+			</if>
+			<if test="record.registerWay != null">
+				register_way = #{record.registerWay,jdbcType=VARCHAR},
+			</if>
+			<if test="record.gbOrganId != null">
+				gb_organ_id = #{record.gbOrganId,jdbcType=INTEGER},
+			</if>
+			<if test="record.civilCode != null">
+				civil_code = #{record.civilCode,jdbcType=VARCHAR},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update t_gb_device_server
+		set id = #{record.id,jdbcType=INTEGER},
+		name = #{record.name,jdbcType=VARCHAR},
+		type = #{record.type,jdbcType=VARCHAR},
+		std_id = #{record.stdId,jdbcType=VARCHAR},
+		secrecy = #{record.secrecy,jdbcType=INTEGER},
+		status = #{record.status,jdbcType=VARCHAR},
+		manufacturer = #{record.manufacturer,jdbcType=VARCHAR},
+		model = #{record.model,jdbcType=VARCHAR},
+		address = #{record.address,jdbcType=VARCHAR},
+		longitude = #{record.longitude,jdbcType=VARCHAR},
+		latitude = #{record.latitude,jdbcType=VARCHAR},
+		owner = #{record.owner,jdbcType=VARCHAR},
+		register_way = #{record.registerWay,jdbcType=VARCHAR},
+		gb_organ_id = #{record.gbOrganId,jdbcType=INTEGER},
+		civil_code = #{record.civilCode,jdbcType=VARCHAR}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.tianyi.bph.domain.system.GBDeviceServer">
+		update t_gb_device_server
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=VARCHAR},
+			</if>
+			<if test="stdId != null">
+				std_id = #{stdId,jdbcType=VARCHAR},
+			</if>
+			<if test="secrecy != null">
+				secrecy = #{secrecy,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="manufacturer != null">
+				manufacturer = #{manufacturer,jdbcType=VARCHAR},
+			</if>
+			<if test="model != null">
+				model = #{model,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				address = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="longitude != null">
+				longitude = #{longitude,jdbcType=VARCHAR},
+			</if>
+			<if test="latitude != null">
+				latitude = #{latitude,jdbcType=VARCHAR},
+			</if>
+			<if test="owner != null">
+				owner = #{owner,jdbcType=VARCHAR},
+			</if>
+			<if test="registerWay != null">
+				register_way = #{registerWay,jdbcType=VARCHAR},
+			</if>
+			<if test="gbOrganId != null">
+				gb_organ_id = #{gbOrganId,jdbcType=INTEGER},
+			</if>
+			<if test="civilCode != null">
+				civil_code = #{civilCode,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.tianyi.bph.domain.system.GBDeviceServer">
+		update t_gb_device_server
+		set name = #{name,jdbcType=VARCHAR},
+		type = #{type,jdbcType=VARCHAR},
+		std_id = #{stdId,jdbcType=VARCHAR},
+		secrecy = #{secrecy,jdbcType=INTEGER},
+		status = #{status,jdbcType=VARCHAR},
+		manufacturer = #{manufacturer,jdbcType=VARCHAR},
+		model = #{model,jdbcType=VARCHAR},
+		address = #{address,jdbcType=VARCHAR},
+		longitude = #{longitude,jdbcType=VARCHAR},
+		latitude = #{latitude,jdbcType=VARCHAR},
+		owner = #{owner,jdbcType=VARCHAR},
+		register_way = #{registerWay,jdbcType=VARCHAR},
+		gb_organ_id = #{gbOrganId,jdbcType=INTEGER},
+		civil_code = #{civilCode,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
 </mapper>

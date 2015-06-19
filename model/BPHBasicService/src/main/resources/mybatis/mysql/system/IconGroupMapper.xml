@@ -127,4 +127,8 @@
       DISPATCH_URL = #{record.dispatchUrl,jdbcType=VARCHAR},
       ARRIVE_URL = #{record.arriveUrl,jdbcType=VARCHAR},
   </update>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_icon_group
+    where GROUP_ID = #{groupId,jdbcType=INTEGER}
+  </delete>
 </mapper>

@@ -284,7 +284,7 @@ public class OrganServiceImpl implements OrganService{
 			it = nodes.iterator();
 			while (it.hasNext()) {
 				Organ node = it.next();
-				if (node.getId() == parentId) {
+				if (node.getId().intValue() == parentId.intValue()) {
 					parent = node;
 					parent.setExpanded(true);
 					it.remove();

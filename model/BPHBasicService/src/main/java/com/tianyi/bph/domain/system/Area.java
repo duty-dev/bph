@@ -32,6 +32,9 @@ public class Area {
 	private String mapProperty;
 
 	private List<Integer> relationUserKeys;// 关联警员id
+	
+    private String manager; // 卡点负责人
+	private String managerName;
 
 	public Integer getId() {
 		return id;
@@ -151,6 +154,22 @@ public class Area {
 
 	public void setRelationUserKeys(List<Integer> relationUserKeys) {
 		this.relationUserKeys = relationUserKeys;
+	}
+
+	public String getManager() {
+		return manager;
+	}
+
+	public void setManager(String manager) {
+		this.manager = manager;
+	}
+
+	public String getManagerName() {
+		return managerName;
+	}
+
+	public void setManagerName(String managerName) {
+		this.managerName = managerName;
 	}
 
 }

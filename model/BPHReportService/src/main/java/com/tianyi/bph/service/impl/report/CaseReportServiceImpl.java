@@ -2,21 +2,20 @@
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import net.sf.json.JSONObject;
+ 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.tianyi.bph.common.MessageCode;
-import com.tianyi.bph.common.ReturnResult;
+ 
 import com.tianyi.bph.dao.report.CaseReportMapper;
 import com.tianyi.bph.dao.report.WarningConfigMapper;
 import com.tianyi.bph.domain.report.CaseGps;
+import com.tianyi.bph.domain.report.CaseGpsInfo;
 import com.tianyi.bph.domain.report.CaseHourAGGR;
 import com.tianyi.bph.domain.report.CaseOrgAGGR;
 import com.tianyi.bph.domain.report.CasePeriodAGGR;
@@ -25,8 +24,9 @@ import com.tianyi.bph.domain.report.ReportPeriod;
 import com.tianyi.bph.domain.report.WarningCaseLevel;
 import com.tianyi.bph.domain.report.WarningCaseType;
 import com.tianyi.bph.domain.report.WarningOrgAGGR;
-import com.tianyi.bph.domain.system.Organ;
+import com.tianyi.bph.domain.system.Organ;  
 import com.tianyi.bph.query.report.ColorWarningResultList;
+import com.tianyi.bph.query.report.JJCaseInfo;
 import com.tianyi.bph.query.report.QueryCondition;
 import com.tianyi.bph.query.report.WarningCfgVM;
 import com.tianyi.bph.service.report.CaseReportService;
@@ -109,13 +109,14 @@ public class CaseReportServiceImpl implements CaseReportService {
 	}
 
 	@Override
-	public List<ColorWarningResultList> getWarningReport(QueryCondition queryCondition) {
+	public List<ColorWarningResultList> getWarningReport(
+			QueryCondition queryCondition) {
 		// TODO Auto-generated method stub
 		List<ColorWarningResultList> list = new ArrayList<ColorWarningResultList>();
 		try {
 			if (queryCondition == null) {
-				return list; 
-			} else { 
+				return list;
+			} else {
 				Map<String, Object> map = new HashMap<String, Object>();
 				// 选择的预警Id
 				int colorWarnId = queryCondition.getWarningCfgId();
@@ -211,5 +212,130 @@ public class CaseReportServiceImpl implements CaseReportService {
 		}
 	}
 
+	@Override
+	public List<CaseGpsInfo> loadCaseGpsList(
+			QueryCondition queryCondition) {
+		// TODO Auto-generated method stub
+		Map<String, Object> map = new HashMap<String, Object>();
 
+		map.put("orgId", queryCondition.getOrganId());
+		// /map.put("orgLevel", orgLevel);
+		map.put("orgPath", queryCondition.getOrganPath());
+		map.put("caseLevels", queryCondition.getCaseLevels());
+		map.put("type2Codes", queryCondition.getCaseType());
+		map.put("hours", queryCondition.getCaseTimaSpan());
+
+		String sDate = queryCondition.getStartDate().replace("-", "").trim();
+		String eDate = queryCondition.getEndDate().replace("-", "").trim();
+		Integer bd = Integer.parseInt(sDate);
+		Integer ed = Integer.parseInt(eDate);
+		map.put("beginYmd", bd);
+		map.put("endYmd", ed);
+		List<CaseGps> ls = loadCaseGps(map);
+		List<CaseGpsInfo> list = getAlarmMapResultList(ls,
+				queryCondition.getCaseType());
+		return list;
+	}
+
+	private List<CaseGpsInfo> getAlarmMapResultList(List<CaseGps> ls,
+			List<String> typeCodes) {
+		List<CaseGpsInfo> list = new ArrayList<CaseGpsInfo>();
+		
+		CaseGpsInfo cg1=new CaseGpsInfo(); 
+		CaseGpsInfo cg2=new CaseGpsInfo();  
+		cg1.setInfos(new ArrayList<CaseGpsInfo>());
+		cg1.getInfos().add(cg2);
+		
+		Collections.sort(ls);
+		
+		
+		for(CaseGps cg : ls){
+			if(cg1.getTypeCode()!=null && cg1.getTypeCode().equals(cg.getType1())){
+				cg1.setCount(cg1.getCount()+1);
+				
+				if(cg2.getTypeCode()!=null && cg2.getTypeCode().equals(cg.getType2())){
+					cg2.setCount(cg2.getCount()+1);
+//					CaseGpsInfo detail =new CaseGpsInfo();
+//					detail.setCount(1);
+//					detail.setGps(cg.getGps());
+//					detail.setInfos(null);
+//					detail.setJjCode(cg.getJjcode());
+//					detail.setTypeCode(null);
+//					detail.setTypeName(null);
+//					cg2.getInfos().add(detail);
+
+					JJCaseInfo detail =new JJCaseInfo();
+					 
+					detail.setMapPoint(cg.getGps());
+					detail.setJjCode(cg.getJjcode());
+					cg1.getCaseInfo().add(detail);
+					//cg2.getInfos().add(detail); 
+				}else{
+					cg2=new CaseGpsInfo();
+					cg2.setInfos(new ArrayList<CaseGpsInfo>());
+					cg2.setCaseInfo(null);
+
+					cg2.setTypeCode(cg.getType2());
+					cg2.setTypeName(cg.getSubTypeName());
+					cg2.setCount(1);
+//					CaseGpsInfo detail =new CaseGpsInfo();
+//					detail.setCount(1);
+//					detail.setGps(cg.getGps());
+//					detail.setInfos(null);
+//					detail.setJjCode(cg.getJjcode());
+//					detail.setTypeCode(null);
+//					detail.setTypeName(null);
+//					
+//					cg2.getInfos().add(detail);
+
+					JJCaseInfo detail =new JJCaseInfo();
+					 
+					detail.setMapPoint(cg.getGps());
+					detail.setJjCode(cg.getJjcode());
+					cg1.getCaseInfo().add(detail);
+					//cg2.getInfos().add(detail); 
+					
+					cg1.getInfos().add(cg2);
+				}
+				
+			}else{
+				cg1=new CaseGpsInfo();
+				cg1.setInfos(new ArrayList<CaseGpsInfo>());
+				cg1.setCaseInfo(new ArrayList<JJCaseInfo>());
+				cg1.setTypeCode(cg.getType1());
+				cg1.setTypeName(cg.getParTypeName());
+				
+				cg1.setCount(1);
+				
+				cg2=new CaseGpsInfo();
+				cg2.setInfos(new ArrayList<CaseGpsInfo>());
+				cg2.setCaseInfo(null);
+				cg2.setTypeCode(cg.getType2());
+				cg2.setTypeName(cg.getSubTypeName());
+				cg2.setCount(1);
+				
+//				CaseGpsInfo detail =new CaseGpsInfo();
+//				detail.setCount(1);
+//				detail.setGps(cg.getGps());
+//				detail.setInfos(null);
+//				detail.setJjCode(cg.getJjcode());
+//				detail.setTypeCode(null);
+//				detail.setTypeName(null);
+//				cg2.getInfos().add(detail);
+
+				JJCaseInfo detail =new JJCaseInfo();
+				 
+				detail.setMapPoint(cg.getGps());
+				detail.setJjCode(cg.getJjcode());
+				cg1.getCaseInfo().add(detail);
+				//cg2.getInfos().add(detail); 
+				
+				cg1.getInfos().add(cg2);
+				list.add(cg1);
+			}
+		}
+		
+		
+		return list;
+	} 
 }

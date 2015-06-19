@@ -43,7 +43,7 @@ public class AreaServiceImpl implements AreaService {
 		int count = mapper
 				.checkAreaName(area.getAreaName(), area.getAreaType());
 		if (count > 0) {
-			throw new RestException("区域名已经存在！");
+			return null;
 		}
 		mapper.insert(area);
 		if (area.getRelationUserKeys() != null) {
@@ -78,7 +78,7 @@ public class AreaServiceImpl implements AreaService {
 	public Area updateByPrimaryKey(Area record) {
 		Area area = mapper.selectByPrimaryKey(record.getId());
 		if (area == null) {
-			throw new RestException("修改的区域不存在！");
+			return null;
 		}
 		if (StringUtils.hasLength(record.getAreaName())) {
 			area.setAreaName(record.getAreaName());
@@ -149,7 +149,7 @@ public class AreaServiceImpl implements AreaService {
 		int count = areaPointMapper.checkAreaPointName(areaPoint.getAreaId(),
 				areaPoint.getName());
 		if (count > 0) {
-			throw new RestException("必达点名字已经存在!");
+			return null;
 		}
 		areaPointMapper.insert(areaPoint);
 		return areaPoint;
@@ -168,7 +168,7 @@ public class AreaServiceImpl implements AreaService {
 		int count = areaPointMapper.checkAreaPointName(point.getAreaId(),
 				point.getName());
 		if (count > 0) {
-			throw new RestException("必达点名字已经存在!");
+			return null;
 		}
 		areaPointMapper.updateByPrimaryKey(point);
 		return point;

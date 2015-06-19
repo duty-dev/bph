@@ -11,7 +11,7 @@ public class ServiceSet {
     	if(serviceType.intValue()==1){
 			this.serviceTypeName="MQ服务";
 		}else if(serviceType.intValue()==2){
-			this.serviceTypeName="FTP服务";
+			this.serviceTypeName="天网接入";
 		}else{
 			this.serviceTypeName="GPS服务";
 		}

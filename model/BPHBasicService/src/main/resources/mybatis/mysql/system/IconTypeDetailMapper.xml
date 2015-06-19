@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tianyi.bph.dao.system.IconTypeDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.tianyi.bph.domain.system.IconTypeDetail" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="TYPE_NAME" property="typeName" jdbcType="VARCHAR" />
+    <result column="PARENT_ICON_TYPE" property="parentIconType" jdbcType="INTEGER" />
+    <result column="ICON_GROUP_ID" property="iconGroupId" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="iconResultMap" type="com.tianyi.bph.domain.system.IconTypeDetail" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="TYPE_NAME" property="typeName" jdbcType="VARCHAR" />
+    <result column="PARENT_ICON_TYPE" property="parentIconType" jdbcType="INTEGER" />
+    <result column="ICON_GROUP_ID" property="iconGroupId" jdbcType="INTEGER" />
+    <result column="NOMAL_URL" property="nomalUrl" jdbcType="VARCHAR" />
+    <result column="SELECTED_URL" property="selectedUrl" jdbcType="VARCHAR" />
+    <result column="INTO_ENCLOSURE_URL" property="intoEnclosureUrl" jdbcType="VARCHAR" />
+    <result column="DISPATCH_URL" property="dispatchUrl" jdbcType="VARCHAR" />
+    <result column="ARRIVE_URL" property="arriveUrl" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ID, TYPE_NAME, PARENT_ICON_TYPE, ICON_GROUP_ID
+  </sql>
+  <select id="selectByExample" resultMap="iconResultMap" parameterType="com.tianyi.bph.query.admin.TypeQuery" >
+    select
+    t.ID, t.TYPE_NAME, t.PARENT_ICON_TYPE, t.ICON_GROUP_ID,i.nomal_url as nomalUrl,i.SELECTED_URL as selectedUrl,
+    i.INTO_ENCLOSURE_URL as intoEnclosureUrl,i.DISPATCH_URL as dispatchUrl,i.ARRIVE_URL as arriveUrl
+    from t_icon_type_detail t
+    LEFT JOIN t_icon_group i ON t.ICON_GROUP_ID = i.GROUP_ID
+    where 1=1
+    <if test="iconType != null">
+        AND t.PARENT_ICON_TYPE = #{iconType,jdbcType=INTEGER}
+    </if>
+    GROUP BY t.ID
+    limit #{pageStart,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_icon_type_detail
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_icon_type_detail
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.tianyi.bph.domain.system.IconTypeDetail" >
+    insert into t_icon_type_detail (ID, TYPE_NAME, PARENT_ICON_TYPE, 
+      ICON_GROUP_ID)
+    values (#{id,jdbcType=INTEGER}, #{typeName,jdbcType=VARCHAR}, #{parentIconType,jdbcType=INTEGER}, 
+      #{iconGroupId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tianyi.bph.domain.system.IconTypeDetail" >
+    insert into t_icon_type_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="typeName != null" >
+        TYPE_NAME,
+      </if>
+      <if test="parentIconType != null" >
+        PARENT_ICON_TYPE,
+      </if>
+      <if test="iconGroupId != null" >
+        ICON_GROUP_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="typeName != null" >
+        #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentIconType != null" >
+        #{parentIconType,jdbcType=INTEGER},
+      </if>
+      <if test="iconGroupId != null" >
+        #{iconGroupId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_icon_type_detail
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.typeName != null" >
+        TYPE_NAME = #{record.typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentIconType != null" >
+        PARENT_ICON_TYPE = #{record.parentIconType,jdbcType=INTEGER},
+      </if>
+      <if test="record.iconGroupId != null" >
+        ICON_GROUP_ID = #{record.iconGroupId,jdbcType=INTEGER},
+      </if>
+    </set>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_icon_type_detail
+    set ID = #{record.id,jdbcType=INTEGER},
+      TYPE_NAME = #{record.typeName,jdbcType=VARCHAR},
+      PARENT_ICON_TYPE = #{record.parentIconType,jdbcType=INTEGER},
+      ICON_GROUP_ID = #{record.iconGroupId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tianyi.bph.domain.system.IconTypeDetail" >
+    update t_icon_type_detail
+    <set >
+      <if test="typeName != null" >
+        TYPE_NAME = #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentIconType != null" >
+        PARENT_ICON_TYPE = #{parentIconType,jdbcType=INTEGER},
+      </if>
+      <if test="iconGroupId != null" >
+        ICON_GROUP_ID = #{iconGroupId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tianyi.bph.domain.system.IconTypeDetail" >
+    update t_icon_type_detail
+    set TYPE_NAME = #{typeName,jdbcType=VARCHAR},
+      PARENT_ICON_TYPE = #{parentIconType,jdbcType=INTEGER},
+      ICON_GROUP_ID = #{iconGroupId,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="getTypeListByGoupId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_icon_type_detail
+    where ICON_GROUP_ID = #{iconGroupId,jdbcType=INTEGER}
+  </select>
+</mapper>

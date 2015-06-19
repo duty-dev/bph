@@ -20,6 +20,7 @@
 		<result column="gb_device_server_id" property="gbDeviceServerId"
 			jdbcType="INTEGER" />
 		<result column="civil_code" property="civilCode" jdbcType="VARCHAR" />
+		<result column="naming" property="naming" jdbcType="VARCHAR" />
 	</resultMap>
 	<sql id="Example_Where_Clause">
 		<where>
@@ -91,7 +92,7 @@
 		model, address,
 		longitude,
 		latitude, owner, register_way, gb_organ_id,
-		gb_device_server_id, civil_code
+		gb_device_server_id, civil_code,naming
 	</sql>
 	<select id="selectByExample" resultMap="BaseResultMap"
 		parameterType="com.tianyi.bph.query.system.GBDeviceExample">

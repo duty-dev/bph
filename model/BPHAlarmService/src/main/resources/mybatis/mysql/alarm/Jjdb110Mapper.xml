@@ -1007,10 +1007,10 @@
 			AND jj.SFDZ LIKE CONCAT ('%',#{sfdz,jdbcType=VARCHAR},'%' )
 		</if>
 		<if test="alarmLocation == 1">
-			AND jj.ZDDWXZB is not null AND ZDDWYZB is not null
+			AND jj.MARK = #{alarmLocation,jdbcType=INTEGER}
 		</if>
 		<if test="alarmLocation == 0">
-			AND jj.ZDDWXZB is null AND ZDDWYZB is null
+			AND jj.MARK = #{alarmLocation,jdbcType=INTEGER} OR jj.MARK is null
 		</if>
 		<if test="startTime != null">
 			AND <![CDATA[ jj.BJSJ >= #{startTime,jdbcType=TIMESTAMP} ]]>
