@@ -78,16 +78,16 @@
 			HOUR (bj.bjsj),
 			DATE_FORMAT(bj.BJSJ, '%Y%m%d'),
 			DATE_FORMAT(bj.BJSJ, '%Y%m'),
-			ifnull(org.ORGAN_ID,0),
-			ifnull(org.CODE,''),
-			ifnull(org.PATH,''),
-			ifnull(org.parent_id,0),
+			org.ORGAN_ID,
+			org.CODE,
+			org.PATH,
+			org.parent_id,
 			bj.AJZT,
 			bj.LXDH,
-			ifnull(bj.CASE_LEVEL,''),
-			ifnull(bj.BJLB,''),
-			ifnull(bj.BJLX,''),
-			ifnull(bj.BJXL,''),
+			bj.CASE_LEVEL,
+			bj.BJLB,
+			bj.BJLX,
+			bj.BJXL,
 			bj.BJNR,
 			bj.SFDZ,
 			bj.GPS_CONFIG,
@@ -149,16 +149,16 @@
 			chour				=HOUR (t.bjsj),
 			ymd					=DATE_FORMAT(t.BJSJ, '%Y%m%d'),
 			ym					=DATE_FORMAT(t.BJSJ, '%Y%m'),
-			org_id				=ifnull(t.ORGAN_ID,0),
-			org_code			=ifnull(t.CODE,''),
-			org_path			=ifnull(t.PATH,''),
-			org_parent_id	=ifnull(t.parent_id,0),
+			org_id				=t.ORGAN_ID,
+			org_code			=t.CODE,
+			org_path			=t.PATH,
+			org_parent_id	=t.parent_id,
 			state					=t.AJZT,
 			phone				=t.LXDH,
-			clevel 				=ifnull(t.CASE_LEVEL,''),
-			type1				=ifnull(t.BJLB,''),
-			type2				=ifnull(t.BJLX,''),
-			type3				=ifnull(t.BJXL,''),
+			clevel 				=t.CASE_LEVEL,
+			type1				=t.BJLB,
+			type2				=t.BJLX,
+			type3				=t.BJXL,
 			content			=t.BJNR,
 			address				=t.SFDZ,
 			gps					=t.GPS_CONFIG,
@@ -208,7 +208,7 @@
 			select
 				type1 		as type_code,
 				1 				as type_level,
-				count(1) 	as type_count
+				count(*) 	as type_count
 			from 
 				t_case_report
 			where 
@@ -228,7 +228,7 @@
 			select
 				type2 		as type_code,
 				2				as	type_level,
-				count(1) 	as type_count
+				count(*) 	as type_count
 			from 
 				t_case_report
 			where
@@ -336,7 +336,7 @@
 	  			org_id		as org_id,
 	  			type1		as type_code,
 	  			1				as type_level,
-	  			count(1)	as org_type_count
+	  			count(*)	as org_type_count
 	  		from
 	  			t_case_report
 	  		where
@@ -362,7 +362,7 @@
 	  			org_id		as org_id,
 	  			type2		as type_code,
 	  			2				as type_level,
-	  			count(1)	as org_type_count
+	  			count(*)	as org_type_count
 	  		from
 	  			t_case_report
 	  		where
@@ -421,7 +421,7 @@
   				<if test ="orgLevel ==6">
   					ole.level7_id as org_id,
   				</if>
-				ifnull(count(1) ,0) AS amount
+				ifnull(count(*) ,0) AS amount
 			FROM t_case_report AS cp
 			LEFT JOIN t_organ_level AS ole ON cp.org_id = ole.organ_id
 			WHERE
@@ -485,6 +485,9 @@
     	<result column="org_id" property="orgId"   jdbcType="INTEGER"/>
     	<result column="type1" property="type1"  jdbcType="VARCHAR" />
     	<result column="type2" property="type2"  jdbcType="VARCHAR" />
+    	<result column="partypename" property="parTypeName"  jdbcType="VARCHAR" />
+    	<result column="subtypename" property="subTypeName"  jdbcType="VARCHAR" />
+    	<result column="code" property="jjcode"  jdbcType="VARCHAR" />
     	<result column="case_level" property="caseLevel"  jdbcType="INTEGER" />
     </resultMap>
 
@@ -493,9 +496,14 @@
 			 cp.org_id as org_id, 
 			 cp.type1 	as type1,
 			 cp.type2 	as type2,
-			 cp.clevel	as case_level,
-			 cp.gps		as gps 
+			 cp.clevel	as case_level, 
+			 cp.gps		as gps ,
+			 cp.code    as code,
+			 atp.type_name as partypename,
+			 alt.type_name as subtypename
 		from t_case_report as cp
+		LEFT JOIN b_alarm_type atp on atp.TYPE_CODE = cp.type1
+			LEFT JOIN b_alarm_type alt on alt.TYPE_CODE = cp.type2
 		where 
 			ymd &gt;=#{beginYmd,jdbcType=INTEGER} and 
 	  		ymd &lt;=#{endYmd,jdbcType=INTEGER} and
@@ -512,8 +520,6 @@
 					#{item}
 				</foreach> and
 			cp.org_path like CONCAT(#{orgPath,jdbcType=VARCHAR},'%')
-		order by
-			type1,type2
 	</select>
 	
 </mapper>
