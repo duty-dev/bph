@@ -30,8 +30,7 @@ public class CaseTask {
 		
 		Date beginTime=null;
 		Date endTime=null;
-		
-		
+
 		beginTime=maxDate;
 		
 //		if(maxDate==null){

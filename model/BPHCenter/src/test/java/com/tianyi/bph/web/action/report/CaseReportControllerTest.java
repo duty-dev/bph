@@ -42,7 +42,8 @@ public class CaseReportControllerTest extends BaseTest{
 	@Test
 	public void test(){
 		try{
-			testLoadCaseGps();
+			//testLoadCaseGps();
+			testLoadWarningOrgAGGR();
 		}catch(Exception ex){
 			System.console().printf(ex.getMessage());
 		}
@@ -181,7 +182,6 @@ public class CaseReportControllerTest extends BaseTest{
  		hours.add(14);
  		hours.add(15);
  		map.put("hours", hours);
- 		
  		
 		List<WarningOrgAGGR> woas=caseReportService.loadWarningReport(map);
 		
