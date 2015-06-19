@@ -291,9 +291,8 @@
 			});
 			dataSource[3] = totalRow;
 			
-
 			//设置grid的长宽
-			FunctionManage.setGridWidthAndHeight(XLabel+1,dataSource.length);
+			FunctionManage.setGridWidthAndHeight(XLabel.length+1,dataSource.length);
 			$("#grid").empty();
 			$("#grid").kendoGrid({
 				dataSource : dataSource,
@@ -384,7 +383,7 @@
 				columns : gridColumns,
 				scrollable : true,
 			}); 
-			$(".k-header").hide();
+			$("#grid .k-header").hide();
 		},
 
 		initAlarmTimeSpanData : function(data, title) {
@@ -473,7 +472,7 @@
 			}
 			
 			//设置grid的长宽
-			FunctionManage.setGridWidthAndHeight(gridColumns,gridDataSource.length);
+			FunctionManage.setGridWidthAndHeight(gridColumns.length,gridDataSource.length);
 			$("#grid").empty();
 			$("#grid").kendoGrid({
 				dataSource : gridDataSource,
@@ -485,7 +484,6 @@
 		},
 
 		initAlarmOrganData : function(data, title, XLabel, alarmTypeName) {
-
 			var len = XLabel.length;
 			if(len>8){
 				$("#jqtj").css("width",1000+(len-8)*80);
@@ -690,7 +688,7 @@
 			});
 
 			//设置grid的长宽
-			FunctionManage.setGridWidthAndHeight(alarmTypeName+1,dataSource.length);
+			FunctionManage.setGridWidthAndHeight(alarmTypeName.length+1,dataSource.length);
 			$("#grid").empty();
 			$("#grid").kendoGrid({
 				dataSource : dataSource,
