@@ -1,7 +1,8 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
+<script src="http://cdn.kendostatic.com/2015.1.429/js/jszip.min.js"></script>
 <script type="text/javascript"> 
 	var chartManage = {
-		GetSerie : function(data, xlabel, name) {
+		GetSerieOfAlarmType : function(data, xlabel, name) {
 			//初始化serie
 			var serie = {};
 			serie.name = name;
@@ -14,7 +15,9 @@
 			//从data获取响应值赋予serie对象内的数组
 			if (data!=undefined&&data.data !=undefined) {
 				$.each(data.data, function(index, item) {
-				var alarmNum = xlabel.indexOf(item.typeName);
+			
+				var alarmNum = $.inArray(item.typeName,xlabel);
+				//var alarmNum = xlabel.indexOf(item.typeName);
 				serie.data[alarmNum] = item.amount;
 				});
 			}
@@ -54,29 +57,37 @@
 			if(count ==0){//不存在			
 				//获取数据
 				$.each(data.data,function(index,item){
-					var xlabelIndex = xlabel.indexOf(item.period);
+					
+					var xlabelIndex = $.inArray(item.period,xlabel);
+					//var xlabelIndex = xlabel.indexOf(item.period);
 					serie.data[xlabelIndex] = item.amount;
 				});
 			}else{//存在
 				$.each(data.data,function(index,item){
-					var itemIndex = sameTime.indexOf(item.period);
+					var itemIndex = $.inArray(item.period,sameTime);
+					//var itemIndex = sameTime.indexOf(item.period);
 					
-					if(itemIndex ==-1){
-						var xlabelIndex = xlabel.indexOf(item.period);
+					if(itemIndex ==-1){	
+						var xlabelIndex = $.inArray(item.period,xlabel);
+						//var xlabelIndex = xlabel.indexOf(item.period);
 						serie.data[xlabelIndex] = item.amount;
 					}else{
 						if(m_Query_pkg.periodType ==1){
 						//按天
 							if(item.months == (parseInt(data.beginYmd/100)%100)){
-								var xlabelIndex = xlabel.indexOf(item.period);
+								var xlabelIndex = $.inArray(item.period,xlabel);
+								//var xlabelIndex = xlabel.indexOf(item.period);
 								serie.data[xlabelIndex] = item.amount;
 							}else{
-								var xlabelIndex = xlabel.lastIndexOf(item.period);
+								var xlabelIndex = $.inArray(item.period,xlabel);
+								//var xlabelIndex = xlabel.indexOf(item.period);
+								//var xlabelIndex = xlabel.lastIndexOf(item.period);
 								serie.data[xlabelIndex] = item.amount;
 							}
 						}else if(m_Query_pkg.periodType ==3){
 						//按月
-							var xlabelIndex = xlabel.indexOf(item.period);
+							//var xlabelIndex = xlabel.indexOf(item.period);
+							var xlabelIndex = $.inArray(item.period,xlabel); 
 							if(item.years ==parseInt(data.beginYmd/10000)){
 								serie.data[xlabelIndex] = item.amount;
 							}else{
@@ -88,21 +99,287 @@
 				});
 			}
 			return serie;
+		},
+		SetChartWidth:function(len){
+			if(len>8){
+				$("#jqtj").css("width",900+(len-8)*120);
+			}else{
+				$("#jqtj").css("width",900);
+			}
 		}
 			
 	}; 
- 
+ 	var gridManage = {
+ 		GetAlarmTypeObjectsOfAlarmType:function(data){
+ 			var alarmTypeObjects = {};
+			$.each(data, function(index, item) {
+				$.each(item.data, function(index1, item1) {
+					var alarmObject = {};
+					alarmObject.typeName = item1.typeName;
+					alarmObject.typeCode = item1.typeCode;
+					alarmObject.typeLevel = item1.typeLevel;
+					alarmObject.typeParentCode = item1.typeParentCode;
+					alarmTypeObjects[item1.typeName] = alarmObject;
+				});
+			});
+			return alarmTypeObjects;
+ 		},
+ 		GetAlarmTypeObjectsOfOrgan:function(data,alarmTypeName){
+ 			var alarmTypeObjects = {};
+
+			$.each(data, function(index, item) {
+				if (item.typeName != undefined) {
+					var alarmTypeObject = {};
+					alarmTypeObject.typeName = item.typeName;
+					alarmTypeObject.typeCode = item.typeCode;
+					alarmTypeObject.typeLevel = item.typeLevel;
+					alarmTypeObject.typeParentCode = item.typeParentCode;
+					alarmTypeObjects[item.typeName] = alarmTypeObject;
+				}
+			});
+			return alarmTypeObjects;
+ 		},
+ 		GetColumnsOfAlarmType:function(alarmTypeObjects,xlabel){
+ 			var columnsArray = [];
+
+ 			var firstColumn = {
+ 				field : "tjTime",
+				title : " ",
+				width:"250px"
+ 			};
+ 			columnsArray.push(firstColumn);
+
+			//获取警情类型的数量
+			var count = 0;
+			$.each(alarmTypeObjects, function(index, item) {
+				count++;
+			});
+
+			var numOfNotype  = 0;//对那些没有数据，无法获得其typeCode和parentCode的警情类型
+			$.each(xlabel,function(index,item){
+				//子列
+				var column = {};
+				//判断当前警情是否存在警情类型信息				
+				if (alarmTypeObjects[item] == undefined) {
+						column = {
+								field : "none" + numOfNotype,
+								title : item
+								};
+						numOfNotype++;
+				}else{
+					column = {
+						field:alarmTypeObjects[item].typeCode,
+						title:item
+					};
+				}
+				//将子列添加到columnsArray
+				columnsArray.push(column);
+			});
+			//添加合计子列
+			var totalColumn = {
+ 				field : "total",
+				title : "合计"
+ 			};
+ 			columnsArray.push(totalColumn);
+
+ 			return columnsArray;
+ 		},
+ 		GetColumnsOfOrgan:function(alarmTypeObjects,alarmTypeName){
+ 			var columnsArray = [];
+
+ 			var firstColumn = {
+ 				field : "alarmType",
+				title : "警情分类",
+				width:"250px"
+ 			};
+ 			columnsArray.push(firstColumn);
+
+			//获取警情类型的数量
+			var count = 0;
+			$.each(alarmTypeObjects, function(index, item) {
+				count++;
+			});
+
+			var numOfNotype  = 0;//对那些没有数据，无法获得其typeCode和parentCode的警情类型
+			$.each(alarmTypeName,function(index,item){
+				//子列
+				var column = {};
+				//判断当前警情是否存在警情类型信息				
+				if (alarmTypeObjects[item] == undefined) {
+						column = {
+								field : "none" + numOfNotype,
+								title : item
+								};
+						numOfNotype++;
+				}else{
+					column = {
+						field:alarmTypeObjects[item].typeCode,
+						title:item
+					};
+				}
+				//将子列添加到columnsArray
+				columnsArray.push(column);
+			});
+			//添加合计子列
+			var totalColumn = {
+ 				field : "total",
+				title : "合计"
+ 			};
+ 			columnsArray.push(totalColumn);
+
+ 			return columnsArray;
+ 		},
+ 		GetTotal:function(typeCode,amount,alarmTypeObjects){
+ 			if (amount ==0) {
+ 				return 0;
+ 			}
+ 			var returnAmount = 0;
+ 			//判断typeCode是大类还是小类
+ 			$.each(alarmTypeObjects,function(index,alarmTypeObjectItem){
+ 				if (typeCode ==alarmTypeObjectItem.typeCode) {
+ 					if (alarmTypeObjectItem.typeLevel ==1) {//大类
+ 						returnAmount = amount;
+ 						return false;
+ 					}else{//小类
+ 						//判断是否存在父类，存在，返回0，不存在，返回amount
+ 						returnAmount = amount;
+ 						$.each(alarmTypeObjects,function(index1,alarmTypeObjectItem1){
+ 							if (alarmTypeObjectItem.typeParentCode ==alarmTypeObjectItem1.typeCode) {//存在
+ 								returnAmount = 0;
+ 								return false;
+ 							}
+ 						});
+ 						return false;
+ 					}
+ 				}
+ 				//如果到最后都没有匹配到typeCode的这种情况未处理
+ 			});
+ 			return returnAmount;
+ 		},
+ 		GetDataSourceOfAlarmType:function(data,columnsArray,alarmTypeObjects,xlabel){
+ 			var dataSource = [];
+ 			//添加小计一行
+			var totalRow = {};
+			totalRow['tjTime']  = "小计";
+			//给小计这一行赋初始值
+			$.each(columnsArray,function(index,item){
+				if (item.field !="tjTime") {	
+					totalRow[item.field] = 0;
+				}
+			});
+			$.each(data, function(index, item) {
+				//添加行
+				var row = {};
+				//给新添行赋初始值
+				$.each(columnsArray,function(index2,item2){
+					if (item2.field !="tjTime") {
+						row[item2.field] = 0;
+						}
+				});	
+				//根据data获取相应数据
+				$.each(item.data, function(index1, item1) {
+					row[item1.typeCode] = item1.amount;
+					//对应合计则进行相加统计
+					totalRow[item1.typeCode] +=item1.amount;
+				});
+				//一行进行合计
+				
+				var total = 0;
+				$.each(row,function(indexOfRow,itemOfRow){
+					if (indexOfRow =="tjTime") {
+						return true;
+					}
+					//区分大小类
+					total+=gridManage.GetTotal(indexOfRow,itemOfRow,alarmTypeObjects);
+				});
+
+
+				row['total'] = total;
+
+				//小计一行中的合计计算
+				if(index ==0)
+					totalRow['total'] =total;
+				else
+					totalRow['total'] +=total;
+
+				row['tjTime'] = FunctionManage.GetStandardYM(item.beginYmd)
+					+ "-" + FunctionManage.GetStandardYM(item.endYmd);
+				dataSource.push(row);
+			});
+				
+			dataSource.push(totalRow);
+			return dataSource;
+ 		},
+ 		GetDataSourceOfOrgan:function(data,columnsArray,alarmTypeObjects,xlabel){
+ 			var dataSource = [];
+ 			var dataSourceObj = {};
+ 			//添加小计一行
+			var totalRow = {};
+			totalRow['alarmType']  = "小计";
+			//给小计这一行赋初始值
+			$.each(columnsArray,function(index,item){
+				if (item.field !="alarmType") {	
+					totalRow[item.field] = 0;
+				}
+			});
+			//dataSourceObj添加元素并且初始化
+			$.each(xlabel, function(index, item) {
+				//添加行
+				var row = {};
+				row.alarmType = item;
+				//给新添行赋初始值
+				$.each(columnsArray,function(indexOfColumns,itemOfColumns){
+					if(itemOfColumns.field !="alarmType"){
+						row[itemOfColumns.field] = 0;
+					}
+				});	
+				dataSourceObj[item] = row;
+			});
+			//根据data获取相应数据
+			$.each(data,function(indexOfData,itemOfData){
+				dataSourceObj[itemOfData.orgName][itemOfData.typeCode] = itemOfData.amount;
+				//合计
+				//dataSourceObj[itemOfData.orgName]["total"] +=itemOfData.amount;
+
+				//小计对应列统计
+				totalRow[itemOfData.typeCode]+=itemOfData.amount;
+				//小计合计统计
+				//totalRow["total"]+=itemOfData.amount;
+			});
+
+			//合计统计
+			$.each(dataSourceObj,function(index2,dataRow){
+				var total = 0;
+				$.each(dataRow,function(index3,rowItem){
+					if (index3 =="alarmType") {
+						return true;
+					}
+					//区分大小类
+					total+=gridManage.GetTotal(index3,rowItem,alarmTypeObjects);
+				});
+				dataRow["total"] = total;
+				totalRow["total"] +=total;
+			});
+			//将小计添加到dataSourceObj
+			dataSourceObj["小计"] = totalRow;
+
+			//将dataSourceObj转化成dataSource
+			$.each(dataSourceObj,function(index,item){
+				dataSource.push(item);
+			});
+			
+			return dataSource;
+ 		}
+ 	};
 	var ReportManage = {
 		initAlarmTypeData : function(data, title, XLabel) {
-		
-			var len = XLabel.length;
-			if(len>8){
-				$("#jqtj").css("width",1000+(len-8)*80);
-			}
+			//动态缩放chart横坐标的长度
+			chartManage.SetChartWidth(XLabel.length);
+
 			var series = [];
-			var sameSerie = chartManage.GetSerie(data[0], XLabel, "同比");
-			var circleSerie = chartManage.GetSerie(data[1], XLabel, "环比");
-			var serie = chartManage.GetSerie(data[2], XLabel, "无");
+			var sameSerie = chartManage.GetSerieOfAlarmType(data[0], XLabel, "无");
+			var circleSerie = chartManage.GetSerieOfAlarmType(data[1], XLabel, "同比");
+			var serie = chartManage.GetSerieOfAlarmType(data[2], XLabel, "环比");
 
 			series.push(sameSerie);
 			series.push(circleSerie);
@@ -126,175 +403,54 @@
 				},
 				series : series,
 				valueAxis : {
-					//max: 9,
+					//max: 1500,
 					line : {
-						visible : false
+						visible : true,
+						color:"#81C9F0"
 					},
 					minorGridLines : {
 						visible : true
-					}
+					},
+					labels:{
+				    	color: "#81C9F0"
+				    },
+				    majorGridLines:{
+				    	color: "#232323"
+				    },
+				    minorGridLines:{
+				    	color: "#232323"
+				    }
+				},
+				chartArea:{
+					background: "transparent"
 				},
 				categoryAxis : {
 					categories : XLabel,
 					majorGridLines : {
 						visible : false
-					}
+					},
+					background: "transparent",
+					color: "#81C9F0"
 				},
 				tooltip : {
 					visible : true,
 					template : "#= series.name #: #= value #"
 				}
 			});
-
-			var columns = {};
-			var columnsArray = [];
-			columns['tjTime'] = {
-				field : "tjTime",
-				title : " "
-			};
-
-			var alarmTypeObjects = {};
-			$.each(data, function(index, item) {
-				$.each(item.data, function(index1, item1) {
-					var alarmObject = {};
-					alarmObject.typeName = item1.typeName;
-					alarmObject.typeCode = item1.typeCode;
-					alarmObject.typeLevel = item1.typeLevel;
-					alarmObject.typeParentCode = item1.typeParentCode;
-					alarmTypeObjects[item1.typeName] = alarmObject;
-				});
-			});
-			var count = 0;
-			$.each(alarmTypeObjects, function(index, item) {
-				count++;
-			});
-
-			var numOfNotype  = 0;//对那些没有数据，无法获得其typeCode和parentCode的警情类型
-			$.each(XLabel,function(index, item) {
-								var column = {};
-								
-								if (alarmTypeObjects[item] == undefined) {
-									column = {
-										field : "none" + numOfNotype,
-										title : item
-									};
-									columns["none" + numOfNotype] = column;
-									numOfNotype++;
-								} else {
-									if (alarmTypeObjects[item].typeLevel == 1) {
-										var childColumns = [];
-										var otherChildColumn = {
-											field : "other"
-													+ alarmTypeObjects[item].typeCode,
-											title : "-"
-										};
-										childColumns.push(otherChildColumn);
-
-										column = {
-											field : alarmTypeObjects[item].typeCode,
-											title : alarmTypeObjects[item].typeName,
-											columns : childColumns
-										};
-										columns[alarmTypeObjects[item].typeCode] = column;
-									} else if (alarmTypeObjects[item].typeLevel == 2) {
-										//检查是否存在大类
-										var num = 0;
-										$.each(alarmTypeObjects,function(index1, item1) {
-															num++;
-															if (alarmTypeObjects[item].typeParentCode == item1.typeCode) {
-																var childColumn = {
-																	field : alarmTypeObjects[item].typeCode,
-																	title : alarmTypeObjects[item].typeName
-																};
-
-																columns[item1.typeCode].columns
-																		.push(childColumn);
-																return false;
-															} else {
-																if (num == count) {
-																	column = {
-																		field : alarmTypeObjects[item].typeCode,
-																		title : alarmTypeObjects[item].typeName
-																	};
-																	columns[alarmTypeObjects[item].typeCode] = column;
-																}
-															}
-														});
-									}
-								}
-							});
-
-			$.each(columns, function(index, item) {
-				columnsArray.push(item);
-			});
-			columnsArray.push({
-				field : "count",
-				title : "合计"
-			});
-
-			var dataSource = [];
-			var totalRow = {};
-			totalRow['tjTime']  = "小计";
-			//给grid数据赋初始值
-			$.each(columns,function(index,item){
-				if (index !="tjTime") {
-					if (item.columns!=undefined) {
-						$.each(item.columns,function(indexOfChildColumns,itemOfChildColumns){
-							totalRow[itemOfChildColumns.field] = 0;
-						});
-					}else{
-						totalRow[index] = 0;
-					}
-				}
-			});
-			$.each(data, function(index, item) {
-				var row = {};
-				//给grid数据赋初始值
-				$.each(columns,function(index2,item2){
-				if (index2 !="tjTime") {
-					if (item2.columns!=undefined) {
-						$.each(item2.columns,function(indexOfChildColumns,itemOfChildColumns){
-							row[itemOfChildColumns.field] = 0;
-						});
-					}else{
-						row[index2] = 0;
-					}
-				}
-				});	
-				$.each(item.data, function(index1, item1) {
-					if (item1.typeLevel == 1) {
-						row["other" + item1.typeCode] = item1.amount;
-						$.each(item.data, function(index2, item2) {
-							if (item1.typeCode == item2.typeParentCode) {
-								row["other" + item1.typeCode] -= item2.amount;
-							}
-						});
-						totalRow["other" + item1.typeCode] = (totalRow["other" + item1.typeCode]==undefined?row["other" + item1.typeCode]:totalRow["other" + item1.typeCode]+row["other" + item1.typeCode]);
-					} else if (item1.typeLevel == 2) {
-						row[item1.typeCode] = item1.amount;
-						totalRow[item1.typeCode] = (totalRow[item1.typeCode] ==undefined ?item1.amount:totalRow[item1.typeCode]+item1.amount);
-					}
-
-				});
-				var total = 0;
-				for (d in row) {
-					total += row[d];
-				}
-				row['count'] = total;
-				if(index ==0)
-					totalRow['count'] =total;
-				else
-					totalRow['count'] +=total;
-				row['tjTime'] = FunctionManage.GetStandardYM(item.beginYmd)
-						+ "-" + FunctionManage.GetStandardYM(item.endYmd);
-				dataSource[index] = row;
-			});
-			dataSource[3] = totalRow;
-			
+			//获取警情类型的信息
+			var alarmTypeObjects = gridManage.GetAlarmTypeObjectsOfAlarmType(data);
+			//获取grid的列
+			var columnsArray = gridManage.GetColumnsOfAlarmType(alarmTypeObjects,XLabel);
+			//获取grid的所有的行
+			var dataSource = gridManage.GetDataSourceOfAlarmType(data,columnsArray,alarmTypeObjects,XLabel);
 			//设置grid的长宽
 			FunctionManage.setGridWidthAndHeight(XLabel.length+1,dataSource.length);
 			$("#grid").empty();
 			$("#grid").kendoGrid({
+				toolbar: ["excel"],
+				excel: {
+                fileName: title+"警情统计_警情分类统计表.xlsx"
+            	},
 				dataSource : dataSource,
 				columns : columnsArray
 			});
@@ -302,20 +458,19 @@
 					"text-align:center");
 		},
 		initAlarmCircleData : function(data, title, XLabel) {
-			var len = XLabel.length;
-			if(len>8){
-				$("#jqtj").css("width",1000+(len-8)*80);
-			}
+			//动态缩放chart横坐标的长度
+			//chartManage.SetChartWidth(XLabel.length);
+			$("#jqtj").css("width",1300); 
 			var series = [];
 			var name;
 			for(var i = 0;i<3;i++){
 				var serie = {};
 				if(i ==0){
-					name = "同比";
-				}else if(i ==1){
-					name = "环比";
-				}else{
 					name = "无";
+				}else if(i ==1){
+					name = "同比";
+				}else{
+					name = "环比";
 				}
 				serie = chartManage.GetSerieOfPeroid(data[i],XLabel,name);
 				series.push(serie);
@@ -334,19 +489,36 @@
 				},
 				series : series,
 				valueAxis : {
-					labels : {
-						format : "{0}"
-					},
+					//max: 9,
 					line : {
-						visible : false
+						visible : true,
+						color:"#81C9F0"
 					},
-					axisCrossingValue : -10
+					minorGridLines : {
+						visible : true
+					},
+					labels:{
+						format : "{0}",
+				    	color: "#81C9F0"
+				    },
+				    majorGridLines:{
+				    	color: "#232323"
+				    },
+				    minorGridLines:{
+				    	color: "#232323"
+				    },
+				    axisCrossingValue : -10
 				},
 				categoryAxis : {
 					categories : XLabel,
 					majorGridLines : {
 						visible : false
-					}
+					},
+					background: "transparent",
+					color: "#81C9F0"
+				},
+				chartArea:{
+					background: "transparent"
 				},
 				tooltip : {
 					visible : true,
@@ -379,13 +551,16 @@
 			FunctionManage.setGridWidthAndHeight(gridColumns.length,dataSource.length);
  			$("#grid").empty();
 			$("#grid").kendoGrid({
+				toolbar: ["excel"],
+				excel: {
+                	fileName: title+"警情统计_周期统计表.xlsx"
+            	},
 				dataSource : dataSource,
 				columns : gridColumns,
 				scrollable : true,
 			}); 
-			$("#grid .k-header").hide();
+			$("#grid th.k-header").hide();
 		},
-
 		initAlarmTimeSpanData : function(data, title) {
 			var names = [];
 			names[0] = FunctionManage.GetSerieName(data[0]);
@@ -405,6 +580,7 @@
 				categoriesAxis[i - 1] = i.toString();
 			}
 			$("#jqtj").empty();
+			$("#jqtj").css("width",1300);
 			$("#jqtj").kendoChart({
 				title : {
 					text : title
@@ -422,19 +598,36 @@
 				},
 				series : seriesArray,
 				valueAxis : {
-					labels : {
-						format : "{0}"
-					},
+					//max: 9,
 					line : {
-						visible : false
+						visible : true,
+						color:"#81C9F0"
 					},
-					axisCrossingValue : -10
+					minorGridLines : {
+						visible : true
+					},
+					labels:{
+						format : "{0}",
+				    	color: "#81C9F0"
+				    },
+				    majorGridLines:{
+				    	color: "#232323"
+				    },
+				    minorGridLines:{
+				    	color: "#232323"
+				    },
+				    axisCrossingValue : -10
 				},
 				categoryAxis : {
 					categories : categoriesAxis,
 					majorGridLines : {
 						visible : false
-					}
+					},
+					background: "transparent",
+					color: "#81C9F0"
+				},
+				chartArea:{
+					background: "transparent"
 				},
 				tooltip : {
 					visible : true,
@@ -456,7 +649,7 @@
 			var gridColumns = [];
 			gridColumns[0] = {
 				field : "timeCircle",
-				title : "时间段",
+				title :"时间段",
 				width : "250px",
 				attributes : {
 					"class" : "table-cell",
@@ -475,6 +668,10 @@
 			FunctionManage.setGridWidthAndHeight(gridColumns.length,gridDataSource.length);
 			$("#grid").empty();
 			$("#grid").kendoGrid({
+				toolbar: ["excel"],
+				excel: {
+                fileName: title+"警情统计_时间段统计表.xlsx"
+            	},
 				dataSource : gridDataSource,
 				columns : gridColumns,
 				resizable : true
@@ -482,12 +679,10 @@
 			$("#grid th[data-role='droptarget']").attr("style",
 					"text-align:center");
 		},
-
 		initAlarmOrganData : function(data, title, XLabel, alarmTypeName) {
-			var len = XLabel.length;
-			if(len>8){
-				$("#jqtj").css("width",1000+(len-8)*80);
-			}
+			//动态缩放chart横坐标的长度
+			chartManage.SetChartWidth(XLabel.length);
+
 			var seriesArray = [];
 			var rows = data[0].data;
 			var types = {};
@@ -506,7 +701,8 @@
 			$.each(rows, function(index, item) {
 				if (item.typeName != undefined) {
 					var t = types[item.typeName];
-					var orgIndex = XLabel.indexOf(item.orgName);
+					//var orgIndex = XLabel.indexOf(item.orgName);
+					var orgIndex = $.inArray(item.orgName,XLabel); 
 					t.data[orgIndex] = item.amount;
 				}
 			});
@@ -529,18 +725,35 @@
 				series : seriesArray,
 				valueAxis : {
 					line : {
-						visible : false
+						visible : true,
+						color:"#81C9F0"
 					},
 					minorGridLines : {
 						visible : true
-					}
+					},
+					labels:{
+						format : "{0}",
+				    	color: "#81C9F0"
+				    },
+				    majorGridLines:{
+				    	color: "#232323"
+				    },
+				    minorGridLines:{
+				    	color: "#232323"
+				    },
+				    axisCrossingValue : -10
 				},
 				categoryAxis : {
 					baseUnitStep : "auto",
 					categories : XLabel,
 					majorGridLines : {
 						visible : false
-					}
+					},
+					background: "transparent",
+					color: "#81C9F0"
+				},
+				chartArea:{
+					background: "transparent"
 				},
 				tooltip : {
 					visible : true,
@@ -548,151 +761,23 @@
 				}
 			});
 			//添加表格
-			var gridColumns = {};
-			gridColumns['alarmType'] = ({
-				field : "alarmType",
-				title : "警情分类"
-			});
 
-			var alarmTypeObject = {};
-			$.each(alarmTypeName, function(index, item) {
-				var t = {};
-				t.name = item;
-				t.data = [];
-				t.data.length = 3;//0是类型，1是typeCode，2是parentCode
-				alarmTypeObject[item] = t;
-
-			});
-
-			$.each(data[0].data, function(index, item) {
-				if (item.typeName != undefined) {
-					var t = alarmTypeObject[item.typeName];
-					t.data[0] = item.typeLevel;
-					t.data[1] = item.typeCode;
-					t.data[2] = item.typeParentCode;
-				}
-			});
-
-			var countNoTypeName = 0;
-			$.each(alarmTypeObject, function(index, item) {
-				var newColumn = {};
-				if (item.data[0] == undefined) {
-					newColumn = {
-						field : "NoTypeName" + countNoTypeName,
-						title : item.name
-					};
-					gridColumns["NoTypeName" + countNoTypeName] = newColumn;
-					countNoTypeName++;
-				} else {
-					if (item.data[0] == 1) {
-						var childColumn = [];
-						childColumn.push({
-							field : "other" + item.data[1],
-							title : "-"
-						});
-						newColumn = {
-							field : item.data[1],
-							title : item.name,
-							columns : childColumn
-						};
-						gridColumns[item.data[1]] = newColumn;
-					} else if (item.data[0] == 2) {
-						//如果是小类，则判断是否存在大类是它的父类；存在，放到其对应的下面；不存在，则建立一个column;
-						$.each(alarmTypeObject, function(index1, item1) {
-							if (item1.data[0] != undefined
-									&& item.data[2] == item1.data[1]) {
-								gridColumns[item1.data[1]].columns.push({
-									field : item.data[1],
-									title : item.name
-								});
-								return false;
-							} else if (item1.data[0] != undefined
-									&& index == (alarmTypeName.length - 1)) {
-								newColumn = {
-									title : item.name,
-									field : item.data[1]
-								};
-								gridColumns[item.data[1]] = newColumn;
-							}
-						});
-					}
-				}
-			});
-
-			var gridDataSource = {};
-			$.each(XLabel, function(index, item) {
-				var t = {};
-				t.alarmType = item;
-				$.each(gridColumns,function(indexOfColumns,itemOfColumns){
-					if(indexOfColumns !="alarmType"){
-						if (itemOfColumns.columns ==undefined) {
-							t[itemOfColumns.field] = 0;
-						}else
-						{
-							$.each(itemOfColumns.columns,function(indexOfChildColumn,itemOfChildColumns){
-								t[itemOfChildColumns.field] =0;
-							});
-						}
-					}	
-				});
-				gridDataSource[item] = t;
-			});
-			$
-					.each(
-							data[0].data,
-							function(index, item) {
-								if (item.typeName != undefined) {
-									if (item.typeLevel == 2) {
-										gridDataSource[item.orgName][item.typeCode] = item.amount;
-									} else if (item.typeLevel == 1) {
-										gridDataSource[item.orgName]["other"
-												+ item.typeCode] = item.amount;
-									}
-								}
-							});
-
-			$
-					.each(
-							alarmTypeObject,
-							function(index, item) {
-								if (item.data[0] == 1) {
-									$
-											.each(
-													gridDataSource,
-													function(index1, item1) {
-														if (item1[item.name] != undefined) {
-															$
-																	.each(
-																			gridColumns[item.name].columns,
-																			function(
-																					index2,
-																					item2) {
-																				if (("other" + item.name) != item2.field)
-																					item1["other"
-																							+ item.typeCode] -= item1[item2.field];
-																			});
-														}
-
-													});
-								}
-							});
-
-			//转换
-			var columns = [];
-			$.each(gridColumns, function(index, item) {
-				columns.push(item);
-			});
-			var dataSource = [];
-			$.each(gridDataSource, function(index, item) {
-				dataSource.push(item);
-			});
+			//获取警情类型信息
+			var alarmTypeObjects = gridManage.GetAlarmTypeObjectsOfOrgan(data[0].data,alarmTypeName);
+			//获取列头
+			var columnsArray = gridManage.GetColumnsOfOrgan(alarmTypeObjects,alarmTypeName);
+			var dataSource = gridManage.GetDataSourceOfOrgan(data[0].data,columnsArray,alarmTypeObjects,XLabel);
 
 			//设置grid的长宽
 			FunctionManage.setGridWidthAndHeight(alarmTypeName.length+1,dataSource.length);
 			$("#grid").empty();
 			$("#grid").kendoGrid({
+				toolbar: ["excel"],
+				excel: {
+                fileName: title+"警情统计_机构统计表.xlsx"
+            	},
 				dataSource : dataSource,
-				columns : columns,
+				columns : columnsArray,
 			});
 			$("#grid th[data-role='droptarget']").attr("style",
 					"text-align:center");
@@ -766,7 +851,6 @@
 			}
 			return dateShow;
 		},
-
 		GetSeriesObjectOfTimeSpan : function(data, name) {
 			var array = [];
 			for (var i = 0; i <24; i++) {
@@ -783,24 +867,70 @@
 				data : array
 			};
 		},
-
 		GetStandardYM : function(date) {
 			return parseInt(date / 10000).toString() + "年"
 					+ (parseInt(date / 100) % 100).toString() + "月"
 					+ (parseInt(date % 100)).toString() + "日";
 		},
-
 		GetSerieName : function(data) {
 			var name = FunctionManage.GetStandardYM(data.beginYmd) + "-"
 					+ FunctionManage.GetStandardYM(data.endYmd);
 			return name;
 		},
-		
 		setGridWidthAndHeight:function(columns,rows){
-			$("#grid").css("width",1000+(columns-8)*80);
-			$("#grid").css("height",rows*50);
+			if(columns > 8){
+				$("#grid").css("width",900+(columns-8)*80);
+			}else{
+				$("#grid").css("width",900);
+			}
+			
+			if(rows <= 3){
+				$("#grid").css("height",240);
+			}else{
+				$("#grid").css("height",rows*60);
+			}
 		}
 	};
+	function onExportExcelAction(){
+		var url = "";
+		switch(m_statistic_typeId)
+		{
+			case 1:
+				url = "<%=basePath%>exportExcelWeb/exportAlarmTypeDataToExcle.do";//警情分类统计导出地址
+				break;
+			case 2:
+				url = "<%=basePath%>exportExcelWeb/exportOrganDataToExcle.do";//警情分类统计导出地址
+				break;
+			case 3:
+				url = "<%=basePath%>exportExcelWeb/exportPeriodDataToExcle.do";//警情分类统计导出地址
+				break;
+			case 4:
+				url = "<%=basePath%>exportExcelWeb/exportTiemSpanDataToExcle.do";//警情分类统计导出地址
+				break;
+		}
+		var griddata = $("#grid").data("kendoGrid"); 
+		var s = [];
+		$.each( griddata._data,function(index,value){
+			 s.push(JSON.stringify(value));
+		});
+		var data = griddata._data
+		$.ajax({
+				url : url,
+				type : "post",
+				data : {"data" :  JSON.stringify(s),"query" : JSON.stringify(m_Query_pkg)},
+				dataType : "json",
+				success : function(req) {  
+					if (req.code == 200) {
+						var urlStr = "<%=basePath %>"+req.description; 
+						window.location.href = urlStr;
+					}else{
+						$("body").popjs({"title":"提示","content":req.description}); 
+					}
+				}
+		});
+		
+	}
+
 </script>  
 <style>
 	.charts{
@@ -818,12 +948,13 @@
   		font-family: Arial, "微软雅黑", "宋体";
 	}
 </style>  
-<div style="width:1000px;overflow:auto;height:430px">
+<div style="width:150%;overflow:auto;height:430px">
 
 	<div id="jqtj"></div>
 </div>
+<br> 
+ <span id="btnOutPortToExcel" class="k-button"  onclick="onExportExcelAction()">导出</span>
 <br>
-<br>
-<div style="width:1000px;overflow:auto;"> 
+<div style="width:150%;overflow:auto;"> 
 	<div id="grid"></div>
 </div>
