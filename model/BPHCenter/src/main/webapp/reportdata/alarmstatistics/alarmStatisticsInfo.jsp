@@ -893,7 +893,7 @@
 	};
 	function onExportExcelAction(){
 		var url = "";
-		switch(m_statistic_typeId)
+		switch(4)
 		{
 			case 1:
 				url = "<%=basePath%>exportExcelWeb/exportAlarmTypeDataToExcle.do";//警情分类统计导出地址

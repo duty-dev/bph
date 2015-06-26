@@ -91,7 +91,6 @@ public class ExportExcelController {
 					.toString();
 			data =  data.replace("}\",\"{", "|");
 			String[] a  =data.split("\\|");
-			int s = a.length;
 			serverPath = serverPath.substring(0, (serverPath.length() - 16));
 			String filepath = "0";
 
@@ -144,59 +143,27 @@ public class ExportExcelController {
 			classMap.put("caseLevels", Integer.class);
 			QueryCondition queryCondition = (QueryCondition) JSONObject.toBean(
 					jobj, QueryCondition.class, classMap);
-
-			Map<String, Object> map = new HashMap<String, Object>();
-			List<CaseReportResult<CaseOrgAGGR>> results = new ArrayList<CaseReportResult<CaseOrgAGGR>>();
-			List<CaseOrgAGGR> ls = null;
+ 
 			// 组织机构id
 			int organId = queryCondition.getOrganId();
 			User user = (User) request.getAttribute("User");
 			if (organId == 0) {
 				organId = user.getOrgId();
 			}
-			Organ organ = organService.getOrganByPrimaryKey(organId);
-			map.put("orgPath", organ.getPath());
-			map.put("orgParentId", organId);
-
-			// 查询时间
-			// 查询时间方式，1、月 2、日
-			String startDate = queryCondition.getStartDate();
-			String sDate = startDate.replace("-", "").trim();
-			String endDate = queryCondition.getEndDate();
-			String eDate = endDate.replace("-", "").trim();
-			Integer bd = Integer.parseInt(sDate);
-			Integer ed = Integer.parseInt(eDate);
-			ReportPeriod rp = new ReportPeriod(bd, ed,
-					queryCondition.getPeriodType());
-			// 警情级别 二级节点
-			List<Integer> levels = queryCondition.getCaseLevels();
-			// 时间区间 时间节点
-			List<Integer> hours = queryCondition.getCaseTimaSpan();
-			map.put("levels", levels);
-			map.put("hours", hours);
-
-			map.put("periodType", queryCondition.getPeriodType());
+  
 			// 警情类型 父级节点
 			List<String> type2Codes = queryCondition.getCaseType();
-			map.put("type2Codes", type2Codes);
-			// 当期
-			CaseReportResult<CaseOrgAGGR> cResult = new CaseReportResult<CaseOrgAGGR>();
-			map.put("beginYMD", rp.getBeginYmd());
-			map.put("endYMD", rp.getEndYmd());
-			ls = caseReportService.loadCaseOrgReport(map);
-			ls = getSelectCaseTypeOrgList(ls, type2Codes);
-			cResult.setBeginYmd(rp.getBeginYmd());
-			cResult.setEndYmd(rp.getEndYmd());
-			cResult.setData(ls);
-			results.add(cResult);
+			data = data.substring(3,data.length());
+			data = data.substring(0,data.length()-3);
+			
 			String serverPath = getClass().getResource("/").getFile()
 					.toString();
+			data =  data.replace("}\",\"{", "|");
+			String[] a  =data.split("\\|");
 			serverPath = serverPath.substring(0, (serverPath.length() - 16));
-			String filepath = "0";
-			if (results.size() > 0) {
-				filepath ="";// createOrganExcel(results, serverPath,organId);
-			}
-
+			String filepath = "0"; 
+				filepath = createOrganExcel(a, serverPath,organId,type2Codes);
+			 
 			String retMsg = "";
 			int retCode = 0;
 			if (filepath.equals("1")) {
@@ -217,22 +184,6 @@ public class ExportExcelController {
 			return ReturnResult.MESSAGE(MessageCode.STATUS_FAIL, "获取机构统计导出数据出错",
 					0, null);
 		}
-	}
-
-	private List<CaseOrgAGGR> getSelectCaseTypeOrgList(List<CaseOrgAGGR> ls,
-			List<String> caseTypes) {
-		// TODO Auto-generated method stub
-		List<CaseOrgAGGR> list = new ArrayList<CaseOrgAGGR>();
-		for (String code : caseTypes) {
-			for (CaseOrgAGGR cta : ls) {
-				if (cta.getTypeCode() == null) {
-					list.add(cta);
-				} else if (cta.getTypeCode().equals(code)) {
-					list.add(cta);
-				}
-			}
-		}
-		return list;
 	}
 
 	/**
@@ -259,80 +210,24 @@ public class ExportExcelController {
 			QueryCondition queryCondition = (QueryCondition) JSONObject.toBean(
 					jobj, QueryCondition.class, classMap);
 
-			Map<String, Object> map = new HashMap<String, Object>();
-			List<CaseReportResult<CasePeriodAGGR>> results = new ArrayList<CaseReportResult<CasePeriodAGGR>>();
-			List<CasePeriodAGGR> ls = null;
 			// 组织机构id
 			int organId = queryCondition.getOrganId();
 			User user = (User) request.getAttribute("User");
 			if (organId == 0) {
 				organId = user.getOrgId();
-			}
-			Organ organ = organService.getOrganByPrimaryKey(organId);
-			map.put("orgPath", organ.getPath());
-
-			// 查询时间
-			// 查询时间方式，1、月 2、日
-			String startDate = queryCondition.getStartDate();
-			String sDate = startDate.replace("-", "").trim();
-			String endDate = queryCondition.getEndDate();
-			String eDate = endDate.replace("-", "").trim();
-			Integer bd = Integer.parseInt(sDate);
-			Integer ed = Integer.parseInt(eDate);
-			ReportPeriod rp = new ReportPeriod(bd, ed,
-					queryCondition.getPeriodType());
-			// 警情级别 二级节点
-			List<Integer> levels = queryCondition.getCaseLevels();
-			// 时间区间 时间节点
-			List<Integer> hours = queryCondition.getCaseTimaSpan();
-			map.put("levels", levels);
-			map.put("hours", hours);
-
-			map.put("periodType", queryCondition.getPeriodType());
-			// 警情类型 父级节点
-			List<String> type2Codes = queryCondition.getCaseType();
-			map.put("type2Codes", type2Codes);
-
-			// 当期
-			CaseReportResult<CasePeriodAGGR> cResult = new CaseReportResult<CasePeriodAGGR>();
-			map.put("beginYMD", rp.getBeginYmd());
-			map.put("endYMD", rp.getEndYmd());
-
-			ls = caseReportService.loadCasePeriodReport(map);
-			cResult.setBeginYmd(rp.getBeginYmd());
-			cResult.setEndYmd(rp.getEndYmd());
-
-			cResult.setData(ls);
-			results.add(cResult);
-
-			// 同比
-			CaseReportResult<CasePeriodAGGR> yResult = new CaseReportResult<CasePeriodAGGR>();
-			map.put("beginYMD", rp.getYOYBeginYmd());
-			map.put("endYMD", rp.getYOYEndYmd());
-			ls = caseReportService.loadCasePeriodReport(map);
-			yResult.setBeginYmd(rp.getYOYBeginYmd());
-			yResult.setEndYmd(rp.getYOYEndYmd());
-
-			yResult.setData(ls);
-			results.add(yResult);
-
-			// 环比
-			CaseReportResult<CasePeriodAGGR> mResult = new CaseReportResult<CasePeriodAGGR>();
-			map.put("beginYMD", rp.getMOMBeginYmd());
-			map.put("endYMD", rp.getMOMEndYmd());
-			ls = caseReportService.loadCasePeriodReport(map);
-			mResult.setBeginYmd(rp.getMOMBeginYmd());
-			mResult.setEndYmd(rp.getMOMEndYmd());
-
-			mResult.setData(ls);
-			results.add(mResult);
+			} 
+			
+			data = data.substring(3,data.length());
+			data = data.substring(0,data.length()-3);
+						
 			String serverPath = getClass().getResource("/").getFile()
-					.toString();
+								.toString();
+			data =  data.replace("}\",\"{", "|");
+			String[] a  =data.split("\\|");
 			serverPath = serverPath.substring(0, (serverPath.length() - 16));
 			String filepath = "0";
-			if (results.size() > 0) {
-				filepath = createPeriodExcel(results, serverPath,organId);
-			}
+
+			filepath = createPeriodExcel(a, serverPath,organId);
 
 			String retMsg = "";
 			int retCode = 0;
@@ -380,76 +275,24 @@ public class ExportExcelController {
 			QueryCondition queryCondition = (QueryCondition) JSONObject.toBean(
 					jobj, QueryCondition.class, classMap);
 
-			Map<String, Object> map = new HashMap<String, Object>();
-			List<CaseReportResult<CaseHourAGGR>> results = new ArrayList<CaseReportResult<CaseHourAGGR>>();
-			List<CaseHourAGGR> ls = null;
 			// 组织机构id
 			int organId = queryCondition.getOrganId();
 			User user = (User) request.getAttribute("User");
 			if (organId == 0) {
 				organId = user.getOrgId();
 			}
-			Organ organ = organService.getOrganByPrimaryKey(organId);
-			map.put("orgPath", organ.getPath());
-
-			// 查询时间
-			// 查询时间方式，1、月 2、日
-			String startDate = queryCondition.getStartDate();
-			String sDate = startDate.replace("-", "").trim();
-			String endDate = queryCondition.getEndDate();
-			String eDate = endDate.replace("-", "").trim();
-			Integer bd = Integer.parseInt(sDate);
-			Integer ed = Integer.parseInt(eDate);
-			ReportPeriod rp = new ReportPeriod(bd, ed,
-					queryCondition.getPeriodType());
-			// 警情级别 二级节点
-			List<Integer> levels = queryCondition.getCaseLevels();
-			// 时间区间 时间节点
-			List<Integer> hours = queryCondition.getCaseTimaSpan();
-			map.put("levels", levels);
-			map.put("hours", hours);
-
-			map.put("periodType", queryCondition.getPeriodType());
-			// 警情类型 父级节点
-			List<String> type2Codes = queryCondition.getCaseType();
-			map.put("type2Codes", type2Codes);
-
-			// 当期
-			CaseReportResult<CaseHourAGGR> cResult = new CaseReportResult<CaseHourAGGR>();
-			map.put("beginYMD", rp.getBeginYmd());
-			map.put("endYMD", rp.getEndYmd());
-			ls = caseReportService.loadCaseHourReport(map);
-			cResult.setBeginYmd(rp.getBeginYmd());
-			cResult.setEndYmd(rp.getEndYmd());
-			cResult.setData(ls);
-			results.add(cResult);
-
-			// 同比
-			CaseReportResult<CaseHourAGGR> yResult = new CaseReportResult<CaseHourAGGR>();
-			map.put("beginYMD", rp.getYOYBeginYmd());
-			map.put("endYMD", rp.getYOYEndYmd());
-			ls = caseReportService.loadCaseHourReport(map);
-			yResult.setBeginYmd(rp.getYOYBeginYmd());
-			yResult.setEndYmd(rp.getYOYEndYmd());
-			yResult.setData(ls);
-			results.add(yResult);
-
-			// 环比
-			CaseReportResult<CaseHourAGGR> mResult = new CaseReportResult<CaseHourAGGR>();
-			map.put("beginYMD", rp.getMOMBeginYmd());
-			map.put("endYMD", rp.getMOMEndYmd());
-			ls = caseReportService.loadCaseHourReport(map);
-			mResult.setBeginYmd(rp.getMOMBeginYmd());
-			mResult.setEndYmd(rp.getMOMEndYmd());
-			mResult.setData(ls);
-			results.add(mResult);
+			data = data.substring(3,data.length());
+			data = data.substring(0,data.length()-3);
+									
 			String serverPath = getClass().getResource("/").getFile()
-					.toString();
+											.toString();
+			data =  data.replace("}\",\"{", "|");
+			String[] a  =data.split("\\|");
 			serverPath = serverPath.substring(0, (serverPath.length() - 16));
 			String filepath = "0";
-			if (results.size() > 0) {
-				filepath = createTimeSpanExcel(results, serverPath,organId);
-			}
+
+			filepath = createTimeSpanExcel(a,serverPath,organId);
+
 
 			String retMsg = "";
 			int retCode = 0;
@@ -489,15 +332,16 @@ public class ExportExcelController {
 			try {
 				workbook = new HSSFWorkbook();
 				if (workbook != null) {
-					Sheet sheet = workbook.createSheet("警情分类统计数据");
+					Sheet sheet = workbook.createSheet("警情统计_警情分类统计数据");
 					Row row0 = sheet.createRow(0);
-					String title = "警情分类统计数据"; 
+					String title = "警情统计_警情分类统计数据"; 
 					title = orgName + title;
 
 					Cell cell_0 = row0.createCell(0, Cell.CELL_TYPE_STRING);
 					cell_0.setCellValue(title);
 					int clomnSize = caseTypeName.size();
-					sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, clomnSize-1)); 
+					sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, clomnSize+2)); 
+					//创建表头
 					Row row1 = sheet.createRow(1);
 					Cell cell1 = row1.createCell(0, Cell.CELL_TYPE_STRING);
 					cell1.setCellValue("统计时间/警情分类");
@@ -508,15 +352,34 @@ public class ExportExcelController {
 						sheet.autoSizeColumn(j);
 					}
 					
-					for (int rowNum = 2; rowNum <= 133 + 1; rowNum++) {
+					Cell celll = row1.createCell(clomnSize+1, Cell.CELL_TYPE_STRING);
+					celll.setCellValue("合计");
+					sheet.autoSizeColumn(clomnSize+1);
+					
+					//从格式化的数据中获取想要的数据
+					String[][] rowData = GetRowsData(results,clomnSize+2);
+					//数据对称处理
+					for(int i =0;i<rowData.length-1;i++){
+						String temp = rowData[i][0];
+						rowData[i][0] = rowData[i][rowData[i].length-1];
+						rowData[i][rowData[i].length-1] = temp;
+					}
+					//添加行数据
+					for (int rowNum = 2; rowNum <= rowData.length+1; rowNum++) {
 						Row row = sheet.createRow(rowNum); 
+						for(int cellCount = 0;cellCount<rowData[rowNum-2].length;cellCount++){
+							Cell cel = row.createCell(cellCount, Cell.CELL_TYPE_STRING);
+							cel.setCellValue(rowData[rowNum-2][cellCount].replace("\\\"", ""));
+							sheet.autoSizeColumn(cellCount);
+						}
 					}
 				}
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 				java.util.Date date = new java.util.Date();
 				String str = sdf.format(date);
 				filePath = "excelModel/tempfile/" + str + "_AlarmTypeData.xls";
-				String realPath = serverPath + filePath;
+				//String realPath ="C:\\Users\\hzf\\Workspaces\\"+ str + "_AlarmTypeData.xls";// serverPath + filePath;
+				String realPath = serverPath+filePath;
 				try {
 					FileOutputStream outputStream = new FileOutputStream(
 							realPath);
@@ -533,6 +396,30 @@ public class ExportExcelController {
 		return filePath;
 	}
 
+	private String[][] GetRowsData(String[] results,Integer countOfColumns) {
+		String[][] rows =null;
+		if(results.length>0){
+			rows =new String[results.length][countOfColumns];
+			for(int i= 0;i< results.length;i++){
+				//一行字符串处理
+				rows[i] = GetRowData(results[i],countOfColumns);
+			}
+		}
+		return rows;
+	}
+
+
+	private String[] GetRowData(String result, Integer countOfColumns) {
+		String[] row = result.split("\\,");
+		String[] score = new String[row.length];
+		for(int i = 0;i<row.length;i++){
+			String[] s = row[i].split("\\:");
+			score[i] = s[1];
+		}
+		return score;
+	}
+
+
 	/**
 	 * 创建组织机构Excel文件到临时文件夹
 	 * @param results
@@ -540,38 +427,59 @@ public class ExportExcelController {
 	 * @return
 	 */
 	private String createOrganExcel(
-			List<String> results, String serverPath,Integer organId) {
+			String[] results, String serverPath,Integer organId,List<String> caseTypes) {
 		// TODO Auto-generated method stub
 		String filePath = "";
-		String orgName = getOrganName(organId); 
-		if (results.size() > 0) {
+		String orgName = getOrganName(organId);
+		List<String> caseTypeName = getCaseTypeName(caseTypes); 
+		if (results.length > 0) {
 			Workbook workbook = null;
 			try {
-				workbook = new HSSFWorkbook();// HSSFWorkbook();//WorkbookFactory.create(inputStream);
+				workbook = new HSSFWorkbook();
 				if (workbook != null) {
-					Sheet sheet = workbook.createSheet("警情分类统计数据");
+					Sheet sheet = workbook.createSheet("警情统计_机构统计数据");
 					Row row0 = sheet.createRow(0);
-					String title = "机构统计数据"; 
+					String title = "警情统计_机构统计数据"; 
 					title = orgName + title;
 
 					Cell cell_0 = row0.createCell(0, Cell.CELL_TYPE_STRING);
-					cell_0.setCellValue(title); 
-					sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 5)); 
+					cell_0.setCellValue(title);
+					int clomnSize = caseTypeName.size();
+					sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, clomnSize+2)); 
+					//创建表头
 					Row row1 = sheet.createRow(1);
 					Cell cell1 = row1.createCell(0, Cell.CELL_TYPE_STRING);
-					cell1.setCellValue("统计时间/警情分类");
+					cell1.setCellValue("警情分类");
 					sheet.autoSizeColumn(0);
-					 
+					for(int j = 1;j<= clomnSize;j++){ 
+						Cell cell = row1.createCell(j, Cell.CELL_TYPE_STRING);
+						cell.setCellValue(caseTypeName.get(j-1));
+						sheet.autoSizeColumn(j);
+					}
 					
-//					for (int rowNum = 2; rowNum <= results.size() + 1; rowNum++) {
-//						Row row = sheet.createRow(rowNum); 
-//					}
+					Cell celll = row1.createCell(clomnSize+1, Cell.CELL_TYPE_STRING);
+					celll.setCellValue("合计");
+					sheet.autoSizeColumn(clomnSize+1);
+					
+					//从格式化的数据中获取想要的数据
+					String[][] rowData = GetRowsData(results,clomnSize+2);
+
+					//添加行数据
+					for (int rowNum = 2; rowNum <= rowData.length+1; rowNum++) {
+						Row row = sheet.createRow(rowNum); 
+						for(int cellCount = 0;cellCount<rowData[rowNum-2].length;cellCount++){
+							Cell cel = row.createCell(cellCount, Cell.CELL_TYPE_STRING);
+							cel.setCellValue(rowData[rowNum-2][cellCount].replace("\\\"", ""));
+							sheet.autoSizeColumn(cellCount);
+						}
+					}
 				}
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 				java.util.Date date = new java.util.Date();
 				String str = sdf.format(date);
 				filePath = "excelModel/tempfile/" + str + "_OrganData.xls";
-				String realPath = serverPath + filePath;
+				String realPath ="C:\\Users\\hzf\\Workspaces\\"+ str + "_OrganData.xls";// serverPath + filePath;
+				//String realPath = serverPath + filePath;
 				try {
 					FileOutputStream outputStream = new FileOutputStream(
 							realPath);
@@ -594,9 +502,55 @@ public class ExportExcelController {
 	 * @return
 	 */
 	private String createPeriodExcel(
-			List<CaseReportResult<CasePeriodAGGR>> results, String serverPath,Integer organId) {
+			String[] results, String serverPath,Integer organId) {
 		// TODO Auto-generated method stub
-		return null;
+		String filePath = "";
+		String orgName = getOrganName(organId);
+		if (results.length > 0) {
+			Workbook workbook = null;
+			try {
+				workbook = new HSSFWorkbook();
+				if (workbook != null) {
+					Sheet sheet = workbook.createSheet("警情统计_周期统计数据");
+					Row row0 = sheet.createRow(0);
+					String title = "警情统计_周期统计数据"; 
+					title = orgName + title;
+
+					Cell cell_0 = row0.createCell(0, Cell.CELL_TYPE_STRING);
+					cell_0.setCellValue(title);
+					sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 25)); 
+
+					String[][] rowData = GetRowsData(results,25);
+					//添加行数据
+					for (int rowNum = 1; rowNum <= rowData.length; rowNum++) {
+						Row row = sheet.createRow(rowNum); 
+						for(int cellCount = 0;cellCount<rowData[rowNum-1].length;cellCount++){
+							Cell cel = row.createCell(cellCount, Cell.CELL_TYPE_STRING);
+							cel.setCellValue(rowData[rowNum-1][cellCount].replace("\\\"", ""));
+							sheet.autoSizeColumn(cellCount);
+						}
+					}
+				}
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+				java.util.Date date = new java.util.Date();
+				String str = sdf.format(date);
+				filePath = "excelModel/tempfile/" + str + "_Period.xls";
+				//String realPath ="C:\\Users\\hzf\\Workspaces\\"+ str + "_Period.xls";// serverPath + filePath;
+				String realPath = serverPath + filePath;
+				try {
+					FileOutputStream outputStream = new FileOutputStream(
+							realPath);
+					workbook.write(outputStream);
+					outputStream.flush();
+					outputStream.close();
+				} catch (Exception e) {
+					return "1";
+				}
+			} catch (Exception ex) {
+				return "2";
+			}
+		}
+		return filePath;
 	}
 	/**
 	 * 创建时间段Excel文件到临时文件夹
@@ -605,9 +559,66 @@ public class ExportExcelController {
 	 * @return
 	 */
 	private String createTimeSpanExcel(
-			List<CaseReportResult<CaseHourAGGR>> results, String serverPath,Integer organId) {
+			String[] results, String serverPath,Integer organId) {
 		// TODO Auto-generated method stub
-		return null;
+		String filePath = "";
+		String orgName = getOrganName(organId);
+		if (results.length > 0) {
+			Workbook workbook = null;
+			try {
+				workbook = new HSSFWorkbook();
+				if (workbook != null) {
+					Sheet sheet = workbook.createSheet("警情统计_时间段统计数据");
+					Row row0 = sheet.createRow(0);
+					String title = "警情统计_时间段统计数据"; 
+					title = orgName + title;
+
+					Cell cell_0 = row0.createCell(0, Cell.CELL_TYPE_STRING);
+					cell_0.setCellValue(title);
+					sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 24)); 
+					//创建表头
+					Row row1 = sheet.createRow(1);
+					Cell cell1 = row1.createCell(0, Cell.CELL_TYPE_STRING);
+					cell1.setCellValue("周期/时间段");
+					sheet.autoSizeColumn(0);
+					for(int j = 0;j<= 24;j++){ 
+						Cell cell = row1.createCell(j, Cell.CELL_TYPE_STRING);
+						cell.setCellValue(j);
+						sheet.autoSizeColumn(j);
+					}
+					
+					//从格式化的数据中获取想要的数据
+					String[][] rowData = GetRowsData(results,25);
+					//添加行数据
+					for (int rowNum = 2; rowNum <= rowData.length+1; rowNum++) {
+						Row row = sheet.createRow(rowNum); 
+						for(int cellCount = 0;cellCount<rowData[rowNum-2].length;cellCount++){
+							Cell cel = row.createCell(cellCount, Cell.CELL_TYPE_STRING);
+							cel.setCellValue(rowData[rowNum-2][cellCount].replace("\\\"", ""));
+							sheet.autoSizeColumn(cellCount);
+						}
+					}
+				}
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+				java.util.Date date = new java.util.Date();
+				String str = sdf.format(date);
+				filePath = "excelModel/tempfile/" + str + "_TimeSpan.xls";
+				//String realPath ="C:\\Users\\hzf\\Workspaces\\"+ str + "_TimeSpan.xls";// serverPath + filePath;
+				String realPath = serverPath + filePath;
+				try {
+					FileOutputStream outputStream = new FileOutputStream(
+							realPath);
+					workbook.write(outputStream);
+					outputStream.flush();
+					outputStream.close();
+				} catch (Exception e) {
+					return "1";
+				}
+			} catch (Exception ex) {
+				return "2";
+			}
+		}
+		return filePath;
 	}
 
 	private String getOrganName(Integer organId){
