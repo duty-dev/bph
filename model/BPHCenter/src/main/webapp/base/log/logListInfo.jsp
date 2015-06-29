@@ -34,6 +34,7 @@
                	                        },
                	                     height: 550,
                                      sortable: true,
+                                     resizable: true,
                                      selectable: "multiple",
                	                        columns: [{
                	                        	field: "logId",

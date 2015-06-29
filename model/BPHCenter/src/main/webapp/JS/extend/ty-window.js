@@ -65,13 +65,13 @@
             str += content;
         }
         str += '</td></tr></table></div>';
-        if (no || ok) {
+        if (ok || no) {
             str += '<div class="ty-tcc-btn">';
-            if (no) {
-                str += '<input type="button" class="ty-tcc-btn-no" value="' + noValue + '" id="tyTccNo" />';
-            }
             if (ok) {
                 str += '<input type="button" class="ty-tcc-btn-ok" value="' + okValue + '" id="tyTccOk" />';
+            }
+            if (no) {
+                str += '<input type="button" class="ty-tcc-btn-no" value="' + noValue + '" id="tyTccNo" />';
             }
             str += '</div>';
         }

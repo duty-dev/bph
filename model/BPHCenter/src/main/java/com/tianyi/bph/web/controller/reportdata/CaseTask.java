@@ -16,7 +16,6 @@ import com.tianyi.bph.service.system.LogService;
  */
 @Component
 public class CaseTask {
-	
 	@Autowired
 	private CaseReportService  caseReportService;
 	
@@ -30,7 +29,8 @@ public class CaseTask {
 		
 		Date beginTime=null;
 		Date endTime=null;
-
+		
+		
 		beginTime=maxDate;
 		
 //		if(maxDate==null){

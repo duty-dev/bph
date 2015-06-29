@@ -27,6 +27,7 @@ var WeapongroupManage = {
 	initMemberGrid:function(){
 		$("#dtGroupMember").kendoGrid({
 									dataSource: [],
+									height:477,
 									columns : [ {
 										title : 'id',
 										field : 'id',
@@ -54,7 +55,11 @@ var WeapongroupManage = {
 			url: "<%=basePath%>weaponGroupWeb/list.do",
 			dataType: "json",
 			data: {
-				"weaponGroup_Query": JSON.stringify(m_weaponGroup_Query) 
+				"weaponGroup_Query": JSON.stringify(m_weaponGroup_Query) ,
+						"expandeds"		:expandeds,
+						"organId":$("#organId").val(),
+						"organPath":$("#organPath").val(),
+						"selectName":$("#selectName").val()
 			},
 			success: function(req) {
 				if (req.code == 200) { 
@@ -62,7 +67,8 @@ var WeapongroupManage = {
 					var total =  req.totalRows;
 					$("#dtWeaponGroup").empty();
 					$("#dtWeaponGroup").kendoGrid({
-						dataSource: {data: rows}, 
+						dataSource: {data: rows},
+						height:470,
 						columns : [ {
 							title : 'Id',
 							field : 'id',
@@ -83,7 +89,6 @@ var WeapongroupManage = {
 							WeapongroupManage.getMemberBygroupId(groupId);
 						}
 					}); 
-					$("#dtWeaponGroup .k-grid-content").mCustomScrollbar( {scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
                									var pg = pagination(pageNo,total,'loadData',10);
                						 
                	                				$("#page").html(pg);
@@ -193,6 +198,7 @@ var WeapongroupManage = {
 								var dataSo = new kendo.data.DataSource({
 									data: pdata
 								});
+								$("#dtGroupMember").empty();
 								$("#dtGroupMember").kendoGrid({
 									dataSource: dataSo,
 									columns : [ {
@@ -213,7 +219,8 @@ var WeapongroupManage = {
 										field : 'standard'
 									}, ], 
 								selectable: "row"
-								}); 
+								});
+								$("#dtGroupMember .k-grid-content").mCustomScrollbar( {scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
 							}else{ 
                	                				WeapongroupManage.initMemberGrid();
 							}
@@ -227,11 +234,11 @@ var WeapongroupManage = {
 			if (row != null) {
 			var groupId = row.id;
 		$("#dialog").tyWindow({
-			width : "680px",
-			height : "500px",
+			width : "780px",
+			height : "580px",
 			title : "分组成员信息",
 			position : {
-				top : "100px"
+				top : "20px"
 			},
 		content: "<%=basePath%>dutyGroupRouteWeb/gotoWeaponGroupAddMember.do?groupId="
 							+ groupId + "&organId=" + organId+"&sessionId="+sessionId,
@@ -315,9 +322,9 @@ var WeapongroupManage = {
 
 </script>
 <div class="span5">
-<div id="dtWeaponGroup"></div>   
-<div id="page"></div>
+	<div id="dtWeaponGroup" class="ty-grid-td"></div>   
+	<div id="page"></div>
 </div>
-<div id="dtGroupMember" class="span5"></div>  
+<div id="dtGroupMember" class="span5 ty-grid-td"></div>  
 <div id="dialog"></div> 
 

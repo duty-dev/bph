@@ -30,7 +30,7 @@ if(cookie!=null){
             <div class="ty-input mt0">
             	<input id="searchOrganName" value="${requestScope.searchOrganName}" placeholder="等待输入..." class="k-textbox ty-left-search"/>
             </div>
-            <button class="ty-left-search-btn" onClick="queryOrgan()">搜索</button><br><br>
+            <button class="ty-left-search-btn" onClick="queryOrgan()">搜索</button>
             <input type="hidden" value="${requestScope.selectName}" style="width:80px;height:50px;" id="selectName">
             </div>
           </div>
@@ -62,6 +62,7 @@ if(cookie!=null){
 					 }else{
 						 queryOrgan();
 					 }
+					 $("#navigationLeft .tree-box").mCustomScrollbar({scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
 				});
 			 
 			 function loadOrganTreeList(){
@@ -106,9 +107,11 @@ if(cookie!=null){
 				 $(barElement).find("div .k-in").first().addClass("k-state-selected");
 			 } */
 			function test(){
+				 try{
 				 var expandedNodes = [],treeView = $("#treeview").data("kendoTreeView");
 		            getExpanded(treeView.dataSource.view(),expandedNodes);
 		            expandeds=expandedNodes.join(",");
+				 }catch(e){}
 			 }
 			 function getExpanded(nodes,expandedNodes) {
 		            for (var i = 0; i < nodes.length; i++) {

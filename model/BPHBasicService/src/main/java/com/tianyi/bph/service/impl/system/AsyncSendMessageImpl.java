@@ -43,6 +43,7 @@ public class AsyncSendMessageImpl implements AsyncSendMessage {
 		try {
 			if (rabbitTemplate != null) {
 				rabbitTemplate.convertAndSend(routeKey, jsonStr);
+				log.info("mq数据发送完成================"+routeKey+":" +jsonStr);
 			} else {
 				log.info("mq模版没有准备好！！！！！！！！");
 			}

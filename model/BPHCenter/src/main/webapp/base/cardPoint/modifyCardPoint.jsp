@@ -16,7 +16,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <body>
 <div id="vertical">
-			<div id="horizontal" style="height:468px;">
+			<div id="horizontal" style="height:440px;">
 				<div id="left-pane">
 					<div class="pane-content">
 						<!-- 左开始 -->
@@ -203,35 +203,35 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	function loadCamera(){
 		$("#treeview").remove();
 		$("#addRoleTreeview").remove();
-		$("#policeview").remove();
+		//$("#policeview").remove();
 		$("#policeTitle").remove();
 		$("#organTitle").remove();
 		$("#roleTitle").remove();
 		$("#cameraTitle").remove();
 		$("#cameraview").remove();
-		var  uri="<%=basePath%>web/GBPlatForm/getGBOrganListByOrganId.do";
-		$.ajax({
-			url : uri,
-			type : "post",
-			data : {
-				organId : $("#orgId").val(),
-				sessionId:$("#token").val(),
-				random : Math.random()
+		var data = new kendo.data.HierarchicalDataSource({
+	        transport:{
+				read:{
+					url: "<%=basePath%>web/organx/lazyOrganList1.do",
+					type : "post",
+					data : {
+						searchName:"",
+						sessionId:$("#token").val(),
+						random : Math.random()
+					},
+					dataType: "json"
+				}
 			},
-			dataType : "json",
-			success : function(rsp) {
-				$("#policeview").remove();//
-				$("#policeBox").append("<div id='policeview'></div>");
-				$("#policeview").kendoTreeView(
-						{
-							dataValueField : "id",
-							dataTextField : "name",
-							select : showCameraList,//点击触发事件
-							dataSource : [ eval('('
-									+ JSON.stringify(rsp.data) + ')') ]
-						}).data("kendoTreeView");
+			schema: {
+	 			model: {
+					hasChildren:"hasChild",
+	           	}
 			}
-		}); 
+		});
+	 	$("#policeview").kendoTreeView({
+			select: showCameraList,//点击触发事件
+			dataSource: data
+		});
 	}
     
 	function showCameraList(e){

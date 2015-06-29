@@ -22,6 +22,7 @@ import com.tianyi.bph.common.ReturnResult;
 import com.tianyi.bph.domain.system.CircleLayer;
 import com.tianyi.bph.domain.system.Organ;
 import com.tianyi.bph.domain.system.User;
+import com.tianyi.bph.service.system.AsyncSendMessage;
 import com.tianyi.bph.service.system.CardPointService;
 import com.tianyi.bph.service.system.CircleLayerService;
 import com.tianyi.bph.service.system.OrganService;
@@ -43,6 +44,9 @@ public class MapController extends BaseLogController{
 	@Autowired CardPointService cardPointService;
 	
 	@Autowired CircleLayerService circleLayerService;
+	
+	@Autowired
+	private AsyncSendMessage sendMessage;
 	
 	@RequestMapping(value = {"/initMap.do", "/initMap.action"})
 	@ResponseBody
@@ -91,6 +95,15 @@ public class MapController extends BaseLogController{
 		String s = c.getDisplayProperty();
 		JSONObject jo = JSONObject.fromObject(s);
 		DisplayProperty pro = (DisplayProperty) JSONObject.toBean(jo, DisplayProperty.class);
+		// 验证RabbitMQ在Web端的使用
+		try {
+			JSONObject o = new JSONObject();
+			o.accumulate("x", 104.06662);
+			o.accumulate("y", 30.78559);
+			sendMessage.asyncJsonData("routeData.H.51000.51001", o.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		mv.addObject("displayProperty", pro == null ?  new DisplayProperty() : pro);
 		return mv;
 	}
@@ -136,5 +149,26 @@ public class MapController extends BaseLogController{
 		} catch (Exception e) {
 			return ReturnResult.FAILUER(e.getMessage());
 		}
+	}
+	
+	/**
+	 * 常规警情界面 跳转
+	 * @param userId
+	 * @return
+	 */
+	@RequestMapping(value = {"/initAlarmMap.do", "/initAlarmMap.action"})
+	@ResponseBody
+	public ModelAndView initAlarmMap(
+			@RequestParam(value = "organId")Integer organId,
+			HttpServletRequest request){
+		ModelAndView mv = new ModelAndView("/base/map/nomalAlarm/nomalAlarmMap.jsp");
+		Organ organ = new Organ();
+		if (organId != null) {
+			organ = organService.getOrganByPrimaryKey(organId);
+		}
+		mv.addObject("organ", organ);
+		mv.addObject("num", "500");
+		
+		return mv;
 	}
 }

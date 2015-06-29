@@ -28,6 +28,7 @@ var VehicleGroupManage = {
 	initMemberGrid:function(){
 	$("#dtGroupMember").kendoGrid({
 							dataSource : [],
+							height:477,
 							columns : [ {
 								title : 'id',
 								field : 'id',
@@ -54,7 +55,11 @@ var VehicleGroupManage = {
 						url: "<%=basePath%>vehicleGroupWeb/list.do",
 						dataType : "json",
 						data : {
-							"vehicleGroup_Query" : JSON.stringify(m_vehicleGroup_Query) 
+							"vehicleGroup_Query" : JSON.stringify(m_vehicleGroup_Query) ,
+						"expandeds"		:expandeds,
+						"organId":$("#organId").val(),
+						"organPath":$("#organPath").val(),
+						"selectName":$("#selectName").val()
 						},
 						success : function(req) {
 							if (req.code == 200) {
@@ -65,7 +70,8 @@ var VehicleGroupManage = {
 								$("#dtVehicleGroup")
 										.kendoGrid(
 												{
-													dataSource :{data:rows}, 
+													dataSource :{data:rows},
+													height:470,
 													columns : [
 															{
 																title : 'Id',
@@ -89,7 +95,6 @@ var VehicleGroupManage = {
 														VehicleGroupManage.loadMemberData(groupId);
 													}
 												});
-												$("#dtVehicleGroup .k-grid-content").mCustomScrollbar( {scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
                									var pg = pagination(pageNo,total,'loadData',10);
                						 
                	                				$("#page").html(pg);
@@ -212,9 +217,9 @@ var VehicleGroupManage = {
 						$("#dtGroupMember").empty();
 						$("#dtGroupMember").kendoGrid({
 							dataSource : dataSo,
-							columns : [ {
+							columns : [{
 								title : 'id',
-								field : 'id',
+								field : 'id', 
 								hidden : true
 							}, {
 								title : '所属单位',
@@ -231,9 +236,10 @@ var VehicleGroupManage = {
 							}, ],
 							selectable : "row"
 						});
+						$("#dtGroupMember .k-grid-content").mCustomScrollbar( {scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
 					}else{
 						
-               	                				VehicleGroupManage.initMemberGrid();
+               	        VehicleGroupManage.initMemberGrid();
 					}
 				}
 			});
@@ -245,11 +251,11 @@ var VehicleGroupManage = {
 			if (row != null) {
 			var groupId = row.id;
 		$("#dialog").tyWindow({
-			width : "680px",
-			height : "500px",
+			width : "780px",
+			height : "580px",
 			title : "分组成员信息",
 			position : {
-				top : "100px"
+				top : "20px"
 			},
 		content: "<%=basePath%>dutyGroupRouteWeb/gotoVehicleGroupAddMember.do?groupId="
 							+ groupId + "&organId=" + organId+"&sessionId="+sessionId,
@@ -283,7 +289,7 @@ var VehicleGroupManage = {
 				success : function(req) {
 					if (req.code == 200) { 
 									$("body").popjs({"title":"提示","content":"删除成功"});    
-									VehiclegroupManage.loadMemberData(groupId);
+									VehicleGroupManage.loadMemberData(groupId);
 								} else {
 									$("body").popjs({"title":"提示","content":"清空分组成员列表失败"}); 
 								}
@@ -312,7 +318,7 @@ var VehicleGroupManage = {
 								if (req.code == 200) { 
 									$("body").popjs({"title":"提示","content":"清除成功"});   
 									$("#dtGroupMember").empty();
-									VehiclegroupManage.loadMemberData(groupId);
+									VehicleGroupManage.loadMemberData(groupId);
 								} else {
 									$("body").popjs({"title":"提示","content":"清空分组成员列表失败"}); 
 								}
@@ -332,9 +338,9 @@ var VehicleGroupManage = {
 
 </script>
 <div class="span5">
-<div id="dtVehicleGroup" ></div>   
-<div id="page"></div>
+	<div id="dtVehicleGroup" class="ty-grid-td"></div>   
+	<div id="page"></div>
 </div>
-<div id="dtGroupMember" class="span5"></div> 
+<div id="dtGroupMember" class="span5 ty-grid-td"></div> 
 <div id="dialog"></div> 
 

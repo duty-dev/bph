@@ -168,12 +168,18 @@ public class UserController extends BaseLogController {
 		List<String> dutyArray=moduleService.findModuleByParentId(Integer.parseInt(SystemConfig.DUTY_MANAGER));
 		//研判分析
 		List<String> analyzingArray=moduleService.findModuleByParentId(Integer.parseInt(SystemConfig.ANALYZING_MANAGER));
+		//警情处置
+		List<String> alarmArray=moduleService.findModuleByParentId(Integer.parseInt(SystemConfig.POLICE_MANAGER));
+		//配置管理
+		List<String> setArray=moduleService.findModuleByParentId(Integer.parseInt(SystemConfig.SET_MANAGER));
 		 
 		 request.getSession().setAttribute("funList", functionList);
 		 request.getSession().setAttribute("baseArray", baseArray);
 		 request.getSession().setAttribute("conductArray", conductArray);
 		 request.getSession().setAttribute("dutyArray", dutyArray);
 		 request.getSession().setAttribute("analyzingArray", analyzingArray);
+		 request.getSession().setAttribute("alarmArray", alarmArray);
+		 request.getSession().setAttribute("setArray", setArray);
 		 
 	}
 	
@@ -373,6 +379,7 @@ public class UserController extends BaseLogController {
 			@RequestParam(value="note",required=false)String note,
 			@RequestParam(value="state",required=true,defaultValue="0")Integer state,
 			@RequestParam(value="policeId",required=false)Integer policeId,
+			@RequestParam(value="phone",required=true)String phone,
 			@RequestParam(value="orgId",required=true)Integer orgId){
 		User user = new User();
 		if(!StringUtils.isEmpty(loginName)){user.setLoginName(loginName);}
@@ -380,6 +387,7 @@ public class UserController extends BaseLogController {
 		if(!StringUtils.isEmpty(password)){user.setPassword(password);}
 		if(!StringUtils.isEmpty(note)){user.setNote(note);}
 		if(!StringUtils.isEmpty(String.valueOf(orgId))){user.setOrgId(orgId);}
+		if(!StringUtils.isEmpty(phone)){user.setPhone(phone);}
 		if(!StringUtils.isEmpty(String.valueOf(policeId))){user.setPoliceUserId(policeId);}
 		ReturnResult result = new ReturnResult();		
 		Integer[] rolesIds = null;
@@ -434,10 +442,12 @@ public class UserController extends BaseLogController {
 			@RequestParam(value="modulesId",required=false)String modulesId,
 			@RequestParam(value="note",required=false)String note,
 			@RequestParam(value="policeId",required=false)Integer policeId,
+			@RequestParam(value="phone",required=true)String phone,
 			@RequestParam(value="state",required=true,defaultValue="0")Integer state){
 		User user = new User();
 		//if(!StringUtils.isEmpty(loginName)){user.setLoginName(loginName);}
 		if(!StringUtils.isEmpty(userName)){user.setUserName(userName);}
+		if(!StringUtils.isEmpty(phone)){user.setPhone(phone);}
 		//if(!StringUtils.isEmpty(password)){user.setPassword(password);}
 		if(!StringUtils.isEmpty(String.valueOf(policeId))){user.setPoliceUserId(policeId);}
 		if(!StringUtils.isEmpty(note)){user.setNote(note);}

@@ -101,7 +101,9 @@
   	SELECT 
   	<include refid="Base_Column_List" />,O.NAME as text
   	 from t_organ O where 1=1  and FIND_IN_SET(O.ORGAN_ID, get_childNode(#{id,jdbcType=DECIMAL}))
-  	 
+  	 <if test="path!=null">
+  	 	and O.PATH LIKE CONCAT(#{path,jdbcType=VARCHAR},'%')
+  	 </if>
   	 order by O.path asc
   </select>
   

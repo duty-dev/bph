@@ -28,8 +28,9 @@
                	                        dataSource: {
                	                            data:udata,
                	                        },
-               	                     height: 502,
+               	                     height: 472,
                                      sortable: true,
+                                     resizable: true,
                                      selectable: "multiple",
                	                        columns: [{
                	                        	field: "id",
@@ -60,7 +61,6 @@
                							editRole1(id);
                						});
 
-               						$("#grid .k-grid-content").mCustomScrollbar( {scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
                						var pg = pagination(pageNo,total,'loadData',10);
                	                	$("#page").html(pg);
                					}

@@ -4,7 +4,7 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML>
 <html>
   <head>
     <base href="<%=basePath%>">
@@ -41,7 +41,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			dataSource: treeData,
 			dataTextField: "name",
 			selectable: "row"
-		});
+		}).on('dblclick', '.k-in', function (event) { 
+     			var rows = $("#treeOrgWithPolice").data("kendoTreeView");
+				var node = rows.dataItem(rows.select()); 
+				PoliceGroupManage.selectMemberModel(node);
+     			return false;
+			}).data("kendoTreeView"); 
 		
 		$.ajax({
 					type: "post",
@@ -55,7 +60,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											data: pdata
 										});
 										$("#dtSelGroupMember").kendoGrid({
-											dataSource: dataSo,
+											dataSource: dataSo, 
 											columns : [ {
 														title : 'id',
 														field : 'id', 
@@ -72,6 +77,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 													} ],
 											selectable: "row"
 										});
+										var myGrid = $("#dtSelGroupMember").data("kendoGrid");
+				           						myGrid.element.on("dblclick","tbody>tr","dblclick",function(e){ 
+				           							PoliceGroupManage.unselectMember();
+				           						}); 
 									}else{ 
 										$("#dtSelGroupMember").kendoGrid({
 											dataSource: [],
@@ -94,6 +103,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									}
 								}
 							});
+		$("#orgWithPolice").mCustomScrollbar({scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
+		$("#dtSelGroupMember").parent().mCustomScrollbar({scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
 	});
 	var PoliceGroupManage ={ 
 			selectMember:function() {
@@ -103,7 +114,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			}, 
 			unselectMember:function() {
 				var rows = $("#dtSelGroupMember").data("kendoGrid");
+				if(rows._data.length == 0){
+					$("body").popjs({"title":"提示","content":"没有可操作的数据源"}); 
+					return;
+				}
 				var row = rows.dataItem(rows.select()); 
+				if(row != null){ 
 				for (var i = 0; i<m_memberDt.length; i++) {
 					 if(row.policeId==m_memberDt[i].policeId){ 
 						 m_memberDt.splice(i, 1);
@@ -115,6 +131,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						//替换以前的dataSource
 				var grid = $("#dtSelGroupMember").data("kendoGrid");
 				grid.setDataSource(dataSource); 
+				}else{
+					$("body").popjs({"title":"提示","content":"请选择要删除的成员"}); 
+				}
 			},
 			selectMemberModel:function(node) {
 				 
@@ -198,27 +217,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body class="ty-body">
 	<!-- <div id="vertical" style="overflow-x:hidden;"> -->
-		<div id="winPG" style="width:660px;height:320px;" title="警员分组成员管理">
+		<div id="winPG" style="width:700px;float: left;" title="警员分组成员管理">
 			<div style="width:650px;margin-top:10px;">
 				<!-- 左开始 -->
 				<div class="demo-section k-header"> 
 					<input id="txtPoliceGroupId"  type="hidden" value="${groupId }"></input> 
-				 
-							<div style="width:200px;float:left;height:230px"> 
-								<ul id="treeOrgWithPolice" style="overflow:auto;height:450px"></ul>
+				 <div style="width:40%;float:left;height:330px" id="orgWithPolice"> 
+								<ul id="treeOrgWithPolice"></ul>
 							</div>
-						 	<div  style="width:40px;float:left;height:230px;margin-top:120px">
+						 	<div  style="width:6%;float:left;height:210px;margin-top:120px">
 								<button onclick="PoliceGroupManage.selectMember()">&gt&gt</button>
 								<button onclick="PoliceGroupManage.unselectMember()">&lt&lt</button>
 							</div>
-					 		<div  style="width:350px;float:left"> 
+					 		<div  style="width:50%;float:left;height:330px;overflow:hidden;"> 
 								<div id="dtSelGroupMember"></div>
 								
-					<p style="width:100%;margin-top:10px;">
-						<button class="ty-button"  onclick="PoliceGroupManage.appendMember()">确定</button>
-					</p>
 							</div>
 						  
+					<p class="ty-input-row">
+						<button class="ty-button"  onclick="PoliceGroupManage.appendMember()">确定</button>
+					</p>
+							
 				</div>
 				
 			</div>

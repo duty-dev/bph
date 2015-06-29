@@ -435,7 +435,7 @@
 		t.civil_code,o.name as
 		gb_organ_name
 		from t_gb_device t left join t_gb_organ o on
-		o.id=t.gb_organ_id order by t.gb_organ_id
+		o.id=t.gb_organ_id order by CONVERT(t.name USING gbk) asc
 	</select>
 
 

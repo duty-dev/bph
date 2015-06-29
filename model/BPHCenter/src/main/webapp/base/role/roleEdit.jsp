@@ -24,12 +24,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<h4>角色信息</h4>
 								<ul>
 									<input id="eRoleId" type="hidden" value="${role.id}"/>
-									<li class="ty-input"><span class="ty-input-warn">*</span><label for="eRoleName">角色名称:</label> 
+									<li class="ty-input"><span class="ty-input-warn">*</span><label for="eRoleName" class="fl">角色名称:</label> 
 										<input type="text" class="k-textbox" name="editRoleName" id="editRoleName" value="${role.name}" style="width:65%;"/><em class="ty-input-end"></em>
 										
 									</li>
-									<li class="ty-input"><span class="ty-input-warn" style="margin-top:22px;">*</span><label for="eRoleNote">角色描述:</label> 
-										<textarea class="ty-edit-txtarea" id="editRoleNote" style="margin-top:10px;">${role.note}</textarea>
+									<li class="ty-input"><span class="ty-input-warn">*</span><label for="eRoleNote" class="fl">角色描述:</label> 
+										<textarea class="ty-edit-txtarea" id="editRoleNote">${role.note}</textarea>
 									</li>
 									<li class="ty-input actions">
 										<button type="button" class="ty-button ty-button-te" onclick="edit(this);" data-click='edit'>提交</button></li>
@@ -144,7 +144,7 @@ span.k-tooltip {
 						}).data("kendoTreeView");
 					}
 				});
-            
+            $("#right-pane").mCustomScrollbar({scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
         });
         
         function edit(e) {

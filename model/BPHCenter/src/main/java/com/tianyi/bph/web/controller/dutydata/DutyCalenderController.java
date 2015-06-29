@@ -66,30 +66,42 @@ public class DutyCalenderController {
 
 		c.setTime(d);
 		int totalDays = c.getActualMaximum(Calendar.DAY_OF_MONTH);
+		int year = c.get(Calendar.YEAR);
+		int month = c.get(Calendar.MONTH) + 1;
+		String beginMonth = ""; 
+		if (month < 10) {
+			beginMonth = "0" + month;
+		} else {
+			beginMonth = "" + month;
+		}
+		String beginYmd = year + beginMonth + "01";
+		String endYmd = year + beginMonth + totalDays;
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("beginYmd", Integer.parseInt(beginYmd));
+		map.put("endYmd", Integer.parseInt(endYmd));
+		map.put("orgId", orgId);
+		List<DutyItemCountVM> list = new ArrayList<DutyItemCountVM>();
+		list = dutyTypeService.loadDutyItemCount(map);
+
 		String result = "[";
 		for (int i = 1; i <= totalDays; i++) {
 			c.set(Calendar.DAY_OF_MONTH, i);
 			Date dates = c.getTime();
 			Calendar cld = Calendar.getInstance();
-			cld.setTime(dates);
-			int year = cld.get(Calendar.YEAR);
-			int month = cld.get(Calendar.MONTH) + 1;
-			String week = getWeekOfDate(dates);
-			String dt = "";
-			String dtMonth = "";
-			if (month < 10) {
-				dtMonth = "-0" + month;
-			} else {
-				dtMonth = "-" + month;
-			}
-			if (i < 10) {
-				dt = year + dtMonth + "-0" + i;
-			} else {
-				dt = year + dtMonth + "-" + i;
+			cld.setTime(dates);  
+			String week = getWeekOfDate(dates);   
+			Integer dtd = 0;
+			if(i<10){
+				String dt = year + beginMonth + "0"+i;
+				dtd = Integer.parseInt(dt);
+			}else{
+				String dt = year+ beginMonth + i+"";
+				dtd = Integer.parseInt(dt);
 			}
 			result += "{\"y\":\"" + year + "\",\"m\":\"" + month
 					+ "\",\"d\":\"" + i + "\",\"week\":\"" + week
-					+ "\",\"totalpolice\":\"" + getTotalPolice(dt, orgId)
+					+ "\",\"totalpolice\":\""+getTotalPolice(dtd,list)
 					+ "\"},";
 			// + "\",\"dutyList\":\"" + getDutyList(dt, orgId) + "\"},";
 		}
@@ -105,37 +117,31 @@ public class DutyCalenderController {
 	 * @param date
 	 * @param orgId
 	 * @return
-	 */
-	private String getTotalPolice(String date, Integer orgId) {
-		try {
-			int dt = 0;
-			String dates = date.replace("-", "");
-			dt = Integer.parseInt(dates);
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("ymd", dt);
-			map.put("orgId", orgId);
-			List<DutyItemCountVM> list = new ArrayList<DutyItemCountVM>();
-			list = dutyTypeService.loadDutyItemCount(map);
+	 */ 
+	private String getTotalPolice(Integer dtd, List<DutyItemCountVM> list) {
+		try { 
 			String result = "";
 			if (list.size() > 0) {
-				for (int i = 0; i < list.size(); i++) {
-					result += "<li>";
-					if (list.get(i).getItemTypeName().equals("警员")) {
-						result += list.get(i).getorgName() + "人";
-					} else if (list.get(i).getItemTypeName().equals("车辆")) {
-						result += list.get(i).getorgName() + "车";
-					} else if (list.get(i).getItemTypeName().equals("武器")) {
-						result += list.get(i).getorgName() + "武器";
+				for(DutyItemCountVM s :list){
+					if(dtd.equals(s.getYmd())){
+						result += "<li>";
+						
+						if (s.getItemTypeName().equals("警员")) {
+							result += s.getItemCount() + "人";
+						} else if (s.getItemTypeName().equals("车辆")) {
+							result += s.getItemCount() + "车";
+						} else if (s.getItemTypeName().equals("武器")) {
+							result += s.getItemCount() + "武器";
+						}
+						result += "</li>";
 					}
-					result += "</li>";
+				}
+				 
+				if(result.length()==0){
+					result = "<li class='nobaobei' style='display: list-item;'>无报备</li>"; 
 				}
 			} else {
-				result = "<li class='nobaobei' style='display: list-item;'>无报备</li>";
-				// +
-				// "<li class='baoBeiBtn'><div class='pasteBtnBox' onclick='selectPasteBox(this,'"+date+"')' style='display: none;'><a href='javascript:void(0);'>粘贴</a></div>"
-				// + "<a href='javascript:void(0);'>粘贴</a>"
-				// + "</div></li>";
-				// result = "无报备";
+				result = "<li class='nobaobei' style='display: list-item;'>无报备</li>"; 
 			}
 			return result;
 		} catch (Exception ex) {
@@ -186,9 +192,9 @@ public class DutyCalenderController {
 				int dutyId = duty.getId();
 				dutyService.deleteByDutyId(dutyId);
 			}
-			Map<String, Object> map = new HashMap<String, Object>(); 
+			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("ymd", targetYmd);
-			map.put("organId",orgId);
+			map.put("organId", orgId);
 			dutyService.deleteByYMD(map);
 			DutyVM lduty = dutyService.loadVMByOrgIdAndYmd(orgId, ymd);
 			ObjResult<DutyVM> rs = new ObjResult<DutyVM>(true, null,
@@ -270,6 +276,7 @@ public class DutyCalenderController {
 					MessageCode.SELECT_ORGAN_FAIL, 0, null);
 		}
 	}
+
 	/**
 	 * 清除当月所有报备数据信息
 	 * 

@@ -53,7 +53,7 @@ var PoliceManage = {
 													dataSource : {
 														data : udata 
 													},
-													height : 550,
+													height : 472,
 													sortable : true,
 													resizable: true,
 													selectable : "multiple", 
@@ -112,7 +112,7 @@ var PoliceManage = {
 															},
 															{
 																title : '组呼号',
-																field : 'intercomGroup'
+																field : 'intercomGroupNumber'
 															},
 															{
 																title : '个呼号',
@@ -127,7 +127,6 @@ var PoliceManage = {
 				           							var id = $(this).find("td").first().text();
 				           							PoliceManage.editUser(id);
 				           						}); 
-												$("#policegrid .k-grid-content").mCustomScrollbar( {scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
                									var pg = pagination(pageNo,total,'loadData',10);
                						 
                	                				$("#page").html(pg);
@@ -224,7 +223,7 @@ var PoliceManage = {
 			height : "530px",
 			title : "警员信息导入",
 			position : {
-				top : "100px"
+				top : "80px"
 			},
 		content: "<%=basePath%>policeWeb/gotoPoliceImport.do?organId=" + organId+"&sessionId="+sessionId,
 					iframe : true,

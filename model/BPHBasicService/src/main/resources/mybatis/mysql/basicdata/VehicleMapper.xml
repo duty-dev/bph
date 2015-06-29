@@ -391,6 +391,8 @@
 		or o.path like
 			CONCAT(#{orgPath,jdbcType=VARCHAR},"/","%")
 		</if>
+		
+		order by  CONVERT(v.number USING gbk) asc
   </select>
   <select id ="loadVMCount" parameterType="java.util.Map" resultType="java.lang.Integer">
   	select 

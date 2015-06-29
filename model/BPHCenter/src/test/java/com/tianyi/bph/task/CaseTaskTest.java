@@ -11,6 +11,6 @@ public class CaseTaskTest extends BaseTest {
 	private CaseTask caseTask;
 	@Test
 	public void runTest(){
-		caseTask.importData();
+		//caseTask.run();
 	}
 }

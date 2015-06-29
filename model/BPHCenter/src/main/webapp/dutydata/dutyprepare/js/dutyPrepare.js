@@ -535,6 +535,7 @@ var DutyBaseManage = {
 									template: "<input type='checkbox' id='gp_ck_#: id #' value='#: id #' /> #: name # "
 								}] 
                     });
+                    $("#polGroupgrid").mCustomScrollbar({scrollButtons:{enable:true},advanced:{updateOnContentResize:true}});
                      $("#polTypegrid").kendoGrid({
                          dataSource: {
                             data: DutyBaseManage.polTypeResData
@@ -550,6 +551,7 @@ var DutyBaseManage = {
 									template: "<input type='checkbox' id='ty_ck_#: id #' value='#: id #' /> #: name #  "
 								}]
                     });
+                    $("#polTypegrid").mCustomScrollbar({scrollButtons:{enable:true},advanced:{updateOnContentResize:true}});
                     
                     var win =$('#polResConWindow');
 			win.kendoWindow({
@@ -742,6 +744,7 @@ var DutyBaseManage = {
 									template: "<input type='checkbox' id='gp_ck_#: id #' value='#: id #' /> #: name # "
 								}] 
                     });
+                    $("#vehGroupgrid").mCustomScrollbar({scrollButtons:{enable:true},advanced:{updateOnContentResize:true}});
                      $("#vehTypegrid").kendoGrid({
                         dataSource: {
                             data: DutyBaseManage.vehTypeResData
@@ -757,6 +760,7 @@ var DutyBaseManage = {
 									template: "<input type='checkbox' id='ty_ck_#: id #' value='#: id #' /> #: name #  "
 								}]
                     });
+                    $("#vehTypegrid").mCustomScrollbar({scrollButtons:{enable:true},advanced:{updateOnContentResize:true}});
                      var win =$('#vehResConWindow');
          			win.kendoWindow({
          	                        width: "450px",
@@ -951,6 +955,7 @@ var DutyBaseManage = {
 									template: "<input type='checkbox' id='gp_ck_#: id #' value='#: id #' /> #: name #  "
 								}] 
                     });
+                    $("#wepGroupgrid").mCustomScrollbar({scrollButtons:{enable:true},advanced:{updateOnContentResize:true}});
                      $("#wepTypegrid").kendoGrid({
                           dataSource: {
                             data: DutyBaseManage.wepTypeResData
@@ -966,6 +971,7 @@ var DutyBaseManage = {
 									template: "<input type='checkbox' id='ty_ck_#: id #' value='#: id #' /> #: name #  "
 								}]
                     });
+                    $("#wepTypegrid").mCustomScrollbar({scrollButtons:{enable:true},advanced:{updateOnContentResize:true}});
               var win =$('#wepResConWindow');
          			win.kendoWindow({
          	                        width: "450px",
@@ -1164,6 +1170,7 @@ var DutyBaseManage = {
 									template: "<input type='checkbox' id='gp_ck_#: id #' value='#: id #' /> #: name #  "
 								}] 
                     });
+                    $("#gpsGroupgrid").mCustomScrollbar({scrollButtons:{enable:true},advanced:{updateOnContentResize:true}});
                      $("#gpsTypegrid").kendoGrid({
                         dataSource: {
                             data: DutyBaseManage.gpsTypeResData
@@ -1179,6 +1186,7 @@ var DutyBaseManage = {
 									template: "<input type='checkbox' id='ty_ck_#: id #' value='#: id #' /> #: name #  "
 								}]
                     });
+                    $("#gpsTypegrid").mCustomScrollbar({scrollButtons:{enable:true},advanced:{updateOnContentResize:true}});
               var win =$('#gpsResConWindow');
          			win.kendoWindow({
          	                        width: "450px",
@@ -1490,8 +1498,9 @@ var DutyItemManage={
 				}
 				if (exists) {
 					var name = sRow.itemTypeId == 2 ? sRow.name : sRow.number;
+					var shiftInfo = shiftRowT.displayName.split("<")[0];
 					//$.messager.alert('提示', name + ' 在班次 ' + shiftRowT.name + '中已经存在!',	"warning");
-					$("body").popjs({"title":"操作提示","content":name + ' 在班次 ' + shiftRowT.name + '中已经存在!'}); 
+					$("body").popjs({"title":"操作提示","content":name + ' 在 ' + shiftInfo + '中已经存在!'}); 
 				}
 
 				if (isMaxPolice) {
@@ -1962,7 +1971,7 @@ var DutyItemManage={
 					var taskType = dutyTypeRow.taskType;
 
 					if (taskType > 0) {
-						DutyItemManage.loadTaskTarget(taskType,row.itemId,row.id);
+						DutyItemManage.loadTaskTarget(taskType,row.itemId,row.id,row.targets);
 						$('#lblPoliceInfo').text("警员："+row.name + " 的关联任务");
 						m_target = row; 
 						m_target.taskType = taskType;
@@ -1987,7 +1996,7 @@ var DutyItemManage={
 				$("body").popjs({"title":"提示","content":"请选择操作数据，只能在警员上设置关联任务"}); 
 			}
 		},
-		loadTaskTarget:function(taskType,itemid,did) {
+		loadTaskTarget:function(taskType,itemid,did,rowTargets) {
 			var pars = {
 				'orgId' : m_dutyprepare_Org.id,
 				'taskType' : taskType,
@@ -2004,7 +2013,32 @@ var DutyItemManage={
 				success : function(req) {
 					if(req.code == 200){
 						if(req.data != null){
-							
+							//判断是否已经对该警员的关联任务进行过编辑
+							if(rowTargets!=undefined&&rowTargets.length>0){
+								//根据taskType判断类型，taskType :1、巡区；2、社区； 3、卡点
+								if (taskType ==1) {
+									//将rowTargerts中的数据与req.data中的数据进行匹配
+									$.each(rowTargets,function(count,targetItem){
+										$.each(req.data,function(count1,dataItem){
+											if (targetItem.targetId==dataItem.pointId) {
+												dataItem.count = targetItem.count;
+												dataItem.stayTime = targetItem.stayTime;
+											}
+										});
+									});
+								}else{
+									//将rowTargerts中的数据与req.data中的数据进行匹配
+									$.each(rowTargets,function(count,targetItem){
+										$.each(req.data,function(count1,dataItem){
+											if (targetItem.targetId ==dataItem.targetId) {
+												dataItem.isSelected= 1;
+											}
+										});
+									});
+								}
+							}
+							//m_changestates  判断是否已经入库； == 0 才进行判断
+
 							var ds = new kendo.data.DataSource({
 								data:req.data,
 								  schema: {
@@ -2063,9 +2097,9 @@ var DutyItemManage={
 								}); 
 								break;
 							}
-							
+							//判断哪些点位是选中的节点；checkbox，
 							$.each(req.data,function(index,dobj){
-								if(dobj.isSelected){
+								if(dobj.isSelected>0){
 									$("#tk_ck_"+dobj.targetId).attr("checked","checked");
 								}
 								
@@ -2163,7 +2197,7 @@ var DutyItemManage={
 			var grid = $("#taskGrid").data("kendoGrid");
 			if(m_target.taskType == 1 || m_target.taskType == "1"){
 				for(var i = 0;i< grid._data.length ;i++){  
-					if(grid._data[i].dirty)
+					if(grid._data[i].count!=null&&grid._data[i].stayTime!=null)
 					{
 						var pt = {};
 						pt.dutyId = m_target.dutyId;

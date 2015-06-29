@@ -43,7 +43,7 @@ public class AreaServiceImpl implements AreaService {
 		int count = mapper
 				.checkAreaName(area.getAreaName(), area.getAreaType());
 		if (count > 0) {
-			return null;
+			throw new RestException("名称重复，请重新命名！");
 		}
 		mapper.insert(area);
 		if (area.getRelationUserKeys() != null) {
@@ -60,10 +60,10 @@ public class AreaServiceImpl implements AreaService {
 	@Override
 	public List<Area> selectByExample(AreaExample example) {
 		List<Area> list = mapper.selectByExample(example);
-		// for (final Area area : list) {
-		// area.setRelationUserKeys(areaRelationUserMapper.selectByAreaId(area
-		// .getId()));
-		// }
+		 for (final Area area : list) {
+		 area.setRelationUserKeys(areaRelationUserMapper.selectByAreaId(area
+		 .getId()));
+		 }
 		return list;
 	}
 
@@ -78,7 +78,7 @@ public class AreaServiceImpl implements AreaService {
 	public Area updateByPrimaryKey(Area record) {
 		Area area = mapper.selectByPrimaryKey(record.getId());
 		if (area == null) {
-			return null;
+			throw new RestException("区域不存在，修改失败！");
 		}
 		if (StringUtils.hasLength(record.getAreaName())) {
 			area.setAreaName(record.getAreaName());
@@ -149,7 +149,7 @@ public class AreaServiceImpl implements AreaService {
 		int count = areaPointMapper.checkAreaPointName(areaPoint.getAreaId(),
 				areaPoint.getName());
 		if (count > 0) {
-			return null;
+			throw new RestException("添加失败，必达点名字可能已经存在！");
 		}
 		areaPointMapper.insert(areaPoint);
 		return areaPoint;
@@ -168,7 +168,7 @@ public class AreaServiceImpl implements AreaService {
 		int count = areaPointMapper.checkAreaPointName(point.getAreaId(),
 				point.getName());
 		if (count > 0) {
-			return null;
+			throw new RestException("必达点名重复，请重新命名！");
 		}
 		areaPointMapper.updateByPrimaryKey(point);
 		return point;

@@ -111,18 +111,20 @@ public class GBPlatFormController {
 	public ReturnResult addGBPermission(
 			HttpServletRequest request,
 			@RequestParam(value = "organId", required = true) Integer organId,
-			@RequestParam(value = "gbOrganIds", required = true) String GBOrganIds) {
+			@RequestParam(value = "gbOrganIds", required = false) String GBOrganIds) {
 		try {
-			String[] ids = GBOrganIds.split(",");
 			List<Integer> list = null;
-			if (ids.length > 0) {
-				list = new ArrayList<Integer>(ids.length);
-				OrganGBOrganKey key = null;
-				for (String id : ids) {
-					list.add(Integer.valueOf(id));
+			if(!StringUtils.isEmpty(GBOrganIds)){
+				String[] ids = GBOrganIds.split(",");
+				if (ids.length > 0) {
+					list = new ArrayList<Integer>(ids.length);
+					OrganGBOrganKey key = null;
+					for (String id : ids) {
+						list.add(Integer.valueOf(id));
+					}
 				}
-				service.addGBPermission(organId, list);
 			}
+			service.addGBPermission(organId, list);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ReturnResult.FAILUER(e.getMessage());

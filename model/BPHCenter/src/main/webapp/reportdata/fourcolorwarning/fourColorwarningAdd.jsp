@@ -50,7 +50,8 @@ var WarningAddManage= {
 								    height:450,
 					    			check : WarningAddManage.onCheck,//check复选框
 								    dataSource: [eval('(' + json_data + ')')]
-								}).data("kendoTreeView"); 
+								}).data("kendoTreeView");
+								$("#alarmtreeview").parent().mCustomScrollbar({scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
 							}
 						}
 				});
@@ -190,7 +191,7 @@ var WarningAddManage= {
 		blueObj.level = 3;
 		var blueGe = $.trim($("#bluevaluea").val());
 		if(blueGe.length == 0){
-			$("body").popjs({"title":"提示","content":"蓝色预警增幅下限值，不能为空！","callback":function(){
+			$("body").popjs({"title":"提示","content":"紫色预警增幅下限值，不能为空！","callback":function(){
 						$("#bluevaluea").focus();
 								return;
 					}});  
@@ -201,7 +202,7 @@ var WarningAddManage= {
 		
 		var blueLt = $.trim($("#bluevalueb").val());
 		if(blueLt.length == 0){
-			$("body").popjs({"title":"提示","content":"蓝色预警增幅上限值，不能为空！","callback":function(){
+			$("body").popjs({"title":"提示","content":"紫色预警增幅上限值，不能为空！","callback":function(){
 						$("#bluevalueb").focus();
 								return;
 					}});  
@@ -210,7 +211,7 @@ var WarningAddManage= {
 		var brb=parseInt(blueLt); 
 		
 		if(bra > brb || bra == brb){
-			$("body").popjs({"title":"提示","content":"蓝色预警下限值，不能超过上限值！","callback":function(){
+			$("body").popjs({"title":"提示","content":"紫色预警下限值，不能超过上限值！","callback":function(){
 						$("#yellowvalueb").focus();
 								return;
 					}});  
@@ -323,7 +324,7 @@ var WarningAddManage= {
 		var blueGe = $.trim($("#bluevaluea").val());
 		if(blueGe.length > 0){ 
 			if(rehod.test(blueGe)){
-				$("body").popjs({"title":"提示","content":"蓝色预警增幅下限值，只能为数字！","callback":function(){
+				$("body").popjs({"title":"提示","content":"紫色预警增幅下限值，只能为数字！","callback":function(){
 						$("#bluevaluea").focus();
 								return;
 					}});  
@@ -331,7 +332,7 @@ var WarningAddManage= {
 			}
 			var bra=parseInt(blueGe);
 			if(bra>100){
-				$("body").popjs({"title":"提示","content":"蓝色预警增幅下限值，不能超过100%！","callback":function(){
+				$("body").popjs({"title":"提示","content":"紫色预警增幅下限值，不能超过100%！","callback":function(){
 						$("#bluevaluea").focus();
 								return;
 					}});  
@@ -405,7 +406,7 @@ var WarningAddManage= {
 								<label>≥</label>
 							</td>
 						 	<td colspan="3">
-								<input type="text" style="width:20px" onblur="WarningAddManage.onFillinYellowB();" name="redvalue" id="redvalue" required="required" />%
+								<input type="text" style="width:30px" class="k-textbox" onblur="WarningAddManage.onFillinYellowB();" name="redvalue" id="redvalue" required="required" /><em class="ty-input-end"></em><span class="ml15">%</span>
 							</td> 
 						</tr>
 						<tr> 
@@ -422,24 +423,22 @@ var WarningAddManage= {
 								<label>≥</label>
 							</td>
 							<td>
-								<input type="text"  style="width:20px"  onblur="WarningAddManage.onFillinblueB();"   name="yellowvaluea" id="yellowvaluea" required="required" />%
+								<input type="text"  style="width:30px" class="k-textbox" onblur="WarningAddManage.onFillinblueB();"   name="yellowvaluea" id="yellowvaluea" required="required" /><em class="ty-input-end"></em><span class="ml15">%</span>
 							</td>
 							<td>
 								<label style="margin-left:20px">,增幅 </label>
 							</td>
-							<td>
-								<label style="margin-left:20px"><</label>
-							</td> 
-							<td>
-								<input type="text"  style="width:20px" readonly="readonly"  name="yellowvalueb" id="yellowvalueb" required="required" />%
+							<td colspan="2">
+								<label style="float:left;margin-right:10px;"><</label>
+								<input type="text"  style="width:30px" class="k-textbox" readonly="readonly"  name="yellowvalueb" id="yellowvalueb" required="required" /><em class="ty-input-end"></em><span class="ml15">%</span>
 							</td>
 						</tr>
 						<tr>
 							<td> 
-								<table style="width:90%;padding:3px"><tr><td style="background-color:blue;height:25px"></td></tr></table>  
+								<table style="width:90%;padding:3px"><tr><td style="background-color:#8b2ae3;height:25px"></td></tr></table>  
 							</td>
 							<td>
-								<label style="margin-left:20px">蓝色预警</label>
+								<label style="margin-left:20px">紫色预警</label>
 							</td>
 							<td>
 								<label style="margin-left:20px">增幅  </label>
@@ -448,16 +447,14 @@ var WarningAddManage= {
 								<label>≥</label>
 							</td>
 							<td>
-								<input type="text"  style="width:20px"   onblur="WarningAddManage.onFillingreen();"    name="bluevaluea" id="bluevaluea" required="required" />%
+								<input type="text"  style="width:30px" class="k-textbox"  onblur="WarningAddManage.onFillingreen();"    name="bluevaluea" id="bluevaluea" required="required" /><em class="ty-input-end"></em><span class="ml15">%</span>
 							</td>
 							<td>
 								<label style="margin-left:20px">,增幅 </label>
 							</td>
-							<td>
-								<label style="margin-left:20px">< </label>
-							</td> 
-							<td>
-								<input type="text"  style="width:20px"   readonly="readonly"  name="bluevalueb" id="bluevalueb" required="required" />%
+							<td colspan="2">
+								<label style="float:left;margin-right:10px;">< </label>
+								<input type="text"  style="width:30px" class="k-textbox"   readonly="readonly"  name="bluevalueb" id="bluevalueb" required="required" /><em class="ty-input-end"></em><span class="ml15">%</span>
 							</td>
 						</tr>
 							<td> 
@@ -473,7 +470,7 @@ var WarningAddManage= {
 								<label><</label>
 							</td>
 							<td>
-								<input type="text"  style="width:20px"   readonly="readonly"   name="greenvalue" id="greenvalue" required="required" />%
+								<input type="text"  style="width:30px" class="k-textbox"  readonly="readonly"   name="greenvalue" id="greenvalue" required="required" /><em class="ty-input-end"></em><span class="ml15">%</span>
 							</td> 
 						<tr>
 							<td colspan="7">
@@ -493,9 +490,9 @@ var WarningAddManage= {
 						</tr> 
 					</table>
 					</div>
-					<div style="width:25%;height:470px;float:left;overflow:auto">
+					<div style="width:28%;height:470px;float:left;overflow:hidden;">
 						<h4>警情类别</h4>
-						<div id="alarmtreeview"> 
+						<div id="alarmtreeview" style="overflow-x:hidden;"> 
 						</div>
 					</div>
 					<p class="ty-input-row"> 

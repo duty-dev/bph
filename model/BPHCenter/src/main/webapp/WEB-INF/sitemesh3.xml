@@ -2,6 +2,8 @@
 <sitemesh>	
 	<!-- 指明满足“/*”的页面，将被“/WEB-INF/userMain.jsp”所装饰 -->
 	<mapping path="*.action" decorator="/WEB-INF/decorator.jsp" />
+	<mapping path="*icons*.action" decorator="/WEB-INF/decorator_admin.jsp" />
+	<mapping path="type*.action" decorator="/WEB-INF/decorator_admin.jsp" />
 	<!-- <mapping path="*user*.action" decorator="/WEB-INF/decorator.jsp" />
 	<mapping path="*organ*.action" decorator="/WEB-INF/decorator_organ.jsp" />
 	<mapping path="*cardPoint*.action" decorator="/WEB-INF/decorator_cardPoint.jsp" /> -->

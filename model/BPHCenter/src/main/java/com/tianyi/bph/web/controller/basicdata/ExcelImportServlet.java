@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -922,14 +924,31 @@ public class ExcelImportServlet extends HttpServlet {
 								String policeCode = val[2] == null ? ""
 										: val[2].trim().equals("0.0") ? ""
 												: val[2];
-								if (policeName.equals("")) {
+								String policeMobile = val[5] == null ? ""
+										: val[5].trim()
+										.equals("0.0") ? ""
+										: val[5];
+								
+								Pattern pattern = Pattern.compile("[0-9]*");  
+								if (policeName.equals("")) { 
 									regMsg += "第" + (i - 1) + "行数据错误，详细：姓名为空;";
-								} else if (idCardNo.equals("")) {
-									regMsg += "第" + (i - 1)
-											+ "行数据错误，详细：身份证号码为空";
+								} else if (idCardNo.equals("")) { 
+									regMsg += "第" + (i - 1) + "行数据错误，详细：身份证号码为空";
+								} else if(idCardNo.length()!=15&&idCardNo.length()!=18){
+									regMsg += "第" + (i - 1) + "行数据错误，详细：身份证号码长度错误";
 								} else if (policeCode.equals("")) {
-									regMsg += "第" + (i - 1) + "行数据错误，详细：警号号码为空";
-								} else {
+									regMsg += "第" + (i - 1) + "行数据错误，详细：警号为空";
+								} else if(policeCode.length()>8){
+									regMsg += "第" + (i - 1) + "行数据错误，详细：警号长度错误，超过长度";
+								}else if(policeMobile.trim().length()>13){
+										regMsg += "第" + (i - 1) + "行数据错误，详细：电话号码格式错误，长度过长;";
+								}else if(policeMobile.trim().length() > 0 && !pattern.matcher(policeMobile.trim()).matches()){ 
+										regMsg += "第" + (i - 1) + "行数据错误，详细：电话号码格式错误，只能为数字;"; 
+								}else if(!pattern.matcher(policeCode.trim()).matches()){
+										regMsg += "第" + (i - 1) + "行数据错误，详细：警号格式错误，只能为数字";
+								}else if(!pattern.matcher(idCardNo.trim().substring(0, idCardNo.trim().length()-1)).matches()){
+										regMsg += "第" + (i - 1) + "行数据错误，详细：身份证格式错误，只有最后一位可为非数字";
+								}else {
 									try {
 										String existSql = "select count(*) from t_police where idcardNo = '"
 												+ idCardNo
@@ -1002,6 +1021,7 @@ public class ExcelImportServlet extends HttpServlet {
 										// TODO Auto-generated catch block
 										return isSuccess;
 									}
+									 
 								}
 								if (regMsg.length() > 0) {
 									retMsgList.add(regMsg);

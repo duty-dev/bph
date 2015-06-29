@@ -1010,7 +1010,7 @@
 			AND jj.MARK = #{alarmLocation,jdbcType=INTEGER}
 		</if>
 		<if test="alarmLocation == 0">
-			AND jj.MARK = #{alarmLocation,jdbcType=INTEGER} OR jj.MARK is null
+			AND (jj.MARK = #{alarmLocation,jdbcType=INTEGER} OR jj.MARK is null)
 		</if>
 		<if test="startTime != null">
 			AND <![CDATA[ jj.BJSJ >= #{startTime,jdbcType=TIMESTAMP} ]]>

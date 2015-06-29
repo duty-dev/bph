@@ -125,6 +125,23 @@ public class CardPointController {
 							.getCommunityGroupNum()));
 				}
 				bean.setAssignment(cardPoint.getAssignment());
+				
+				int allCount=0;
+				if (cardPoint.getPeoplePoliceCount()!=null) {
+					allCount+=cardPoint.getPeoplePoliceCount();
+				}
+				if (cardPoint.getTrafficPoliceCount()!=null) {
+					allCount+=cardPoint.getTrafficPoliceCount();
+				}
+				if (cardPoint.getArmsPoliceCount()!=null) {
+					allCount+=cardPoint.getArmsPoliceCount();
+				}
+				bean.setAllPoliceCount(allCount);
+				if (cardPoint.getLatitude()!=null&&cardPoint.getLongitude()!=null) {
+					bean.setMark("是");
+				}else{
+					bean.setMark("否");
+				}
 				CircleLayer c = circleService.getCircleLayerById(cardPoint
 						.getLayersId());
 				if (c != null) {

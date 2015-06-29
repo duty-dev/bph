@@ -25,9 +25,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								novalidate="novalidate">
 								<h4>角色信息</h4>
 								<ul>
-									<li class="ty-input"><span class="ty-input-warn">*</span><label for="aRoleName">角色名称:</label>
+									<li class="ty-input"><span class="ty-input-warn">*</span><label for="aRoleName" class="fl">角色名称:</label>
 									<input type="text" class="k-textbox" name="addRoleName" id="addRoleName" style="width:60%" /><em class="ty-input-end"></em>
-									<li class="ty-input"><span class="ty-input-warn">*</span><label for="aRoleNote">角色描述:</label> 
+									<li class="ty-input"><span class="ty-input-warn">*</span><label for="aRoleNote" class="fl">角色描述:</label> 
 									<textarea rows="3" cols="20" class="ty-textarea" id="addRoleNote" style="width:55%;"></textarea></li>
 									<li class="ty-input actions">
 										<button type="button" class="ty-button ty-button-te" onclick="save(this);" data-click='save'>提交</button></li>
@@ -144,7 +144,7 @@ span.k-tooltip {
                             }
                         }
                     });
-                    
+                    $("#right-pane").mCustomScrollbar({scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
                 });
                 
                function save(e) {

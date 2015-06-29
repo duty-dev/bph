@@ -45,8 +45,6 @@ import com.tianyi.bph.service.system.UserService;
  */
 @Service
 public class AlarmDispatchServiceImpl implements AlarmDispatchService {
-	private Log logger = LogFactory.getLog(AlarmDispatchServiceImpl.class);
-
 	static final private String alarmBeseRouteKey = "routeData.H.alarm";// 即时接警，接收如routeData.H.*.51000.#
 	static final private String communicationBeseRouteKey = "routeData.H.communication";// 扁平化信息反馈
 	static final private String dispatchPoliceBeseRouteKey = "routeData.H.dispatchPolice";// 警情派警
@@ -252,7 +250,14 @@ public class AlarmDispatchServiceImpl implements AlarmDispatchService {
 	@Override
 	public List<JJDBView> getJjdbListMixed(JJDBQuery JjdbQuery) {
 		// TODO Auto-generated method stub
-		return null;
+		return jjdb110Mapper.getJjdbListByQuery(JjdbQuery);
+	}
+	
+	@Override
+	public Jjdb110 getAlarmDetail(String jjdbh) {
+		// TODO Auto-generated method stub
+		Jjdb110 jjdb = jjdb110Mapper.selectByPrimaryKey(jjdbh);
+		return jjdb;
 	}
 
 }

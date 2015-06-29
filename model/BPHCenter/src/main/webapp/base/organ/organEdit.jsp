@@ -16,7 +16,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <body class="ty-body">
 	<div id="vertical">
-			<div id="horizontal" style="height:310px;">
+			<div id="horizontal">
 				<div id="left-pane">
 					<div class="pane-content">
 						<!-- 左开始 -->
@@ -26,19 +26,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<h4>机构信息</h4>
 								<ul>
 									<input id="id" value="${organ.id}" type="hidden"/>
-									<li><span class="ty-input-warn ml150">*</span><label for="eOrganName">机构名称:</label> <input
+									<li><span class="ty-input-warn ml100">*</span><label for="eOrganName">机构名称:</label> <input
 										type="text" class="k-textbox" name="editOrganName"
 										id="editOrganName"  value="${organ.name}"/>
 									</li>
-									<li><span class="ty-input-warn ml150">*</span><label for="eOrganCode">机构编码:</label> <input
+									<li><span class="ty-input-warn ml100">*</span><label for="eOrganCode">机构编码:</label> <input
 										type="text" class="k-textbox" name="editOrganCode"
 										id="editOrganCode"  value="${organ.code}"/>
 									</li>
-									<li><span class="ty-input-warn ml150">*</span><label for="eShortName">机构简称:</label> <input
+									<li><span class="ty-input-warn ml100">*</span><label for="eShortName">机构简称:</label> <input
 										type="text" class="k-textbox" name="editShortName"
 										id="editShortName"  value="${organ.shortName}"/>
 									</li>
-									<li class="options"><span class="ty-input-warn ml150">*</span><label for="aOrganType">机构类型:</label>
+									<li class="options"><span class="ty-input-warn ml100">*</span><label for="aOrganType">机构类型:</label>
 										<input id="typeCode" value="${organ.orgTypeCode}" type="hidden"/>
 										<select  id="editOrganType" name="editOrganType">
 								    		<option value="1">市局</option>
@@ -48,12 +48,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								    		<option value="5">派出所</option>
 	                					</select>
 	                				</li>
-									<li><span class="ty-input-warn ml150"></span><label for="eParentName">上级机构:</label> 
+									<li><span class="ty-input-warn ml100"></span><label for="eParentName">上级机构:</label> 
 										<input type="hidden" id="editParentId" value="${organ.parentId}"/>
 										<input
 										type="text" class="k-textbox" name="editParentName"
-										id="editParentName" value="${organ.parentName}" disabled="disabled"/></li>
-									<li><span class="ty-input-warn ml150" style="margin-top:18px;">*</span><label for="eOrganNote">机构备注:</label> 
+										id="editParentName" value="${organ.parentName}" readonly="readonly" style="color:#929496;" /></li>
+									<li><span class="ty-input-warn ml100" style="margin-top:18px;">*</span><label for="eOrganNote">机构备注:</label> 
 										<textarea class="ty-edit-txtarea" id="editOrganNote" name="editOrganNote">${organ.note}</textarea>
 										</li>
 									<li class="actions">
@@ -74,8 +74,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 }
 
 .pane-content {
-	height: 340px;
-	width:560px;
 	padding: 0 10px;
 }
 
@@ -100,15 +98,15 @@ span.k-tooltip {
 }
 
 .demo-section {
-	width: 560px;
-	height:340px;
+	width: 490px;
+	height:350px;
 }
 
 .actions {
-	padding-left: 256px;
+	padding-left: 206px;
 	padding-top: 10px;
 }
-.ml150{margin-left:150px;}
+.ml100{margin-left:100px;}
 </style>
 
 <script>

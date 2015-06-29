@@ -35,55 +35,29 @@ public class ReportRouteController {
 	@ResponseBody
 	public ModelAndView gotoAlarmStatistics(
 			@RequestParam(value = "organId", required = false) Integer organId,
+			@RequestParam(value = "pageType", required = false) Integer pageType,
 			HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView(
 				"/reportdata/alarmstatistics/alarmStatistics.jsp");
+		if(pageType==null){
+			pageType = 1;
+		}
+		if(pageType==3||pageType==4){
+			 mv = new ModelAndView("/reportdata/alarmstatistics/alarmStatisticsx.jsp");
+		}
 		User user = (User) request.getAttribute("User");
-		if (organId == null) {
+		//if (organId == null) {
 			organId = user.getOrgId();
-		}  
+		//}  
 		Organ organ = new Organ();
 		organ = organService.getOrganByPrimaryKey(organId);
 		mv.addObject("organId", organId);   
 		mv.addObject("organName", organ.getShortName());   
+		mv.addObject("pageType",pageType);   
 		mv.addObject("num", "1000");
 		return mv;
 	}  
-
-	/**
-	 * 
-	 * web跳转到警情地图
-	 * 
-	 * @param request
-	 * @param
-	 * 
-	 * @return
-	 */
-	@RequestMapping({ "/gotoAlarmMap.do", "/gotoAlarmMap.action" })
-	@ResponseBody
-	public ModelAndView gotoAlarmMap(
-			@RequestParam(value = "organId", required = false) Integer organId,
-			HttpServletRequest request) {
-		ModelAndView mv = new ModelAndView("/reportdata/alarmmap/alarmMap.jsp");
-		User user = (User) request.getAttribute("User");
-		if (organId == null) {
-			organId = user.getOrgId();
-		}
-		Organ organ = new Organ();
-		organ = organService.getOrganByPrimaryKey(organId);
-		List<Organ> subOrgList = new ArrayList<Organ>();
-		OrganQuery organQuery = new OrganQuery();
-		organQuery.setParentId(organId); 
-		subOrgList = organService.getOrganListByParentId(organQuery);
-		
-		mv.addObject("organ", organ); 
-		mv.addObject("organName", organ.getShortName()); 
-		mv.addObject("organCode", organ.getCode()); 
-		mv.addObject("organPath", organ.getPath()); 
-		mv.addObject("subOrgList", subOrgList); 
-		mv.addObject("num", "1000");
-		return mv;
-	}
+ 
 
 	/**
 	 * web跳转到四色预警
@@ -102,9 +76,9 @@ public class ReportRouteController {
 		ModelAndView mv = new ModelAndView(
 				"/reportdata/fourcolorwarning/fourColorwarning.jsp");
 		User user = (User) request.getAttribute("User");
-		if (organId == null) {
+		//if (organId == null) {
 			organId = user.getOrgId();
-		}
+		//}
 		Organ organ = new Organ();
 		organ = organService.getOrganByPrimaryKey(organId);   
 		

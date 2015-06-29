@@ -35,11 +35,11 @@ public class AutoUpdateVersion {
 	@RequestMapping(value = "/autoUpdate.do")
 	@ResponseBody
 	public ReturnResult addArea(@RequestParam(value="version", required=true) String version) {
+		version = version.replace(" ", "");
 		List<UpdateConfig> severinfo = service.queryUpdateConfig(version);
 		if(severinfo != null && severinfo.size() > 0){
 			String currentVersion = severinfo.get(0).getCurrentVersion();
 			
-			version = version.replace(" ", "");
 			currentVersion = currentVersion.replace(" ", "");
 			
 			if(!(version.compareTo(currentVersion) < 0)){
@@ -47,11 +47,11 @@ public class AutoUpdateVersion {
 			}
 		}
 		
-		List<VersionFile> files = service.queryVersion(version);
+		List<VersionFile> files = service.queryVersion(version);//全部查询出来
 		List<VersionFile> remove = new ArrayList<VersionFile>();
 		if(files != null && files.size() > 0){
 			for(VersionFile v : files){
-				String versionCode = v.getVersionCode();
+				String versionCode = v.getVersionCode().replace(" ", "");//数据库的版本
 				if(version.compareTo(versionCode) > 0){
 					remove.add(v);
 				}
@@ -71,9 +71,11 @@ public class AutoUpdateVersion {
 	}
 	
 	public static void main(String args[]){
-		String version = "v 4.2.6";
-		String versionCode = "v 3.2.5.3";
+		String version = "v 1.0.3";
+		String versionCode = "v 1.0.2";
+	 String	version1=version.replace(" ", "");
+	 String	version2=versionCode.replace(" ", "");
 		
-		System.out.print(version.compareTo(versionCode));
+		System.out.print(version1.compareTo(version2));
 	}
 }

@@ -17,7 +17,7 @@ public class ALarmVO {
 	private int[] alarmState;
 	private String[] organCodes;
 	private String alarmPhone;
-	private String alarmLocation;
+	private Integer alarmLocation;
 	private String keyWord;
 	private String alarmAddress;
 	private Integer alarmLevel;
@@ -51,11 +51,11 @@ public class ALarmVO {
 	public void setAlarmPhone(String alarmPhone) {
 		this.alarmPhone = alarmPhone;
 	}
-	public String getAlarmLocation() {
+	public Integer getAlarmLocation() {
 		return alarmLocation;
 	}
-	public void setAlarmLocation(String alarmLocation) {
-		if("-1".equals(alarmLocation)){
+	public void setAlarmLocation(Integer alarmLocation) {
+		if(alarmLocation == -1){
 			this.alarmLocation = null;
 		}else{
 			this.alarmLocation = alarmLocation;
@@ -112,7 +112,7 @@ public class ALarmVO {
 		if(this.alarmState != null){
 			query.setAjzt(alarmState);
 		}
-		//if(this.alarmLocation != null){query.setAlarmLocation(this.alarmLocation);}
+		if(this.alarmLocation != null){query.setAlarmLocation(this.alarmLocation);}
 		if(!StringUtils.isEmpty(this.alarmPhone)){query.setBjdh(this.alarmPhone);}
 		//if(this.alarmTypeOne != null){query.setBjlb(this.alarmTypeOne);}
 		if(this.alarmTypeTwo != null){

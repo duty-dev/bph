@@ -6,7 +6,7 @@
 			+ path + "/";
 %>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML>
 <html>
 <head>
 <base href="<%=basePath%>">
@@ -51,7 +51,7 @@ var m_policeGroup_Org = {
 			}
 		});
 		$("#radio_unshared").attr("checked","checked");
-		$("#divOrg").css("visibility", "hidden");
+		$("#divOrg").css("visibility", "hidden").mCustomScrollbar({scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
 	});
 	
 	var PoliceGroupManage = {
@@ -106,7 +106,7 @@ var m_policeGroup_Org = {
 			}
 			// pg.name = $('#txtPoliceGroupName').val();
 			var groupName = $.trim($("#txtPoliceGroupName").val());
-				if (groupName == "" && groupName == undefined) { 
+				if (groupName == "" || groupName == undefined) { 
 					$("body").popjs({"title":"提示","content":"请填写分组名称","callback":function(){
 								$("#txtPoliceGroupName").focus();
 								return;
@@ -225,7 +225,7 @@ var m_policeGroup_Org = {
 			</div> 
 			
 							<div style="width:370px; float:left">
-								<div id="divOrg" style="height:320px; overflow:auto" class="ty-tree-bg">
+								<div id="divOrg" style="height:320px; overflow:auto" class="ty-tree-bg ty-tree-te">
 									<ul id="treeOrg" style="overflow:auto"></ul>
 								</div>
 							</div> 

@@ -28,6 +28,7 @@ import com.tianyi.bph.common.ReturnResult;
 import com.tianyi.bph.common.SystemConfig;
 import com.tianyi.bph.common.ehcache.CacheUtils;
 import com.tianyi.bph.domain.system.ModuleJson;
+import com.tianyi.bph.domain.system.Organ;
 import com.tianyi.bph.domain.system.User;
 import com.tianyi.bph.query.system.OrganQuery;
 import com.tianyi.bph.query.system.UserQuery;
@@ -115,7 +116,7 @@ public class UserAction {
 			query.setPath(user.getOrganPath());
 			CacheUtils.updateValue(manager, CacheUtils.ORGAN_DATASOURCE, user.getUserId()+"",
 					organService.getOrganTree(query, SystemConfig.DATABASE));
-			
+			Organ o=(Organ) CacheUtils.getObjectValue(manager, CacheUtils.ORGAN_DATASOURCE, user.getUserId()+"");
 			/**
 			 * 添加日志记录
 			 */

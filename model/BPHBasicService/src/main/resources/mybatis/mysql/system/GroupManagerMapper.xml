@@ -226,10 +226,10 @@
       <if test="groupType != null" >
         GROUP_TYPE = #{groupType,jdbcType=INTEGER},
       </if>
-      <if test="userId != null" >
+      <if test="userId != 0" >
         USER_ID = #{userId,jdbcType=INTEGER},
       </if>
-      <if test="organId != null" >
+      <if test="organId != 0" >
         ORGAN_ID = #{organId,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >

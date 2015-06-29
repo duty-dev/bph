@@ -66,6 +66,10 @@ public class GroupManagerAction extends BaseLogController{
 			groupManager.setCreateTime(new Date());
 			groupManager.setGroupType(groupType);
 			id=groupManagerService.insert(groupManager);
+			if(id == 2)
+			{
+				return ReturnResult.FAILUER("保存收藏信息失败,分组名重复");
+			}
 		} catch (Exception e) {
 			return ReturnResult.FAILUER("保存收藏信息失败");
 		}
@@ -100,7 +104,8 @@ public class GroupManagerAction extends BaseLogController{
 		try {
 			GroupManager groupManager=new GroupManager();
 			groupManager.setGroupId(groupId);
-			groupManager.setGroupName(groupName);
+			String groupNameString = new String(groupName.getBytes("ISO-8859-1"), "UTF-8");
+			groupManager.setGroupName(groupNameString);
 			groupManager.setUserId(userId);
 			groupManager.setOrganId(organId);
 			groupManager.setShareType(shareType);

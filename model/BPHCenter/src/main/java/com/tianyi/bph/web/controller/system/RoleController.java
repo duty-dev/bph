@@ -71,8 +71,8 @@ public class RoleController {
 		query.setNameSort(nameSort);
 		query.setTimeSort(timeSort);
 		
-		User user=(User) request.getAttribute("User");
-		query.setUserId(user.getUserId());
+		//User user=(User) request.getAttribute("User");
+		//query.setUserId(user.getUserId());
 		Pager<Role> roleList=roleService.getPageList(query);
 		if(!StringUtils.isEmpty(sessionId)){
 			request.getSession().setAttribute("sessionId", sessionId);

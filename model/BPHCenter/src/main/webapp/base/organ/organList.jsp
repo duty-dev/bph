@@ -13,7 +13,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 </head>
 
-<body> 
+<body>
 	<div id="wrapper">
 	    <div id='main-nav-bg'></div><!--机构树 -->
 	    <nav class="" id="main-nav">
@@ -46,6 +46,5 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	       </div>
      	</section>
     </div>
-
 </body>
 </html>

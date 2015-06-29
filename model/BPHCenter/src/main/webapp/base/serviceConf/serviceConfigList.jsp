@@ -23,8 +23,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
            
              <div class="row-fluid"><!----功能模块---->
                <div class="set">
-                 <h1>服务管理</h1>
-                 <div class="clear box">
+                 <div class="clear box" style="foloat">
+                 <h1 style="margin:-20px 15px 0 0">服务管理</h1>
                  <%@ include file="servcieSearch.jsp" %> 
                  </div>
                </div>

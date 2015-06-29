@@ -31,10 +31,8 @@
                						var total = msg.totalRows;
                						document.getElementById("gridListTotal").innerHTML=total+"人";
                						$("#grid").kendoGrid({
-               	                        dataSource: {
-               	                            data:udata
-               	                        },
-               	                     height: 502,
+               	                     dataSource: {data:udata},
+               	                     height: 472,
                                      sortable: true,
                                      resizable: true,
                                      selectable: "multiple",
@@ -55,6 +53,9 @@
                	                            field: "userName",
                	                            title: "姓名"
                	                        }, {
+               	                        	field: "phone",
+               	                            title: "电话"
+               	                        }, {
                	                            field: "createTime",
                	                            title: "创建时间"
                	                        }, {
@@ -69,13 +70,13 @@
                                          loadTree(userId);
                                      }
                	                    });
+               						
                						//添加双击事件
                						var myGrid = $("#grid").data("kendoGrid");
                						myGrid.element.on("dblclick","tbody>tr","dblclick",function(e){
                							var id = $(this).find("td").first().text();
                							editUser(id);
                						});
-               						
                						var pg = pagination(pageNo,total,'loadData',10);
                	                	$("#page").html(pg);
                					}
@@ -125,10 +126,10 @@ function addUser(){
 	var sessionId = $.trim($("#token").val());
 	$("#dialog").tyWindow({
 		width: "660px",
-		height: "630px",
+		height: "620px",
 	    title: "新增帐号",
 	    position: {
-	        top: "100px"
+	        top: "1px"
 	      },
 		content: "<%=path%>/admin/gotoUserAdd.do?organId=" + organId+"&sessionId="+sessionId,
 		iframe : true,
@@ -142,10 +143,10 @@ function editUser(userId){
 	var sessionId = $.trim($("#token").val());
 	$("#dialog").tyWindow({
 		width: "660px",
-		height: "630px",
+		height: "620px",
 	    title: "帐号管理",
 	    position: {
-	        top: "100px"
+	        top: "1px"
 	      },
 		content: "<%=path %>/admin/gotoUserEdit.do?userId="+userId+"&organId="+organId+"&sessionId="+sessionId,
 		iframe : true,
@@ -158,7 +159,7 @@ function onClose(e) {
 	loadData(1);
 	
 	/* 刷新左边的树 */
-    $("#treeview").remove();
+<%--     $("#treeview").remove();
 	 $("#box").append("<div id='treeview'></div>");
   	  $.ajax({
 			url:"<%=basePath%>web/organx/tree.do",
@@ -180,28 +181,9 @@ function onClose(e) {
 				    //check: onCheck,//check复选框 
 				    dataSource: [eval('(' + json_data + ')')]
 				}).data("kendoTreeView");
-               /* var selectedNode = treeview.select();
 
-               if (selectedNode.length == 0) {
-                   selectedNode = null;
-               } */
-		  		<%-- $.ajax({
-		  			url:"<%=basePath%>web/organx/addOrganTreeElement.do",
-					type:"post",
-					data:{
-						random:Math.random()
-					},
-					dataType:"json",
-					success:function(rsp){
-						$(rsp.data).each(function(){
-							treeview.append(eval('(' + JSON.stringify(this) + ')'), selectedNode);
-          				});
-					}
-		  		}); 
-		  		selectClass();//追加样式
-		  		--%>
 			}
-		});
+		}); --%>
 }
 
 //点击每行单元格在右边显示功能信息

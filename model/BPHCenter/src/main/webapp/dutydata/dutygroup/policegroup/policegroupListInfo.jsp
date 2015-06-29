@@ -27,26 +27,27 @@ var PolicegroupManage = {
 	policeGroupDataSource:[],
 	initMemberGrid:function(){
 		$("#dtGroupMember").kendoGrid({
-											dataSource: [],
-											columns : [ {
-														title : 'id',
-														field : 'id', 
-														hidden : true
-													}, {
-														title : '所属单位',
-														field : 'orgShortName'
-													}, {
-														title : '姓名',
-														field : 'name'
-													}, {
-														title : '警号',
-														field : 'number'
-													}, {
-														title : '职务',
-														field : 'title'
-													} ],
-											selectable: "row"
-										});
+							dataSource: [],
+							height:477,
+							columns : [ {
+										title : 'id',
+										field : 'id', 
+										hidden : true
+									}, {
+										title : '所属单位',
+										field : 'orgShortName'
+									}, {
+										title : '姓名',
+										field : 'name'
+									}, {
+										title : '警号',
+										field : 'number'
+									}, {
+										title : '职务',
+										field : 'title'
+									} ],
+							selectable: "row"
+						});
 	},
 	loadGroupData : function(pageNo) {
 		$.ajax({
@@ -55,7 +56,11 @@ var PolicegroupManage = {
 		dataType: "json",
 		ansyc:false,
 		data: {
-			"policeGroup_Query": JSON.stringify(m_policeGroup_Query) 
+			"policeGroup_Query": JSON.stringify(m_policeGroup_Query) ,
+						"expandeds"		:expandeds,
+						"organId":$("#organId").val(),
+						"organPath":$("#organPath").val(),
+						"selectName":$("#selectName").val()
 		},
 		success: function(req) {
 			if (req.code == 200) { 
@@ -64,7 +69,8 @@ var PolicegroupManage = {
 					var total =  req.totalRows;
 					$("#dtPoliceGroup").empty();
 					$("#dtPoliceGroup").kendoGrid({
-					dataSource: {data:rows}, 
+					dataSource: {data:rows},
+					height:470,
 					columns : [ {
 						title : 'Id',
 						field : 'id',
@@ -85,7 +91,6 @@ var PolicegroupManage = {
 						PolicegroupManage.loadMemberData(groupId);
 					}
 				}); 
-				$("#dtPoliceGroup .k-grid-content").mCustomScrollbar( {scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
                									var pg = pagination(pageNo,total,'loadData',10);
                						 
                	                				$("#page").html(pg);
@@ -195,6 +200,7 @@ var PolicegroupManage = {
 										var dataSo = new kendo.data.DataSource({
 											data: pdata
 										});
+										$("#dtGroupMember").empty();
 										$("#dtGroupMember").kendoGrid({
 											dataSource: dataSo,
 											columns : [ {
@@ -216,6 +222,7 @@ var PolicegroupManage = {
 													} ],
 											selectable: "row"
 										});
+										$("#dtGroupMember .k-grid-content").mCustomScrollbar( {scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
 									}else{
 										
                	                				PolicegroupManage.initMemberGrid();
@@ -230,11 +237,11 @@ var PolicegroupManage = {
 			if (row != null) {
 			var groupId = row.id;
 		$("#dialog").tyWindow({
-			width : "680px",
-			height : "500px",
+			width : "780px",
+			height : "580px",
 			title : "警员分组成员信息",
 			position : {
-				top : "100px"
+				top : "20px"
 			},
 		content: "<%=basePath%>dutyGroupRouteWeb/gotoPoliceGroupAddMember.do?groupId="
 							+ groupId + "&organId=" + organId+"&sessionId="+sessionId,
@@ -319,9 +326,10 @@ var PolicegroupManage = {
 
 </script>
 <div class="span5">
-<div id="dtPoliceGroup"></div>
-<div id="page"></div>
+	<div id="dtPoliceGroup" class="ty-grid-td"></div>
+	<div id="page"></div>
 </div>
-<div id="dtGroupMember" class="span5"></div>
+
+<div id="dtGroupMember" class="span5 ty-grid-td"></div>
 <div id="dialog"></div> 
 

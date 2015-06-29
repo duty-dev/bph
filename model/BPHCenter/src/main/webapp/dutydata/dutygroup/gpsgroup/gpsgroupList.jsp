@@ -37,7 +37,7 @@
 							<!----功能模块---->
 							<div class="set">
 
-								<h1>定位设备分组管理</h1>
+								<h1>GPS分组管理</h1>
 
 								<div class="clear box">
 									<%@ include file="gpsgroupSearch.jsp"%>

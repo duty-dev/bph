@@ -1,4 +1,4 @@
-	var sessionId = $("#token").val(); 
+﻿	var sessionId = $("#token").val(); 
 	
 	$(function() {
 		reportManage.initCtl();
@@ -33,11 +33,11 @@
 					{title : '机构树',	field : 'orgDescription',align : 'left',width : 120,expandable:true},
 					{title : '值班领导',	field : 'leaderCount',align : 'left',width : 80},
 					{title : '值班主任',	field : 'directorCount',align : 'left',width : 80},
-					{title : '警力',	field : 'policeCount',align : 'right',width : 80},
+					{title : '警员',	field : 'policeCount',align : 'right',width : 80},
 					{title : '警车',	field : 'vehicleCount',align : 'right',width : 80},
 					{title : '枪支',	field : 'weaponCount',align : 'right',width : 80},
-					{title : '社区',	field : 'communityCount',align : 'right',width : 80},
 					{title : '巡区',	field : 'patrolAreaCount',align : 'right',width : 80},
+					{title : '社区',	field : 'communityCount',align : 'right',width : 80},
 					{title : '卡点',	field : 'bayonetCount',align : 'right',width : 80}
 				]
 			});
@@ -47,11 +47,11 @@
 					{title : '机构树',	field : 'orgShortName',align : 'left',width : 120,expandable:true},
 					{title : '值班领导',	field : 'leaderNames',align : 'left',width : 80},
 					{title : '值班主任',	field : 'directorName',align : 'left',width : 80},
-					{title : '警力',	field : 'policeCount',align : 'right',width : 80},
+					{title : '警员',	field : 'policeCount',align : 'right',width : 80},
 					{title : '警车',	field : 'vehicleCount',align : 'right',width : 80},
 					{title : '枪支',	field : 'weaponCount',align : 'right',width : 80},
-					{title : '社区',	field : 'communityCount',align : 'right',width : 80},
 					{title : '巡区',	field : 'patrolAreaCount',align : 'right',width : 80},
+					{title : '社区',	field : 'communityCount',align : 'right',width : 80},
 					{title : '卡点',	field : 'bayonetCount',align : 'right',width : 80}
 				]
 			});
@@ -74,6 +74,7 @@
 						dataTextField: "name",
 		  				dataValueField: "id"
 		             });
+					//$(".k-input.k-readonly")[0].hidden = true;
 				}
 			});
 		
@@ -92,6 +93,7 @@
 						dataTextField: "name",
 		  				dataValueField: "id"
 		             });
+					//$(".k-input.k-readonly")[1].hidden = true;
 				}
 			});
 			$.ajax({
@@ -100,6 +102,10 @@
 				dataType : "json",
 				// async : false,
 				success : function(req) {
+					var obj = {};
+					obj.id = 0;
+					obj.name ="全部";
+					req.data.unshift(obj);
 					var ds=new  kendo.data.DataSource({
 						data:req.data
 					});
@@ -264,30 +270,35 @@
 								{title : '机构树',	field : 'orgDescription',align : 'left',width : 120},
 								{title : '值班领导',	field : 'leaderCount',align : 'left',width : 80},
 								{title : '值班主任',	field : 'directorCount',align : 'left',width : 80},
-								{title : '警力',	field : 'policeCount',align : 'right',width : 80},
+								{title : '警员',	field : 'policeCount',align : 'right',width : 80},
 								{title : '警车',	field : 'vehicleCount',align : 'right',width : 80},
 								{title : '枪支',	field : 'weaponCount',align : 'right',width : 80},
-								{title : '社区',	field : 'communityCount',align : 'right',width : 80},
-								{title : '巡区',	field : 'patrolAreaCount',align : 'right',width : 80},
+								{title : '巡区',	field : 'communityCount',align : 'right',width : 80},
+								{title : '社区',	field : 'patrolAreaCount',align : 'right',width : 80},
 								{title : '卡点',	field : 'bayonetCount',align : 'right',width : 80}
 							]
 						});
-						
+						var pageHeight = window.screen.availHeight;
+						var hei = 240;
+						if(pageHeight > 728){
+							hei = pageHeight-488;
+						}
 						$('#tlReport').kendoTreeList({
 							dataSource:ds,
+							height:hei,
 							columns:[
 								{title : '机构树',	field : 'orgShortName',align : 'left',width : 120,expandable:true},
 								{title : '值班领导',	field : 'leaderNames',align : 'left',width : 80},
 								{title : '值班主任',	field : 'directorName',align : 'left',width : 80},
-								{title : '警力',	field : 'policeCount',align : 'right',width : 80},
+								{title : '警员',	field : 'policeCount',align : 'right',width : 80},
 								{title : '警车',	field : 'vehicleCount',align : 'right',width : 80},
 								{title : '枪支',	field : 'weaponCount',align : 'right',width : 80},
-								{title : '社区',	field : 'communityCount',align : 'right',width : 80},
-								{title : '巡区',	field : 'patrolAreaCount',align : 'right',width : 80},
+								{title : '巡区',	field : 'communityCount',align : 'right',width : 80},
+								{title : '社区',	field : 'patrolAreaCount',align : 'right',width : 80},
 								{title : '卡点',	field : 'bayonetCount',align : 'right',width : 80}
 							]
 						});
-						
+						$("#tlReport .k-grid-content").mCustomScrollbar( {scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
 					} else {
 						alert("获取数据失败");
 					}

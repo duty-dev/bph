@@ -94,6 +94,7 @@ public class CaseReportController {
 			map.put("hours", hours); 
 			map.put("beginYMD", rp.getBeginYmd());
 			map.put("endYMD", rp.getEndYmd());
+			map.put("type2Codes",caseTypes);
 			ls = caseReportService.loadCaseTypeReport(map);
 			ls = getSelectCaseTypeList(ls, caseTypes);
 			cResult.setBeginYmd(rp.getBeginYmd());
@@ -382,7 +383,7 @@ public class CaseReportController {
 			map.put("beginYMD", rp.getBeginYmd());
 			map.put("endYMD", rp.getEndYmd());
 			ls = caseReportService.loadCaseOrgReport(map);
-			ls = getSelectCaseTypeOrgList(ls,type2Codes);
+			//ls = getSelectCaseTypeOrgList(ls,type2Codes);
 			cResult.setBeginYmd(rp.getBeginYmd());
 			cResult.setEndYmd(rp.getEndYmd());
 			cResult.setData(ls);

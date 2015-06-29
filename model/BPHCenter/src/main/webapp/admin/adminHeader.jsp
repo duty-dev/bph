@@ -110,7 +110,7 @@ function show_hide(type){
 		$("#subMenu_5").append("<li>"+
 		"<a href='<%=path %>/iconsWeb/gotoIconsList.action'>图标管理</a></li>");
 		$("#subMenu_5").append("<li>"+
-		"<a href='<%=path %>/iconsWeb/gotoIconsList.action'>类型管理</a></li>");
+		"<a href='<%=path %>/typeWeb/gotoTypeList.action'>类型管理</a></li>");
 }
 </script>
 <div id="mydialog"></div>

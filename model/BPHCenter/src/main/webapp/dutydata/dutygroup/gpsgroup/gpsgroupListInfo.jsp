@@ -29,6 +29,7 @@ var GpsgroupManage = {
 	initMemberGrid:function(){
 		$("#dtGroupMember").kendoGrid({
 											dataSource: [],
+											height:477,
 											columns : [ {
 												title : 'id',
 												field : 'id',
@@ -55,7 +56,11 @@ var GpsgroupManage = {
 		url: "<%=basePath%>gpsGroupWeb/list.do",
 		dataType: "json",
 		data: {
-			"gpsGroup_Query": JSON.stringify(m_gpsGroup_Query) 
+			"gpsGroup_Query": JSON.stringify(m_gpsGroup_Query) ,
+						"expandeds"		:expandeds,
+						"organId":$("#organId").val(),
+						"organPath":$("#organPath").val(),
+						"selectName":$("#selectName").val()
 		},
 		success: function(req) {
 			if (req.code == 200) { 
@@ -64,7 +69,8 @@ var GpsgroupManage = {
 				var rows =req.data; 
 				$("#dtGpsGroup").empty();
 				$("#dtGpsGroup").kendoGrid({
-					dataSource:{data : rows }, 
+					dataSource:{data : rows },
+					height:470,
 					columns : [ {
 						title : 'Id',
 						field : 'id',
@@ -83,7 +89,6 @@ var GpsgroupManage = {
 						GpsgroupManage.loadMemberData(groupId);
 					}
 				}); 
-				$("#dtGpsGroup .k-grid-content").mCustomScrollbar( {scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
                									var pg = pagination(pageNo,total,'loadData',10);
                						 
                	                				$("#page").html(pg);
@@ -192,7 +197,7 @@ var GpsgroupManage = {
 										});
 										$("#dtGroupMember").kendoGrid({
 											dataSource: dataSo,
-											columns : [ {
+											columns : [{
 												title : 'id',
 												field : 'id',
 												hidden : true
@@ -211,6 +216,7 @@ var GpsgroupManage = {
 											}],
 											selectable: "row"
 										});
+										$("#dtGroupMember .k-grid-content").mCustomScrollbar( {scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
 									}else{
 										
                	                				GpsgroupManage.initMemberGrid();
@@ -225,11 +231,11 @@ var GpsgroupManage = {
 			if (row != null) {
 			var groupId = row.id;
 		$("#dialog").tyWindow({
-			width : "680px",
-			height : "500px",
+			width : "780px",
+			height : "580px",
 			title : "分组成员管理",
 			position : {
-				top : "100px"
+				top : "20px"
 			},
 		content: "<%=basePath%>dutyGroupRouteWeb/gotoGpsGroupAddMember.do?groupId="
 							+ groupId + "&organId=" + organId+"&sessionId="+sessionId,
@@ -314,9 +320,9 @@ var GpsgroupManage = {
 
 </script>
 <div class="span5">
-<div id="dtGpsGroup"></div>    
-<div id="page"></div>
+	<div id="dtGpsGroup" class="ty-grid-td"></div>    
+	<div id="page"></div>
 </div> 
-<div id="dtGroupMember" class="span5"></div> 
+<div id="dtGroupMember" class="span5 ty-grid-td"></div> 
 <div id="dialog"></div> 
 

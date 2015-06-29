@@ -60,10 +60,10 @@ var GpsManage = {
 							dataSource : {
 								data : udata
 							},
-							height : 550,
+							height : 472,
 							sortable : true,
+							resizable: true,
 							selectable : "multiple",
-							
 							columns:[{
 									title : 'Id',
 									field : 'id', 
@@ -97,7 +97,6 @@ var GpsManage = {
            							var id = $(this).find("td").first().text();
            							GpsManage.editGps(id);
            						});
-								$("#gpsgrid .k-grid-content").mCustomScrollbar( {scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
              					var pg = pagination(pageNo,total,'loadData',10);
               	                $("#page").html(pg);
 						} 

@@ -88,7 +88,7 @@
 			left join t_organ as og on og.organ_id = p.org_id
 		where p.isUsed = 1 and p.org_id=#{id,jdbcType=INTEGER}  
 	 ) as t    
-	order by t.data_type desc,t.rid
+	order by t.data_type desc,CONVERT(t.name USING gbk),t.rid
   </select>
   
     <select id="loadOrgWithVehicleVMList" parameterType="java.util.Map" resultMap="OrgWithVehicleResultMap">
@@ -104,7 +104,7 @@
 		
 		where p.org_id=#{id,jdbcType=INTEGER}   
 	 ) as t    
-	order by t.data_type desc,t.rid
+	order by t.data_type desc,CONVERT(t.name USING gbk),t.rid
   </select>
   
   
@@ -121,7 +121,7 @@
 		
 		  where p.org_id=#{id,jdbcType=INTEGER}  
 	 ) as t    
-	order by t.data_type desc,t.rid
+	order by t.data_type desc, CONVERT(t.name USING gbk),t.rid
   </select>
   
   
@@ -138,7 +138,7 @@
 			left join t_organ as og on og.organ_id = p.org_id
 		  where p.org_id=#{id,jdbcType=INTEGER}  
 	 ) as t    
-	order by t.data_type desc,t.rid
+	order by t.data_type desc,CONVERT(t.name USING gbk),t.rid
   </select>
   
   <select id="loadListByName" parameterType="java.util.Map" resultMap="BaseResultMap">

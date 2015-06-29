@@ -6,7 +6,7 @@
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
 %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML>
 <html>
 <head>
 <base href="<%=basePath%>">
@@ -42,7 +42,12 @@
 			dataSource: treeData,
 			dataTextField: "name",
 			selectable: "row"
-		});
+		}).on('dblclick', '.k-in', function (event) { 
+     			var rows = $("#treeOrgWithGps").data("kendoTreeView");
+				var node = rows.dataItem(rows.select()); 
+				GpsGroupManage.selectMemberModel(node);
+     			return false;
+			}).data("kendoTreeView");
 		 
 		$.ajax({
 					type: "post",
@@ -76,6 +81,11 @@
 													} ],
 											selectable: "row"
 										});
+										
+										var myGrid = $("#dtSelGroupMember").data("kendoGrid");
+				           						myGrid.element.on("dblclick","tbody>tr","dblclick",function(e){ 
+				           							GpsGroupManage.unselectMember();
+				           						}); 
 									}else{ 
 										$("#dtSelGroupMember").kendoGrid({
 											dataSource: [],
@@ -98,6 +108,8 @@
 									}
 								}
 							});
+		$("#orgWithGps").mCustomScrollbar({scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
+		$("#dtSelGroupMember").parent().mCustomScrollbar({scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
 	}); 	
 	var GpsGroupManage ={ 
 			selectMember:function() {
@@ -107,18 +119,26 @@
 			}, 
 			unselectMember:function() {
 				var rows = $("#dtSelGroupMember").data("kendoGrid");
-				var row = rows.dataItem(rows.select()); 
-				for (var i = 0; i<m_memberDt.length; i++) {
-					 if(row.gpsId==m_memberDt[i].gpsId){ 
-						 m_memberDt.splice(i, 1);
-					 }
+				if(rows._data.length == 0){
+					$("body").popjs({"title":"提示","content":"没有可操作的数据源"}); 
+					return;
 				}
-				var dataSource = new kendo.data.DataSource({
-  							data: m_memberDt
-						});
+				var row = rows.dataItem(rows.select()); 
+				if(row != null){ 
+					for (var i = 0; i<m_memberDt.length; i++) {
+						 if(row.gpsId==m_memberDt[i].gpsId){ 
+							 m_memberDt.splice(i, 1);
+						 }
+					}
+					var dataSource = new kendo.data.DataSource({
+  								data: m_memberDt
+							});
 						//替换以前的dataSource
-				var grid = $("#dtSelGroupMember").data("kendoGrid");
-				grid.setDataSource(dataSource); 
+					var grid = $("#dtSelGroupMember").data("kendoGrid");
+					grid.setDataSource(dataSource); 
+				}else{
+					$("body").popjs({"title":"提示","content":"请选择要删除的成员"}); 
+				}
 			},
 			selectMemberModel:function(node) {
 				 
@@ -207,26 +227,26 @@
   
   <body class="ty-body">
     <!-- <div id="vertical" style="overflow-x:hidden;"> -->
-		<div id="winPG" style="width:660px;height:320px;" title="定位设备分组成员管理">
+		<div id="winPG" style="width:700px;float:left;" title="定位设备分组成员管理">
 			<div style="width:650px;margin-top:10px;">
 				<!-- 左开始 -->
 				<div class="demo-section k-header"> 
 					<input id="txtGpsGroupId"  type="hidden"  value="${groupId }"></input>
 				 
-							<div style="width:200px;float:left;height:230px">  
-								<ul id="treeOrgWithGps" style="overflow:auto;height:450px"></ul>
+							<div style="width:40%;float:left;height:330px" id="orgWithGps">  
+								<ul id="treeOrgWithGps"></ul>
 							</div>
-					 	    <div  style="width:40px;float:left;height:230px;margin-top:120px">
+					 	    <div  style="width:6%;float:left;height:210px;margin-top:120px">
 								<button onclick="GpsGroupManage.selectMember()">&gt&gt</button>
 								<button onclick="GpsGroupManage.unselectMember()">&lt&lt</button>
 						    </div>
-						    <div  style="width:350px;float:left"> 
+						    <div  style="width:50%;float:left;height:330px;overflow:hidden;"> 
 							<div id="dtSelGroupMember"></div>
 					 
-					<p style="float:left;width:100%;margin-top:10px;">
+					</div>
+					<p class="ty-input-row">
 						<button class="ty-button"  onclick="GpsGroupManage.appendMember()">确定</button>
 					</p>
-					</div>
 				</div>
 			</div> 
 	</div>

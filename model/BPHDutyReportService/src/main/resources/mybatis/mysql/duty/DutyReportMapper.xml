@@ -93,9 +93,9 @@
 				and d.is_template=false
 				and di.begin_time  &lt;#{endTime,jdbcType=TIMESTAMP}
 				and di.end_time  &gt; #{beginTime,jdbcType=TIMESTAMP}
-				<if test=" taskProperyIds != null" >
+				<if test="taskPropertyIds != null" >
         			and exists (select 1 from t_duty_type_property_relate as dtpr where dtpr.duty_type_id=di.duty_type_id and dtpr.property_id in
-        			<foreach item="item" index="index" collection="taskProperyIds" open="(" separator="," close=")">
+        			<foreach item="item" index="index" collection="taskPropertyIds" open="(" separator="," close=")">
  						#{item}  
 					</foreach> )
       			</if>

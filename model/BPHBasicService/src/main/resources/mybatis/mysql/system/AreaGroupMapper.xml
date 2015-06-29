@@ -127,9 +127,6 @@
   <update id="updateByExampleSelective" parameterType="com.tianyi.bph.domain.system.AreaGroup" >
     update b_area_group
     <set >
-      <if test="groupId != null" >
-        GROUP_ID = #{groupId,jdbcType=INTEGER},
-      </if>
       <if test="areaGroupType != null" >
         AREA_GROUP_TYPE = #{areaGroupType,jdbcType=INTEGER},
       </if>
@@ -137,6 +134,7 @@
         AREA_GROUP_CONTENT = #{areaGroupContent,jdbcType=VARCHAR},
       </if>
     </set>
+    where GROUP_ID=#{groupId,jdbcType=INTEGER}
   </update>
   <update id="updateByExample" parameterType="map" >
     update b_area_group

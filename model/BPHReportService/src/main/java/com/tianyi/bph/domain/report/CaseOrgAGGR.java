@@ -3,6 +3,9 @@ package com.tianyi.bph.domain.report;
 public class CaseOrgAGGR {
 	private Integer orgId;
 	private String orgCode;
+	private String orgPath;
+	private String orgParentPath;
+	private Integer orgParentId;
 	private String orgName;
 	private String typeCode;
 	private String typeName;
@@ -10,6 +13,24 @@ public class CaseOrgAGGR {
 	private String typeLevel;
 	private Integer amount;
 	
+	public String getOrgPath() {
+		return orgPath;
+	}
+	public void setOrgPath(String orgPath) {
+		this.orgPath = orgPath;
+	}
+	public String getOrgParentPath() {
+		return orgParentPath;
+	}
+	public void setOrgParentPath(String orgParentPath) {
+		this.orgParentPath = orgParentPath;
+	}
+	public Integer getOrgParentId() {
+		return orgParentId;
+	}
+	public void setOrgParentId(Integer orgParentId) {
+		this.orgParentId = orgParentId;
+	}
 	public Integer getOrgId() {
 		return orgId;
 	}

@@ -59,24 +59,38 @@
 	</bean>
 	<!-- 事物配置结束 -->
 	
-	
+	<bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
+		<property name="slowSqlMillis" value="1000" />
+		<property name="logSlowSql" value="true" />
+	</bean>
+	<bean id="log-filter" class="com.alibaba.druid.filter.logging.Log4jFilter"/>
 
 	<!-- mysql 数据库 -->
 	<beans profile="development">
 		<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
 			init-method="init" destroy-method="close">
 
-			<property name="url"	value="jdbc:log4jdbc:mysql://localhost:3306/bph?allowMultiQueries=true&amp;autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8" />
+			<property name="url"
+				value="jdbc:log4jdbc:mysql://25.30.9.159:3306/bph?allowMultiQueries=true&amp;autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8" />
+
 			<property name="driverClassName" value="net.sf.log4jdbc.DriverSpy" />
 			<property name="username" value="root" />
-			<property name="password" value="5233750" />
+			<property name="password" value="123456" />
+			<property name="timeBetweenEvictionRunsMillis" value="3600000" />
+            <property name="testWhileIdle" value="true" />
+            <property name="validationQuery" value="select 1 from dual" />
 			<!-- <property name="maxActive" value="30" />
 			<property name="maxIdle" value="20" /> -->
+			<property name="filters" value="stat,log4j"/>
+			<property name="proxyFilters">
+				<list>
+					<ref bean="stat-filter"/>
+					<ref bean="log-filter"/>
+				</list> 
+			</property>
+			
 		</bean>
 	</beans>
-	
-	
-	
 	<beans profile="test">
 		<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
 			init-method="init" destroy-method="close">
@@ -90,6 +104,5 @@
 		</bean>
 	</beans>
 
-	
-     
+
 </beans>

@@ -1411,7 +1411,9 @@ and dependencies (minified).
 		via mouse-wheel plugin (https://github.com/brandonaaron/jquery-mousewheel)
 		*/
 		_mousewheel=function(){
-			var $this=$(this),d=$this.data(pluginPfx),o=d.opt,
+			var $this=$(this),d=$this.data(pluginPfx);
+			if(d==undefined)return;
+			var o=d.opt,
 				namespace=pluginPfx+"_"+d.idx,
 				mCustomScrollBox=$("#mCSB_"+d.idx),
 				mCSB_dragger=[$("#mCSB_"+d.idx+"_dragger_vertical"),$("#mCSB_"+d.idx+"_dragger_horizontal")],

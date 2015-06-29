@@ -73,8 +73,7 @@ div code {
 		<div></div>
 	</div>
 	<script>
-		var ws = new SockJS('http://' + window.location.hostname
-				+ ':15674/stomp');
+		var ws = new SockJS('http://25.30.9.186:15674/stomp');
 		var client = Stomp.over(ws);
 		// SockJS does not support heart-beat: disable heart-beats
 		client.heartbeat.incoming = 0;
@@ -90,7 +89,7 @@ div code {
 		}
 
 		var on_connect = function(x) {
-			id = client.subscribe("/exchange/gps/51000.51001", function(m) {
+			id = client.subscribe("/exchange/GpsTopicExchange/routeData.GPS.510000000000.#", function(m) {
 			});
 		};
 		var on_error = function() {

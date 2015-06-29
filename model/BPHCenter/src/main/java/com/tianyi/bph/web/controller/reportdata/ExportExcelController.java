@@ -378,8 +378,8 @@ public class ExportExcelController {
 				java.util.Date date = new java.util.Date();
 				String str = sdf.format(date);
 				filePath = "excelModel/tempfile/" + str + "_AlarmTypeData.xls";
-				//String realPath ="C:\\Users\\hzf\\Workspaces\\"+ str + "_AlarmTypeData.xls";// serverPath + filePath;
-				String realPath = serverPath+filePath;
+				String realPath ="C:\\Users\\hzf\\Workspaces\\"+ str + "_AlarmTypeData.xls";// serverPath + filePath;
+				//String realPath = serverPath+filePath;
 				try {
 					FileOutputStream outputStream = new FileOutputStream(
 							realPath);
@@ -469,7 +469,7 @@ public class ExportExcelController {
 						Row row = sheet.createRow(rowNum); 
 						for(int cellCount = 0;cellCount<rowData[rowNum-2].length;cellCount++){
 							Cell cel = row.createCell(cellCount, Cell.CELL_TYPE_STRING);
-							cel.setCellValue(rowData[rowNum-2][cellCount].replace("\\\"", ""));
+							cel.setCellValue(rowData[rowNum-2][cellCount]=="null"?"0":rowData[rowNum-2][cellCount]==""?"0":rowData[rowNum-2][cellCount].replace("\\\"", ""));
 							sheet.autoSizeColumn(cellCount);
 						}
 					}
@@ -478,8 +478,8 @@ public class ExportExcelController {
 				java.util.Date date = new java.util.Date();
 				String str = sdf.format(date);
 				filePath = "excelModel/tempfile/" + str + "_OrganData.xls";
-				String realPath ="C:\\Users\\hzf\\Workspaces\\"+ str + "_OrganData.xls";// serverPath + filePath;
-				//String realPath = serverPath + filePath;
+				//String realPath ="C:\\Users\\hzf\\Workspaces\\"+ str + "_OrganData.xls";// serverPath + filePath;
+				String realPath = serverPath + filePath;
 				try {
 					FileOutputStream outputStream = new FileOutputStream(
 							realPath);
@@ -534,7 +534,7 @@ public class ExportExcelController {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 				java.util.Date date = new java.util.Date();
 				String str = sdf.format(date);
-				filePath = "excelModel/tempfile/" + str + "_Period.xls";
+				filePath = "excelModel/tempfile/" + str + "_PeriodData.xls";
 				//String realPath ="C:\\Users\\hzf\\Workspaces\\"+ str + "_Period.xls";// serverPath + filePath;
 				String realPath = serverPath + filePath;
 				try {
@@ -581,7 +581,7 @@ public class ExportExcelController {
 					Cell cell1 = row1.createCell(0, Cell.CELL_TYPE_STRING);
 					cell1.setCellValue("周期/时间段");
 					sheet.autoSizeColumn(0);
-					for(int j = 0;j<= 24;j++){ 
+					for(int j = 1;j<= 24;j++){ 
 						Cell cell = row1.createCell(j, Cell.CELL_TYPE_STRING);
 						cell.setCellValue(j);
 						sheet.autoSizeColumn(j);
@@ -602,7 +602,7 @@ public class ExportExcelController {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 				java.util.Date date = new java.util.Date();
 				String str = sdf.format(date);
-				filePath = "excelModel/tempfile/" + str + "_TimeSpan.xls";
+				filePath = "excelModel/tempfile/" + str + "_TimeSpanData.xls";
 				//String realPath ="C:\\Users\\hzf\\Workspaces\\"+ str + "_TimeSpan.xls";// serverPath + filePath;
 				String realPath = serverPath + filePath;
 				try {

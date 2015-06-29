@@ -1,6 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 
-<div class="pow">
+<div class="pow" id="pow">
     <div class="line1-mid">
       <div class="t1-start"></div>
 	  <div class="t1-end"></div>
@@ -11,8 +11,10 @@
       <div class="shadow1" id="zhegaiceng">
 			<img src="<%=basePath%>images/images/zhedang.png" style="height:800px">
    	  </div>
-      <div class="box-content" id="roleBox">
-       	 <div id="moduletreeview"></div>
+      <div class="box-content">
+      	<div id="roleBox">
+       		<div id="moduletreeview"></div>
+       	</div>
       </div>
       <!-- <hr class="hr"> -->
     </div>
@@ -41,18 +43,22 @@
 						dataType:"json",
 						success:function(rsp){
 							json_data =JSON.stringify(rsp.data);
-							
 							$("#moduletreeview").kendoTreeView({
 								//select: onSelect,//点击触发事件
 							    checkboxes: {
 							        checkChildren: true//允许复选框多选
 							    },
-							    check: onCheck,//check复选框
+						    	check: onCheck,//check复选框
 							    dataSource: [eval('(' + json_data + ')')]
 							}).data("kendoTreeView");
+							if($("#moduletreeview").children().size()>0){
+						    	$("#pow .box .box-content").mCustomScrollbar({scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
+						    }
 						}
 					});
+				 
 			 });
+			 
 			  // show checked node IDs on datasource change
 		        function onCheck(e) {
 		            var checkedNodes = [],

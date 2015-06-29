@@ -6,7 +6,7 @@
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
 %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML>
 <html>
 <head>
 <base href="<%=basePath%>">
@@ -49,7 +49,7 @@ $(function() {
 			}
 		});
 		$("#radio_unshared").attr("checked","checked");
-		$("#divOrg").css("visibility", "hidden");
+		$("#divOrg").css("visibility", "hidden").mCustomScrollbar({scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
 });
 
 var GpsGroupManage ={ 
@@ -58,11 +58,9 @@ var GpsGroupManage ={
 		var val = $('input:radio[name="shareType"]:checked').val();
 
 		if (val == 0) {
-			$("#divOrg").css("visibility", "hidden");
-//			cleanShareOrgs();
+			$("#divOrg").css("visibility", "hidden"); 
 		} else {
-			$("#divOrg").css("visibility", "visible");
-			//GpsGroupManage.loadOrgs();
+			$("#divOrg").css("visibility", "visible"); 
 		}
 	},
 	
@@ -102,7 +100,7 @@ var GpsGroupManage ={
 		}
 		// pg.name = $('#txtGpsGroupName').val();
 		var groupName = $.trim($("#txtGpsGroupName").val());
-				if (groupName == "" && groupName == undefined) { 
+				if (groupName == "" || groupName == undefined) { 
 					$("body").popjs({"title":"提示","content":"请填写分组名称","callback":function(){
 								$("#txtGpsGroupName").focus();
 								return;
@@ -225,7 +223,7 @@ var GpsGroupManage ={
 			</div> 
 			
 							<div  style="width:370px; float:left">
-								<div id="divOrg" style="height:320px; overflow:auto" class="ty-tree-bg">
+								<div id="divOrg" style="height:320px; overflow:auto" class="ty-tree-bg ty-tree-te">
 									<ul id="treeOrg" style="overflow:auto"></ul>
 								</div>
 							</div>

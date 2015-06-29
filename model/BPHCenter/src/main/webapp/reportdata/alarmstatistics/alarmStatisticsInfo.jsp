@@ -100,6 +100,70 @@
 			}
 			return serie;
 		},
+		GetSerieOfOrgan:function(rows,alarmTypeName,xlabel){
+			var seriesArray = [];
+			var types = {};
+
+			//根据data获取相应数据
+			var orgPaths= {};
+			$.each(xlabel,function(index,item){
+				$.each(rows,function(index1,item1){
+					if (item == item1.orgName) {
+						orgPaths[item] = item1.orgPath;
+					}
+				});
+			});
+			$.each(alarmTypeName, function(index, item) {
+				var t = {};
+				t.name = item;
+				t.data = [];
+				t.data.length = xlabel.length;
+				//初始化数组
+				$.each(t.data,function(index1,item1){
+					t.data[index1] = 0;
+				});
+				types[item] = t;
+			});
+			//从rows中获取想要的数据
+			$.each(rows, function(index, item) {
+				if (item.typeName == undefined) {
+					return true;
+				}
+
+				//判断当前机构是否为界面显示的机构
+				var mark = 0;//0表示是，1不是
+				$.each(xlabel,function(count,itemOfOrgan){
+					if (item.orgName==itemOfOrgan) {
+						mark = 0;
+						return false;
+					}
+					if (count ==(xlabel.length-1)) {
+						mark = 1;
+					}
+				});
+
+				var orgName = "";
+				if(mark==0){
+					orgName = item.orgName;
+				}else{
+					var parentOrgName = FunctionManage.FindParentOrgName(item.orgPath,orgPaths);
+					if (parentOrgName !="none") {
+						orgName = parentOrgName;
+					}else{
+						//可以不处理
+					}
+				}
+				var t = types[item.typeName];
+				//var orgIndex = XLabel.indexOf(item.orgName);
+				var orgIndex = $.inArray(orgName,xlabel); 
+				t.data[orgIndex] += item.amount;
+			});
+
+			$.each(types, function(index, item) {
+				seriesArray.push(item);
+			});
+			return seriesArray;
+		},
 		SetChartWidth:function(len){
 			if(len>8){
 				$("#jqtj").css("width",900+(len-8)*120);
@@ -336,8 +400,31 @@
 				dataSourceObj[item] = row;
 			});
 			//根据data获取相应数据
+			var orgPaths= {};
+			$.each(xlabel,function(index,item){
+				$.each(data,function(index1,item1){
+					if (item == item1.orgName) {
+						orgPaths[item] = item1.orgPath;
+					}
+				});
+			});
+			
 			$.each(data,function(indexOfData,itemOfData){
-				dataSourceObj[itemOfData.orgName][itemOfData.typeCode] = itemOfData.amount;
+				if(itemOfData.typeCode ==undefined){
+					return true;
+				}
+				if(dataSourceObj[itemOfData.orgName]==undefined){
+					//获取它的最终父级机构orgName
+					var parentOrgNmae = FunctionManage.FindParentOrgName(itemOfData.orgPath,orgPaths);
+					if (parentOrgNmae!="none") {
+						dataSourceObj[parentOrgNmae][itemOfData.typeCode] += itemOfData.amount;	
+						//小计对应列统计
+						totalRow[itemOfData.typeCode]+=itemOfData.amount;	
+					}
+					
+					return true;
+				}
+				dataSourceObj[itemOfData.orgName][itemOfData.typeCode] += itemOfData.amount;
 				//合计
 				//dataSourceObj[itemOfData.orgName]["total"] +=itemOfData.amount;
 
@@ -372,7 +459,7 @@
  		}
  	};
 	var ReportManage = {
-		initAlarmTypeData : function(data, title, XLabel) {
+		initAlarmTypeData :  function(data, title, XLabel) {
 			//动态缩放chart横坐标的长度
 			chartManage.SetChartWidth(XLabel.length);
 
@@ -388,11 +475,15 @@
 			$("#jqtj").empty();
 			$("#jqtj").kendoChart({
 				title : {
-					text : title
+					text : title,
+					color: "#81C9F0"
 				},
 				legend : {
 					position : "top",
-					visible : true
+					visible : true,
+					labels:{
+						color: "#81C9F0"
+					}
 				},
 				seriesDefaults : {
 					type : "column",
@@ -447,10 +538,10 @@
 			FunctionManage.setGridWidthAndHeight(XLabel.length+1,dataSource.length);
 			$("#grid").empty();
 			$("#grid").kendoGrid({
-				toolbar: ["excel"],
-				excel: {
-                fileName: title+"警情统计_警情分类统计表.xlsx"
-            	},
+				//toolbar: ["excel"],
+				//excel: {
+                //		fileName: title+"警情统计_警情分类统计表.xlsx"
+            	//},
 				dataSource : dataSource,
 				columns : columnsArray
 			});
@@ -478,10 +569,14 @@
  			$("#jqtj").empty();
 			$("#jqtj").kendoChart({
 				title : {
-					text : title
+					text : title,
+					color: "#81C9F0"
 				},
 				legend : {
-					position : "top"
+					position : "top",
+					labels:{
+						color: "#81C9F0"
+					}
 				},
 				seriesDefaults : {
 					type : "line",
@@ -551,10 +646,10 @@
 			FunctionManage.setGridWidthAndHeight(gridColumns.length,dataSource.length);
  			$("#grid").empty();
 			$("#grid").kendoGrid({
-				toolbar: ["excel"],
-				excel: {
-                	fileName: title+"警情统计_周期统计表.xlsx"
-            	},
+				//toolbar: ["excel"],
+				//excel: {
+                //	fileName: title+"警情统计_周期统计表.xlsx"
+            	//},
 				dataSource : dataSource,
 				columns : gridColumns,
 				scrollable : true,
@@ -583,10 +678,14 @@
 			$("#jqtj").css("width",1300);
 			$("#jqtj").kendoChart({
 				title : {
-					text : title
+					text : title,
+					color: "#81C9F0"
 				},
 				legend : {
-					position : "bottom"
+					position : "bottom",
+					labels:{
+						color: "#81C9F0"
+					}
 				},
 				seriesDefaults : {
 					type : "area",
@@ -634,8 +733,7 @@
 					format : "{0}%",
 					template : "#= series.name #: #= value #"
 				}
-			});
-
+			});	
 			var gridDataSource = [];
 			for ( var count = 0; count < seriesArray.length; count++) {
 				var newData = {
@@ -668,10 +766,10 @@
 			FunctionManage.setGridWidthAndHeight(gridColumns.length,gridDataSource.length);
 			$("#grid").empty();
 			$("#grid").kendoGrid({
-				toolbar: ["excel"],
-				excel: {
-                fileName: title+"警情统计_时间段统计表.xlsx"
-            	},
+				//toolbar: ["excel"],
+				//excel: {
+                //fileName: title+"警情统计_时间段统计表.xlsx"
+            	//},
 				dataSource : gridDataSource,
 				columns : gridColumns,
 				resizable : true
@@ -683,38 +781,13 @@
 			//动态缩放chart横坐标的长度
 			chartManage.SetChartWidth(XLabel.length);
 
-			var seriesArray = [];
-			var rows = data[0].data;
-			var types = {};
-
-			$.each(alarmTypeName, function(index, item) {
-				var t = {};
-				t.name = item;
-				t.data = [];
-				t.data.length = XLabel.length;
-				$.each(t.data,function(index1,item1){
-					t.data[index1] = 0;
-				});
-				types[item] = t;
-			});
-
-			$.each(rows, function(index, item) {
-				if (item.typeName != undefined) {
-					var t = types[item.typeName];
-					//var orgIndex = XLabel.indexOf(item.orgName);
-					var orgIndex = $.inArray(item.orgName,XLabel); 
-					t.data[orgIndex] = item.amount;
-				}
-			});
-
-			$.each(types, function(index, item) {
-				seriesArray.push(item);
-			})
+			var seriesArray = chartManage.GetSerieOfOrgan(data[0].data,alarmTypeName,XLabel);
 
 			$("#jqtj").empty();
 			$("#jqtj").kendoChart({
 				title : {
-					text : title
+					text : title,
+					color: "#81C9F0"
 				},
 				legend : {
 					visible : false
@@ -772,10 +845,10 @@
 			FunctionManage.setGridWidthAndHeight(alarmTypeName.length+1,dataSource.length);
 			$("#grid").empty();
 			$("#grid").kendoGrid({
-				toolbar: ["excel"],
-				excel: {
-                fileName: title+"警情统计_机构统计表.xlsx"
-            	},
+				//toolbar: ["excel"],
+				//excel: {
+                //fileName: title+"警情统计_机构统计表.xlsx"
+            	//},
 				dataSource : dataSource,
 				columns : columnsArray,
 			});
@@ -882,18 +955,22 @@
 				$("#grid").css("width",900+(columns-8)*80);
 			}else{
 				$("#grid").css("width",900);
-			}
-			
-			if(rows <= 3){
-				$("#grid").css("height",240);
-			}else{
-				$("#grid").css("height",rows*60);
-			}
+			} 
+		},
+		FindParentOrgName:function(orgPath,orgPaths){
+			var orgName = "none";
+			$.each(orgPaths,function(index,item){
+				if (orgPath.indexOf(item)>=0) {
+					orgName = index;
+					return false;
+				}
+			});
+			return orgName;
 		}
 	};
 	function onExportExcelAction(){
 		var url = "";
-		switch(4)
+		switch(m_statistic_typeId)
 		{
 			case 1:
 				url = "<%=basePath%>exportExcelWeb/exportAlarmTypeDataToExcle.do";//警情分类统计导出地址
@@ -930,7 +1007,6 @@
 		});
 		
 	}
-
 </script>  
 <style>
 	.charts{
@@ -952,8 +1028,7 @@
 
 	<div id="jqtj"></div>
 </div>
-<br> 
- <span id="btnOutPortToExcel" class="k-button"  onclick="onExportExcelAction()">导出</span>
+<br>
 <br>
 <div style="width:150%;overflow:auto;"> 
 	<div id="grid"></div>

@@ -362,6 +362,14 @@ String dutyTypeName = "";
 
 					}
 				}
+			}else if(rs.getData().getGpsId() != null){
+				List<Integer> gpsid = new ArrayList<Integer>();
+				gpsid.add(rs.getData().getGpsId());
+				if (pei.getGpsItems() == null) {
+					pei.setGpsItems(gpsid);
+				} else {
+					pei.getGpsItems().add(rs.getData().getGpsId());
+				}
 			}
 			if (rs.getPoliceItems() != null) {
 				if (rs.getPoliceItems().size() > 0) {

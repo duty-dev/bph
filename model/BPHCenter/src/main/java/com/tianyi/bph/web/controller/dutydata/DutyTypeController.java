@@ -105,8 +105,8 @@ public class DutyTypeController {
 					dtvm.setArmamentType(dt.getArmamentType() == 0 ? "非武装"
 							: "武装");
 					dtvm.setAssoTaskType(dt.getAssoTaskType() == null ? "" : dt
-							.getAssoTaskType() == 1 ? "社区" : dt
-							.getAssoTaskType() == 2 ? "巡区" : dt
+							.getAssoTaskType() == 2 ? "社区" : dt
+							.getAssoTaskType() == 1 ? "巡区" : dt
 							.getAssoTaskType() == 3 ? "卡点" : "");
 					dtvm.setAttireType(dt.getAttireType() == 0 ? "制服" : "便衣");
 					dtvm.setFullpath(dt.getFullpath());

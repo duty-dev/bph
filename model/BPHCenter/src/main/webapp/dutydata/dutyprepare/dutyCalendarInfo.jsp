@@ -11,6 +11,9 @@ $(function() {
 	CalendarManage.initDutyCalendar(); 
 	
 });
+function loadData(pageNo){
+	CalendarManage.initDutyCalendar(); 
+}
 var CalendarManage = { 
 	retData:[],
 	initDutyCalendar:function(){
@@ -20,7 +23,11 @@ var CalendarManage = {
 			dataType : "json",
 			data : {
 						"date" : defalultDate,
-						"orgId": 1
+						"expandeds":expandeds,
+						"organId":$("#organId").val(),
+						"orgId":$("#organId").val(),
+						"organPath":$("#organPath").val(),
+						"selectName":$("#selectName").val()
 					},
 			success : function(req) {
 				 if(req.code==200){

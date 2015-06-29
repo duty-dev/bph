@@ -16,7 +16,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <body class="ty-body">
 <div id="vertical">
-			<div id="horizontal" style="height: 450px; width: 590px;">
+			<div id="horizontal" style="height: 440px; width: 590px;">
 				<div id="left-pane">
 					<div class="pane-content">
 						<!-- 左开始 -->
@@ -32,15 +32,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<input type="hidden" id="rePoliceId" name="rePoliceId"/>
 										${organ.name}</li>
 									<li class="ty-input"><span class="ty-input-warn">*</span><label for="loginName">帐号:</label>
-										<input type="text" class="k-textbox" name="loginName" id="loginName" style="width:73%;"/><em class="ty-input-end"></em>
+										<input type="text" class="k-textbox" name="loginName" id="loginName" style="width:67%;"/><em class="ty-input-end"></em>
 										</li>
 									<li class="ty-input"><span class="ty-input-warn">*</span><label for="userName">姓名:</label> 
 										<input type="text" class="k-textbox" name="userName" id="userName" style="width:55%;" readonly/><em class="ty-input-end"></em>
 										<button type="button" class="k-button" style="margin-left:10px;" onclick="loadPolice();">选择</button>
 										</li>
 									<li class="ty-input"><span class="ty-input-warn">*</span><label for="password">密码:</label> 
-										 <input type="password" class="k-textbox" name="password" id="password" style="width:73%;"/><em class="ty-input-end"></em>
+										 <input type="password" class="k-textbox" name="password" id="password" style="width:67%;"/><em class="ty-input-end"></em>
 										 </li>
+									<li class="ty-input"><span class="ty-input-warn">*</span><label for="phone">电话:</label>
+										<input type="text" class="k-textbox" name="phone" id="phone" style="width:67%;"/><em class="ty-input-end"></em>
+										</li>
 									<!-- <li class="ty-input"><label for="userOtherOrgans">跨机构授权:</label>
 										<input type="text" class="k-textbox" name="userOtherOrgans" id="userOtherOrgans" style="width:36%;" readonly/><em class="ty-input-end"></em>
 										<button type="button" data-role="button" style="margin-left:10px;" onclick="loadOrganTree();">选择</button></li>-->
@@ -73,13 +76,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                             }
                         }
                     });
+                    $("#right-pane").mCustomScrollbar({scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
                 });
 
                 function save(e) {
                 	   if($.trim($("#loginName").val())==""){
                 		  $("body").popjs({"title":"提示","content":"帐号不能为空！"});
                 		   return false;
-                		   } 
+                		   }
+                	   var userRe = /^[a-zA-z]\w{3,20}$/;
+                	   var loginName = $.trim($("#loginName").val());
+                	   if(!userRe.test(loginName)){
+            			   $("body").popjs({"title":"提示","content":"账号可由字母\数字\下划线组成，字母为首，长度要求为4-20字符。请检查您输入是否合乎要求。！"});
+                		   return false;
+            		   }
                 	   if($.trim($("#userName").val())==""){
                  		  $("body").popjs({"title":"提示","content":"姓名不能为空！"});
                  		   return false;
@@ -88,6 +98,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 		   $("body").popjs({"title":"提示","content":"密码不能为空！"});
                 		   return false;
                 		   }
+                	   var re = /^\d+$/;
+                	   var phone = $.trim($("#phone").val());
+                	   if(!re.test(phone)){
+                			   $("body").popjs({"title":"提示","content":"电话格式不对！"});
+                    		   return false;
+                		   }            	   
                 	   var flag = false;
                 	   $("#selectRoles input[type='checkbox']").each(function(i){
                 		   if($(this).prop("checked")){
@@ -107,6 +123,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 	var userName = $.trim($("#userName").val());
                 	var policeId = $.trim($("#policeId").val());
                 	var rePoliceId = $.trim($("#rePoliceId").val()); 
+                	var phone = $.trim($("#phone").val());
                 		if(policeName != userName && policeId == rePoliceId){                   		               	    	
                 	    	$("#policeId").val(null);
                 	    }
@@ -133,7 +150,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               				policeId:$("#policeId").val(),
               				userOtherOrgans:$("#userOtherOrgans").val(),
               				sessionId:$("#token").val(),
-              				rolesId:rolesId
+              				rolesId:rolesId,
+              				phone:phone
               			},
             	  		 success:function(msg){
             	  			if(msg.code==200){
@@ -288,16 +306,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					$("#policeTitle").remove();
     				$("#policeBox").append("<h4 id='policeTitle'>警员绑定</h4><div id='policeview'>"
     						+"<c:forEach var='item' items='${policeList}'>"
-    						+"<input name='policeName' id='policeName' type='radio' value='${item.id}' onclick='selectPolice(\"${item.id}\",\"${item.name}\")'/>${item.name}<br/>"
+    						+"<input name='policeName' id='policeName' type='radio' value='${item.id}' onclick='selectPolice(\"${item.id}\",\"${item.name}\",\"${item.mobile}\")'/>${item.name}<br/>"
     						+"</c:forEach>"
     						+"</div>");
                 }
                 
-                function selectPolice(id,name){
+                function selectPolice(id,name,mobile){
                 	$("#userName").val(name);
                 	$("#policeName").val(name);
                 	$("#policeId").val(id);
                 	$("#rePoliceId").val(id);
+                	$("#phone").val(mobile);
                 }
 
             </script>

@@ -140,8 +140,9 @@
 					dataValueField : "id",
 					dataTextField: "name",
 					checkboxes : {
-						checkChildren : true//允许复选框多选
+						checkChildren : false//允许复选框多选
 					},
+					expanded:"expanded",
 					check : onCheckGB,//check复选框
 					dataSource: data
 				});
@@ -232,7 +233,7 @@
 											+ JSON.stringify(rsp.data) + ')') ]
 								}).data("kendoTreeView");
 				     	}
-	        	});
+	        	 });
 				}else{
 					loadData();
 				}
@@ -245,11 +246,11 @@
 					return false;
 				}
 				
-				var gbIds=$("#gbOrganIds").val();
-				if(gbIds==''){
-					$("body").popjs({"title":"提示","content":"操作无效，请选择取药授权的中心机构！"});
+				 var gbIds=$("#gbOrganIds").val();
+				/* if(gbIds==''){
+					$("body").popjs({"title":"提示","content":"操作无效，请选择要授权的中心机构！"});
 					return false;
-				}
+				}  */
 				$.ajax({
 					url : "<%=basePath%>web/GBPlatForm/addGBPermission.do",
 					type : "post",

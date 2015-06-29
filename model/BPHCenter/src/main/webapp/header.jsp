@@ -5,6 +5,8 @@ var conductFlag= false;
 var baseFlag =false;
 var dutyFlag=false;
 var analyzingFlag=false;
+var alarmFlag=false;
+var setFlag=false;
 var num=${num};
 
 var funList=<%=session.getAttribute("funList")%>;
@@ -12,6 +14,8 @@ var funList=<%=session.getAttribute("funList")%>;
 var conductList=<%=session.getAttribute("conductArray")%>;
 var dutyList=<%=session.getAttribute("dutyArray")%>;
 var analyzingList=<%=session.getAttribute("analyzingArray")%>;
+var alarmList=<%=session.getAttribute("alarmArray")%>;
+var setList=<%=session.getAttribute("setArray")%>;
 
 
 $(document).ready(function(){
@@ -22,6 +26,26 @@ $(document).ready(function(){
 	if (!conductList.indexOf)
 	{
 		conductList.indexOf = function(elt /*, from*/)
+	  {
+	    var len = this.length >>> 0;
+	    var from = Number(arguments[1]) || 0;
+	    from = (from < 0)
+	         ? Math.ceil(from)
+	         : Math.floor(from);
+	    if (from < 0)
+	      from += len;
+	    for (; from < len; from++)
+	    {
+	      if (from in this &&
+	          this[from] === elt)
+	        return from;
+	    }
+	    return -1;
+	  };
+	}
+	if (!setList.indexOf)
+	{
+		setList.indexOf = function(elt /*, from*/)
 	  {
 	    var len = this.length >>> 0;
 	    var from = Number(arguments[1]) || 0;
@@ -101,6 +125,26 @@ $(document).ready(function(){
 	    return -1;
 	  };
 	}
+	if (!alarmList.indexOf)
+	{
+		alarmList.indexOf = function(elt /*, from*/)
+	  {
+	    var len = this.length >>> 0;
+	    var from = Number(arguments[1]) || 0;
+	    from = (from < 0)
+	         ? Math.ceil(from)
+	         : Math.floor(from);
+	    if (from < 0)
+	      from += len;
+	    for (; from < len; from++)
+	    {
+	      if (from in this &&
+	          this[from] === elt)
+	        return from;
+	    }
+	    return -1;
+	  };
+	}
 	
 	for (var i = 0; i < funList.length; i++) {
 		if(conductList.indexOf(funList[i]) != -1){//系统管理
@@ -111,6 +155,10 @@ $(document).ready(function(){
 			dutyFlag=true;
 		}else if(analyzingList.indexOf(funList[i]) != -1){//研判分析
 			analyzingFlag=true;
+		}/* else if(alarmList.indexOf(funList[i]) != -1){//警情处置
+			alarmFlag=true;
+		} */else if(setList.indexOf(funList[i]) != -1){
+			setFlag=true;
 		}
 	}
 	if(conductFlag){
@@ -124,6 +172,12 @@ $(document).ready(function(){
 	}
 	if(analyzingFlag){
 		$("#navMenu").append("<li><a href='javaScript:void(0)' onclick='show_hide(1000)'>研判分析</a></li>");
+	}
+/* 	if(alarmFlag){
+		$("#navMenu").append("<li><a href='javaScript:void(0)' onclick='show_hide(400)'>警情处置</a></li>");
+	} */
+	if(setFlag){
+		$("#navMenu").append("<li><a href='javaScript:void(0)' onclick='show_hide(500)'>配置管理</a></li>");
 	}
 	show_hide(num);//初始加载基础数据
 });
@@ -149,6 +203,12 @@ function show_hide(type){
 			}else if(funList[i]=='200010'){
 				$("#subMenu_5").append("<li>"+
 				"<a href='<%=path %>/web/GBPlatForm/toGBPlatForm.action'>视频点位</a></li>");
+				$("#subMenu_5").append("<li>"+
+				"<a href='<%=path %>/web/Area/toArealist.action?areaType=1'>巡区</a></li>");
+				$("#subMenu_5").append("<li>"+
+				"<a href='<%=path %>/web/Area/toArealist.action?areaType=2'>社区</a></li>");
+				$("#subMenu_5").append("<li>"+
+				"<a href='<%=path %>/web/Area/toArealist.action?areaType=3'>辖区</a></li>");
 			}
 		}
 	}else if(type=='100'){
@@ -165,19 +225,25 @@ function show_hide(type){
 				$("#subMenu_5").append("<li>"+
 				"<a href='<%=path %>/role/gotoRoleList.action'>角色管理</a></li>");
 			}
-		}
-	}<%-- else if(type=='500'){
+		}		
+	} else if(type=='500'){
 		num=500;
 		$("#subMenu_5 li").remove();
-		$("#subMenu_5").append("<li>"+
-		"<a href='<%=path %>/serviceSet/gotoServiceSetList.action'>配置管理</a></li>");
-		$("#subMenu_5").append("<li>"+
+		 for (var i = 0; i < funList.length; i++) {
+			 if(funList[i]=='500001'){
+				 $("#subMenu_5").append("<li>"+
+					"<a href='<%=path %>/serviceSet/gotoServiceSetList.action'>配置管理</a></li>");
+			}
+		 }
+		<%-- $("#subMenu_5").append("<li>"+
 		"<a href='<%=path %>/log/gotoLogList.action'>日志管理</a></li>");
 		$("#subMenu_5").append("<li>"+
 			"<a href='<%=path %>/map/initMap.action'>地图信息</a></li>");
 		$("#subMenu_5").append("<li>"+
 		"<a href='<%=path %>/map/initCircleMap.action'>圈层信息</a></li>");
-	} --%>else if(type=='300'){
+		$("#subMenu_5").append("<li>"+
+		"<a href='<%=path %>/map/initAlarmMap.action?organId=1'>常规警情</a></li>"); --%>
+	} else if(type=='300'){
 		num=300;
 		$("#subMenu_5 li").remove();		
 		 for (var i = 0; i < funList.length; i++) {
@@ -215,6 +281,15 @@ function show_hide(type){
 				"<a href='<%=path %>/reportRouteWeb/gotoFourColorWarning.action'>四色预警设置</a></li>");
 			}
 		}
+	}else if(type=='400'){
+		num=400;
+		$("#subMenu_5 li").remove();		
+		 for (var i = 0; i < funList.length; i++) {
+			if(funList[i]=='400001'){
+				$("#subMenu_5").append("<li>"+
+				"<a href='<%=path %>/alarmWeb/gotoAlarmIndex.action'>常规警情</a></li>");
+			}
+		}
 	}
 }
 
@@ -229,7 +304,7 @@ function gotoUpdatePassword(){
 		height: "590px",
 	    title: "帐号管理",
 	    position: {
-	        top: "100px"
+	        top: "30px"
 	      },
 		content: "<%=path %>/admin/gotoUpdatePassword.do?userId="+${User.userId}+"&random="+Math.random(),
 		iframe : true
@@ -247,9 +322,8 @@ function gotoUpdatePassword(){
           </div>
           <div>
             <div class="lv1"></div>
-            <ul class="nav pull-left" id="navMenu"><!----一级菜单---->
-            	<!-- <li><a href='javaScript:void(0)' onclick="show_hide(500)">配置管理</a></li> -->
-            </ul><!----一级菜单结束---->
+            <ul class="nav pull-left" id="navMenu">
+            </ul>
             <ul  class="nav pull-right" id="nMenu"><!----用户信息---->
               <li><div class="box"  style="color: #81C9F0;">${sessionScope.SESSIN_USERNAME }</div></li>
               <li><div class="box" style="color: #81C9F0;">授权登录</div></li>

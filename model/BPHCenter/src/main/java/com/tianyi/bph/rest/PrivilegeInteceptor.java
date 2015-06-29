@@ -54,7 +54,8 @@ public class PrivilegeInteceptor implements HandlerInterceptor {
         //后台session控制
         if (uri.contains("login.action")||uri.contains("login.do")
         		||uri.contains("getModuleTreeByRoles.do")||uri.contains("getModuleTree.do")
-        		||uri.contains("index.do")||uri.contains("install.do")||uri.contains("serviceSet")) {  
+        		||uri.contains("index.do")||uri.contains("install.do")||uri.contains("serviceSet")
+        		||uri.contains("autoUpdate.do")) {  
         	return true; 
         }else{
         	//String sessionId=request.getParameter("sessionId");

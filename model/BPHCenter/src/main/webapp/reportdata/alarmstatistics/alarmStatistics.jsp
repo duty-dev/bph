@@ -22,13 +22,22 @@
 
 <body>
 	<div id="wrapper">
-		<div id='main-nav-bg'></div>
-		<nav class="" id="main-nav">
+		<div class="ty-statistics-top set">
+			<h1 id="h_title"></h1>
+			<div class="clear box">
+				<%@ include file="alarmStatisticsToolbar.jsp"%>
+			</div>
+		</div>
+		<nav class="leftpart" id="main-nav" style="width:338px;padding-left:2px;">
 			<div class='navigation'>
 				<%@ include file="../../leftForReport.jsp"%>
 			</div>
 		</nav>
-		<section id='content'>
+		<div class="temp">
+       		<div class="ty-btn-zoom" onclick="leftZoom(this);"></div>
+       		<div class="ty-left-zoom-line"></div>
+       	</div>
+		<section id='content' style="margin-left:340px;">
 			<div class="container-fluid">
 				<div id="content-wrapper" class="row-fluid">
 					<div class='span12'>
@@ -36,12 +45,7 @@
 						<div class="row-fluid">
 							<!----功能模块---->
 							<div class="set">
-
-								<h1>警情统计</h1>
-
-								<div class="clear box">
-									<%@ include file="alarmStatisticsToolbar.jsp"%>
-								</div>
+								
 							</div>
 						</div>
 						<!----功能模块结束---->
@@ -60,8 +64,7 @@
 				</div>
 			</div>
 		</section>
-	</div>
- 
+ 	</div>
 	<!----底部结束---->
 </body>
 </html>

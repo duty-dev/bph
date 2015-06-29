@@ -34,11 +34,12 @@ img { border:0px;}
  
 .dateBoxMain{ width:100%; height:auto; overflow:hidden;}
 .dateBoxMainTItle{ width:100%; height:39px; overflow:hidden; background-color:#233741;}
-.dateBoxMainTItleTxt{ width:10%; overflow:hidden; height:39px;padding-left:15px; line-height:39px; color:#81C9F0; float:left; }
+.dateBoxMainTItleTxt1{width:8%; overflow:hidden; height:39px;padding-left:15px; line-height:39px; color:#81C9F0; float:left; }
+.dateBoxMainTItleTxt{ width:208px; overflow:hidden; height:39px;padding-left:15px; line-height:39px; color:#81C9F0; float:right; }
 .dateBoxMainTItleTxtDIv{ width:100%; height:auto; overflow:hidden; text-align:center;}
 .dateBoxMainTItleTxtDIv img{ margin-top:6px;}
-.dateBoxMainTItleBox{ width:78%; height:39px; overflow:hidden; float:left; }
-.dateBoxMainTItleBoxMain{ width:225px; height:39px; overflow:hidden;margin:0 auto; text-align:center; color:#FFF;}
+.dateBoxMainTItleBox{ width:68%; height:39px; overflow:hidden; float:left; }
+.dateBoxMainTItleBoxMain{ width:150px; height:39px; overflow:hidden;margin:0 auto; text-align:center; color:#FFF;}
 .dateBoxMainTItleBoxMain li{line-height:39px; float:left;}
 .dateBoxMainTItleBoxMain img{ vertical-align:middle; cursor:pointer;}
 .dateBoxMainTItleBoxMainTxt{ margin-left:30px; line-height:42px;}
@@ -71,7 +72,7 @@ img { border:0px;}
 .MenuMouseMove{vertical-align:middle;  width:100%; height:46px; background:url(../calendarImage/menuMousemouve.png) repeat-x; cursor:pointer;}
  
 .DateBoxbg{ display: none;  position: absolute;  top: 0%;  left: 0%;  width: 100%;  height: 100%;   z-index:1001;  -moz-opacity: 0.7;  opacity:.70; background:url(../calendarImage/zhezhaobg.png);}
-.pasteBtnBox{ display: none;  position: absolute; text-align:center;   width:69px;  height: 25px; left:50px;  z-index:1005;background:url(../calendarImage/pastebtnbox.png) no-repeat;  overflow: auto;}
+.pasteBtnBox{ display: none;  position: absolute; text-align:center;   width:69px;  height: 25px; left:50px;  z-index:1001;background:url(../calendarImage/pastebtnbox.png) no-repeat;  overflow: auto;}
 .pasteBtnBox img{ vertical-align:middle; margin-left:3px;}
 .PasteBoxMain{ width:100%; height:15px; }
 .pasteBtnBox a{color:#4c4c4c;font-size:12px; text-align:center;line-height:25px;}

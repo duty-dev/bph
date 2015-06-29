@@ -16,8 +16,11 @@ var m_ymd = null; /* 当前年月日 */
 var m_dutyCalendar_Org = {};
 var m_duty = {};
 var sessionId ;
-$(function() { 
-
+var m_datepage = 0;
+var m_isCopyAction = false;
+var m_hasClickCopyAction = false;
+var m_resource_html = "";
+$(function() {
 	// 获取地址栏参数，获取组织结构信息；
 	m_dutyCalendar_Org.id = $("#organId").val();
 	m_dutyCalendar_Org.code =$("#organCode").val();
@@ -32,6 +35,7 @@ $(function() {
 	$("#sp_month").text(m+"月");
 	changeDivHeight(); // 表格自动高度设置
 	getDateData(y + "-" + m + "-" + 1);// 初始化默认月份数据
+	
 });
 function loadData(pageNo){
 	m_dutyCalendar_Org.id = $("#organId").val();
@@ -51,9 +55,25 @@ function loadData(pageNo){
 
 // 设置日历窗体的高度
 function changeDivHeight() {
-	var bodyHeight = document.body.clientHeight;
+	var bodyHeight = window.screen.availHeight;
 	var tp = $("#dateBoxMainDate").offset().top;
-	$("#dateBoxMainDate").height(bodyHeight-tp);
+	$("#dateBoxMainDate").height(bodyHeight-tp-140);
+	setH();
+}
+function setH(){
+	var o2 = $("#navigationLeft .tree-box");
+	var ct=0;
+	if(o2.length>0){
+		ct = o2.offset().top;
+	}else{
+		return;
+	}
+	var wh = $(window).height();
+	var v = wh-ct-70;
+	$("#navigationLeft .tree-box").css("height",v);
+	$(".pow").css("height",v);
+	$(".pow .box-content").css("height",v);
+	o2.mCustomScrollbar({scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
 }
 // 点击日期上月下月事件
 function getDateClick(action) {
@@ -63,18 +83,20 @@ function getDateClick(action) {
 			y++;
 			m = 1;
 		}
-
+		m_datepage++;
 	} else {
 		m--;
 		if (m < 1) {
 			m = 12;
 			y--;
 		}
+		m_datepage--;
 	}
 	var date = y + "-" + m + "-" + 1;
 	$("#sp_years").text(y+"年");
 	$("#sp_month").text(m+"月");
 	getDateData(date);
+	
 }
 // 根据日期，获取后台数据
 function getDateData(date) {
@@ -82,6 +104,12 @@ function getDateData(date) {
 		url : '/BPHCenter/dutyCalendarWeb/getCalender.do?orgId=' + m_dutyCalendar_Org.id+"&sessionId="+sessionId
 				+ '&date=' + date,
 		type : "POST",
+		data:{
+						"expandeds"		:expandeds,
+						"organId":$("#organId").val(),
+						"organPath":$("#organPath").val(),
+						"selectName":$("#selectName").val()
+		},
 		dataType : "json",
 		// async:false,
 		success : function(req) {
@@ -235,6 +263,16 @@ function creatHtml(arr) {
 	}
 	$("#dateBody").empty(); 
 	$("#dateBody").append(html); 
+	if(m_datepage>1){
+		m_isCopyAction = false;
+	}else if(m_datepage ==0){
+		m_isCopyAction = false;
+	}else if(m_datepage < -1){
+		m_isCopyAction = false;
+	}
+	if(m_isCopyAction){
+		copyDutyByDays();
+	}
 }
 
 var dtime = null;
@@ -492,6 +530,10 @@ function mouseOutOpratdiv(tags) {
 }
 // 删除报备
 function deleteDutyConfirm(date, i, j) {
+	if(m_isCopyAction){
+		$("body").popjs({"title":"提示","content":"正在进行复制操作，不能删除原数据项"});  
+			return;
+	}
 	$("body").tyWindow({"content":  "确认删除    " + date + " 的报备数据吗？","center":true,"ok":true,"no":true,"okCallback":function(){ 
 		 
 	 
@@ -553,43 +595,69 @@ var copyX = 0;// 要复制数组的X下标
 var copyY = 0;// 要复制数组的Y下标
 var PlanArray = new Array();// 报备情况数组，记录每天的报备情况
 function copyDutyByDays(date, i, j) {
-	pasteDate = "";
-	copyX = i;
-	copyY = j;
-	var dt = date.replace(/-/gm, '');
-	pasteDate = dt;
+	if(m_isCopyAction){
+		if(date!=undefined){
+			$("body").popjs({"title":"提示","content":"已进行复制操作，请选择需要粘贴的目标日期进行数据复制"});  
+			return;
+		}
+		var selectobj = $(".pasteBtnBox"); 
+		$.each(selectobj,function(index,sobj){
+			var pId = sobj.id;
+			var obj = $("td[doc='"+pId+"']");
+			$("#"+pId).show();
+		});
+		var LT = getPasteBtnBoxWidthHeight();
+		var p = $('div[class=pasteBtnBox]');
+		$.each(p,function(pindex,pobj) { // 遮罩
+			$(pobj).css('left', LT[0]);
+			$(pobj).css('top', LT[1]);
+			$(pobj).show();
+		});  
+		var s = $('div[class=DateBoxbg]');
+		$.each(s,function(index,value) { // 遮罩
+				$(value).css('display', 'block');
+			});
+		//$(".pasteBtnBox").show();
+	}else{ 
+		m_isCopyAction = true;
+		pasteDate = "";
+		copyX = i;
+		copyY = j;
+		var dt = date.replace(/-/gm, '');
+		pasteDate = dt;
+		m_resource_html = $("#ulcontent_" + copyX + "_" + copyY).html();
+		for ( var i = 0; i < PlanArray.length; i++) {
+			for ( var j = 0; j < PlanArray[i].length; j++) {
 
-	for ( var i = 0; i < PlanArray.length; i++) {
-		for ( var j = 0; j < PlanArray[i].length; j++) {
-
-			var obj = $("td[doc='td_" + i + "_" + j + "']");
-			var LT = getPasteBtnBoxWidthHeight();
-			if (i == copyX) {// 同一行，之判断列
-				if (j > copyY) {
-					$(obj).find('div[class=DateBoxbg]').each(function() { // 遮罩
+				var obj = $("td[doc='td_" + i + "_" + j + "']");
+				var LT = getPasteBtnBoxWidthHeight();
+				if (i == copyX) {// 同一行，之判断列
+					if (j !=  copyY) {
+						$(obj).find('div[class=DateBoxbg]').each(function() { // 遮罩
+							$(this).css('display', 'block');
+						});
+						$(obj).find('div[class=pasteBtnBox]').each(function() {// 遮罩
+							$(this).css('left', LT[0]);
+							$(this).css('top', LT[1]);
+							$(this).show();
+						});
+						$("#pasteBtn_" + i + "_" + j).show();
+			
+					}
+				} else if (i != copyX) {// 涓嬩竴琛岋紝鐩存帴杩藉姞div
+					// var obj=$("#pasteBtn_" + i+"_"+j).parent().parent();
+					// $(obj).find('li[class=nobaobei]').hide();
+					$(obj).find('div[class=DateBoxbg]').each(function() {// 遮罩
 						$(this).css('display', 'block');
 					});
-					$(obj).find('div[class=pasteBtnBox]').each(function() {// 遮罩
+					$(obj).find('div[class=pasteBtnBox]').each(function() { // 遮罩
 						$(this).css('left', LT[0]);
 						$(this).css('top', LT[1]);
 						$(this).show();
 					});
 					$("#pasteBtn_" + i + "_" + j).show();
-
-				}
-			} else if (i > copyX) {// 涓嬩竴琛岋紝鐩存帴杩藉姞div
-				// var obj=$("#pasteBtn_" + i+"_"+j).parent().parent();
-				// $(obj).find('li[class=nobaobei]').hide();
-				$(obj).find('div[class=DateBoxbg]').each(function() {// 遮罩
-					$(this).css('display', 'block');
-				});
-				$(obj).find('div[class=pasteBtnBox]').each(function() { // 遮罩
-					$(this).css('left', LT[0]);
-					$(this).css('top', LT[1]);
-					$(this).show();
-				});
-				$("#pasteBtn_" + i + "_" + j).show();
-
+				
+				} 
 			}
 
 		}
@@ -645,9 +713,9 @@ function selectPasteBox(date, i, j) {
 		data : pars,
 		// async : false,
 		success : function(req) {
-			if (req.code==200) {// 鎴愬姛濉厖鏁版嵁
-				var html = $("#ulcontent_" + copyX + "_" + copyY).html();
-				$("#ulcontent_" + i + "_" + j).html(html);
+			if (req.code==200) {
+				//var html = $("#ulcontent_" + copyX + "_" + copyY).html();
+				$("#ulcontent_" + i + "_" + j).html(m_resource_html);
 				$("#modeldiv_" + i + "_" + j).css('display', 'none');
 				var obj = $("#ulcontent_" + i + "_" + j).find(
 						"div[class='pasteBtnBox']");
@@ -795,6 +863,10 @@ function btnExportAction() {
 };
 // 清除当月所有报备数据
 function clearAlldutyData() {
+	if(m_isCopyAction){
+		$("body").popjs({"title":"提示","content":"正在进行复制操作，不能删除所有数据"});  
+			return;
+	}
 	$("body").tyWindow({"content": "确认删除    " + y + "年" + m + "月" + " 的所有报备数据吗？","center":true,"ok":true,"no":true,"okCallback":function(){ 
 		
 			 
@@ -832,6 +904,7 @@ function deleteAllDutyDataAction(year, month) {
 
 // 清除粘贴模板，清空剪切板
 function clearClipbord() {
+	m_isCopyAction = false;
 	$('div[class=pasteBtnBox]').each(function() { // 寮�閬嶅巻
 		$(this).hide();
 	});

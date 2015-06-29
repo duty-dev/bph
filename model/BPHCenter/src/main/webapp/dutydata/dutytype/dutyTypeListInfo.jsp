@@ -34,15 +34,20 @@ var DutyTyepManage = {
 		                            }
 		                        }
 							});
-	$("#dutyTypeTreeList").html("");			 				 	
+	$("#dutyTypeTreeList").html("");
+	var o = $("#content-wrapper .span12 .span8");
+	var w = $(window).height(),gd=0;
+	if(o.length>0){
+		gd = w-o.offset().top-70;
+	}
+
     $("#dutyTypeTreeList").kendoTreeList({
 						 dataSource: ds,
-						 
+						 	height:gd,
 							columns : [{
 								field : "name",
 								expandable: true,
-								title : "名称",
-								width : 150
+								title : "名称"
 							} , {
 								title : "人数上限",
 								field : "maxPolice"
@@ -66,6 +71,7 @@ var DutyTyepManage = {
 								field : "isUsed",
 								title : "停用"
 							}],
+							resizable: true,
 							selectable: "row" 
 						});
 					} else{
@@ -75,8 +81,7 @@ var DutyTyepManage = {
 							columns : [{
 								field : "name",
 								expandable: true,
-								title : "名称",
-								width : 150
+								title : "名称"
 							} , {
 								title : "人数上限",
 								field : "maxPolice"
@@ -100,9 +105,13 @@ var DutyTyepManage = {
 								field : "isUsed",
 								title : "停用"
 							}],
+							resizable: true,
 							selectable: "row" 
 						});
 						}
+					 $("#dutyTypeTreeList .k-grid-content").mCustomScrollbar({scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
+					 
+					 
 				}
 			}
 		});

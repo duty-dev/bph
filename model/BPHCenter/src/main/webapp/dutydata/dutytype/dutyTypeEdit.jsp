@@ -48,6 +48,14 @@ var DutyTypeEditManage= {
 		$("#txtDutyTypeParentFullPath").val(bph_dutyTypeObj.parentFullPath);
 		$("#txtDutyTypeParentId").val(bph_dutyTypeObj.parentId); 
 		$("#txtDutyTypeId").val(bph_dutyTypeObj.id);
+		if(bph_dutyTypeObj.parentId==0||bph_dutyTypeObj.parentId==null){
+		 	 $("#txtDutyTypeParentName").hide();
+		 $("#txtDutyTypeParentFullPath").hide();
+		 $("#lbl_txtDutyTypeParentName").prev().hide();
+		 $("#lbl_txtDutyTypeParentName").hide();
+		 $("#lbl_txtDutyTypeParentFullPath").prev().hide();
+		 $("#lbl_txtDutyTypeParentFullPath").hide();
+		 }
 		if(bph_dutyTypeObj.isLeaf){
 			$("#txtDutyTypeIsLeaf").val(1);
 		}else{
@@ -112,6 +120,7 @@ var DutyTypeEditManage= {
 						dataTextField: "name",
 						dataValueField: "id"
 					});
+					//$(".k-input.k-readonly")[0].hidden = true;
 					
 		if(bph_dutyTypeObj.properties.length>0){
 			var s = bph_dutyTypeObj.properties.split(",");
@@ -171,6 +180,15 @@ var DutyTypeEditManage= {
 		bph_dutyTypeEdit_pkg.properties = [];
 		bph_dutyTypeEdit_pkg.parentId = $("#txtDutyTypeParentId").val();
 		var dname = $("#txtDutyTypeName").val();
+		
+		if ($.trim(dname)==""){
+			$("body").popjs({"title":"提示","content":"勤务类型名称不能为空","callback":function(){
+								$("#txtDutyTypeName").focus();
+								return;
+							}});    
+					
+				return;
+		}
 		if ($.trim(dname).length > 20) {
 			$("body").popjs({"title":"提示","content":"勤务类型名称长度过长，限制长度为1-20！","callback":function(){
 								$("#txtDutyTypeName").focus();
@@ -210,11 +228,24 @@ var DutyTypeEditManage= {
 		bph_dutyTypeEdit_pkg.isShowname = $('input:radio[name="displayType"]:checked').val();
 		var properties = $("#cmbProperty").data("kendoMultiSelect");
 		var items = properties.dataItems();
+		
+		if(items==undefined||items.length==0){
+			$("body").popjs({"title":"提示","content":"请选择勤务类型相关属性！","callback":function(){ 
+								return;
+							}});     
+				return;
+		}
 		for ( var i = 0; i < items.length; i++) {
 			var p = {};
 			var pId = items[i].id;
 			p.id = pId;
 			bph_dutyTypeEdit_pkg.properties.push(p);
+		}
+		if( $("#cmbTaskType").val()==""|| $("#cmbTaskType").val()==undefined){
+			$("body").popjs({"title":"提示","content":"请选择勤务类型关联任务！","callback":function(){ 
+								return;
+							}});     
+				return;
 		}
 		bph_dutyTypeEdit_pkg.assoTaskType = $("#cmbTaskType").val();
 	
@@ -243,65 +274,87 @@ var DutyTypeEditManage= {
 			$("#txtMaxPolice").val("");
 			$("#txtMaxPolice").removeAttr("disabled");
 		} 
+	},
+	isExistDutyType:function(){
+		var name  = $.trim($("#txtDutyTypeName").val());
+		var id =  $("#txtDutyTypeId").val();
+		if(name.length>0){
+			$.ajax({
+				url : "<%=basePath%>dutyTypeWeb/isExistDutyType.do",
+				type : "POST",
+				dataType : "json",
+				async : false,
+				data : { 
+					"typeName" : name,
+					"optType"   : 1,
+					"id"     :  id
+				},
+				success : function(req) {
+					if (req.code!=200) { 
+						$("body").popjs({"title":"提示","content":"勤务类型名称已经存在","callback":function(){
+								$("#txtDutyTypeName").focus(); 
+							}}); 
+					}
+				}
+			});
+		}
 	}
 };
 </script>
 </head>
 <body class="ty-body">
 	<div id="vertical" style="overflow-x:hidden;">
-		<div id="horizontal" style="height: 300px; width: 590px;">
+		<div id="horizontal" style="height:300px; width:620px;">
 			<div class="pane-content">
 				<!-- 左开始 -->
 				<div class="demo-section k-header">
 					<h4>勤务类型基础资料</h4>
 					<ul>
 						<li class="ty-input">
-							<label class="ty-input-label" for="txtDutyTypeParentName">上级名称:</label>
-							<input type="text"  class="k-textbox" name="txtDutyTypeParentName"  disabled="disabled" required="required" id="txtDutyTypeParentName" />
+							<span class="ty-input-warn"></span><label id="lbl_txtDutyTypeParentName" class="ty-input-label" for="txtDutyTypeParentName">上级名称:</label>
+							<input type="text"  class="k-textbox" name="txtDutyTypeParentName"  readonly="readonly" style="color:#929496;" required="required" id="txtDutyTypeParentName" />
 						 	<input type="hidden" id="txtDutyTypeParentId"></input> 
 							<input type="hidden" id="txtDutyTypeId"></input> 
 							<input type="hidden" id="txtDutyTypeIsUsed"></input>
 							<input type="hidden" id="txtDutyTypeIsLeaf"></input>
 						</li>
 						<li class="ty-input">
-							<label class="ty-input-label" for="txtDutyTypeParentFullPath">上级全路径:</label><input type="text" class="k-textbox" name="txtDutyTypeParentFullPath"  disabled="disabled" id="txtDutyTypeParentFullPath" required="required" />
+							<span class="ty-input-warn"></span><label id="lbl_txtDutyTypeParentFullPath" class="ty-input-label" for="txtDutyTypeParentFullPath">上级全路径:</label><input type="text" class="k-textbox" name="txtDutyTypeParentFullPath" readonly="readonly" style="color:#929496;" id="txtDutyTypeParentFullPath" required="required" />
 						</li>
 						<li class="ty-input">
-							<label class="ty-input-label" for="txtDutyTypeName">类型名称:</label><input type="text" class="k-textbox" name="txtDutyTypeName" id="txtDutyTypeName" />
+							<span class="ty-input-warn">*</span><label class="ty-input-label" for="txtDutyTypeName">类型名称:</label><input type="text" class="k-textbox" name="txtDutyTypeName" id="txtDutyTypeName" onblur="DutyTypeEditManage.isExistDutyType();" />
 						</li>
 						<li class="ty-input">
-							<label class="ty-input-label" for="txtMaxPolice">人数上限:</label><input type="text" class="k-textbox" name="txtMaxPolice" id="txtMaxPolice"  disabled="disabled" />
+							<span class="ty-input-warn"></span><label class="ty-input-label" for="txtMaxPolice">人数上限:</label><input type="text" class="k-textbox" name="txtMaxPolice" id="txtMaxPolice"  disabled="disabled" />
 							<input id=chkUnMax 	type="checkbox"  onclick="DutyTypeEditManage.changeUnMax()" ></input>不限</label> 
 						</li>
 						<li class="ty-input">
-							<label class="ty-input-label" for="cmbProperty">类型属性:</label>
+							<span class="ty-input-warn">*</span><label class="ty-input-label" for="cmbProperty">类型属性:</label>
 						
 							<select id="cmbProperty"   style="float:left;width:400px;height:30px;"  datmultiple="multiple" a-options="editable:false"></select>
 						</li>
 						<li class="ty-input fit">
-							<label class="ty-input-label" for="cmbTaskType">关联任务:</label><input id="cmbTaskType" data-options="editable:false"  />
+							<span class="ty-input-warn">*</span><label class="ty-input-label" for="cmbTaskType">关联任务:</label><input id="cmbTaskType" data-options="editable:false"  />
 						</li>
-						<li class="ty-input fit">
-							<label class="ty-input-label">统计显示:</label>
+						<li class="ty-input">
+							<span class="ty-input-warn"></span><label class="ty-input-label">统计显示:</label>
 							<label class="ty-input-label"><input id="radioDisplayType1" name="displayType"  type="radio" value="0" ></input>人数 </label>
 						    <label class="ty-input-label"><input id="radioDisplayType2" name="displayType"  type="radio" value="1"	></input>名称 </label>
 						</li>
-						<li class="ty-input fit">
+						<li class="ty-input">
 							<label class="ty-input-label">着装方式:</label>
 							<label class="ty-input-label"><input id="radioAttireType1" name="attireType"  type="radio" value="0" ></input>制服</label> 
 							<label class="ty-input-label"><input id="radioAttireType2" name="attireType"  type="radio" value="1" ></input>便衣</label>
 						</li>
-						<li class="ty-input fit">
-							<label class="ty-input-label">着装方式:</label>
+						<li class="ty-input">
+							<label class="ty-input-label">武装方式:</label>
 							<label class="ty-input-label"><input id="radioArmamentType1" name="armamentType"  type="radio" value="0" ></input>非武装</label> 
 							<label class="ty-input-label"><input id="radioArmamentType2" name="armamentType"  type="radio" value="1" ></input>武装</label>
 						</li> 
 					</ul>
-					<p style="float:left;width:100%;margin-top:10px;">
+					<p class="ty-input-row">
 						<button id="undo" class="ty-button" onclick="DutyTypeEditManage.saveDutyType()">确定</button> 
-					</p>
-
-
+					</p> 
 				</div>
 			</div>
 		</div>

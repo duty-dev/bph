@@ -32,11 +32,13 @@ import com.tianyi.bph.common.ReturnResult;
 import com.tianyi.bph.domain.basicdata.Icons; 
 import com.tianyi.bph.domain.basicdata.IconsType;  
 import com.tianyi.bph.domain.system.IconGroup;
+import com.tianyi.bph.domain.system.IconTypeDetail;
 import com.tianyi.bph.query.admin.IconsQuery;
 import com.tianyi.bph.query.basicdata.IconsVM;
 import com.tianyi.bph.query.system.UserQuery;
 import com.tianyi.bph.service.admin.IconGroupService;
 import com.tianyi.bph.service.admin.IconsService;
+import com.tianyi.bph.service.admin.TypeService;
  
 
 /*
@@ -51,6 +53,7 @@ public class IconController {
 
 	@Autowired IconsService iconsService;
 	@Autowired IconGroupService iconGroupService;
+	@Autowired TypeService typeService;
 
 	/**
 	 * web跳转到图标列表
@@ -150,46 +153,70 @@ public class IconController {
 			return "";
 		}
 	}
- 
-
+	
 	/*
 	 * 删除图标
 	 */
 	@RequestMapping(value = "deleteIconsById.do")
 	@ResponseBody
 	public ReturnResult deleteIconsById(
-			@RequestParam(value = "iconId", required = true) String iconId,
+			@RequestParam(value = "groupId", required = true) Integer groupId,
 			HttpServletRequest request)
 			throws Exception {
 		try {
-
-			List<Icons> list = iconsService.findByIdAndGpsId(iconId);
-			if (list.size() > 0) {
-				return ReturnResult.MESSAGE(MessageCode.STATUS_FAIL,
-						"该图标已关联Gps设备，不能删除", 0, null);
-			} else {
-				Icons icons = new Icons();
-				icons = iconsService.selectByPrimaryKey(Integer.parseInt(iconId));
-				if(icons==null){
-					return ReturnResult.MESSAGE(MessageCode.STATUS_FAIL,
-							"获取图标对象失败，删除失败", 0, null);
-				}
-				String iconUrl = icons.getIconUrl();
-				iconUrl = iconUrl.substring(10,iconUrl.length());
-				String uploadPath = request.getRealPath("uploadIcon")+iconUrl;
-				File ficon = new File(uploadPath);
-				if(ficon.exists()){
-					ficon.delete();
-				}
-				iconsService.updateIconsInfoById(Integer.parseInt(iconId));
-
-				return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
-						MessageCode.SELECT_SUCCESS, 0, null);
+			List<IconTypeDetail> tempList = typeService.getTypeListByGoupId(groupId);
+			if(tempList!=null && tempList.size()>0){
+				return ReturnResult.MESSAGE(MessageCode.STATUS_FAIL, "图标已绑定资源，删除失败", 0,
+						null);
 			}
+			iconGroupService.deleteIconGroupById(groupId);
+				return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
+						"删除成功", 0, null);
 		} catch (Exception ex) {
-			return ReturnResult.MESSAGE(MessageCode.STATUS_FAIL, "删除武器数据出错", 0,
+			return ReturnResult.MESSAGE(MessageCode.STATUS_FAIL, "删除图标数据出错", 0,
 					null);
 		}
 	}
+ 
+
+	/*
+	 * 删除图标
+	 */
+//	@RequestMapping(value = "deleteIconsById.do")
+//	@ResponseBody
+//	public ReturnResult deleteIconsById(
+//			@RequestParam(value = "iconId", required = true) String iconId,
+//			HttpServletRequest request)
+//			throws Exception {
+//		try {
+//
+//			List<Icons> list = iconsService.findByIdAndGpsId(iconId);
+//			if (list.size() > 0) {
+//				return ReturnResult.MESSAGE(MessageCode.STATUS_FAIL,
+//						"该图标已关联Gps设备，不能删除", 0, null);
+//			} else {
+//				Icons icons = new Icons();
+//				icons = iconsService.selectByPrimaryKey(Integer.parseInt(iconId));
+//				if(icons==null){
+//					return ReturnResult.MESSAGE(MessageCode.STATUS_FAIL,
+//							"获取图标对象失败，删除失败", 0, null);
+//				}
+//				String iconUrl = icons.getIconUrl();
+//				iconUrl = iconUrl.substring(10,iconUrl.length());
+//				String uploadPath = request.getRealPath("uploadIcon")+iconUrl;
+//				File ficon = new File(uploadPath);
+//				if(ficon.exists()){
+//					ficon.delete();
+//				}
+//				iconsService.updateIconsInfoById(Integer.parseInt(iconId));
+//
+//				return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
+//						MessageCode.SELECT_SUCCESS, 0, null);
+//			}
+//		} catch (Exception ex) {
+//			return ReturnResult.MESSAGE(MessageCode.STATUS_FAIL, "删除图标数据出错", 0,
+//					null);
+//		}
+//	}
 
 }

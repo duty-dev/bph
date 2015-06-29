@@ -107,6 +107,13 @@ var WeaponEditManage= {
 			}
 			bph_weaponEdit_pkg.number= pnumber;
 			var wstandard= $.trim($("#weaponStandard").val());
+			var pattern = /\D/ig;
+			if (pattern.test(wstandard)) { 
+					$("body").popjs({"title":"提示","content":"武器子弹数目字能为数字!","callback":function(){
+								$("#weaponStandard").focus();
+							}});    
+					return;
+			}
 			if (wstandard.length > 20) {
 							$("body").popjs({"title":"提示","content":"子弹数目长度过长，限制长度为20！","callback":function(){
 								$("#weaponStandard").focus();

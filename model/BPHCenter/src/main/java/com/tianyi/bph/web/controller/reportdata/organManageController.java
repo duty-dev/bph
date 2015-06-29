@@ -37,10 +37,15 @@ public class organManageController {
 			User user = (User) request.getAttribute("User");
 			if (organId == null) {
 				organId = user.getOrgId();
+				
 			}
+			Organ organ = new Organ();
+			organ = organService.getOrganByPrimaryKey(organId);
 			List<Organ> organList = new ArrayList<Organ>();
 			OrganQuery query = new OrganQuery();
 			query.setId(organId);
+			
+			query.setPath(user.getOrganPath());
 			organList = organService.findOrganById(query);
 			String orgPath = "";
 			for (int i = 0; i < organList.size(); i++) {

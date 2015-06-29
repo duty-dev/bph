@@ -30,7 +30,7 @@ public class Vehicle {
     /*
 	 * 对应gpsid
 	 */
-    private int gpsId;
+    private Integer gpsId;
     /*
 	 * 对饮gps名称
 	 */
@@ -96,11 +96,11 @@ public class Vehicle {
         this.intercomGroup = intercomGroup;
     }
 
-    public int getGpsId() {
+    public Integer getGpsId() {
         return gpsId;
     }
 
-    public void setGpsId(int gpsId) {
+    public void setGpsId(Integer gpsId) {
         this.gpsId = gpsId;
     }
 

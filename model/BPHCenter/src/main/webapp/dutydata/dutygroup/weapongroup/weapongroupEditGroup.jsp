@@ -4,7 +4,7 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML>
 <html>
 <head>
 <base href="<%=basePath%>">
@@ -58,6 +58,7 @@ var m_weaponGroup_Org = {
 			$("#radio_shared").attr("checked","checked");
 				$("#divOrg").css("visibility", "visible");
 		}
+		$("#divOrg").mCustomScrollbar({scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
 });
 var WeaponGroupManage ={
 	//判断是否共享
@@ -107,7 +108,7 @@ var WeaponGroupManage ={
 			pg.id=0;
 		}
 		var groupName = $.trim($("#txtWeaponGroupName").val());
-			if (groupName == "" && groupName == undefined) {
+			if (groupName == "" || groupName == undefined) {
 					$("body").popjs({"title":"提示","content":"请填写分组名称","callback":function(){
 								$("#txtWeaponGroupName").focus();
 								return;
@@ -229,7 +230,7 @@ var WeaponGroupManage ={
 				</div>
 			</div>
 							<div style="width:370px; float:left">
-								<div id="divOrg" style="height:320px; overflow:auto" class="ty-tree-bg">
+								<div id="divOrg" style="height:320px; overflow:auto" class="ty-tree-bg ty-tree-te">
 									<ul id="treeOrg" style="overflow:auto"></ul>
 								</div>
 							</div> 

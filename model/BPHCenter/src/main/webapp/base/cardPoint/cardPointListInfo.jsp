@@ -47,7 +47,7 @@
 	                        dataSource: {
 	                            data: udata
 	                        },
-	                     	height: 550,
+	                     	height: 472,
                           	sortable: true,
                           	resizable: true,
 	                        columns: [{
@@ -61,6 +61,8 @@
                         		},
 	                            {field: "name", title: "卡点名称"}, 
 	                        	{field: "intercomGroupId", title: "通讯组号"}, 
+	                        	{field: "allPoliceCount", title: "总警力"},
+	                        	{field: "mark", title: "是否标注"},
 	                        	{field: "circleLayerName", title: "所属圈层"},
 	                        	{field: "camera", title: "关联天网"},
 	                        	{field: "assignment", title: "职责"}],
@@ -76,25 +78,7 @@
 				}
 			}
 		});
-	}
-<%--     function saveCardPoint(){
-    	$.ajax({
-			url:"<%=basePath%>/web/cardPoint/deleteCardPoint.do",
-			type:"post",
-			dataType:"json",
-			data:{
-				id: Id
-			},
-			success:function(msg){
-				 if(msg.code==200){
-					searchCardPoint(1);					
-				}else{
-					alert(msg.description);
-				}
-			}
-		});
-		return true; 
-    } --%>
+	} 
     
  	/* 删除卡点 */
     function deleteCardPoint(Id){
@@ -154,10 +138,10 @@ function addCardPoint(){
 		var sessionId = $("#token").val();
 		$("#dialog").tyWindow({
 			width: "820px",
-			height: "648px",
+			height: "620px",
 		    title: "新增卡点",
 		    position: {
-		        top: "100px"
+		        top: "1px"
 		      },
 			content: "<%=path%>/web/cardPoint/gotoCardPointAdd.do?organId="+organId+"&sessionId="+sessionId,
 			iframe : true,
@@ -172,10 +156,10 @@ function editCardPoint(cardPointId){
 	var sessionId = $("#token").val();
 	$("#dialog").tyWindow({
 		width: "820px",
-		height: "648px",
+		height: "620px",
 	    title: "卡点管理",
 	    position: {
-	        top: "100px"
+	        top: "1px"
 	      },
 		content: "<%=path%>/web/cardPoint/gotoCardPointEdit.do?cardPointId="
 									+ cardPointId + "&sessionId=" + sessionId,

@@ -26,6 +26,9 @@
 	<resultMap id="caseOrgAGGRMap" type="com.tianyi.bph.domain.report.CaseOrgAGGR">
     	<result column="org_id" property="orgId"   jdbcType="INTEGER"/>
     	<result column="org_code" property="orgCode" jdbcType="VARCHAR" />
+    	<result column="org_path" property="orgPath" jdbcType="VARCHAR" />
+    	<result column="org_parentpath" property="orgParentPath" jdbcType="VARCHAR" />
+    	<result column="org_parentid" property="orgParentId" jdbcType="INTEGER" />
     	<result column="org_name" property="orgName" jdbcType="VARCHAR" />
     	<result column="type_code" property="typeCode" jdbcType="VARCHAR" />
     	<result column="type_name" property="typeName" jdbcType="VARCHAR" />
@@ -323,6 +326,9 @@
   		select
   			t.org_id								as org_id,
   			org.code							as org_code,
+  			org.path						as org_path,
+  			org.parent_id                  as org_parentid,
+  			left(org.path, (LENGTH(org.PATH)-LENGTH(org.CODE)-1)) as org_parentpath,
   			org.short_name				as org_name,
   			t.type_code						as type_code,
   			bat.type_name 					as type_name,
@@ -341,7 +347,7 @@
 	  			t_case_report
 	  		where
 	  			ymd  &gt;=#{beginYMD,jdbcType=INTEGER} and ymd &lt;=#{endYMD,jdbcType=INTEGER} and
-	  			org_parent_id =#{orgParentId,jdbcType=INTEGER} and
+	  			org_path  like CONCAT(#{orgPath,jdbcType=VARCHAR},'%') and 
 	  			clevel in 
 					<foreach item="item" index="index" collection="levels" open="(" separator="," close=")">  
 						#{item}
@@ -367,7 +373,7 @@
 	  			t_case_report
 	  		where
 	  			ymd  &gt;=#{beginYMD,jdbcType=INTEGER} and ymd &lt;=#{endYMD,jdbcType=INTEGER} and
-	  			org_parent_id =#{orgParentId,jdbcType=INTEGER} and
+	  			org_path  like CONCAT(#{orgPath,jdbcType=VARCHAR},'%') and 
 	  			clevel in 
 					<foreach item="item" index="index" collection="levels" open="(" separator="," close=")">  
 						#{item}
@@ -385,7 +391,7 @@
 				type2
 		)as t on org.organ_id=t.org_id
 		left join b_alarm_type as bat on t.type_code=bat.TYPE_CODE
-		where org.parent_id=#{orgParentId,jdbcType=INTEGER}
+		where org.path like CONCAT(#{orgPath,jdbcType=VARCHAR},'%') 
   	</select>
   	
   	<resultMap id="WarningAGGRMap" type="com.tianyi.bph.domain.report.WarningOrgAGGR">

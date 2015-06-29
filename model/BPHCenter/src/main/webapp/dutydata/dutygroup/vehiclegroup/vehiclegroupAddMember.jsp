@@ -6,7 +6,7 @@
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
 %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML>
 <html>
 <head>
 <base href="<%=basePath%>">
@@ -42,7 +42,12 @@
 			dataSource: treeData,
 			dataTextField: "name",
 			selectable: "row"
-		});
+		}).on('dblclick', '.k-in', function (event) { 
+     			var rows = $("#treeOrgWithVehicle").data("kendoTreeView");
+				var node = rows.dataItem(rows.select()); 
+				VehicleGroupManage.selectMemberModel(node);
+     			return false;
+			}).data("kendoTreeView");
 		 
 		$.ajax({
 					type: "post",
@@ -65,14 +70,19 @@
 														title : '所属单位',
 														field : 'orgShortName'
 													}, {
-														title : '武器类型',
+														title : '车辆类型',
 														field : 'typeName'
 													}, {
-														title : '武器编号',
+														title : '车牌号码',
 														field : 'number'
 													} ],
 											selectable: "row"
 										});
+										
+										var myGrid = $("#dtSelGroupMember").data("kendoGrid");
+				           						myGrid.element.on("dblclick","tbody>tr","dblclick",function(e){ 
+				           							VehicleGroupManage.unselectMember();
+				           						}); 
 									}else{ 
 										$("#dtSelGroupMember").kendoGrid({
 											dataSource: [],
@@ -84,10 +94,10 @@
 														title : '所属单位',
 														field : 'orgShortName'
 													}, {
-														title : '武器类型',
+														title : '车辆类型',
 														field : 'typeName'
 													}, {
-														title : '武器编号',
+														title : '车牌号码',
 														field : 'number'
 													} ],
 											selectable: "row"
@@ -95,6 +105,8 @@
 									}
 								}
 							});
+		$("#orgWithVehicle").mCustomScrollbar({scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
+		$("#dtSelGroupMember").parent().mCustomScrollbar({scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
 	}); 	
 	var VehicleGroupManage ={ 
 			selectMember:function() {
@@ -104,7 +116,12 @@
 			}, 
 			unselectMember:function() {
 				var rows = $("#dtSelGroupMember").data("kendoGrid");
+				if(rows._data.length == 0){
+					$("body").popjs({"title":"提示","content":"没有可操作的数据源"}); 
+					return;
+				}
 				var row = rows.dataItem(rows.select()); 
+				if(row != null){ 
 				for (var i = 0; i<m_memberDt.length; i++) {
 					 if(row.vehicleId==m_memberDt[i].vehicleId){ 
 						 m_memberDt.splice(i, 1);
@@ -116,6 +133,9 @@
 						//替换以前的dataSource
 				var grid = $("#dtSelGroupMember").data("kendoGrid");
 				grid.setDataSource(dataSource); 
+				}else{
+					$("body").popjs({"title":"提示","content":"请选择要删除的成员"}); 
+				}
 			},
 			selectMemberModel:function(node) {
 				 
@@ -200,26 +220,26 @@
   
   <body class="ty-body">
     <!-- <div id="vertical" style="overflow-x:hidden;"> -->
-		<div id="winPG" style="width:660px;height:320px;" title="车辆分组成员管理">
+		<div id="winPG" style="width:700px;float: left;" title="车辆分组成员管理">
 			<div style="width:650px;margin-top:10px;">
 				<!-- 左开始 -->
 				<div class="demo-section k-header"> 
 					<input id="txtVehicleGroupId"  type="hidden"  value="${groupId }"></input>
 				 
-							<div style="width:200px;float:left;height:230px">  
-								<ul id="treeOrgWithVehicle" style="overflow:auto;height:450px"></ul>
+							<div style="width:40%;float:left;height:330px" id="orgWithVehicle">  
+								<ul id="treeOrgWithVehicle"></ul>
 							</div>
-					 	    <div  style="width:40px;float:left;height:230px;margin-top:120px">
+					 	    <div  style="width:6%;float:left;height:210px;margin-top:120px">
 								<button onclick="VehicleGroupManage.selectMember()">&gt&gt</button>
 								<button onclick="VehicleGroupManage.unselectMember()">&lt&lt</button>
 						    </div>
-						    <div  style="width:350px;float:left"> 
+						    <div  style="width:50%;float:left;height:330px;overflow:hidden;"> 
 							<div id="dtSelGroupMember"></div>
 					 
-					<p style="float:left;width:100%;margin-top:10px;">
+					</div>
+					<p class="ty-input-row">
 						<button class="ty-button"  onclick="VehicleGroupManage.appendMember()">确定</button>
 					</p>
-					</div>
 				</div>
 			</div> 
 	</div>

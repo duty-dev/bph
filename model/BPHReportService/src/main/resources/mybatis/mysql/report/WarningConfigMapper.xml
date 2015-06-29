@@ -166,7 +166,7 @@
   				cfg.org_id= 	#{orgParentId,jdbcType=INTEGER} and cfg.share =1
   			)
   		</if>  
-  		order by cfg.id 
+  		order by cfg.id ,color.level
   </select>
   <select id="loadWarningCfgVMInfoById"  parameterType="java.lang.Integer"  resultMap="VMMap">
   	select

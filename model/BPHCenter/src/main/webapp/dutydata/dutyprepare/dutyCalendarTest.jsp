@@ -7,7 +7,7 @@
 		<!--日历主窗体 s-->
     	<div class="dateBoxMain">
     		<div class="dateBoxMainTItle">
-        		<div class="dateBoxMainTItleTxt">报备月程表</div>
+        		<div class="dateBoxMainTItleTxt1">报备月程表</div>
 	            <div class="dateBoxMainTItleBox">
 	            	<div class="dateBoxMainTItleBoxMain">
 	                	<ul>
@@ -21,8 +21,12 @@
 	            <!-- 清楚本月报备数据以及清空剪切板 -->
 	            <div class="dateBoxMainTItleTxt">
 	            	<div class="dateBoxMainTItleTxtDIv">
+	            		<button class="fl ty-btn-clear mt4" title="清除当月所有报备数据" onclick="clearAlldutyData()"></button>
+	            		<button class="fl ml10 ty-btn-cancelcopy mt4" title="取消剪贴板数据" onclick="clearClipbord()"></button>
+	            		<!-- 
 	                    <a href="javascript:void(0);" onclick="clearAlldutyData()"><img src="<%=basePath %>dutydata/dutyprepare/calendarImage/canelpast.png" alt="清除当月所有报备数据" title="清除当月所有报备数据" /></a>
 	                    <a href="javascript:void(0);" onclick="clearClipbord()"><img src="<%=basePath %>dutydata/dutyprepare/calendarImage/past.png" alt="取消剪贴板数据" title="取消剪贴板数据"  /></a>
+	                	 -->
 	                </div>
 	            </div>
         	</div>

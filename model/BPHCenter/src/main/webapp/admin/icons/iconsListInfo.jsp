@@ -26,7 +26,8 @@ function loadData(pageNo){
 								},
 								height : 472,
 								sortable : true,
-								selectable : "multiple", 
+								selectable : "multiple",
+								resizable: true,
 								columns:[{
 										title : 'Id',
 										field : 'groupId', 
@@ -71,10 +72,10 @@ function loadData(pageNo){
 		});
 	}
     loadData(1);
-	function deleteIcon(iconId){ 
+	function deleteIcon(groupId){ 
 		$("body").tyWindow({"content":"确定要删除?","center":true,"ok":true,"no":true,"okCallback":function(){
 	 	$.ajax({
-					url : "<%=basePath%>iconsWeb/deleteIconsById.do?iconId="+iconId,
+					url : "<%=basePath%>iconsWeb/deleteIconsById.do?groupId="+groupId,
 					type : "post", 
 					dataType : "json",
 					success : function(req) {
@@ -109,7 +110,7 @@ function loadData(pageNo){
 			height : "600px",
 			title : "新增"+typeName+"图标",
 			position : {
-				top : "100px"
+				top : "20px"
 			},
 		content: url,
 					iframe : true,

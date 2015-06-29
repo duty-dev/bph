@@ -34,7 +34,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<select id="addServiceType" name="addServiceType">
 											<option value="">---请选择服务类型---</option>
 											<option value="1">mq</option>
-											<option value="2">ftp</option>
+											<option value="2">天网接入</option>
 											<option value="3">gps</option>
 										</select>
 									<li class="ty-input"><span class="ty-input-warn ml150">*</span><label for="aServicePort">服务端口:</label> 

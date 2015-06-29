@@ -12,10 +12,9 @@
 <html>
 <head>
 <title>扁平化指挥系统</title>
-<%@ include file="../../emulateIE.jsp" %>	
-  
+<%@ include file="../../emulateIE.jsp" %>	 
 </head>  
-  <body>
+  <body id="bd_prepare">
     <div id="wrapper">
 		
 			<div class="container-fluid">

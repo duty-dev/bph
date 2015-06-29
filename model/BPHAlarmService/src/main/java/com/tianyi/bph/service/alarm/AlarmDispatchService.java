@@ -100,6 +100,13 @@ public interface AlarmDispatchService {
 	 * @return
 	 */
 	public List<JJDBView> getJjdbListMixed(JJDBQuery JjdbQuery);
+	/**
+	 * 获取不含反馈信息的警情详情
+	 * 
+	 * @param jjdbh
+	 * @return
+	 */
+	public Jjdb110 getAlarmDetail(String jjdbh);
 	
 
 }

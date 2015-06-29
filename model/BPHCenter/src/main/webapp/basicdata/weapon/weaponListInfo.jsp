@@ -51,8 +51,9 @@ var WeaponManage= {
 							dataSource : {
 								data : udata 
 							},
-							height : 550,
+							height : 472,
 							sortable : true,
+							resizable: true,
 							selectable : "multiple", 
 							columns:[{
 									title : 'Id',
@@ -89,7 +90,6 @@ var WeaponManage= {
              					var id = $(this).find("td").first().text();
              					WeaponManage.editWeapon(id);
              				});
-							$("#weapongrid .k-grid-content").mCustomScrollbar( {scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
                				var pg = pagination(pageNo,total,'loadData',10);
                	            $("#page").html(pg);
 						} 
@@ -133,7 +133,7 @@ var WeaponManage= {
 			height : "540px",
 			title : "新增武器信息",
 			position : {
-				top : "100px"
+				top : "50px"
 			},
 		content: "<%=basePath%>weaponWeb/gotoWeaponAdd.do?organId=" + organId+"&sessionId="+sessionId,
 					iframe : true,
@@ -149,7 +149,7 @@ var WeaponManage= {
 			height : "540px",
 			title : "编辑武器信息",
 			position : {
-				top : "100px"
+				top : "50px"
 			},
 		content: "<%=basePath%>weaponWeb/gotoWeaponEdit.do?weaponId="
 							+ weaponId + "&organId=" + organId+"&sessionId="+sessionId,
@@ -169,7 +169,7 @@ var WeaponManage= {
 			height : "450px",
 			title : "武器信息导入",
 			position : {
-				top : "100px"
+				top : "50px"
 			},
 		content: "<%=basePath%>weaponWeb/gotoWeaponImport.do?organId=" + organId+"&sessionId="+sessionId,
 					iframe : true,

@@ -32,7 +32,11 @@
 							<!----功能模块---->
 							<div class="set">
 								<h1>报备日历统计</h1> 
+								<div class="clear box">
+									<%@ include file="dutyCalendarToolbar.jsp"%>
+								</div>
 							</div>
+							
 						</div>
 						<!----功能模块结束---->
 

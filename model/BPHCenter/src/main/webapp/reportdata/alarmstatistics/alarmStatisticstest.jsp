@@ -21,22 +21,11 @@
 </head>
 
 <body>
-<style type = "text/css">
-	#main-nav-bg{
-				width:330px;
-				float:left;
-				display:block;
-				clear:both;
-				}
-	#main-nav{
-			width:330px;
-			}
-</style>
 	<div id="wrapper">
 		<div id='main-nav-bg'></div>
-		<nav id='main-nav'>
+		<nav class="" id="main-nav">
 			<div class='navigation'>
-				<%@ include file="../../LeftForPeportTest.jsp"%>
+				<%@ include file="../../leftForReport.jsp"%>
 			</div>
 		</nav>
 		<section id='content'>
@@ -76,4 +65,3 @@
 	<!----底部结束---->
 </body>
 </html>
-

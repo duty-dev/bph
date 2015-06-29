@@ -349,7 +349,7 @@ var policeAddManage= {
 				dataType : "json",
 				async : false,
 				data : {
-					"param" : pnumber,
+					"param" : pNumber,
 					"paramType" : "number",
 					"optType"   : 0,
 					"id"     :   0

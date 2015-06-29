@@ -16,7 +16,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <body>
   <div id="wrapper">
-    	<input id="token" type="hidden" value="${requestScope.sessionId}" style="width:80px;"/><br>
+    	<input id="token" type="hidden" value="${requestScope.sessionId}" style="width:80px;"/>
        <div class="container-fluid">
          <div id="content-wrapper" class="row-fluid">
            <div class='span12'>

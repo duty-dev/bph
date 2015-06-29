@@ -60,7 +60,12 @@ public class AreaAction {
 				ReturnResult.FAILUER("用户名不能为空");
 			}
 			Area area = new Area();
-			area.setAreaName(new String(areaName.getBytes("ISO-8859-1"), "UTF-8"));
+			if (!"UTF-8".equals(request.getCharacterEncoding())) {
+				area.setAreaName(new String(areaName.getBytes("ISO-8859-1"),
+						"UTF-8"));
+			} else {
+				area.setAreaName(areaName);
+			}
 			area.setAreaType(areaType);
 			area.setChangeRange(false);// 基础添加 没 绘制
 			area.setCreateTime(new Date());
@@ -109,6 +114,22 @@ public class AreaAction {
 	public ReturnResult updateArea(@RequestBody String body) {
 		try {
 			AreaVO areavo = JsonUtils.toObj(body, AreaVO.class);
+			service.updateByPrimaryKey(areavo.ctrate());
+			return ReturnResult.SUCCESS("成功",
+					service.updateByPrimaryKey(areavo.ctrate()).getId());
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return ReturnResult.FAILUER(e.getMessage());
+		}
+	}
+
+	@RequestMapping(value = "/updateAreaByWeb.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ReturnResult updateAreaByWeb(
+			@RequestParam(value = "AreaVo") String body,
+			HttpServletRequest request) {
+		try {
+			AreaVO areavo = JsonUtils.toObj(body, AreaVO.class);
 			return ReturnResult.SUCCESS("成功",
 					service.updateByPrimaryKey(areavo.ctrate()).getId());
 		} catch (Exception e) {
@@ -129,7 +150,8 @@ public class AreaAction {
 	public ReturnResult queryAreaList(
 			@RequestParam(value = "organIds", required = false) String organIds,
 			@RequestParam(value = "areaName", required = false) String areaName,
-			@RequestParam(value = "areaType", required = false) Integer areaType) {
+			@RequestParam(value = "areaType", required = false) Integer areaType,
+			HttpServletRequest request) {
 		try {
 			AreaExample areaExample = new AreaExample();
 			AreaExample.Criteria criteria = areaExample.createCriteria();
@@ -150,9 +172,11 @@ public class AreaAction {
 				}
 			}
 			if (StringUtils.hasLength(areaName)) {
-				criteria.andAreaNameLike("%"
-						+ new String(areaName.getBytes("ISO-8859-1"), "UTF-8")
-						+ "%");
+				if (!"UTF-8".equals(request.getCharacterEncoding())) {
+					areaName = new String(areaName.getBytes("ISO-8859-1"),
+							"UTF-8");
+				}
+				criteria.andAreaNameLike("%" + areaName + "%");
 			}
 			if (areaType != null) {
 				criteria.andAreaTypeEqualTo(areaType);
@@ -264,9 +288,10 @@ public class AreaAction {
 		try {
 			AreaPoint point = JsonUtils.toObj(body, AreaPoint.class);
 			if (!StringUtils.hasLength(point.getName())) {
-				return ReturnResult.FAILUER("失败！", "必达点名字");
+				return ReturnResult.FAILUER("失败！", "必达点名字不存在");
 			}
-			return ReturnResult.SUCCESS("成功！", service.addAreaPoint(point));
+			service.addAreaPoint(point);
+			return ReturnResult.SUCCESS("成功！", point);
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			return ReturnResult.FAILUER("失败！", e.getMessage());
@@ -278,7 +303,8 @@ public class AreaAction {
 	public ReturnResult updateAreaPoint(@RequestBody String body) {
 		try {
 			AreaPoint point = JsonUtils.toObj(body, AreaPoint.class);
-			return ReturnResult.SUCCESS("成功！", service.updateAreaPoint(point));
+			service.updateAreaPoint(point);
+			return ReturnResult.SUCCESS("成功！", point);
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			return ReturnResult.FAILUER("失败！", e.getMessage());
@@ -295,6 +321,57 @@ public class AreaAction {
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			return ReturnResult.FAILUER("失败！", e.getMessage());
+		}
+	}
+
+	/**
+	 * 修改 巡区 社区 辖区
+	 * 
+	 * @param areaId
+	 * @param areaType
+	 * @param areaName
+	 * @param lineColor
+	 * @param lineTransparence
+	 * @param backGroundColor
+	 * @param backGroundTransparence
+	 * @param coordinates
+	 * @param shape
+	 * @param centre
+	 * @param tel
+	 * @param nnt
+	 * @return
+	 */
+	@RequestMapping(value = "/updateAreabasic.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ReturnResult updateAreabasic(
+			@RequestParam(value = "areaId", required = true) Integer areaId,
+			@RequestParam(value = "areaName", required = true) String areaName,
+			@RequestParam(value = "createUserId", required = true) Integer createUserId,
+			@RequestParam(value = "tel", required = false) String tel,
+			@RequestParam(value = "nnt", required = false, defaultValue = "0") Integer nnt,
+			@RequestParam(value = "relationUserIds", required = false) String relationUserIds,
+			HttpServletRequest request) {
+		try {
+			AreaVO areavo = new AreaVO();
+			areavo.setId(areaId);
+			areavo.setAreaName(areaName);
+			areavo.setTel(tel);
+			areavo.setNnt(nnt);
+			if (StringUtils.hasLength(relationUserIds)) {
+				String[] ids = relationUserIds.split(",");
+				List<Integer> relationUserKeys = null;
+				if (ids.length > 0) {
+					relationUserKeys = new ArrayList<Integer>(ids.length);
+					for (String userId : ids) {
+						relationUserKeys.add(Integer.parseInt(userId));
+					}
+				}
+				areavo.setRelationUserIds(relationUserKeys);
+			}
+			return ReturnResult.SUCCESS("成功", service.updateByPrimaryKey(areavo.ctrate()).getId());
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return ReturnResult.FAILUER(e.getMessage());
 		}
 	}
 

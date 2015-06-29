@@ -35,6 +35,7 @@ public class RestException extends RuntimeException {
 	}
 
 	public RestException(String msg) {
+		super(msg);
 		this.message = msg;
 	}
 

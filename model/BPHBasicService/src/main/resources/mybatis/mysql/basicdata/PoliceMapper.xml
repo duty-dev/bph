@@ -480,7 +480,7 @@
 		or org.path like
 			CONCAT(#{orgPath,jdbcType=VARCHAR},"/","%")
 		</if>
-
+		order by CONVERT(p.name USING gbk) asc
 	</select>
 
 

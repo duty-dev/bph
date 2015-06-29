@@ -50,7 +50,7 @@ var VehicleManage = {
 							dataSource : {
 								data : udata 
 							},
-							height : 550,
+							height : 472,
 							sortable : true,
 							resizable: true,
 							selectable : "multiple", 
@@ -75,7 +75,7 @@ var VehicleManage = {
 									field : 'number'  
 								},{
 									title : '对讲机组呼号',
-									field : 'intercomGroup' 
+									field : 'intercomgroupNumber' 
 								},{
 									title : '对讲机个呼号',
 									field : 'intercomPerson' 
@@ -102,7 +102,6 @@ var VehicleManage = {
              					var id = $(this).find("td").first().text();
              					VehicleManage.editVehicle(id);
              				});
-							$("#vehiclegrid .k-grid-content").mCustomScrollbar( {scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
              				var pg = pagination(pageNo,total,'loadData',10);
                	            $("#page").html(pg);
 						} 

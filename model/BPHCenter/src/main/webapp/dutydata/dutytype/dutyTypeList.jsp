@@ -19,13 +19,6 @@
 
 <body>
 	<div id="wrapper">
-		<div id='main-nav-bg'></div>
-		<nav class="" id="main-nav">
-			<div class='navigation'>
-				<%@ include file="../../left.jsp"%>
-			</div>
-		</nav>
-		<section id='content'>
 			<div class="container-fluid">
 				<div id="content-wrapper" class="row-fluid">
 					<div class='span12'>
@@ -54,7 +47,6 @@
 					</div>
 				</div>
 			</div>
-		</section>
 	</div>
 
 	<!----底部结束---->

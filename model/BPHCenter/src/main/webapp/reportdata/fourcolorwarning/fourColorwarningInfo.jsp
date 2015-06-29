@@ -29,6 +29,7 @@ var WarningManage = {
 								    dataTextField: "text", 
 								    dataSource: [eval('(' + json_data + ')')]
 								}).data("kendoTreeView");
+								$("#alarmtreeview").parent().mCustomScrollbar({scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
 								$("input[type='checkbox']").attr("disabled","disabled")
 							}
 						}
@@ -237,7 +238,7 @@ var WarningManage = {
 	</div>  
 </div>
 <div id="dialog"></div>
-<div id="alarmCaseInfo"  style="width:50%;height:580px;float:left;margin-left:10px;">
+<div id="alarmCaseInfo"  style="width:50%;height:480px;float:left;margin-left:10px;">
 	<h2 id="caseTitle" style="width:100%"></h2>
 	<table style="width:100%;height:350px">
 		<tr>
@@ -315,10 +316,10 @@ var WarningManage = {
 		</tr>
 		<tr>
 			<td> 
-				<table style="width:90%;padding:3px"><tr><td style="background-color:blue;height:25px"></td></tr></table>  
+				<table style="width:90%;padding:3px"><tr><td style="background-color:#8b2ae3;height:25px"></td></tr></table>  
 			</td>
 			<td>
-				<label style="margin-left:20px">蓝色预警</label>
+				<label style="margin-left:20px">紫色预警</label>
 			</td>
 			<td>
 				<label style="margin-left:20px">增幅  </label>
@@ -370,7 +371,7 @@ var WarningManage = {
 		</tr> 
 	</table>
 </div>
-<div id="div_alarmType" style="height:550px;overflow-x:hidden;overflow-y:auto;">
+<div id="div_alarmType" style="height:460px;overflow-x:hidden;overflow-y:auto;">
 	<h4>警情类别</h4>
 	<div id="alarmtreeview" > 
 	</div>

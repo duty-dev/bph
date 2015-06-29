@@ -31,8 +31,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<li><span>名&nbsp;&nbsp;&nbsp;称:</span> <span id="circleLayerName">${circleLayer.name }</span></li>
 							<%-- <li><label>&nbsp; 姓&nbsp;&nbsp;&nbsp;&nbsp;名:</label> ${user.userName}</li> --%>
 							<li><span class="fl" style="line-height:30px;">边框色:</span> 
-							<input type="hidden"	class="k-textbox fl"  onchange="changePloy()"  value="${displayProperty.borderColor }" name="borderColor" id="borderColor"/>
-							<div id="myborderColordiv" style="float:left;width: 20px; background-color:  ${displayProperty.borderColor };margin-top:5px;margin-right:5px;margin-left:8px;" >&nbsp;&nbsp;&nbsp;</div>	 
+							<input type="hidden"	class="k-textbox fl"  onchange="changePloy()"  value="${displayProperty.borderColor == null ? '#66CCFF' :  displayProperty.borderColor}" name="borderColor" id="borderColor"/>
+							<div id="myborderColordiv" style="float:left;width: 20px; background-color:  ${displayProperty.borderColor == null ? '#66CCFF' :  displayProperty.borderColor};margin-top:5px;margin-right:5px;margin-left:8px;" >&nbsp;&nbsp;&nbsp;</div>	 
 								 <img src='<%=basePath %>supermap/theme/images/others/colorpicker.png' id="cp1" style="cursor:pointer"/>
 								 <span style="margin-left: 10px;">透明度:</span>
 								 <select class="w176"  style="width: 70px;"id="borderOpacity"  onchange="changePloy()" >
@@ -42,7 +42,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								 	<option value="0.3" ${displayProperty.borderOpacity ==0.3 ? 'selected' : '' }>30%</option>
 								 	<option value="0.4"  ${displayProperty.borderOpacity ==0.4 ? 'selected' : '' }>40%</option>
 								 	<option value="0.5"  ${displayProperty.borderOpacity ==0.5 ? 'selected' : '' }>50%</option>
-								 	<option value="0.6" ${displayProperty.borderOpacity ==0.6 ? 'selected' : '' }>60%</option>
+								 	<option value="0.6" ${displayProperty.borderOpacity == 0.0 || displayProperty.borderOpacity ==0.6 ? 'selected' : '' }>60%</option>
 								 	<option value="0.7"  ${displayProperty.borderOpacity ==0.7 ? 'selected' : '' }>70%</option>
 								 	<option value="0.8"  ${displayProperty.borderOpacity ==0.8 ? 'selected' : '' }>80%</option>
 								 	<option value="0.9" ${displayProperty.borderOpacity ==0.9 ? 'selected' : '' }>90%</option>
@@ -50,8 +50,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								 </select>
 						    </li>
 							<li><span class="fl" style="line-height:30px;">背景色:</span> 
-							<input type="hidden" class="k-textbox"  onchange="changePloy()" value="${displayProperty.fillColor }" name="fColor" id="fColor" />
-							<div id="fColordiv" style="float:left;width: 20px; background-color:  ${displayProperty.fillColor };margin-top:5px;margin-right:5px;margin-left:8px;"">&nbsp;&nbsp;&nbsp;</div>	
+							<input type="hidden" class="k-textbox"  onchange="changePloy()" value="${displayProperty.fillColor == null ? '#99CC99' :  displayProperty.fillColor}" name="fColor" id="fColor" />
+							<div id="fColordiv" style="float:left;width: 20px; background-color:  ${displayProperty.fillColor == null ? '#99CC99' :  displayProperty.fillColor};margin-top:5px;margin-right:5px;margin-left:8px;"">&nbsp;&nbsp;&nbsp;</div>	
 								<img src='<%=basePath %>supermap/theme/images/others/colorpicker.png' id="cp2" style="cursor:pointer"/>
 								<span style="margin-left: 10px;">透明度:</span> 
 								<select class="w176" style="width: 70px;" id="fOpacity" placeholder="" onchange="changePloy()" >
@@ -61,7 +61,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								 	<option value="0.3" ${displayProperty.fillOpacity ==0.3 ? 'selected' : '' }>30%</option>
 								 	<option value="0.4"  ${displayProperty.fillOpacity ==0.4 ? 'selected' : '' }>40%</option>
 								 	<option value="0.5"  ${displayProperty.fillOpacity ==0.5 ? 'selected' : '' }>50%</option>
-								 	<option value="0.6" ${displayProperty.fillOpacity ==0.6 ? 'selected' : '' }>60%</option>
+								 	<option value="0.6" ${displayProperty.fillOpacity == 0.0 || displayProperty.fillOpacity ==0.6 ? 'selected' : '' }>60%</option>
 								 	<option value="0.7"  ${displayProperty.fillOpacity ==0.7 ? 'selected' : '' }>70%</option>
 								 	<option value="0.8"  ${displayProperty.fillOpacity ==0.8 ? 'selected' : '' }>80%</option>
 								 	<option value="0.9" ${displayProperty.fillOpacity ==0.9 ? 'selected' : '' }>90%</option>
@@ -69,15 +69,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								 </select>
 							</li>
 							<li><span>中心点:</span> 
-								<input type="text" class="k-textbox" style="margin-left: 5px;width: 110px;" name="latitude" id="latitude"  value = "${displayProperty.y }"/>
-								<button type="button" data-role="button" data-sprite-css-class="k-icon k-i-tick"  onclick="getPoint()">取点</button>	 
+								<input type="text" class="k-textbox" style="margin-left: 5px;width: 90px;" name="latitude" id="latitude"  value = "${displayProperty.y }"/>
+								<em class="ty-input-end" style="margin-top: 1px;"></em>
+								<button type="button"  class="ty-button"  style="margin-left: 25px;height:28px;line-height:20px;"  onclick="getPoint()">取点</button>	 
 							</li>
 							<li>
-								<input type="text" class="k-textbox"  style="margin-left: 52px;width: 110px;" name="longitude" id="longitude" value = "${displayProperty.x }"/></li>
-							<li class="actions">
-								<button type="button"  onclick="save()">保存</button>
-								<button type="button" data-role="button" class="closeButton" style="margin-left: 20px;"
-									data-sprite-css-class="k-icon k-i-tick" onclick="uclose()">取消</button>
+								<input type="text" class="k-textbox"  style="margin-left: 52px;width: 90px;" name="longitude" id="longitude" value = "${displayProperty.x }"/>
+								<em class="ty-input-end"></em>
+							</li>
+							<li class="actions" >
+								<button type="button"  class="ty-button" onclick="save()">保存</button>
+								<button type="button" data-role="button" class="ty-button" style="margin-left: 20px;" onclick="uclose()">取消</button>
 							</li>
 						</ul>
 					</form>
@@ -128,7 +130,7 @@ span.k-tooltip {
 }
 
 .actions {
-	padding-left: 120px;
+	padding-left: 100px;
 	padding-top: 10px;
 }
 </style>
@@ -159,6 +161,7 @@ var color=[];
       $("#_creset").css("font-size","12px");
       $("#_creset").css("padding-right","20px");
       $("#colorpanel").css("left","533px");
+      $("#employeeForm button").css("width","50px");
 
   });
 /**
@@ -179,6 +182,11 @@ function fColorSuccess(obj,color){
 function save() {
 	var obj = window.parent.currentObj;
 	var displayProperty = obj.displayProperty;
+	if(!displayProperty) displayProperty = new Object();
+	if(!window.parent.polygonFinal){
+		window.parent.$("body").popjs({"title":"提示","content":"请先结束绘制操作！"});
+		return;
+	}
 	var points = window.parent.polygonFinal.components[0].components;
 	var mapProperty = [];
 	for(var i = 0; i < points.length; i++){
@@ -203,7 +211,7 @@ function save() {
  }
        
    /**
-   *	更新密码
+   *	更新圈层数据
    **/
 function updateCircle(obj){
    	$.ajax({
@@ -215,17 +223,11 @@ function updateCircle(obj){
 			random: Math.random()
 		},
 		 success:function(msg){
-			 alert("圈层保存"+msg.description);
-			 window.parent.loadOrganTreeList();
+			 window.parent.$("#"+obj.id).attr("src","<%=basePath%>supermap/theme/images/others/CaseMarkPressed.png");
+			 window.parent.$("body").popjs({"title":"提示","content":"圈层保存"+msg.description});
+			 //window.parent.loadCircleLayerTreeList();
+			 window.parent.saveCreatePolygon();
 			 uclose();
-			/* if(msg.code==200){
-				$("body").popjs({"title":"提示","content":,"callback":function(){
-					window.parent.$("#drawDialog").tyWindow.close();
-				}});
-				
-			}else{
-				$("body").popjs({"title":"提示","content":msg.description});
-			} */
 		}
 	});
 }
@@ -233,6 +235,8 @@ function updateCircle(obj){
    	* 关闭弹出窗口
    	**/
  function uclose(){
+	 window.parent.deactiveAll();
+	 window.parent.createCricleLayers(null, null);
 	window.parent.$("#drawDialog").tyWindow.close();
 }
         	

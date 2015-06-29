@@ -38,12 +38,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								class="k-textbox" name="cfmPwd" id="cfmPwd"
 								 /></li>
 							<li class="actions">
-								<button type="button" data-role="button"
-									data-sprite-css-class="k-icon k-i-tick" data-click='save'>提交</button>
-									
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								<button type="button" data-role="button" class="closeButton"
-									data-sprite-css-class="k-icon k-i-tick" data-click='uclose'>取消</button>
+								<button type="button" class="ty-tcc-btn-no" style="margin-right: 15px;" onclick="uclose()">取消</button>
+								<button type="button"  class="ty-tcc-btn-ok" onclick="save()">确定</button>
 							</li>
 						</ul>
 					</form>
@@ -92,8 +88,8 @@ span.k-tooltip {
 }
 
 .actions {
-	padding-left: 120px;
-	padding-top: 10px;
+	padding-left: 100px;
+	padding-top: 20px;
 }
 </style>
 

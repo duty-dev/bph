@@ -134,7 +134,7 @@
 			)
 				and
 			d.ymd=#{ymd,jdbcType=INTEGER} and d.is_template = 0
-		order by di.full_id_path
+		order by di.full_id_path,CONVERT(p.name USING gbk) asc,CONVERT(v.number USING gbk) asc
 	</select>
 
 </mapper>

@@ -24,16 +24,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						novalidate="novalidate">
 						<h4>机构信息</h4>
 						<ul>
-							<li><span class="ty-input-warn ml150">*</span><label for="aOrganName">机构名称:</label> <input type="text"
+							<li><span class="ty-input-warn ml100">*</span><label for="aOrganName">机构名称:</label> <input type="text"
 								class="k-textbox" name="addOrganName" id="addOrganName"
 								 />
-							<li><span class="ty-input-warn ml150">*</span><label for="aOrganCode">机构编码:</label> <input type="text"
+							<li><span class="ty-input-warn ml100">*</span><label for="aOrganCode">机构编码:</label> <input type="text"
 								class="k-textbox" name="addOrganCode" id="addOrganCode"
 								 /></li>
-							<li><span class="ty-input-warn ml150">*</span><label for="aShortName">机构简称:</label> <input type="text"
+							<li><span class="ty-input-warn ml100">*</span><label for="aShortName">机构简称:</label> <input type="text"
 								class="k-textbox" name="addShortName" id="addShortName"
 								 /></li>
-							<li><span class="ty-input-warn ml150">*</span><label for="aOrganType">机构类型:</label> <select
+							<li><span class="ty-input-warn ml100">*</span><label for="aOrganType">机构类型:</label> <select
 								 id="addOrganType" name="addOrganType" width=200px>
 									<option value="">---请选择类型---</option>
 									<option value="1">市局</option>
@@ -42,11 +42,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<option value="4">分局机关</option>
 									<option value="5">派出所</option>
 							</select></li>
-							<li><span class="ty-input-warn ml150"></span><label for="aParentName">上级机构:</label> <input
+							<li><span class="ty-input-warn ml100"></span><label for="aParentName">上级机构:</label> <input
 								type="hidden" id="addParentId" value="${organ.id}" /> <input
 								type="text" class="k-textbox" name="addParentName"
-								id="addParentName"  value="${organ.name}" disabled="disabled"/></li>
-							<li><span class="ty-input-warn ml150">*</span><label for="aOrganNote">机构备注:</label> <input type="text"
+								id="addParentName"  value="${organ.name}" readonly="readonly" style="color:#929496;" /></li>
+							<li><span class="ty-input-warn ml100">*</span><label for="aOrganNote">机构备注:</label> <input type="text"
 								class="k-textbox" name="addOrganNote" id="addOrganNote" /></li>
 							<li class="actions">
 								<button type="button" class="ty-button ty-button-te" onclick="save(this);" data-click='save'>提交</button>
@@ -90,15 +90,15 @@ span.k-tooltip {
 }
 
 .demo-section {
-	width: 590px;
-	height:380px;
+	width: 490px;
+	height:350px;
 }
 
 .actions {
-	padding-left: 256px;
+	padding-left: 206px;
 	padding-top: 10px;
 }
-.ml150{margin-left:150px;}
+.ml100{margin-left:100px;}
 </style>
 
 	<script>

@@ -17,7 +17,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <body>
 <div id="vertical">
 		<div id="top-pane">
-			<div id="horizontal" style="height:452px;">
+			<div id="horizontal" style="height:440px;">
 				<div id="left-pane">
 					<div class="pane-content">
 						<!-- 左开始 -->
@@ -38,8 +38,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<label for="loginName">帐号:</label> <input type="text" class="k-textbox" value="${user.loginName}" id="loginName" name="loginName" readonly style="width:46%;"/><em class="ty-input-end"></em>
 											<button type="button" class="k-button" style="margin-left:8px;" onclick="resetPassword();">重置密码</button>
 									</li>
-									<li class="ty-input"><span class="ty-input-warn">*</span><label for="userName">姓名:</label> <input type="text" class="k-textbox" value="${user.userName}" id="userName" name="userName" style="width:51%;" readonly/><em class="ty-input-end"></em>
+									<li class="ty-input"><span class="ty-input-warn">*</span><label for="userName">姓名:</label> <input type="text" class="k-textbox" value="${user.userName}" id="userName" name="userName" style="width:46%;" readonly/><em class="ty-input-end"></em>
 										<button type="button" class="k-button" style="margin-left:10px;" onclick="loadPolice();">选择</button>
+									</li>
+									<li class="ty-input">
+										<span class="ty-input-warn">*</span><label for="phone">电话:</label> <input type="text" class="k-textbox" value="${user.phone}" id="phone" name="phone" style="width:55%;"/><em class="ty-input-end"></em>
 									</li>
 									<!--  <li class="ty-input"><label for="userOtherOrgans">跨机构授权:</label> 
 										<input type="text" class="k-textbox" name="userOtherOrgans" value="${user.userOtherOrgans}" id="userOtherOrgans" style="width:36%;" readonly/><em class="ty-input-end"></em>
@@ -75,6 +78,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                             }
                         }
                     });
+                    $("#right-pane").mCustomScrollbar({scrollButtons:{enable:true},advanced:{ updateOnContentResize: true } });
                 });
 
                 function save(e) {
@@ -82,6 +86,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                		  $("body").popjs({"title":"提示","content":"姓名不能为空！"});
                		   return false;
                		   }
+                   var re = /^\d+$/;
+             	   var phone = $.trim($("#phone").val());
+             	   if(!re.test(phone)){
+             			   $("body").popjs({"title":"提示","content":"电话格式不对！"});
+                 		   return false;
+             		   }  
                 	var flag = false;
              	   $("#selectRoles input[type='checkbox']").each(function(i){
              		   if($(this).prop("checked")){
@@ -100,6 +110,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 	var userName = $.trim($("#userName").val());
                 	var policeId = $.trim($("#policeId").val());
                 	var rePoliceId = $.trim($("#rePoliceId").val()); 
+                	var phone = $.trim($("#phone").val());
                 		if(policeName != userName && policeId == rePoliceId){                   		               	    	
                 	    	$("#policeId").val(null);
                 	    }
@@ -125,6 +136,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             	  				rolesId:rolesId,
             	  				policeId:$("#policeId").val(),
             	  				sessionId:$("#token").val(),
+            	  				phone:phone,
             	  				userOtherOrgans:$("#userOtherOrgans").val()
             	  			},
             		  		 success:function(msg){
@@ -280,16 +292,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					$("#policeTitle").remove();
     				$("#policeBox").append("<h4 id='policeTitle'>警员绑定</h4><div id='policeview'>"
     						+"<c:forEach var='item' items='${policeList}'>"
-    						+"<input name='policeName' id='policeName' type='radio' value='${item.id}' onclick='selectPolice(\"${item.id}\",\"${item.name}\")'/>${item.name}</br>"
+    						+"<input name='policeName' id='policeName' type='radio' value='${item.id}' onclick='selectPolice(\"${item.id}\",\"${item.name}\",\"${item.mobile}\")'/>${item.name}</br>"
     						+"</c:forEach>"
     						+"</div>");
                 }
                 
-                function selectPolice(id,name){
+                function selectPolice(id,name,mobile){
                 	$("#userName").val(name);
                 	$("#policeName").val(name);
                 	$("#policeId").val(id);
                 	$("#rePoliceId").val(id);
+                	$("#phone").val(mobile);
                 }
 				
                 /**

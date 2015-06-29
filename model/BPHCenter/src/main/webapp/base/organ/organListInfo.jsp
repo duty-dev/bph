@@ -34,7 +34,7 @@
                	                        dataSource: {
                	                            data:odata
                	                        },
-               	                     height: 502,
+               	                     height: 472,
                                      sortable: true,
 									 resizable: true,
                                      selectable: "multiple",
@@ -68,7 +68,6 @@
                							var id = $(this).find("td").first().text();
                							editOrgan1(id);
                						});
-               						
                						var pg = pagination(pageNo,total,'loadData',10);
                	                	$("#page").html(pg);
                					}
@@ -87,11 +86,11 @@
                 function showAddOrgan(){
                 	var sessionId = $("#token").val();
                 	$("#dialog").tyWindow({
-                		width: "680px",
-                		height: "490px",
+                		width: "580px",
+                		height: "542px",
                 	    title: "机构新增",
                 	    position: {
-                	        top: "100px"
+                	        top: "50px"
                 	      },
                 		 content: "<%=basePath%>web/organx/gotoAddOrgan.do?organId="+$("#organId").val()+"&sessionId="+sessionId,
                 		iframe : true,
@@ -135,11 +134,11 @@
                 function editOrgan1(id){
                 	var sessionId = $("#token").val();
                 	$("#dialog").tyWindow({
-                		width: "670px",
-                		height: "522px",
+                		width: "580px",
+                		height: "542px",
                 	    title: "机构修改",
                 	    position: {
-                	        top: "100px"
+                	        top: "50px"
                 	      },
                 		 content: "<%=basePath%>web/organx/queryOrganDetail.do?organId="+id+"&sessionId="+sessionId,
                 		iframe : true,

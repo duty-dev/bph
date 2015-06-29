@@ -70,8 +70,6 @@
     <logger name="jdbc.connection"  level="WARN" /> 
     
     
-    <logger name="org.quartz"  level="WARN" /> 
-    
     <logger name="org.apache.mina"  level="WARN" /> 
     <logger name="org.apache.http"  level="WARN" /> 
    
@@ -85,8 +83,8 @@
     <logger name="org.apache.ibatis" level="WARN" />
     <logger name="org.mybatis.spring" level="WARN" />
     
-    <logger name="com.tiyi.videoplat.alarm.dao"  level="WARN" />
-    
+    <logger name="com.tiyi.videoplat.alarm.dao"  level="WARN" /> 
+    <logger name="org.quartz"  level="WARN" /> 
     <!-- 日志输出级别 -->
     <root level="DEBUG">   
         <appender-ref ref="STDOUT" />  

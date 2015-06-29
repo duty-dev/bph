@@ -46,7 +46,6 @@ public class FileUploadServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-
 		PreparedStatement ps = null;
 		int iconId = 0;
 		Integer icomTemp = 0;

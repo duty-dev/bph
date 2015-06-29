@@ -12,11 +12,9 @@
 		<button id="textButton" class="fr ty-btn-search" onclick="search()"></button>
 		<div class="temp">
 			<div class="ty-total-decorate"><span id="gridListTotal"></span><i></i></div>
-			<div class="ty-decorate2"></div>
 		</div>
 	</div>
 	<div class="fl set-hei48">
-		<div class="ty-decorate1"></div>
 		<button id="undo" class="ty-btn-add ty-btn-offset" onClick="showAddOrgan()"></button>
 	</div>
 	<div class="fr set-hei48">
@@ -44,29 +42,29 @@ $(document).ready(function() {
 			var txt = $("#tyScreenMode .ty-screen-mode-txt");
 			if(lump == 1){
 				icon.animate({"left":"6px"},300);
-				txt.css("background-position","-17px -731px");
+				txt.css("background-position","-106px -265px");
 				$("#tyScreenMode").mouseover(function(){
-					txt.css("background-position","-17px -731px");
+					txt.css("background-position","-106px -265px");
 				}).mouseout(function(){
-					txt.css("background-position","-147px -757px");
+					txt.css("background-position","12px -265px");
 				});
 				window.external.ChangeScreenModel("标准模式");
 			}else if(lump == 2){
-				icon.animate({"left":"43px"},300);
-				txt.css("background-position","-17px -767px");
+				icon.animate({"left":"35px"},300);
+				txt.css("background-position","-104px -306px");
 				$("#tyScreenMode").mouseover(function(){
-					txt.css("background-position","-17px -767px");
+					txt.css("background-position","-104px -306px");
 				}).mouseout(function(){
-					txt.css("background-position","-147px -793px");
+					txt.css("background-position","4px -306px");
 				});
 				window.external.ChangeScreenModel("模块全屏");
 			}else if(lump == 3){
-				icon.animate({"left":"78px"},300);
-				txt.css("background-position","-18px -803px");
+				icon.animate({"left":"64px"},300);
+				txt.css("background-position","-106px -347px");
 				$("#tyScreenMode").mouseover(function(){
-					txt.css("background-position","-18px -803px");
+					txt.css("background-position","-106px -347px");
 				}).mouseout(function(){
-					txt.css("background-position","-147px -828px");
+					txt.css("background-position","2px -347px");
 				});
 				window.external.ChangeScreenModel("内容全屏");
 			}

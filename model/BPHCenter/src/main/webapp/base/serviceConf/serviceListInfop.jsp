@@ -33,6 +33,7 @@
                	                        },
                	                     height: 550,
                                      sortable: true,
+                                     resizable: true,
                                      selectable: "multiple",
                	                        columns: [{
                	                        	field: "serviceId",
@@ -92,7 +93,7 @@
                 		height: "580px",
                 	    title: "服务新增",
                 	    position: {
-                	        top: "100px"
+                	        top: "40px"
                 	      },
                 		 content: "<%=basePath%>serviceSet/gotoAddService.do?sessionId="+sessionId,
                 		iframe : true,
@@ -137,7 +138,7 @@
                 		height: "580px",
                 	    title: "服务信息编辑",
                 	    position: {
-                	        top: "100px"
+                	        top: "40px"
                 	      },
                 		 content: "<%=basePath%>serviceSet/gotoServiceDetail.do?serviceId="+serviceId+"&sessionId="+sessionId,
                 		iframe : true,

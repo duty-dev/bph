@@ -105,7 +105,7 @@ h2{float:left; width:100px; height:20px; padding:0 0 0 15px; margin:10px 0; font
 .button-red:hover{background:#d23131;}
 
 /* =============功能模块============== */
-.set h1{ float:left; height:39px; padding:0 0 0 15px; margin:10px 5px 15px 0; width:auto; line-height:38px; letter-spacing:0.1em; font-size:31px; color:#97c6dc; font-weight:600;  background:url(../images/ico.png) no-repeat 0 15px;}
+.set h1{ float:left; height:39px; padding:0 0 0 15px; margin:0px 5px 10px 0; width:auto; line-height:38px; letter-spacing:0.1em; font-size:28px; color:#97c6dc; font-weight:normal;  background:url(../images/ico.png) no-repeat 0 15px;}
 
 /* =============表单样式============== */
 

@@ -62,7 +62,7 @@
                 	<input type="search" class="k-textbox" id="policeresName" name="policeresName" style="width:100px"  placeholder="等待输入..." /><em class="ty-input-end"></em>
                 	<span id="undo" class="k-button" style="margin-left:10px;" onclick="DutyBaseManage.searchPoliceResWithOutList();">查询</span>  
                 </div>
-        		<div id='policeSourceTV'  style="height:700px;overflow;auto"></div>
+        		<div id='policeSourceTV'  style="height:680px;background-color:#000;overflow;auto"></div>
         	</div>
         	<div>
 				<div class="vehicleresourcetoolbar">
@@ -70,7 +70,7 @@
                 	<input type="search" class="k-textbox" id="vehicleresName" name="vehicleresName" style="width:100px"  placeholder="等待输入..." /><em class="ty-input-end"></em>
                 	<span id="undo" class="k-button" style="margin-left:10px;" onclick="DutyBaseManage.searchVehicleResWithOutList();">查询</span> 
                 </div>
-        		<div id='vehicleSourceTV' style="height:700px;overflow;auto"></div>
+        		<div id='vehicleSourceTV' style="height:680px;background-color:#000;overflow;auto"></div>
         	</div>
 			<div>
 				<div class="weaponresourcetoolbar">
@@ -78,7 +78,7 @@
                 	<input type="search" class="k-textbox" id="weaponresName" name="weaponresName" style="width:100px"  placeholder="等待输入..." /><em class="ty-input-end"></em>
                 	<span id="undo" class="k-button" style="margin-left:10px;" onclick="DutyBaseManage.searchWeaponResWithOutList();">查询</span> 
                 </div>
-        		<div id='weaponSourceTV' style="height:700px;overflow;auto"></div>
+        		<div id='weaponSourceTV' style="height:680px;background-color:#000;overflow;auto"></div>
         	</div>
         	<div>
 				<div class="gpsresourcetoolbar">
@@ -86,12 +86,12 @@
                 	<input type="search" class="k-textbox" id="gpsresName" name="gpsresName" style="width:100px"  placeholder="等待输入..." /><em class="ty-input-end"></em>
                 	<span id="undo" class="k-button" style="margin-left:10px;" onclick="DutyBaseManage.searchGpsResWithOutList();">查询</span> 
                 </div>
-        		<div id='gpsSourceTV' style="height:700px;overflow;auto"></div>
+        		<div id='gpsSourceTV' style="height:680px;background-color:#000;overflow;auto"></div>
         	</div>
         </div>
      </div>
 </div> 	
-<div id="dutyItems"  style="width:60%; float:left;margin-left:10px;">
+<div id="dutyItems"  style="width:67%; float:left;margin-left:10px;">
 	<div> 
         <h4>报备明细</h4>
 		<div class="dutyItemtoolbar">
@@ -131,32 +131,32 @@
 <div id="policeResConWindow" style="display:none">
 	<div id="polResConWindow">
 		<div><span id="undo" class="k-button" onclick="DutyBaseManage.searchPoliceResWithList();">查询</span></div>
-		<div id="polGroupgrid" style="width:45%; float:left"></div>
-		<div id="polTypegrid" style="width:45%; float:left"></div>
+		<div id="polGroupgrid" style="width:45%; float:left;height:350px"></div>
+		<div id="polTypegrid" style="width:45%; float:left;height:350px"></div>
     </div> 
 </div>
 
 <div id="vehicleResConWindow" style="display:none">
 	<div id="vehResConWindow">
 		<div><span id="undo" class="k-button" onclick="DutyBaseManage.searchVehicleResWithList();">查询</span></div>
-		<div id="vehGroupgrid" style="width:45%; float:left"></div>
-		<div id="vehTypegrid" style="width:45%; float:left"></div>
+		<div id="vehGroupgrid" style="width:45%; float:left;height:350px"></div>
+		<div id="vehTypegrid" style="width:45%; float:left;height:350px"></div>
     </div> 
 </div>
 
 <div id="gpsResConditionWindow" style="display:none">
 	<div id="gpsResConWindow">
 		<div><span id="undo" class="k-button" onclick="DutyBaseManage.searchGpsResWithList();">查询</span></div>
-		<div id="gpsGroupgrid" style="width:45%; float:left"></div>
-		<div id="gpsTypegrid" style="width:45%; float:left"></div>
+		<div id="gpsGroupgrid" style="width:45%; float:left;height:350px"></div>
+		<div id="gpsTypegrid" style="width:45%; float:left;height:350px"></div>
     </div> 
 </div>
 
 <div id="weaponResConWindow" style="display:none">
 	<div id="wepResConWindow">
 		<div><span id="undo" class="k-button" onclick="DutyBaseManage.searchWeaponResWithList();">查询</span></div>
-		<div id="wepGroupgrid" style="width:45%; float:left"></div>
-		<div id="wepTypegrid" style="width:45%; float:left"></div>
+		<div id="wepGroupgrid" style="width:45%; float:left;height:350px"></div>
+		<div id="wepTypegrid" style="width:45%; float:left;height:350px"></div>
     </div> 
 </div>
 
@@ -172,7 +172,7 @@
 						<label class="ty-input-label" for="policename">开始时间:</label><input id="tpkBeginTime"  />
 					</li>
 					<li class="ty-input">
-						<label class="ty-input-label" for="policename">结束时间:</label><input id="tpkEndTime"  /><input type="checkbox" id="chkDayType"></input>第二天</label></td>
+						<label class="ty-input-label" for="policename">结束时间:</label><input id="tpkEndTime"  /><input style="margin-left:10px" type="checkbox" id="chkDayType"></input>第二天</label></td>
 					</li>
 				</ul>
 				<p style="float:left;width:100%;margin-top:10px;">

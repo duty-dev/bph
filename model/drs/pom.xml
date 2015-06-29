@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>drs</artifactId>
+	<packaging>war</packaging>
+	<parent>
+		<groupId>com.tiyi.BPH</groupId>
+		<artifactId>BPH</artifactId>
+		<version>1.0</version>
+		<relativePath>../../pom.xml</relativePath>
+	</parent>
+
+	<description>公安扁平化系统::中心服务模块</description>
+
+	<organization>
+		<name>四川天翼网络</name>
+	</organization>
+
+
+	<dependencies>
+
+		<!-- JSTL引用包 <dependency> <groupId>org.glassfish.web</groupId> <artifactId>javax.servlet.jsp.jstl</artifactId> 
+			<version>1.2.2</version> </dependency> <dependency> <groupId>javax.servlet.jsp</groupId> 
+			<artifactId>jsp-api</artifactId> <version>2.2</version> <scope>provided</scope> 
+			</dependency> -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>com.tiyi.BPH</groupId>
+			<artifactId>BPHCommon</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.tiyi.BPH</groupId>
+			<artifactId>BPHAlarmService</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<!-- SPring MVC -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+			<version>${spring-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.9</version>
+		</dependency>
+
+		<!-- 用于WebService <dependency> <groupId>org.apache.cxf</groupId> <artifactId>cxf-core</artifactId> 
+			<version>3.0.4</version> </dependency> <dependency> <groupId>org.apache.cxf</groupId> 
+			<artifactId>cxf-rt-databinding-aegis</artifactId> <version>2.7.10</version> 
+			</dependency> -->
+		<!-- cxf end -->
+
+		<!-- xfire begin <dependency> <groupId>xfire</groupId> <artifactId>xfire-jsr181-api</artifactId> 
+			<version>1.0-M1</version> </dependency> <dependency> <groupId>org.codehaus.xfire</groupId> 
+			<artifactId>xfire-all</artifactId> <version>1.2.6</version> </dependency> 
+			<dependency> <groupId>com.thoughtworks.xstream</groupId> <artifactId>xstream</artifactId> 
+			<version>1.4.7</version> </dependency> -->
+		<!-- xfire end -->
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.4</version>
+			</plugin>
+		</plugins>
+
+	</build>
+
+</project>

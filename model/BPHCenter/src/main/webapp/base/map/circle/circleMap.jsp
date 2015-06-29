@@ -27,16 +27,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
        <div class="container-fluid">
          <div id="content-wrapper" class="row-fluid">
            <div class='span12'>
-           
-             <div class="row-fluid"><!----功能模块---->
-               <div class="set">
-                 <h1>圈层信息</h1>
-                 <div class="clear box">
-                
-                 </div>
-               </div>
-             </div><!----功能模块结束---->
-           
              <div class="row-fluid"><!----信息显示区---->
           <%--      <%@ include file="mapInfoOfClound.jsp"%>  --%>
           <%@include file="circleInfo.jsp" %>

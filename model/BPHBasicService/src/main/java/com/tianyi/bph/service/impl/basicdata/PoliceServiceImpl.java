@@ -484,6 +484,14 @@ public class PoliceServiceImpl implements PoliceService {
 
 					}
 				}
+			}else if(rs.getData().getGpsId() != null){
+				List<Integer> gpsid = new ArrayList<Integer>();
+				gpsid.add(rs.getData().getGpsId());
+				if (pei.getGpsItems() == null) {
+					pei.setGpsItems(gpsid);
+				} else {
+					pei.getGpsItems().add(rs.getData().getGpsId());
+				}
 			}
 			if (rs.getWeaponItems() != null) {
 				if (rs.getWeaponItems().size() > 0) {
