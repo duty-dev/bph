@@ -340,7 +340,7 @@ public class ExportExcelController {
 					Cell cell_0 = row0.createCell(0, Cell.CELL_TYPE_STRING);
 					cell_0.setCellValue(title);
 					int clomnSize = caseTypeName.size();
-					sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, clomnSize+2)); 
+					sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, clomnSize+1)); 
 					//创建表头
 					Row row1 = sheet.createRow(1);
 					Cell cell1 = row1.createCell(0, Cell.CELL_TYPE_STRING);
@@ -358,11 +358,13 @@ public class ExportExcelController {
 					
 					//从格式化的数据中获取想要的数据
 					String[][] rowData = GetRowsData(results,clomnSize+2);
-					//数据对称处理
-					for(int i =0;i<rowData.length-1;i++){
-						String temp = rowData[i][0];
-						rowData[i][0] = rowData[i][rowData[i].length-1];
-						rowData[i][rowData[i].length-1] = temp;
+					//将除最后一行的行的最后一个元素放到该行的最前面
+					for(int i = 0;i<rowData.length-1;i++){
+						String temp = rowData[i][rowData[i].length-1];
+						for(int j = rowData[i].length-2;j>=0;j--){
+							rowData[i][j+1] =rowData[i][j];
+						}
+						rowData[i][0] = temp;
 					}
 					//添加行数据
 					for (int rowNum = 2; rowNum <= rowData.length+1; rowNum++) {
@@ -402,14 +404,14 @@ public class ExportExcelController {
 			rows =new String[results.length][countOfColumns];
 			for(int i= 0;i< results.length;i++){
 				//一行字符串处理
-				rows[i] = GetRowData(results[i],countOfColumns);
+				rows[i] = GetRowData(results[i]);
 			}
 		}
 		return rows;
 	}
 
 
-	private String[] GetRowData(String result, Integer countOfColumns) {
+	private String[] GetRowData(String result) {
 		String[] row = result.split("\\,");
 		String[] score = new String[row.length];
 		for(int i = 0;i<row.length;i++){
@@ -428,7 +430,6 @@ public class ExportExcelController {
 	 */
 	private String createOrganExcel(
 			String[] results, String serverPath,Integer organId,List<String> caseTypes) {
-		// TODO Auto-generated method stub
 		String filePath = "";
 		String orgName = getOrganName(organId);
 		List<String> caseTypeName = getCaseTypeName(caseTypes); 
@@ -445,7 +446,7 @@ public class ExportExcelController {
 					Cell cell_0 = row0.createCell(0, Cell.CELL_TYPE_STRING);
 					cell_0.setCellValue(title);
 					int clomnSize = caseTypeName.size();
-					sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, clomnSize+2)); 
+					sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, clomnSize+1)); 
 					//创建表头
 					Row row1 = sheet.createRow(1);
 					Cell cell1 = row1.createCell(0, Cell.CELL_TYPE_STRING);
@@ -463,7 +464,6 @@ public class ExportExcelController {
 					
 					//从格式化的数据中获取想要的数据
 					String[][] rowData = GetRowsData(results,clomnSize+2);
-
 					//添加行数据
 					for (int rowNum = 2; rowNum <= rowData.length+1; rowNum++) {
 						Row row = sheet.createRow(rowNum); 
@@ -478,8 +478,8 @@ public class ExportExcelController {
 				java.util.Date date = new java.util.Date();
 				String str = sdf.format(date);
 				filePath = "excelModel/tempfile/" + str + "_OrganData.xls";
-				//String realPath ="C:\\Users\\hzf\\Workspaces\\"+ str + "_OrganData.xls";// serverPath + filePath;
-				String realPath = serverPath + filePath;
+				String realPath ="C:\\Users\\hzf\\Workspaces\\"+ str + "_OrganData.xls";// serverPath + filePath;
+				//String realPath = serverPath + filePath;
 				try {
 					FileOutputStream outputStream = new FileOutputStream(
 							realPath);

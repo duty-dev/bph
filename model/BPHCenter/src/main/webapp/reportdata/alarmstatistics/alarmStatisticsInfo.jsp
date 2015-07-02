@@ -15,9 +15,7 @@
 			//从data获取响应值赋予serie对象内的数组
 			if (data!=undefined&&data.data !=undefined) {
 				$.each(data.data, function(index, item) {
-			
-				var alarmNum = $.inArray(item.typeName,xlabel);
-				//var alarmNum = xlabel.indexOf(item.typeName);
+				var alarmNum = $.inArray(item.typeCode,m_Query_pkg.caseType);
 				serie.data[alarmNum] = item.amount;
 				});
 			}
@@ -113,7 +111,7 @@
 					}
 				});
 			});
-			$.each(alarmTypeName, function(index, item) {
+			$.each(m_Query_pkg.caseType, function(index, item) {
 				var t = {};
 				t.name = item;
 				t.data = [];
@@ -153,10 +151,14 @@
 						//可以不处理
 					}
 				}
-				var t = types[item.typeName];
+				var t = types[item.typeCode];
 				//var orgIndex = XLabel.indexOf(item.orgName);
 				var orgIndex = $.inArray(orgName,xlabel); 
-				t.data[orgIndex] += item.amount;
+				if(item.amount ==undefined){
+					t.data[orgIndex] += 0;	
+				}else{
+					t.data[orgIndex] += item.amount;
+				}
 			});
 
 			$.each(types, function(index, item) {
@@ -176,14 +178,20 @@
  	var gridManage = {
  		GetAlarmTypeObjectsOfAlarmType:function(data){
  			var alarmTypeObjects = {};
+ 			if (data ==undefined) {
+ 				return alarmTypeObjects;
+ 			}
 			$.each(data, function(index, item) {
+				if (item==undefined||item.data ==undefined||item.data.length ==0) {
+					return true;
+				}
 				$.each(item.data, function(index1, item1) {
 					var alarmObject = {};
 					alarmObject.typeName = item1.typeName;
 					alarmObject.typeCode = item1.typeCode;
 					alarmObject.typeLevel = item1.typeLevel;
 					alarmObject.typeParentCode = item1.typeParentCode;
-					alarmTypeObjects[item1.typeName] = alarmObject;
+					alarmTypeObjects[item1.typeCode] = alarmObject;
 				});
 			});
 			return alarmTypeObjects;
@@ -192,13 +200,13 @@
  			var alarmTypeObjects = {};
 
 			$.each(data, function(index, item) {
-				if (item.typeName != undefined) {
+				if (item.typeName != undefined&&$.inArray(item.typeCode,m_Query_pkg.caseType)>=0) {
 					var alarmTypeObject = {};
 					alarmTypeObject.typeName = item.typeName;
 					alarmTypeObject.typeCode = item.typeCode;
 					alarmTypeObject.typeLevel = item.typeLevel;
 					alarmTypeObject.typeParentCode = item.typeParentCode;
-					alarmTypeObjects[item.typeName] = alarmTypeObject;
+					alarmTypeObjects[item.typeCode] = alarmTypeObject;
 				}
 			});
 			return alarmTypeObjects;
@@ -213,29 +221,13 @@
  			};
  			columnsArray.push(firstColumn);
 
-			//获取警情类型的数量
-			var count = 0;
-			$.each(alarmTypeObjects, function(index, item) {
-				count++;
-			});
-
 			var numOfNotype  = 0;//对那些没有数据，无法获得其typeCode和parentCode的警情类型
-			$.each(xlabel,function(index,item){
+			$.each(m_Query_pkg.caseType,function(index,item){
 				//子列
-				var column = {};
-				//判断当前警情是否存在警情类型信息				
-				if (alarmTypeObjects[item] == undefined) {
-						column = {
-								field : "none" + numOfNotype,
-								title : item
-								};
-						numOfNotype++;
-				}else{
-					column = {
-						field:alarmTypeObjects[item].typeCode,
-						title:item
-					};
-				}
+				var column = {
+					field:item,
+					title:xlabel[index]
+				};
 				//将子列添加到columnsArray
 				columnsArray.push(column);
 			});
@@ -258,29 +250,12 @@
  			};
  			columnsArray.push(firstColumn);
 
-			//获取警情类型的数量
-			var count = 0;
-			$.each(alarmTypeObjects, function(index, item) {
-				count++;
-			});
-
-			var numOfNotype  = 0;//对那些没有数据，无法获得其typeCode和parentCode的警情类型
-			$.each(alarmTypeName,function(index,item){
+			$.each(m_Query_pkg.caseType,function(index,item){
 				//子列
-				var column = {};
-				//判断当前警情是否存在警情类型信息				
-				if (alarmTypeObjects[item] == undefined) {
-						column = {
-								field : "none" + numOfNotype,
-								title : item
-								};
-						numOfNotype++;
-				}else{
-					column = {
-						field:alarmTypeObjects[item].typeCode,
-						title:item
+				var column = {
+						field : item,
+						title : alarmTypeName[index]
 					};
-				}
 				//将子列添加到columnsArray
 				columnsArray.push(column);
 			});
@@ -357,14 +332,10 @@
 					total+=gridManage.GetTotal(indexOfRow,itemOfRow,alarmTypeObjects);
 				});
 
-
 				row['total'] = total;
 
 				//小计一行中的合计计算
-				if(index ==0)
-					totalRow['total'] =total;
-				else
-					totalRow['total'] +=total;
+				totalRow['total'] +=total;
 
 				row['tjTime'] = FunctionManage.GetStandardYM(item.beginYmd)
 					+ "-" + FunctionManage.GetStandardYM(item.endYmd);
@@ -396,15 +367,16 @@
 					if(itemOfColumns.field !="alarmType"){
 						row[itemOfColumns.field] = 0;
 					}
-				});	
+				});
 				dataSourceObj[item] = row;
 			});
 			//根据data获取相应数据
 			var orgPaths= {};
 			$.each(xlabel,function(index,item){
 				$.each(data,function(index1,item1){
-					if (item == item1.orgName) {
+					if (item == item1.orgName&&item1.orgPath!=undefined) {
 						orgPaths[item] = item1.orgPath;
+						return false;
 					}
 				});
 			});
@@ -413,11 +385,14 @@
 				if(itemOfData.typeCode ==undefined){
 					return true;
 				}
+				if(itemOfData.amount ==undefined||itemOfData.amount ==0){
+					return true;
+				}
 				if(dataSourceObj[itemOfData.orgName]==undefined){
 					//获取它的最终父级机构orgName
-					var parentOrgNmae = FunctionManage.FindParentOrgName(itemOfData.orgPath,orgPaths);
-					if (parentOrgNmae!="none") {
-						dataSourceObj[parentOrgNmae][itemOfData.typeCode] += itemOfData.amount;	
+					var parentOrgName = FunctionManage.FindParentOrgName(itemOfData.orgPath,orgPaths);
+					if (parentOrgName!="none") {
+						dataSourceObj[parentOrgName][itemOfData.typeCode] += itemOfData.amount;	
 						//小计对应列统计
 						totalRow[itemOfData.typeCode]+=itemOfData.amount;	
 					}
@@ -425,13 +400,9 @@
 					return true;
 				}
 				dataSourceObj[itemOfData.orgName][itemOfData.typeCode] += itemOfData.amount;
-				//合计
-				//dataSourceObj[itemOfData.orgName]["total"] +=itemOfData.amount;
 
 				//小计对应列统计
 				totalRow[itemOfData.typeCode]+=itemOfData.amount;
-				//小计合计统计
-				//totalRow["total"]+=itemOfData.amount;
 			});
 
 			//合计统计
@@ -444,7 +415,7 @@
 					//区分大小类
 					total+=gridManage.GetTotal(index3,rowItem,alarmTypeObjects);
 				});
-				dataRow["total"] = total;
+				dataRow["total"] += total;
 				totalRow["total"] +=total;
 			});
 			//将小计添加到dataSourceObj
@@ -459,6 +430,7 @@
  		}
  	};
 	var ReportManage = {
+		//警情分类
 		initAlarmTypeData :  function(data, title, XLabel) {
 			//动态缩放chart横坐标的长度
 			chartManage.SetChartWidth(XLabel.length);
@@ -548,6 +520,7 @@
 			$("#grid th[data-role='droptarget']").attr("style",
 					"text-align:center");
 		},
+		//周期
 		initAlarmCircleData : function(data, title, XLabel) {
 			//动态缩放chart横坐标的长度
 			//chartManage.SetChartWidth(XLabel.length);
@@ -656,6 +629,7 @@
 			}); 
 			$("#grid th.k-header").hide();
 		},
+		//时间段
 		initAlarmTimeSpanData : function(data, title) {
 			var names = [];
 			names[0] = FunctionManage.GetSerieName(data[0]);
@@ -777,6 +751,7 @@
 			$("#grid th[data-role='droptarget']").attr("style",
 					"text-align:center");
 		},
+		//机构
 		initAlarmOrganData : function(data, title, XLabel, alarmTypeName) {
 			//动态缩放chart横坐标的长度
 			chartManage.SetChartWidth(XLabel.length);
