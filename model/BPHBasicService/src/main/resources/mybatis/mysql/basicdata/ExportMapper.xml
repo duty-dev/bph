@@ -25,7 +25,7 @@
     <result column="vehicle_intercom_person" property="vehicleIntercomPerson" jdbcType="VARCHAR" />
     <result column="vehicle_number" property="vehicleNumber" jdbcType="VARCHAR" />
     <result column="vehicle_org_id" property="vehicleOrgId" jdbcType="INTEGER" />
-    <result column="vehicle_purpose" property="vehiclePurpose" jdbcType="VARCHAR" />
+    <result column="vehicle_purpose" property="purposeId" jdbcType="INTEGER" />
     <result column="vehicle_site_qty" property="vehicleSiteQty" jdbcType="VARCHAR" />
     <result column="vehicle_type_id" property="vehicleTypeId" jdbcType="INTEGER" />
     
@@ -40,7 +40,7 @@
     <result column="police_name" property="policeName" jdbcType="VARCHAR" />
     <result column="police_number" property="policeNumber" jdbcType="VARCHAR" />
     <result column="police_org_id" property="policeOrgId" jdbcType="INTEGER" />
-    <result column="police_title" property="policeTitle" jdbcType="VARCHAR" />
+    <result column="police_title" property="titleId" jdbcType="INTEGER" />
     <result column="police_type_id" property="policeTypeId" jdbcType="INTEGER" />
     <result column="police_jjcount" property="jjcount" jdbcType="VARCHAR" />
     
@@ -82,7 +82,7 @@
 			v.intercom_person		as	vehicle_intercom_person,
 			v.number				as	vehicle_number,
 			v.org_id				as 	vehicle_org_id,
-			v.purpose				as 	vehicle_purpose,
+			v.purpose_id			as 	vehicle_purpose,
 			v.site_qty				as 	vehicle_site_qty,
 			v.vehicle_type_id		as  vehicle_type_id,
 			p.id					as	police_id,
@@ -96,7 +96,7 @@
 			p.name					as	police_name,
 			p.number				as	police_number,
 			p.org_id				as	police_org_id,
-			p.title					as	police_title,
+			p.title_id					as	police_title,
 			p.type_id				as	police_type_id,
 			(
 			select count(*) from b_pj_police  pj 

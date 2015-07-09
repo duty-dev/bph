@@ -20,12 +20,14 @@ import com.tianyi.bph.domain.basicdata.Gps;
 import com.tianyi.bph.domain.basicdata.IntercomGroup;
 import com.tianyi.bph.domain.basicdata.Police;
 import com.tianyi.bph.domain.basicdata.Vehicle;
+import com.tianyi.bph.domain.basicdata.VehiclePurpose;
 import com.tianyi.bph.domain.basicdata.VehicleType;
 import com.tianyi.bph.domain.system.Organ;
 import com.tianyi.bph.query.basicdata.ExtDbResult;
 import com.tianyi.bph.query.basicdata.ExtShiftInfo;
 import com.tianyi.bph.query.basicdata.GpsBaseVM;
 import com.tianyi.bph.query.basicdata.GpsInfo;
+import com.tianyi.bph.query.basicdata.GroupMemberVM;
 import com.tianyi.bph.query.basicdata.ItemInfo;
 import com.tianyi.bph.query.basicdata.PoliceEInfo;
 import com.tianyi.bph.query.basicdata.VehicleExtItem;
@@ -92,20 +94,6 @@ public class VehicleServiceImpl implements VehicleService {
 	 *      Object> query)
 	 */
 	public List<VehicleVM> loadVMList(Map<String, Object> query) {
-		// Map<String, Object> map = new HashMap<String, Object>();
-		// if(!(query.getNumber() == null || query.getNumber().length() ==0) )
-		// map.put("number", query.getNumber());
-		//
-		// if(!(query.getOrgPath() == null || query.getOrgPath().length() ==0) )
-		// map.put("orgPath", query.getOrgPath());
-		//
-		// if(inSubOrg)
-		// {
-		// map.put("inSubOrg", true);
-		// }
-		//
-		// map.put("pageStart", page.getStartIndex());
-		// map.put("pageSize", page.getPageSize());
 
 		List<VehicleVM> list = vehicleMapper.loadVMList(query);
 
@@ -173,6 +161,16 @@ public class VehicleServiceImpl implements VehicleService {
 	public List<VehicleType> selectVehicleType() {
 		// TODO Auto-generated method stub
 		return vehicleMapper.selectVehicleType();
+	}
+	
+	/**
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tianyi.drs.basedata.service.VehicleService#selectVehiclePurpose()
+	 */
+	public List<VehiclePurpose> selectVehiclePurpose() {
+		// TODO Auto-generated method stub
+		return vehicleMapper.selectVehiclePurpose();
 	}
 
 	/**
@@ -440,7 +438,7 @@ String dutyTypeName = "";
 		v.setOrgId(result.getVehicleOrgId());
 		v.setSiteQty(result.getVehicleSiteQty());
 		v.setVehicleTypeId(result.getVehicleTypeId());
-
+		v.setPurposeId(result.getPurposeId());
 		return v;
 
 	}
@@ -458,7 +456,7 @@ String dutyTypeName = "";
 		p.setName(result.getPoliceName());
 		p.setNumber(result.getPoliceNumber());
 		p.setOrgId(result.getOrgId());
-
+		p.setTitleId(result.getTitleId());
 		return p;
 	}
 
@@ -500,5 +498,25 @@ String dutyTypeName = "";
 	public List<VehicleVM> loadVMListWithGroupList(Map<String, Object> map) {
 		// TODO Auto-generated method stub
 		return vehicleMapper.loadVMListWithGroupList(map);
+	}
+
+
+	@Override
+	public Integer addMemberToGroup(int vehicleId, Integer groupId) {
+		// TODO Auto-generated method stub
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("vehicleId", vehicleId);
+		map.put("groupId", groupId);
+		return vehicleMapper.addMemberToGroup(map);		
+	}
+
+	@Override
+	public List<GroupMemberVM> findByGroupIDAndVehicleID(int vehicleId,
+			Integer groupId) {
+		// TODO Auto-generated method stub
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("vehicleId", vehicleId);
+		map.put("groupId", groupId);
+		return vehicleMapper.findByGroupIDAndVehicleID(map);		
 	}
 }

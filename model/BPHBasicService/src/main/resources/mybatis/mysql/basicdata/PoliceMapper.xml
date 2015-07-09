@@ -8,7 +8,7 @@
 		<result column="org_id" property="orgId" jdbcType="INTEGER" />
 		<result column="idcardNo" property="idcardno" jdbcType="VARCHAR" />
 		<result column="number" property="number" jdbcType="VARCHAR" />
-		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="title_id" property="titleId" jdbcType="INTEGER" />
 		<result column="mobile" property="mobile" jdbcType="VARCHAR" />
 		<result column="mobile_short" property="mobileShort" jdbcType="VARCHAR" />
 		<result column="intercom_group" property="intercomGroup"
@@ -31,7 +31,7 @@
 		<result column="orgName" property="orgName" jdbcType="VARCHAR" />
 		<result column="idcardno" property="idcardno" jdbcType="VARCHAR" />
 		<result column="number" property="number" jdbcType="VARCHAR" />
-		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="title_id" property="titleId" jdbcType="INTEGER" />
 		<result column="mobile" property="mobile" jdbcType="VARCHAR" />
 		<result column="mobile_short" property="mobileShort" jdbcType="VARCHAR" />
 		<result column="intercom_group" property="intercomGroup"
@@ -49,13 +49,13 @@
 		<result column="display_name" jdbcType="VARCHAR" property="displayName" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		id, type_id, name, org_id, idcardNo, number, title, mobile, mobile_short,
+		id, type_id, name, org_id, idcardNo, number, title_id, mobile, mobile_short,
 		intercom_group,
 		intercom_person, gps_id, gps_name, sync_state, platform_id, isUsed
 	</sql>
 	<sql id="Base_Model_Column_List">
-		p.id,p.isUsed as isused, p.type_id as typeId,pt.name as typeName, p.name, p.org_id
-		as orgId,org.short_name as orgName,p.idcardno, p.number, p.title,
+		p.id,p.isUsed as isused, p.type_id as typeId,pt.name as typeName, ptl.name as titleName,p.name, p.org_id
+		as orgId,org.short_name as orgName,p.idcardno, p.number, p.title_id as titleId,
 		p.mobile, p.mobile_short as mobileShort,
 		p.intercom_group as intercomGroup, p.intercom_person, p.gps_id as gpsId, p.gps_name as
 		gpsName,org.code as orgCode,org.path as orgPath,tg.icon_url as
@@ -72,20 +72,23 @@
 		delete from t_police
 		where id = #{id,jdbcType=INTEGER}
 	</delete>
+	<insert id="addMemberToGroup" parameterType="java.util.Map">
+		insert into t_duty_police_group_member (group_id,police_id) values (#{groupId,jdbcType=INTEGER}, #{policeId,jdbcType=INTEGER})
+	</insert>
 	<insert id="insert" parameterType="com.tianyi.bph.domain.basicdata.Police">
 		<selectKey resultType="INTEGER" keyProperty="id">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 		insert into t_police (id, type_id, name,
 		org_id, idcardNo, number,
-		title, mobile, mobile_short,
+		title_id, mobile, mobile_short,
 		intercom_group, intercom_person, gps_id,
 		gps_name, sync_state, platform_id,
 		isUsed)
 		values (#{id,jdbcType=INTEGER}, #{typeId,jdbcType=INTEGER},
 		#{name,jdbcType=VARCHAR},
 		#{orgId,jdbcType=INTEGER}, #{idcardno,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR},
-		#{title,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR},
+		#{titleId,jdbcType=INTEGER}, #{mobile,jdbcType=VARCHAR},
 		#{mobileShort,jdbcType=VARCHAR},
 		#{intercomGroup,jdbcType=VARCHAR}, #{intercomPerson,jdbcType=VARCHAR}, #{gpsId,jdbcType=INTEGER},
 		#{gpsName,jdbcType=VARCHAR}, #{syncState,jdbcType=BIT},
@@ -113,8 +116,8 @@
 			<if test="number != null">
 				number,
 			</if>
-			<if test="title != null">
-				title,
+			<if test="title_id != null">
+				title_id,
 			</if>
 			<if test="mobile != null">
 				mobile,
@@ -163,8 +166,8 @@
 			<if test="number != null">
 				#{number,jdbcType=VARCHAR},
 			</if>
-			<if test="title != null">
-				#{title,jdbcType=VARCHAR},
+			<if test="title_id != null">
+				#{titleId,jdbcType=INTEGER},
 			</if>
 			<if test="mobile != null">
 				#{mobile,jdbcType=VARCHAR},
@@ -213,8 +216,8 @@
 			<if test="number != null">
 				number = #{number,jdbcType=VARCHAR},
 			</if>
-			<if test="title != null">
-				title = #{title,jdbcType=VARCHAR},
+			<if test="title_id != null">
+				title_id = #{titleId,jdbcType=INTEGER},
 			</if>
 			<if test="mobile != null">
 				mobile = #{mobile,jdbcType=VARCHAR},
@@ -253,7 +256,7 @@
 		org_id = #{orgId,jdbcType=INTEGER},
 		idcardNo = #{idcardno,jdbcType=VARCHAR},
 		number = #{number,jdbcType=VARCHAR},
-		title = #{title,jdbcType=VARCHAR},
+		title_id = #{titleId,jdbcType=INTEGER},
 		mobile = #{mobile,jdbcType=VARCHAR},
 		mobile_short = #{mobileShort,jdbcType=VARCHAR},
 		intercom_group = #{intercomGroup,jdbcType=VARCHAR},
@@ -381,10 +384,23 @@
 	<select id="selectPoliceType" resultType="com.tianyi.bph.domain.basicdata.PoliceType">
 		select * from t_policetype order by id asc
 	</select>
+	
+	<select id="selectPoliceTitle" resultType="com.tianyi.bph.domain.basicdata.PoliceTitle">
+		select * from t_policetitle order by id asc
+	</select>
 
 
 	<select id="selectIntercomGroup" resultType="com.tianyi.bph.domain.basicdata.IntercomGroup">
 		select * from t_intercom_group order by id asc
+	</select>
+	
+	<select id="findByGroupIDAndPoliceID" parameterType="java.util.Map" resultType="com.tianyi.bph.query.basicdata.GroupMemberVM">
+		select 
+		pgm.id as id,
+		pgm.group_id as groupId,
+		pgm.police_id as objId
+		from t_duty_police_group_member pgm 
+		where pgm.group_id = #{groupId,jdbcType=INTEGER} and pgm.police_id = #{policeId,jdbcType=INTEGER}
 	</select>
 
 	<select id="selectGpsId" parameterType="Integer"
@@ -422,6 +438,7 @@
 		<include refid="Base_Model_Column_List" />
 		from t_police p
 		left join t_policetype pt on pt.id = p.type_id
+		left join t_policetype ptl on ptl.id = p.title_id
 		left join t_organ org on org.organ_id = p.org_id
 		left join t_gps tg on p.gps_id = tg.id
 		left join t_intercom_group ig on p.intercom_group = ig.id
@@ -455,7 +472,7 @@
 		p.org_id as orgId,
 		p.idcardNo as idcardno,
 		p.number as number,
-		p.title as title,
+		p.title_id as titleId,
 		p.mobile as mobile,
 		p.mobile_short as mobileShort,
 		p.intercom_group as intercomGroup,
@@ -489,6 +506,7 @@
 		<include refid="Base_Model_Column_List" />
 		from t_police p
 		left join t_policetype pt on pt.id = p.type_id
+		left join t_policetitle ptl on ptl.id = p.title_id
 		left join t_organ org on org.organ_id = p.org_id
 		left join t_gps tg on p.gps_id = tg.id 
 		left join t_intercom_group ig on p.intercom_group = ig.id
@@ -600,7 +618,7 @@
 		p.name, p.org_id as orgId,(select orn.short_name from t_organ as orn where
 		orn.organ_id = ( select org_id from t_police as tp where tp.id = p.id)) as
 		orgName,p.idcardno, p.number,
-		p.title, p.mobile, p.mobile_short as mobileShort, p.intercom_group as
+		p.title_id, p.mobile, p.mobile_short as mobileShort, p.intercom_group as
 		intercomGroup,
 		p.intercom_person, p.gps_id as gpsId, p.gps_name as gpsName,org.code as orgCode,
 		org.path as orgPath,tg.icon_url as iconUrl,CONCAT(pt.name,":",p.name) as

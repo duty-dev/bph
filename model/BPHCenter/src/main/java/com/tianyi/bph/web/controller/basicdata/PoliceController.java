@@ -25,10 +25,12 @@ import com.tianyi.bph.common.PageReturn;
 import com.tianyi.bph.common.ReturnResult;
 import com.tianyi.bph.domain.basicdata.IntercomGroup;
 import com.tianyi.bph.domain.basicdata.Police;
+import com.tianyi.bph.domain.basicdata.PoliceTitle;
 import com.tianyi.bph.domain.basicdata.PoliceType;
 import com.tianyi.bph.domain.system.Organ;
 import com.tianyi.bph.domain.system.User;
 import com.tianyi.bph.query.basicdata.GpsBaseVM;
+import com.tianyi.bph.query.basicdata.GroupMemberVM;
 import com.tianyi.bph.query.basicdata.PoliceExtItem;
 import com.tianyi.bph.query.basicdata.PoliceVM;
 import com.tianyi.bph.query.system.UserQuery;
@@ -236,6 +238,21 @@ public class PoliceController {
 			return "";
 		}
 	}
+	
+	/*
+	 * 获取警员职务列表，以下拉列表形式呈现；
+	 */
+	@RequestMapping(value = "getPoliceTitle.do", produces = "application/json;charset=UTF-8")
+	public @ResponseBody
+	String getPoliceTitle() throws Exception {
+		try {
+			List<PoliceTitle> list = policeService.selectPoliceTitle();
+			JSONArray result = JSONArray.fromObject(list);
+			return result.toString();
+		} catch (Exception ex) {
+			return "";
+		}
+	}
 
 	/*
 	 * 获取警员分组列表，以数据列表的形式展现
@@ -277,26 +294,40 @@ public class PoliceController {
 	 */
 	@RequestMapping(value = "savePolice.do")
 	@ResponseBody
-	public ReturnResult savePolice(Police police) throws Exception {
+	public ReturnResult savePolice(Police police,
+			@RequestParam(value = "groupId", required = false) Integer groupId
+			) throws Exception {
 		try {
 			police.setPlatformId(1);
 			police.setSyncState(true);
+			int policeId = 0;
 			if (police.getId() > 0) {
+				//Edit
 				int pid = police.getId();
 				Police pol = new Police();
 				pol = policeService.selectByPrimaryKey(pid);
 				if (pol != null) {
 					police.setIsused(pol.getIsused());
 				} else {
-					police.setIsused(true);
+				police.setIsused(true);
 				}
 				police.setId(pid);
 				policeService.updateByPrimaryKey(police);
+				policeId = pid;
 			} else {
+				//Add
 				police.setIsused(true);
 				policeService.insert(police);
-
+				policeId = police.getId();
 			}
+			//保存分组信息
+			if(groupId>0){ 
+				List<GroupMemberVM> gm = policeService.findByGroupIDAndPoliceID(policeId,groupId);
+				if(gm.size()==0){
+					policeService.addMemberToGroup(policeId,groupId);
+				} 
+			}
+			
 			return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
 					MessageCode.SELECT_SUCCESS, 0, null);
 		} catch (Exception ex) {

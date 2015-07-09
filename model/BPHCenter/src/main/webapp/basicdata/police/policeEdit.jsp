@@ -49,6 +49,21 @@ $(function() {
 		},
 		filter : "contains"
 	}).prev().find(".k-input").attr("readonly",true);
+	$("#policetitle").kendoComboBox({
+		dataTextField : "name",
+		dataValueField : "id",
+		height:150,
+		dataSource : {
+			serverFiltering : true,
+			transport : {
+				read : {
+					url : "<%=basePath%>policeWeb/getPoliceTitle.do?sessionId="+sessionId,
+					dataType : "json"
+				}
+			}
+		},
+		filter : "contains"
+	}).prev().find(".k-input").attr("readonly",true);
 	$("#policegpsname").kendoComboBox({
 		dataTextField : "name",
 		dataValueField : "id",
@@ -73,19 +88,14 @@ var bph_policeEdit_pkg={};
 var isExist = false;
 var bph_Exist_OrgName = "";
 var policeEditManage= { 
-		onSelectGps:function(e){
-			 var dataItem = this.dataItem(e.item.index()); 
-			 bph_policeEdit_pkg.gpsId = dataItem.id;
-			 bph_policeEdit_pkg.gpsName = dataItem.name; 
-		},
-		savePoliceWithOut:function(){ 
+		savePoliceWithOut:function(){
 			policeEditManage.packagePolice(); 
 			if(!bph_policeEdit_pkg.isused||bph_policeEdit_pkg.isused==undefined)
 			{
 				return;
 			}
 			$.ajax({
-				url : "<%=basePath%>policeWeb/savePolice.do?sessionId="+sessionId,
+				url : "<%=basePath%>policeWeb/savePolice.do?groupId=1",
 				type : "post",
 				data : bph_policeEdit_pkg,
 				dataType : "json",
@@ -198,22 +208,13 @@ var policeEditManage= {
 				return;
 			}
 			bph_policeEdit_pkg.number= pnumber;
-			 var ptitle= $.trim($("#policetitle").val());
-			if (ptitle.length > 0 && ptitle.length > 20) { 
-				$("body").popjs({"title":"提示","content":"警员职位长度过长，限制长度为20！","callback":function(){
-								$("#policetitle").focus();   
-							}});      
-				return;
+
+			var ptitle= $("#policetitle").val();
+
+			if (ptitle>0) {
+				bph_policeEdit_pkg.titleId = ptitle;	
 			}
-			if (ptitle.length > 0){
-				if(!myReg.test(ptitle)){
-						$("body").popjs({"title":"提示","content":"警员职位不能包含特殊字符","callback":function(){
-								$("#policetitle").focus();
-							}});  
-						return;
-				}
-			}
-			bph_policeEdit_pkg.title = ptitle;
+			
 			var phone = $.trim($("#policephone").val());
 			if (phone.length > 0) {
 				if(phone.length != 11){ 
@@ -359,10 +360,11 @@ isExistIdCard:function(){
 				<!-- 左开始 -->
 				<div class="demo-section k-header"> 
 					<ul>
-						<li class="ty-input"><span class="ty-input-warn"></span><label class="ty-input-label" for="policetype" style="width:88px;text-align:right;"><span class="ty-txt-red">*</span>警员类型:</label><input id="policetype"
-							placeholder="请选择警员类别..." value="${police.typeId}"  /><input type="hidden"
-							id="policeId"  value="${police.id}" ><input type="hidden"
-							id="orgId" value="${organ.id}" /></li>
+						<li class="ty-input"><span class="ty-input-warn"></span><label class="ty-input-label" for="policetype" style="width:88px;text-align:right;"><span class="ty-txt-red">*</span>警员类型:</label>
+						<input id="policetype"	placeholder="请选择警员类别..." value="${police.typeId}"  />
+						<input type="hidden" id="policeId"  value="${police.id}" >
+						<input type="hidden" id="orgId" value="${organ.id}" /></li>
+
 						<li class="ty-input"><span class="ty-input-warn">*</span><label class="ty-input-label" for="policename">警员姓名:</label><input type="text"
 							class="k-textbox" name="policename"  value="${police.name}" id="policename"
 							required="required" /></li>
@@ -371,8 +373,10 @@ isExistIdCard:function(){
 							id="policeidcardno" /></li>
 						<li class="ty-input"><span class="ty-input-warn">*</span><label class="ty-input-label" for="policecode">警员警号:</label><input type="text"
 							class="k-textbox" name="policecode" id="policecode"  value="${police.number}" onblur="policeEditManage.isExistNumber();" /></li>
-						<li class="ty-input"><span class="ty-input-warn"></span><label class="ty-input-label" for="policetitle" style="width:88px;text-align:right;">警员职务:</label><input type="text"
-							class="k-textbox" name="policetitle" id="policetitle" value="${police.title}" /></li>
+
+						<li class="ty-input"><span class="ty-input-warn"></span><label class="ty-input-label" for="policetitle" style="width:88px;text-align:right;">警员职务:</label>
+						<input id="policetitle" placeholder="请选择警员职务..." value="${police.titleId}"} /></li>
+
 						<li class="ty-input"><span class="ty-input-warn"></span><label class="ty-input-label" for="policephone">手机号码:</label><input type="text"
 							class="k-textbox" name="policephone" id="policephone" value="${police.mobile}" /></li>
 						<li class="ty-input"><span class="ty-input-warn"></span><label class="ty-input-label" for="policeshortno" style="width:88px;text-align:right;">公安短号:</label><input
@@ -380,13 +384,11 @@ isExistIdCard:function(){
 							id="policeshortno"  value="${police.mobileShort}"/></li>
 						<li class="ty-input"><span class="ty-input-warn"></span><label class="ty-input-label" for="policegroupno">对讲机组呼号:</label><input
 							id="policegroupno" placeholder="请选择对讲机组呼号..." value="${police.intercomGroup}"  /></li>
-						<li class="ty-input"><span class="ty-input-warn"></span><label class="ty-input-label" for="policepersonno">对讲机个呼号:</label><input
-							type="text" class="k-textbox" name="policepersonno"
-							id="policepersonno"  value="${police.intercomPerson}" /></li>
-						<li class="ty-input"><span class="ty-input-warn"></span><label class="ty-input-label" for="policegpsname">GPS显示名称: </label><input
-							id="policegpsname" placeholder="请选择gps名称..." value="${police.gpsId}" />
-							<input type="hidden"
-							id="txtpolicegpsname" value="${police.gpsName}" />
+						<li class="ty-input"><span class="ty-input-warn"></span><label class="ty-input-label" for="policepersonno">对讲机个呼号:</label>
+						<input type="text" class="k-textbox" name="policepersonno" id="policepersonno"  value="${police.intercomPerson}" /></li>
+						<li class="ty-input"><span class="ty-input-warn"></span><label class="ty-input-label" for="policegpsname">GPS显示名称: </label>
+						<input	id="policegpsname" placeholder="请选择gps名称..." value="${police.gpsId}" />
+						<input type="hidden" id="txtpolicegpsname" value="${police.gpsName}" />
 							</li>
 					</ul>
 					<p class="ty-input-row">

@@ -6,8 +6,10 @@ import java.util.Map;
 import com.tianyi.bph.dao.MyBatisRepository;
 import com.tianyi.bph.domain.basicdata.IntercomGroup;
 import com.tianyi.bph.domain.basicdata.Vehicle;
+import com.tianyi.bph.domain.basicdata.VehiclePurpose;
 import com.tianyi.bph.domain.basicdata.VehicleType;
 import com.tianyi.bph.query.basicdata.GpsBaseVM;
+import com.tianyi.bph.query.basicdata.GroupMemberVM;
 import com.tianyi.bph.query.basicdata.VehicleVM;
  
 /*
@@ -64,6 +66,10 @@ public interface VehicleMapper {
 	 */
 	List<VehicleType> selectVehicleType();
 	/*
+	 * 查询车辆用途列表集
+	 */
+	List<VehiclePurpose> selectVehiclePurpose();
+	/*
 	 * 查询车辆对应组呼号列表集
 	 */
 	List<IntercomGroup> selectIntercomGroup();
@@ -96,5 +102,10 @@ public interface VehicleMapper {
 	List<GpsBaseVM> selectGpsId(int orgId);
 	List<VehicleVM> findByNumberAndId(Map<String, Object> map);
 	List<VehicleVM> loadVMListWithGroupList(Map<String, Object> map);
+	
+	Integer addMemberToGroup(Map<String, Object> map);
+	List<GroupMemberVM> findByGroupIDAndVehicleID(Map<String, Object> map);
+	
+	
     
 }

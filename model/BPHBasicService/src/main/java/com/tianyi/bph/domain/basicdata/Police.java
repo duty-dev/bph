@@ -30,8 +30,8 @@ public class Police {
     /*
 	 * 职位
 	 */
-    private String title;
-    /*
+    private Integer titleId;
+	/*
 	 * 手机号码
 	 */
     private String mobile;
@@ -116,13 +116,6 @@ public class Police {
         this.number = number;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     public String getMobile() {
         return mobile;
@@ -195,4 +188,11 @@ public class Police {
     public void setIsused(Boolean isused) {
         this.isused = isused;
     }
+    public Integer getTitleId() {
+		return titleId;
+	}
+
+	public void setTitleId(Integer titleId) {
+		this.titleId = titleId;
+	}
 }

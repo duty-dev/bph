@@ -110,7 +110,7 @@ public class ExtDbResult {
     /*
 	 * 车辆用途
 	 */
-    private String vehiclePurpose;
+    private Integer purposeId;
     /*
 	 * 车辆品牌
 	 */
@@ -154,7 +154,7 @@ public class ExtDbResult {
     /**
 	 * 职位
 	 */
-    private String policeTitle;
+    private Integer titleId;
     /**
 	 * 手机号码
 	 */
@@ -368,11 +368,11 @@ public class ExtDbResult {
 	public void setVehicleGpsName(String vehicleGpsName) {
 		this.vehicleGpsName = vehicleGpsName;
 	}
-	public String getVehiclePurpose() {
-		return vehiclePurpose;
+	public Integer getPurposeId() {
+		return purposeId;
 	}
-	public void setVehiclePurpose(String vehiclePurpose) {
-		this.vehiclePurpose = vehiclePurpose;
+	public void sePurposeId(Integer purposeId) {
+		this.purposeId = purposeId;
 	}
 	public String getVehicleBrand() {
 		return vehicleBrand;
@@ -428,11 +428,11 @@ public class ExtDbResult {
 	public void setPoliceNumber(String policeNumber) {
 		this.policeNumber = policeNumber;
 	}
-	public String getPoliceTitle() {
-		return policeTitle;
+	public Integer getTitleId() {
+		return titleId;
 	}
-	public void setPoliceTitle(String policeTitle) {
-		this.policeTitle = policeTitle;
+	public void setTitleId(Integer titleId) {
+		this.titleId = titleId;
 	}
 	public String getPoliceMobile() {
 		return policeMobile;

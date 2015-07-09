@@ -25,10 +25,12 @@ import com.tianyi.bph.common.PageReturn;
 import com.tianyi.bph.common.ReturnResult;
 import com.tianyi.bph.domain.basicdata.IntercomGroup;
 import com.tianyi.bph.domain.basicdata.Vehicle;
+import com.tianyi.bph.domain.basicdata.VehiclePurpose;
 import com.tianyi.bph.domain.basicdata.VehicleType;
 import com.tianyi.bph.domain.system.Organ;
 import com.tianyi.bph.domain.system.User;
 import com.tianyi.bph.query.basicdata.GpsBaseVM;
+import com.tianyi.bph.query.basicdata.GroupMemberVM;
 import com.tianyi.bph.query.basicdata.VehicleVM;
 import com.tianyi.bph.query.system.UserQuery;
 import com.tianyi.bph.service.basicdata.VehicleService;
@@ -230,6 +232,21 @@ public class VehicleController {
 	}
 
 	/*
+	 * 
+	 * 获取车辆用途列表，以下拉框的形式展现；
+	 */
+	@RequestMapping(value = "getVehiclePurpose.do", produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String getVehiclePurpose() throws Exception {
+		try {
+			List<VehiclePurpose> list = vehicleService.selectVehiclePurpose();
+			JSONArray result = JSONArray.fromObject(list);
+			return result.toString();
+		} catch (Exception ex) {
+			return "";
+		}
+	}
+	/*
 	 * 获取警员分组列表，以数据列表的形式展现
 	 * 
 	 * 用于报备类型警员过滤条件筛选；
@@ -269,18 +286,30 @@ public class VehicleController {
 	 */
 	@RequestMapping(value = "saveVehicle.do")
 	@ResponseBody
-	public ReturnResult saveVehicle(Vehicle vehicle) throws Exception {
+	public ReturnResult saveVehicle(Vehicle vehicle,
+			@RequestParam(value = "groupId", required = false) Integer groupId) throws Exception {
 		try {
 			vehicle.setPlatformId(1);
 			vehicle.setSyncState(true);
+			int vehicleId = 0;
 			if (vehicle.getId() > 0) {
+				//Edit
 				int vid = vehicle.getId();
 
 				vehicle.setId(vid);
 				vehicleService.updateByPrimaryKey(vehicle);
+				vehicleId = vid;
 			} else {
+			//Add
 				vehicleService.insert(vehicle);
-
+				vehicleId = vehicle.getId();
+			}
+			//保存分组信息
+			if(groupId>0){ 
+				List<GroupMemberVM> gm = vehicleService.findByGroupIDAndVehicleID(vehicleId,groupId);
+				if(gm.size()==0){
+					vehicleService.addMemberToGroup(vehicleId,groupId);
+				} 
 			}
 			return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
 					MessageCode.SELECT_SUCCESS, 0, null);

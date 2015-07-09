@@ -6,8 +6,10 @@ import java.util.Map;
 import com.tianyi.bph.common.Pager;
 import com.tianyi.bph.domain.basicdata.IntercomGroup;
 import com.tianyi.bph.domain.basicdata.Vehicle;
+import com.tianyi.bph.domain.basicdata.VehiclePurpose;
 import com.tianyi.bph.domain.basicdata.VehicleType;
 import com.tianyi.bph.query.basicdata.GpsBaseVM;
+import com.tianyi.bph.query.basicdata.GroupMemberVM;
 import com.tianyi.bph.query.basicdata.VehicleExtItem;
 import com.tianyi.bph.query.basicdata.VehicleInfo;
 import com.tianyi.bph.query.basicdata.VehicleVM;
@@ -70,6 +72,11 @@ public interface VehicleService {
 	 */
 	public List<VehicleType> selectVehicleType();
 	/**
+	 * 查询车辆用途列表
+	 * @return
+	 */
+	public List<VehiclePurpose> selectVehiclePurpose();
+	/**
 	 * 查询对讲及组呼号列表
 	 * @return
 	 */
@@ -119,5 +126,9 @@ public interface VehicleService {
 	public List<GpsBaseVM> selectGpsId(int orgId);
 	public List<VehicleVM> findByNumberAndId(Map<String, Object> map);
 	public List<VehicleVM> loadVMListWithGroupList(Map<String, Object> map);
+	
+	public Integer addMemberToGroup(int vehicleId, Integer groupId);
+	public List<GroupMemberVM> findByGroupIDAndVehicleID(int vehicleId,
+			Integer groupId);
 	
 }

@@ -1,4 +1,4 @@
-﻿<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%
@@ -50,6 +50,21 @@ $(function() {
 		},
 		filter : "contains"
 	}).prev().find(".k-input").attr("readonly",true);
+	$("#policetitle").kendoComboBox({
+		dataTextField : "name",
+		dataValueField : "id",
+		height:150,
+		dataSource : {
+			serverFiltering : true,
+			transport : {
+				read : {
+					url : "<%=basePath%>policeWeb/getPoliceTitle.do?sessionId="+sessionId,
+					dataType : "json"
+				}
+			}
+		},
+		filter : "contains"
+	}).prev().find(".k-input").attr("readonly",true);
 	$("#policegpsname").kendoComboBox({
 		dataTextField : "name",
 		dataValueField : "id",
@@ -84,7 +99,7 @@ var policeAddManage= {
 				return;
 			}
 			$.ajax({
-				url : "<%=basePath%>policeWeb/savePolice.do?sessionId="+sessionId,
+				url : "<%=basePath%>policeWeb/savePolice.do?groupId=1",
 				type : "post",
 				data : bph_policeAdd_pkg,
 				dataType : "json",
@@ -198,23 +213,11 @@ var policeAddManage= {
 				return;
 			}
 			bph_policeAdd_pkg.number= pnumber;
-			 var ptitle= $.trim($("#policetitle").val());
-			if (ptitle.length > 0 && ptitle.length > 20) {
-					$("body").popjs({"title":"提示","content":"警员职位长度过长，限制长度为20！","callback":function(){
-								$("#policetitle").focus();   
-							}});      
-					
-				return;
+			var ptitle= $("#policetitle").val();
+			if (ptitle>0) {
+				bph_policeAdd_pkg.titleId = ptitle;	
 			}
-			if (ptitle.length > 0){
-				if(!myReg.test(ptitle)){
-						$("body").popjs({"title":"提示","content":"警员职位不能包含特殊字符","callback":function(){
-								$("#policetitle").focus();
-							}});  
-						return;
-				}
-			}
-			bph_policeAdd_pkg.title = ptitle;
+			
 			var phone = $.trim($("#policephone").val());
 			if (phone.length > 0) {
 				if(phone.length != 11){ 
@@ -398,7 +401,7 @@ var policeAddManage= {
 							<span class="ty-input-warn">*</span><label class="ty-input-label" for="policecode">警员警号:</label><input type="text" class="k-textbox" name="policecode" id="policecode" onblur="policeAddManage.isExistNumber();" />
 						</li>
 						<li class="ty-input">
-							<span class="ty-input-warn"></span><label class="ty-input-label" for="policetitle" style="width:88px;text-align:right;">警员职务:</label><input type="text" class="k-textbox" name="policetitle" id="policetitle" />
+							<span class="ty-input-warn"></span><label class="ty-input-label" for="policetitle" style="width:88px;text-align:right;">警员职务:</label><input id="policetitle" placeholder="请选择警员职务..."  />
 						</li>
 						<li class="ty-input">
 							<span class="ty-input-warn"></span><label class="ty-input-label" for="policephone">手机号码:</label><input type="text" class="k-textbox" name="policephone" id="policephone" />

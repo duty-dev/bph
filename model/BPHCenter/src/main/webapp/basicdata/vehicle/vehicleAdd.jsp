@@ -36,6 +36,20 @@ $(function() {
 		},
 		filter : "contains" 
 	}).prev().find(".k-input").attr("readonly",true);
+	$("#vehiclePurpose").kendoComboBox({
+		dataTextField : "name",
+		dataValueField : "id",
+		dataSource : {
+			serverFiltering : true,
+			transport : {
+				read : {
+					url : "<%=basePath%>vehicleWeb/getVehiclePurpose.do?sessionId="+sessionId,
+					dataType : "json"
+				}
+			}
+		},
+		filter : "contains" 
+	}).prev().find(".k-input").attr("readonly",true);
 	$("#vehicleIntercomGroup").kendoComboBox({
 		dataTextField : "name",
 		dataValueField : "id",
@@ -86,7 +100,7 @@ var vehicleAddManage= {
 				 return;
 			 }
 			$.ajax({
-				url : "<%=basePath%>vehicleWeb/saveVehicle.do?sessionId="+sessionId,
+				url : "<%=basePath%>vehicleWeb/saveVehicle.do?groupId=1",
 				type : "post",
 				data : bph_vehicleAdd_pkg,
 				dataType : "json",
@@ -132,13 +146,6 @@ var vehicleAddManage= {
 				}});  
 				return;
 			}
-			//vehicleAddManage.isExistVehicle(pNumber,0,0);
-			//if(!isExist){ 
-			//				$("body").popjs({"title":"提示","content":"该车牌号在"+bph_Exist_OrgName+"机构下已存在，请确认后添加！","callback":function(){
-			//					$("#vehicleNumber").focus();
-			//				}});  
-			//	return;
-			//}
 			bph_vehicleAdd_pkg.number = pNumber; 
  
 			var brand = $.trim($("#vehicleBrand").val());
@@ -180,25 +187,11 @@ var vehicleAddManage= {
 				}
 			}
 			bph_vehicleAdd_pkg.siteQty = siteQty;
-			var purpose = $.trim($("#vehiclePurpose").val());
-			if (purpose.length > 20) {
-							$("body").popjs({"title":"提示","content":"车辆用途长度过长，限制长度为20！","callback":function(){
-								$("#vehiclePurpose").focus();
-							}});  
+			var purpose = $("#vehiclePurpose").val();
+			if (purpose>0) {
+				bph_vehicleAdd_pkg.purposeId=purpose;
 			}
-			if(purpose.length>0)
-			{
-				var myReg = /^[^@\/\'\\\"#$%&\^\*]+$/;
-				if(!myReg.test(purpose)){
-					$("body").popjs({"title":"提示","content":"车辆用途不能包含特殊字符！","callback":function(){
-								$("#vehiclePurpose").focus();
-							}}); 
-					return;
-				}
-			}
-			bph_vehicleAdd_pkg.purpose=purpose;
-			
-			
+
 			var intercomGroup =$("#vehicleIntercomGroup").val();
 			if (intercomGroup>0) {
 				bph_vehicleAdd_pkg.intercomGroup = intercomGroup;
@@ -312,8 +305,8 @@ var vehicleAddManage= {
 						<li class="ty-input"><span class="ty-input-warn"></span><label class="ty-input-label" for="vehicleSiteQty">　座位数:</label><input type="text"
 							class="k-textbox" name="vehicleSiteQty" id="vehicleSiteQty"
 							required="required" /></li>
-						<li class="ty-input"><span class="ty-input-warn"></span><label class="ty-input-label" for="vehiclePurpose">车辆用途:</label><input type="text"
-							class="k-textbox" name="vehiclePurpose" id="vehiclePurpose" /></li>
+						<li class="ty-input"><span class="ty-input-warn"></span><label class="ty-input-label" for="vehiclePurpose">车辆用途:</label><input id="vehiclePurpose"
+							placeholder="请选择车辆用途..." /></li>
 						<li class="ty-input"><span class="ty-input-warn"></span><label class="ty-input-label" for="vehicleIntercomGroup">　组呼号:</label><input id="vehicleIntercomGroup"
 							placeholder="请选择对讲机组呼号..." /></li>
 						<li class="ty-input"><span class="ty-input-warn"></span><label class="ty-input-label" for="vehicleIntercomPerson">　个呼号:</label><input type="text"

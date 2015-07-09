@@ -18,6 +18,11 @@ public class PoliceVM extends Police {
 	 */
     private String typeName;
     /**
+	 * 警员职务名称
+	 */
+    private String titleName;
+
+	/**
      * 组织机构名称
      */
     private String orgName;
@@ -93,4 +98,11 @@ public class PoliceVM extends Police {
 	public void setIconUrl(String iconUrl) {
 		this.iconUrl = iconUrl;
 	} 
+    public String getTitleName() {
+		return titleName;
+	}
+
+	public void setTitleName(String titleName) {
+		this.titleName = titleName;
+	}
 }

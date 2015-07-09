@@ -84,7 +84,7 @@ var VehicleManage = {
 									field : 'gpsName' 
 								},{
 									title : '车辆用途',
-									field : 'purpose' 
+									field : 'purposeName' 
 								},{
 									title : '车辆品牌',
 									field : 'brand' 

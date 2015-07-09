@@ -38,8 +38,9 @@ public class Vehicle {
     /*
 	 * 车辆用途
 	 */
-    private String purpose;
-    /*
+    private Integer purposeId;
+
+	/*
 	 * 车辆品牌
 	 */
     private String brand;
@@ -112,13 +113,6 @@ public class Vehicle {
         this.gpsName = gpsName;
     }
 
-    public String getPurpose() {
-        return purpose;
-    }
-
-    public void setPurpose(String purpose) {
-        this.purpose = purpose;
-    }
 
     public String getBrand() {
         return brand;
@@ -158,5 +152,12 @@ public class Vehicle {
 
 	public void setIntercomPerson(String intercomPerson) {
 		this.intercomPerson = intercomPerson;
+	}
+    public Integer getPurposeId() {
+		return purposeId;
+	}
+
+	public void setPurposeId(Integer purposeId) {
+		this.purposeId = purposeId;
 	}
 }

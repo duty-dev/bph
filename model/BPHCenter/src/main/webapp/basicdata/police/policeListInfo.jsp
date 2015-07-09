@@ -76,7 +76,7 @@ var PoliceManage = {
 															},
 															{
 																title : '职务',
-																field : 'title'
+																field : 'titleName'
 															},
 															{
 																title : '姓名',

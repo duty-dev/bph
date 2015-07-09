@@ -13,6 +13,10 @@ public class VehicleVM extends Vehicle {
 	 */
 	private String typeName;
 	/**
+	 * 车辆用途名称
+	 */
+	private String purposeName;
+	/**
 	 * 组织机构名称
 	 */
 	private String orgName;
@@ -102,6 +106,14 @@ public class VehicleVM extends Vehicle {
 
 	public void setIntercomgroupNumber(String intercomgroupNumber) {
 		this.intercomgroupNumber = intercomgroupNumber;
+	}
+
+	public String getPurposeName() {
+		return purposeName;
+	}
+
+	public void setPurposeName(String purposeName) {
+		this.purposeName = purposeName;
 	}
 
 	

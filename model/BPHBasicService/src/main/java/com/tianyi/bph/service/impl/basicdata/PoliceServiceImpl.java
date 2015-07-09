@@ -19,6 +19,7 @@ import com.tianyi.bph.dao.system.OrganDAO;
 import com.tianyi.bph.domain.basicdata.Gps;
 import com.tianyi.bph.domain.basicdata.IntercomGroup;
 import com.tianyi.bph.domain.basicdata.Police;
+import com.tianyi.bph.domain.basicdata.PoliceTitle;
 import com.tianyi.bph.domain.basicdata.PoliceType;
 import com.tianyi.bph.domain.basicdata.Weapon;
 import com.tianyi.bph.domain.system.Organ;
@@ -26,6 +27,7 @@ import com.tianyi.bph.query.basicdata.ExtDbResult;
 import com.tianyi.bph.query.basicdata.ExtShiftInfo;
 import com.tianyi.bph.query.basicdata.GpsBaseVM;
 import com.tianyi.bph.query.basicdata.GpsInfo;
+import com.tianyi.bph.query.basicdata.GroupMemberVM;
 import com.tianyi.bph.query.basicdata.ItemInfo;
 import com.tianyi.bph.query.basicdata.PoliceExtItem;
 import com.tianyi.bph.query.basicdata.PoliceInfo;
@@ -572,6 +574,7 @@ public class PoliceServiceImpl implements PoliceService {
 		p.setIntercomPerson(result.getPoliceIntercomPerson());
 		p.setMobile(result.getPoliceMobile());
 		p.setMobileShort(result.getPoliceMobileShort());
+		p.setTitleId(result.getTitleId());
 		p.setName(result.getPoliceName());
 		p.setNumber(result.getPoliceNumber());
 		p.setOrgId(result.getPoliceOrgId());
@@ -612,10 +615,32 @@ public class PoliceServiceImpl implements PoliceService {
 		return policeMapper.findBycodeAndId(map);
 	}
 
-	@Override
 	public List<PoliceVM> findByintercomPersonAndId(Map<String, Object> map) {
 		// TODO Auto-generated method stub
 		return policeMapper.findByintercomPersonAndId(map);
+	}
+
+	/**
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tianyi.drs.basedata.service.PoliceService#selectPoliceTitle()
+	 */
+	public List<PoliceTitle> selectPoliceTitle() {
+		// TODO Auto-generated method stub
+		return policeMapper.selectPoliceTitle();
+	}
+
+	public Integer addMemberToGroup(Integer policeId, Integer groupId) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("policeId", policeId);
+		map.put("groupId", groupId);
+		return policeMapper.addMemberToGroup(map);		
+	}
+	public List<GroupMemberVM> findByGroupIDAndPoliceID(Integer policeId,Integer groupId){
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("policeId", policeId);
+		map.put("groupId", groupId);
+		return policeMapper.findByGroupIDAndPoliceID(map);
 	}
 
 }

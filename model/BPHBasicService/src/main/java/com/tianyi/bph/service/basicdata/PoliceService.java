@@ -6,8 +6,10 @@ import java.util.Map;
 import com.tianyi.bph.common.Pager;
 import com.tianyi.bph.domain.basicdata.IntercomGroup;
 import com.tianyi.bph.domain.basicdata.Police;
+import com.tianyi.bph.domain.basicdata.PoliceTitle;
 import com.tianyi.bph.domain.basicdata.PoliceType;
 import com.tianyi.bph.query.basicdata.GpsBaseVM;
+import com.tianyi.bph.query.basicdata.GroupMemberVM;
 import com.tianyi.bph.query.basicdata.PoliceExtItem;
 import com.tianyi.bph.query.basicdata.PoliceInfo;
 import com.tianyi.bph.query.basicdata.PoliceJJVM;
@@ -116,6 +118,11 @@ public interface PoliceService {
 	  */
 	 public List<PoliceType> selectPoliceType();
 	 /**
+	  * 查询警员职务列表
+	  * @return
+	  */
+	 public List<PoliceTitle> selectPoliceTitle();
+	 /**
 	  * 查询对讲机组呼号列表
 	  * @return
 	  */
@@ -186,8 +193,16 @@ public interface PoliceService {
 	 * @return
 	 */
 	 public List<PoliceJJVM> getPoliceInfo(Integer orgId,Integer isSubOrg);
-	
-	
+	 
+	/**
+	 * 添加警员分组记录
+	 * @param policeId
+	 * @param grouId
+	 * @return
+	 */
+	 public Integer addMemberToGroup(Integer policeId,Integer groupId);
+	 
+	 public List<GroupMemberVM> findByGroupIDAndPoliceID(Integer policeId,Integer groupId);
 	
 	
 	

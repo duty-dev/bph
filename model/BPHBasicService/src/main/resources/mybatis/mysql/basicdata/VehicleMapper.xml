@@ -10,7 +10,7 @@
     <result column="intercom_person" jdbcType="VARCHAR" property="intercomPerson" />
     <result column="gps_id" jdbcType="INTEGER" property="gpsId" />
     <result column="gps_name" jdbcType="VARCHAR" property="gpsName" />
-    <result column="purpose" jdbcType="VARCHAR" property="purpose" />
+    <result column="purpose_id" jdbcType="INTEGER" property="purposeId" />
     <result column="brand" jdbcType="VARCHAR" property="brand" />
     <result column="site_qty" jdbcType="VARCHAR" property="siteQty" />
     <result column="sync_state" jdbcType="BIT" property="syncState" />
@@ -27,7 +27,7 @@
     <result column="intercom_person" jdbcType="VARCHAR" property="intercomPerson" />
     <result column="gps_id" jdbcType="INTEGER" property="gpsId" />
     <result column="gps_name" jdbcType="VARCHAR" property="gpsName" />
-    <result column="purpose" jdbcType="VARCHAR" property="purpose" />
+    <result column="purpose_id" jdbcType="INTEGER" property="purposeId" />
     <result column="brand" jdbcType="VARCHAR" property="brand" />
     <result column="site_qty" jdbcType="VARCHAR" property="siteQty" />
     <result column="sync_state" jdbcType="BIT" property="syncState" />
@@ -46,7 +46,7 @@
 		<result column="vehicle_type_id" property="typeId" jdbcType="INTEGER" />
 		<result column="org_id" property="orgId" jdbcType="INTEGER" />
 		<result column="orgName" property="orgName" jdbcType="VARCHAR" /> 
-		<result column="purpose" property="purpose" jdbcType="VARCHAR" />  
+		<result column="purpose_id" property="purposeId" jdbcType="INTEGER" />  
 		<result column="brand" property="brand" jdbcType="VARCHAR" />   
 		<result column="number" property="number" jdbcType="VARCHAR" />  
 		<result column="intercom_group" property="intercomGroup"
@@ -62,7 +62,7 @@
 	</resultMap>
   
   <sql id="Base_Column_List">
-    id, vehicle_type_id, org_id, number, intercom_group,intercom_person, gps_id, gps_name, purpose, brand, 
+    id, vehicle_type_id, org_id, number, intercom_group,intercom_person, gps_id, gps_name, purpose_id, brand, 
     site_qty, sync_state, platform_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -81,12 +81,12 @@
   </selectKey> 
     insert into t_vehicle (id, vehicle_type_id, org_id, 
       number, intercom_group, intercom_person,gps_id, 
-      gps_name, purpose, brand, 
+      gps_name, purpose_id, brand, 
       site_qty, sync_state, platform_id
       )
     values (#{id,jdbcType=INTEGER}, #{vehicleTypeId,jdbcType=INTEGER}, #{orgId,jdbcType=INTEGER}, 
       #{number,jdbcType=VARCHAR}, #{intercomGroup,jdbcType=VARCHAR},#{intercomPerson,jdbcType=VARCHAR}, #{gpsId,jdbcType=INTEGER}, 
-      #{gpsName,jdbcType=VARCHAR}, #{purpose,jdbcType=VARCHAR}, #{brand,jdbcType=VARCHAR}, 
+      #{gpsName,jdbcType=VARCHAR}, #{purposeId,jdbcType=INTEGER}, #{brand,jdbcType=VARCHAR}, 
       #{siteQty,jdbcType=VARCHAR}, #{syncState,jdbcType=BIT}, #{platformId,jdbcType=INTEGER}
       )
   </insert>
@@ -117,8 +117,8 @@
       <if test="gpsName != null">
         gps_name,
       </if>
-      <if test="purpose != null">
-        purpose,
+      <if test="purpose_id != null">
+        purpose_id,
       </if>
       <if test="brand != null">
         brand,
@@ -158,8 +158,8 @@
       <if test="gpsName != null">
         #{gpsName,jdbcType=VARCHAR},
       </if>
-      <if test="purpose != null">
-        #{purpose,jdbcType=VARCHAR},
+      <if test="purpose_id != null">
+        #{purposeId,jdbcType=INTEGER},
       </if>
       <if test="brand != null">
         #{brand,jdbcType=VARCHAR},
@@ -199,8 +199,8 @@
       <if test="gpsName != null">
         gps_name = #{gpsName,jdbcType=VARCHAR},
       </if>
-      <if test="purpose != null">
-        purpose = #{purpose,jdbcType=VARCHAR},
+      <if test="purpose_id != null">
+        purpose = #{purposeId,jdbcType=INTEGER},
       </if>
       <if test="brand != null">
         brand = #{brand,jdbcType=VARCHAR},
@@ -226,7 +226,7 @@
       intercom_person = #{intercomPerson,jdbcType=VARCHAR},
       gps_id = #{gpsId,jdbcType=INTEGER},
       gps_name = #{gpsName,jdbcType=VARCHAR},
-      purpose = #{purpose,jdbcType=VARCHAR},
+      purpose_id = #{purposeId,jdbcType=INTEGER},
       brand = #{brand,jdbcType=VARCHAR},
       site_qty = #{siteQty,jdbcType=VARCHAR},
       sync_state = #{syncState,jdbcType=BIT},
@@ -275,6 +275,10 @@
        		 select * from t_vehicletype order by id asc
     	 </select> 
       	 
+      	 <select id="selectVehiclePurpose" resultType="com.tianyi.bph.domain.basicdata.VehiclePurpose">  
+       		 select * from t_vehiclepurpose order by id asc
+    	 </select> 
+    	 
       	 <select id="selectIntercomGroup" resultType="com.tianyi.bph.domain.basicdata.IntercomGroup">  
        		 select * from t_intercom_group order by id asc
     	 </select> 
@@ -317,7 +321,7 @@
   			v.intercom_person, 
   			v.gps_id, 
   			v.gps_name, 
-  			v.purpose, 
+  			v.purpose_id, 
   			v.brand, 
   			v.site_qty, 
   			v.sync_state, 
@@ -327,12 +331,14 @@
 			org.path 				as 	orgPath,
 			gps.number 				as 	gpsnumber,
 			vt.name 				as 	typename ,
+			vp.name					as  purposeName,
 			tg.icon_url             as  iconUrl,
 			ig.name                 as  intercom_groupNumber
 		from t_vehicle as v
 			left join t_organ as org on v.org_id=org.organ_id 
 			left join t_gps as gps on v.gps_id=gps.id 
 			left join t_vehicletype as vt on v.vehicle_type_id=vt.id
+			left join t_vehiclepurpose as vp on v.purpose_id=vp.id
   			left join t_gps tg on v.gps_id = tg.id
   			left join t_intercom_group as ig on v.intercom_group = ig.id
 		where 
@@ -376,7 +382,7 @@
   		v.intercom_person as intercomPerson,
   		v.gps_id as gpsId,
   		v.gps_name as gpsName,
-  		v.purpose as purpose,
+  		v.purpose_id as purposeId,
   		v.brand as brand,
   		v.site_qty as siteQty,
   		v.sync_state as syncState,
@@ -439,7 +445,7 @@
     		v.intercom_person as intercomperson,
     		v.gps_id as gpsId,
     		v.gps_name as gpsName,
-    		v.purpose,
+    		v.purpose_id,
     		v.brand,
     		v.site_qty  as siteQty,
     		v.sync_state  as syncState,
@@ -494,7 +500,7 @@
 		p.vehicle_type_id as typeId,
 		pt.name as typeName, 
 		p.org_id as orgId,
-		p.purpose as purpose,
+		p.purpose_id as purposeId,
 		p.brand as brand,
 		(select orn.short_name from t_organ as orn where
 		orn.organ_id = ( select tp.org_id from t_vehicle as tp where tp.id = p.id)) as
@@ -538,5 +544,17 @@
 
 		</if>
 
+	</select>
+		<insert id="addMemberToGroup" parameterType="java.util.Map">
+		insert into t_duty_vehicle_group_member (group_id,vehicle_id) values (#{groupId,jdbcType=INTEGER}, #{vehicleId,jdbcType=INTEGER})
+	</insert>
+	
+	<select id="findByGroupIDAndVehicleID" parameterType="java.util.Map" resultType="com.tianyi.bph.query.basicdata.GroupMemberVM">
+		select 
+		vgm.id as id,
+		vgm.group_id as groupId,
+		vgm.vehicle_id as objId
+		from t_duty_vehicle_group_member vgm 
+		where vgm.group_id = #{groupId,jdbcType=INTEGER} and vgm.vehicle_id = #{vehicleId,jdbcType=INTEGER}
 	</select>
 </mapper>

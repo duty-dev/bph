@@ -8,8 +8,10 @@ import java.util.Map;
 import com.tianyi.bph.common.Pager;
 import com.tianyi.bph.domain.basicdata.IntercomGroup;
 import com.tianyi.bph.domain.basicdata.Police;
+import com.tianyi.bph.domain.basicdata.PoliceTitle;
 import com.tianyi.bph.domain.basicdata.PoliceType;
 import com.tianyi.bph.query.basicdata.GpsBaseVM;
+import com.tianyi.bph.query.basicdata.GroupMemberVM;
 import com.tianyi.bph.query.basicdata.PoliceJJVM;
 import com.tianyi.bph.query.basicdata.PoliceVM;
 import com.tianyi.bph.query.basicdata.UserObjectVM;
@@ -97,6 +99,10 @@ public interface PoliceMapper {
 	 */
 	List<PoliceType> selectPoliceType();
 	/**
+	 * 查询警员职务列表
+	 */
+	List<PoliceTitle> selectPoliceTitle();
+	/**
 	 * 查询警员对应组呼号列表
 	 */
 	List<IntercomGroup> selectIntercomGroup();
@@ -148,6 +154,8 @@ public interface PoliceMapper {
 	 */ 
 	List<Police> findByIdAndDtyId(String param);
 	
+	Integer addMemberToGroup(Map<String, Object> map);
+	List<GroupMemberVM> findByGroupIDAndPoliceID(Map<String, Object> map);
 	
 	/**
 	 * 根据组织机构id，获取所有成员列表
@@ -159,5 +167,6 @@ public interface PoliceMapper {
 	List<PoliceVM> findByidCardAndId(Map<String, Object> map);
 	List<PoliceVM> findBycodeAndId(Map<String, Object> map);
 	List<PoliceVM> findByintercomPersonAndId(Map<String, Object> map);
+	
 	 
 }

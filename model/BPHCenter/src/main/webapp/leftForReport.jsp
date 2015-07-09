@@ -848,7 +848,7 @@ function onDpDay(){
 	       			return;
 	       		 }
 	       		 m_Query_pkg.caseTimaSpan = alarmTimeSpanArr;
-	       		 m_Query_pkg.caseLevels = []
+	       		 m_Query_pkg.caseLevels = [];
 	       		 var alrlel = $("#div_alarmLevel input:checkbox:checked");
 	       		 $.each(alrlel,function(index,s){
 	       		 	m_Query_pkg.caseLevels.push(s.value);
