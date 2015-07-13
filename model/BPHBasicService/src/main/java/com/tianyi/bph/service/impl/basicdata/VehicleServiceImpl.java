@@ -275,7 +275,7 @@ public class VehicleServiceImpl implements VehicleService {
 		map.put("ymd", ymd);
 
 		List<ExtDbResult> rs = exportMapper.loadDutyItemInfo(map);
-String dutyTypeName = "";
+		String dutyTypeName = "";
 		for (ExtDbResult r : rs) {
 			if(r.getDutyTypeName()!=null){
 				dutyTypeName = r.getDutyTypeName();
@@ -439,6 +439,7 @@ String dutyTypeName = "";
 		v.setSiteQty(result.getVehicleSiteQty());
 		v.setVehicleTypeId(result.getVehicleTypeId());
 		v.setPurposeId(result.getPurposeId());
+		v.setPurposeName(result.getPurposeName());
 		return v;
 
 	}

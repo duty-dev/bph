@@ -39,7 +39,7 @@ public class Vehicle {
 	 * 车辆用途
 	 */
     private Integer purposeId;
-
+    private String purposeName;
 	/*
 	 * 车辆品牌
 	 */
@@ -159,5 +159,13 @@ public class Vehicle {
 
 	public void setPurposeId(Integer purposeId) {
 		this.purposeId = purposeId;
+	}
+
+	public String getPurposeName() {
+		return purposeName;
+	}
+
+	public void setPurposeName(String purposeName) {
+		this.purposeName = purposeName;
 	}
 }
