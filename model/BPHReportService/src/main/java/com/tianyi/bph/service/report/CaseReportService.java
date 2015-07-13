@@ -43,4 +43,6 @@ public interface CaseReportService {
 	List<ColorWarningResultList> getWarningReport(QueryCondition queryCondition);
 
 	List<CaseGpsInfo> loadCaseGpsList(QueryCondition queryCondition);
+
+	void insertQuery(Long userId, String query);
 }

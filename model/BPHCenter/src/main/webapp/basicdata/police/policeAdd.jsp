@@ -99,7 +99,7 @@ var policeAddManage= {
 				return;
 			}
 			$.ajax({
-				url : "<%=basePath%>policeWeb/savePolice.do?groupId=1",
+				url : "<%=basePath%>policeWeb/savePolice.do?groupId=0",
 				type : "post",
 				data : bph_policeAdd_pkg,
 				dataType : "json",

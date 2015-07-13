@@ -337,5 +337,15 @@ public class CaseReportServiceImpl implements CaseReportService {
 		
 		
 		return list;
+	}
+
+	@Override
+	public void insertQuery(Long userId, String query) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userId", userId);
+		map.put("query", query);
+		caseReportMapper.InsertQuery(map);
+		
+		return;
 	} 
 }

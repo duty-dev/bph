@@ -37,6 +37,8 @@ public interface CaseReportMapper {
 	List<WarningOrgAGGR> loadWarningReport(Map<String, Object>  map);
 	
 	List<CaseGps> loadCaseGps(Map<String, Object>  map);
+
+	void InsertQuery(Map<String, Object> map);
 	
 	
 }

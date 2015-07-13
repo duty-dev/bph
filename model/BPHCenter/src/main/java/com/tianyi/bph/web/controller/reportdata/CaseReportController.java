@@ -50,7 +50,7 @@ public class CaseReportController {
 	ReturnResult loadCaseTypeReport(
 			@RequestParam(value = "query", required = false) String query,
 			HttpServletRequest request) {
-		try {
+		try {			
 			JSONObject jobj = JSONObject.fromObject(query);
 			Map<String, Class<?>> classMap = new HashMap<String, Class<?>>();
 
@@ -123,7 +123,9 @@ public class CaseReportController {
 			mResult.setEndYmd(rp.getMOMEndYmd()); 
 			mResult.setData(ls);
 			results.add(mResult);
- 
+			//保存筛选条件
+			saveUserQuery(user.getUserId(),query);
+			
 			return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
 					MessageCode.SELECT_SUCCESS, 0, results);
 
@@ -132,7 +134,9 @@ public class CaseReportController {
 					MessageCode.SELECT_ORGAN_FAIL, 0, null);
 		}
 	}
-
+	private void saveUserQuery(Long userId,String query){
+		caseReportService.insertQuery(userId,query);
+	}
 	private List<CaseTypeAGGR> getSelectCaseTypeList(List<CaseTypeAGGR> ls,
 			List<String> caseTypes) {
 		// TODO Auto-generated method stub
@@ -387,8 +391,10 @@ public class CaseReportController {
 			cResult.setBeginYmd(rp.getBeginYmd());
 			cResult.setEndYmd(rp.getEndYmd());
 			cResult.setData(ls);
-			results.add(cResult);
-
+			results.add(cResult);			
+			//保存筛选条件
+			saveUserQuery(user.getUserId(),query);
+			
 			return ReturnResult.MESSAGE(MessageCode.STATUS_SUCESS,
 					MessageCode.SELECT_SUCCESS, 0, results);
 

@@ -169,6 +169,9 @@
 			cr.update_time	=t.update_time
   	</update>
   	
+  	<insert id="InsertQuery" parameterType="java.util.Map">
+  		insert into t_query (user_id,query) values (#{userId,jdbcType=INTEGER}, #{query,jdbcType=VARCHAR})
+  	</insert>
   	<insert id="insertOrganLevel"  >
   		INSERT INTO t_organ_level (
 			organ_id,
