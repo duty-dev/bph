@@ -26,6 +26,7 @@
     <result column="vehicle_number" property="vehicleNumber" jdbcType="VARCHAR" />
     <result column="vehicle_org_id" property="vehicleOrgId" jdbcType="INTEGER" />
     <result column="vehicle_purpose" property="purposeId" jdbcType="INTEGER" />
+    <result column="vehicle_purpose_name" property="purposeName" jdbcType="VARCHAR" />
     <result column="vehicle_site_qty" property="vehicleSiteQty" jdbcType="VARCHAR" />
     <result column="vehicle_type_id" property="vehicleTypeId" jdbcType="INTEGER" />
     
@@ -41,6 +42,7 @@
     <result column="police_number" property="policeNumber" jdbcType="VARCHAR" />
     <result column="police_org_id" property="policeOrgId" jdbcType="INTEGER" />
     <result column="police_title" property="titleId" jdbcType="INTEGER" />
+    <result column="police_title_name" property="titleName" jdbcType="VARCHAR" />
     <result column="police_type_id" property="policeTypeId" jdbcType="INTEGER" />
     <result column="police_jjcount" property="jjcount" jdbcType="VARCHAR" />
     
@@ -83,6 +85,7 @@
 			v.number				as	vehicle_number,
 			v.org_id				as 	vehicle_org_id,
 			v.purpose_id			as 	vehicle_purpose,
+			vp.name                 as  vehicle_purpose_name,
 			v.site_qty				as 	vehicle_site_qty,
 			v.vehicle_type_id		as  vehicle_type_id,
 			p.id					as	police_id,
@@ -96,7 +99,8 @@
 			p.name					as	police_name,
 			p.number				as	police_number,
 			p.org_id				as	police_org_id,
-			p.title_id					as	police_title,
+			p.title_id				as	police_title,
+			ptl.name                as  police_title_name,
 			p.type_id				as	police_type_id,
 			(
 			select count(*) from b_pj_police  pj 
@@ -115,12 +119,14 @@
 			g.org_id				as	gps_org_id,
 			g.type_id				as	gps_type_id
 		from t_duty_item as di
-			left join t_duty 		as 	d  	on 	d.id= di.duty_id
-			left join t_duty_type 	as 	dt 	on 	di.item_type_id	=100 	and di.duty_type_id = dt.id
-			left join t_vehicle 	as 	v 	on 	di.item_type_id=1 		and di.item_id =v.id
-			left join t_police 		as 	p  	on 	di.item_type_id=2 		and di.item_id=p.id
-			left join t_weapon 		as 	w 	on 	di.item_type_id=3		and di.item_id=w.id
-			left join t_gps 		as 	g 	on 	di.item_type_id =4 		and di.item_id=g.id
+			left join t_duty 			as 	d  		on 	d.id= di.duty_id
+			left join t_duty_type 		as 	dt 		on 	di.item_type_id	=100 	and di.duty_type_id = dt.id
+			left join t_vehicle 		as 	v 		on 	di.item_type_id=1 		and di.item_id =v.id
+			left join t_vehiclepurpose	as 	vp 		on 	vp.id =v.purpose_id
+			left join t_police 			as 	p  		on 	di.item_type_id=2 		and di.item_id=p.id
+			left join t_policetitle		as 	ptl  	on 	ptl.id = p.title_id
+			left join t_weapon 			as 	w 		on 	di.item_type_id=3		and di.item_id=w.id
+			left join t_gps 			as 	g 		on 	di.item_type_id =4 		and di.item_id=g.id
 			<if test="orgPath !=null">
 			left join t_organ       as org  on  d.org_id = org.organ_id
 			</if>

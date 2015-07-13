@@ -475,8 +475,8 @@ public class ExcelOutputController {
 						cellb.setCellValue(vehicle.getNumber() == null ? ""
 								: vehicle.getNumber());
 						Cell cellc = row.createCell(2, Cell.CELL_TYPE_STRING);
-						cellc.setCellValue(vehicle.getPurpose() == null ? ""
-								: vehicle.getPurpose());
+						cellc.setCellValue(vehicle.getPurposeName() == null ? ""
+								: vehicle.getPurposeName());
 						Cell celle = row.createCell(3, Cell.CELL_TYPE_STRING);
 						celle.setCellValue(vehicle.getBrand() == null ? ""
 								: vehicle.getBrand());
@@ -585,8 +585,8 @@ public class ExcelOutputController {
 						PoliceVM police = new PoliceVM();
 						police = list.get(rowNum - 2);
 						Cell cella = row.createCell(0, Cell.CELL_TYPE_STRING);
-						cella.setCellValue(police.getTitle() == null ? ""
-								: police.getTitle());
+						cella.setCellValue(police.getTitleName() == null ? ""
+								: police.getTitleName());
 						Cell cellb = row.createCell(1, Cell.CELL_TYPE_STRING);
 						cellb.setCellValue(police.getName() == null ? ""
 								: police.getName());

@@ -112,6 +112,10 @@ public class ExtDbResult {
 	 */
     private Integer purposeId;
     /*
+	 * 车辆用途
+	 */
+    private String purposeName;
+    /*
 	 * 车辆品牌
 	 */
     private String vehicleBrand;
@@ -155,6 +159,10 @@ public class ExtDbResult {
 	 * 职位
 	 */
     private Integer titleId;
+    /**
+	 * 职位
+	 */
+    private String titleName;
     /**
 	 * 手机号码
 	 */
@@ -541,6 +549,18 @@ public class ExtDbResult {
 	}
 	public void setJjcount(Integer jjcount) {
 		this.jjcount = jjcount;
+	}
+	public String getPurposeName() {
+		return purposeName;
+	}
+	public void setPurposeName(String purposeName) {
+		this.purposeName = purposeName;
+	}
+	public String getTitleName() {
+		return titleName;
+	}
+	public void setTitleName(String titleName) {
+		this.titleName = titleName;
 	}
 	
 	
